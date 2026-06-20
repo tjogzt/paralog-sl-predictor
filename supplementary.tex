@@ -1,0 +1,266 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{graphicx,booktabs,hyperref,caption,multirow,array,float}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{setspace}\onehalfspacing
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\renewcommand{\figurename}{Fig.}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\usepackage{verbatim}
+
+\title{\textbf{Supplementary Information}\\[0.3em]
+\large Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Supplementary Figures}
+
+% S1
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS1_CellLine_Landscape.pdf}
+\caption{\textbf{Panoramic baseline: cell lines and evaluation summary across 23 solid tumor types.} a, Cell line counts per cancer type, colored by DD AUROC performance tier (red: AUROC~$>$~0.7; blue: 0.5--0.7; gray: $<$~0.5; light gray: not evaluable). b, Tested paralog pairs per cancer type; red bars show known gold-standard positives. Numbers indicate known/total pairs.}
+\end{figure}
+
+% S2
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS2_CrossCancer_AUROC.pdf}
+\caption{\textbf{Cross-cancer DD AUROC.} DD AUROC for each of the 17 evaluable solid tumor types, grouped by signal strength. a, Strong signal (AUROC~$\ge$~0.7; 9 lineages including Biliary Tract 0.960, Mesothelioma 0.917, Colorectal 0.812). b, Moderate signal (AUROC 0.5--0.7; 7 lineages). c, Weak signal (AUROC~$<$~0.5; Melanoma 0.462). Dashed line indicates random classifier (0.5). Bar labels show the number of tested paralog pairs per lineage. Cancer types with $<$2 known positive pairs were excluded from AUROC evaluation (see Table~S1 for the 6 non-evaluable types).}
+\end{figure}
+
+% S3
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS3_CPTAC_PerCohort.pdf}
+\caption{\textbf{CPTAC per-cohort scatter plots (UCEC).} Representative scatter plot of EP300 vs.\ CREBBP protein abundance (log$_2$ normalized intensity) in the UCEC cohort ($n=83$). Each point represents one tumor sample. Line: linear regression fit with 95\% confidence band. Pearson $r$ and BH-corrected $q$-value shown. Similar scatter plots for other cohorts and paralog pairs are available upon request.}
+\end{figure}
+
+% S4
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{output/figures/FigS4_CNV_Independence.pdf}
+\caption{\textbf{CNV independence analysis.} Scatter plots of relative copy number (x-axis) vs.\ Chronos gene-effect score (y-axis) for each of 23 paralog genes across 1,192 cell lines with both CNV and dependency data. Each panel shows one gene with the linear regression fit (red line) and $R^2$ value. All $R^2 < 0.10$, indicating that copy number variation explains $<$10\% of gene-effect variance. Multivariate regression additionally controlling for driver mutation and TP53 co-mutation confirmed that DD estimates are virtually unchanged after CNV adjustment (see main text).}
+\end{figure}
+
+% S5
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{output/figures/FigS5_PRISM_Selectivity.pdf}
+\caption{\textbf{PRISM drug selectivity heatmap.} Heatmap of drug sensitivity differential ($\Delta$AUC = mean AUC in driver-mutant minus mean AUC in wild-type cell lines) for the top compound--paralog pair associations from the PRISM Repurposing screen (1,482 compounds, 727 cell lines). Negative $\Delta$AUC indicates selective sensitivity in driver-mutant cells. Associations shown met discovery-stage criteria (BH $q<0.25$, $\Delta$AUC$<0$, enrichment$>0.1$). Known drug--target biology is recapitulated: MEK inhibitors with KRAS-mutant lines, mTOR/AKT inhibitors with PTEN-mutant lines, HDAC inhibitors with EP300-mutant lines.}
+\end{figure}
+
+% S6
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS6_MutationType.pdf}
+\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.016$), indicating that truncating~$>$~missense is not universal but pair-specific. c, $\Delta$DD for known gold-standard SL pairs showing that ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal) drive the trend. d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.726) vs.\ overall DD performance.}
+\end{figure}
+
+% S7
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS7_TherapeuticWindow.pdf}
+\caption{\textbf{Therapeutic window analysis.} a, All 24 paralog pairs ranked by mean Therapeutic Index (TI) across 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer). ARID1A$\rightarrow$ARID1B ranks first (TI~$=$~4.13). b, In vitro selectivity tier classification: HIGH\_SELECTIVITY (selectivity~$>$~0.15 and TI~$>$~1.0), MODERATE, LOW\_SELECTIVITY, and PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$). c, TI values broken down by individual cancer context showing cross-lineage consistency for top candidates. d, Selectivity vs.\ TI scatter plot; ARID1A$\rightarrow$ARID1B is the only pair in the upper-right quadrant (high TI and high selectivity).}
+\end{figure}
+
+% S8
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth,keepaspectratio]{output/figures/FigS8_Bootstrap_NegCtrl.pdf}
+\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 77 pairs, 8 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.415--0.891). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.121$). The observed AUROC (0.668) exceeds the null mean (0.580) but does not reach conventional significance, reflecting limited statistical power with only 8 positive pairs. Note: the per-pair AUROC (0.668) differs from the cancer-type-specific AUROC (0.794) reported in the benchmark comparison because the latter evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth,keepaspectratio]{output/figures/FigS9_kmer_validation.pdf}
+\caption{\textbf{$k$-mer Jaccard vs.\ Needleman-Wunsch alignment identity validation.} Scatter plot of $k$-mer Jaccard similarity ($k=3$) vs.\ global alignment identity for 50 protein pairs (13 known paralogs, 37 non-paralog controls). Red: known paralog-SL pairs; Blue: non-paralog pairs. Gray line: linear regression with 95\% CI.}
+\end{figure}
+
+\clearpage
+\section{Supplementary Tables}
+
+\subsection{Table S1 --- Cell line and evaluation summary across 23 solid tumor types}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Cancer Type} & \textbf{Cell Lines} & \textbf{Pairs} & \textbf{Known+} & \textbf{DD AUROC} \\
+\midrule
+Biliary Tract & 39 & 86 & 3 & 0.960 \\
+Mesothelioma & 21 & 8 & 2 & 0.917 \\
+Colorectal & 59 & 118 & 8 & 0.812 \\
+Esophagogastric & 62 & 85 & 8 & 0.805 \\
+SCLC & 121 & 122 & 9 & 0.750 \\
+Pancreatic & 44 & 42 & 2 & 0.750 \\
+HNSCC & 60 & 25 & 6 & 0.746 \\
+Breast & 50 & 53 & 6 & 0.734 \\
+Neuroblastoma & 33 & 9 & 3 & 0.722 \\
+\midrule
+Bladder Urothelial & 30 & 62 & 4 & 0.698 \\
+Hepatocellular & 24 & 45 & 3 & 0.683 \\
+Ovarian & 55 & 105 & 9 & 0.674 \\
+Cervical & 16 & 11 & 4 & 0.643 \\
+Glioma & 66 & 36 & 6 & 0.600 \\
+Endometrial & 31 & 127 & 9 & 0.576 \\
+NSCLC & 95 & 111 & 9 & 0.572 \\
+Melanoma & 78 & 45 & 7 & 0.462 \\
+\midrule
+Renal Cell & 26 & 10 & 0 & --- \\
+Osteosarcoma & 19 & 13 & 0 & --- \\
+Ewing Sarcoma & 18 & 4 & 0 & --- \\
+Other Sarcoma & 33 & 8 & 1 & --- \\
+Rhabdomyosarcoma & 12 & 2 & 0 & --- \\
+Thyroid & 10 & 2 & 1 & --- \\
+\bottomrule
+\end{tabular}
+\caption{Cell line counts and DD AUROC across all 23 analyzed solid tumor types. Top: AUROC~$>$~0.7 (9 types). Middle: AUROC~$\le$~0.7 (8 types). Bottom: insufficient known positives for AUROC (6 types). Known+: number of gold-standard positive pairs evaluable in each lineage. ``---'': AUROC not computable ($<$2 known positives).}
+\end{table}
+
+\subsection{Table S2 --- Complete paralog-SL pair analysis results}
+The full analysis results are provided as a tab-separated file: \texttt{TableS2\_FullResults.tsv} (118 rows $\times$ 13 columns, representing all driver$\times$paralog$\times$cancer-type combinations passing the minimum sample-size filter).
+
+\textbf{Data dictionary:}
+\begin{itemize}\setlength\itemsep{0pt}
+\item \texttt{driver\_gene}: Driver gene with damaging mutation.
+\item \texttt{paralog\_gene}: Candidate paralog tested for conditional dependency.
+\item \texttt{cancer\_type}: Solid tumor lineage (DepMap OncotreePrimaryDisease).
+\item \texttt{pcs}: Paralog Compensation Score (DD $\times$ necessity).
+\item \texttt{delta\_expression}: $\Delta$Expression between MUT and WT groups.
+\item \texttt{necessity}: Mean gene-effect score of the paralog (more negative = more essential).
+\item \texttt{dependency\_dd}: Delta Dependency (signed; positive = greater dependency in MUT).
+\item \texttt{composite\_score}: Weighted composite of PCS, DD, and $\Delta$Expression.
+\item \texttt{novelty}: ``Known'' if in gold-standard set (Table~S3), else ``Novel''.
+\item \texttt{q\_value}: Benjamini-Hochberg adjusted $p$-value within each driver gene.
+\item \texttt{mutation\_frequency}: Fraction of cell lines with driver mutation in this lineage.
+\item \texttt{n\_mut}, \texttt{n\_wt}: Number of mutant and wild-type cell lines.
+\item \texttt{is\_known\_paralog\_sl}: Boolean; TRUE if pair is in gold-standard set.
+\end{itemize}
+\stepcounter{table} % Table S2 has no \begin{table}, manually increment counter
+
+\subsection{Table S3 --- Gold-standard paralog-SL pairs with evidence provenance}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lllllc}
+\toprule
+\textbf{Driver} & \textbf{Paralog} & \textbf{Type} & \textbf{Evidence} & \textbf{Key Ref} & \textbf{Indep.} \\
+\midrule
+SMARCA4 & SMARCA2 & Seq.\ paralog & CRISPR screen & Hoffman 2014 & Yes \\
+ARID1A  & ARID1B  & Seq.\ paralog & CRISPR + drug & Helming 2014 & Yes \\
+BRCA1   & BRCA2   & Func.\ analog & Genetic screen & Bryant 2005 & Yes \\
+EP300   & CREBBP  & Seq.\ paralog & shRNA screen & Ogiwara 2016 & Yes \\
+PIK3CA  & PIK3CB  & Seq.\ paralog & Drug + KO & Wee 2008 & Yes \\
+AKT1    & AKT2    & Seq.\ paralog & siRNA viability & Literature & Partial \\
+STK11   & SIK1    & Partial hom.  & Genetic screen & Literature & Partial \\
+FBXW7   & FBXW2   & Seq.\ paralog & DepMap analysis & DepMap & No \\
+PPP2R1A & PPP2R1B & Seq.\ paralog & DepMap analysis & DepMap & No \\
+CCNE1   & CCNE2   & Seq.\ paralog & Genetic screen & Literature & Yes \\
+CDK4    & CDK6    & Seq.\ paralog & Drug (palbociclib) & Clinical & Yes \\
+MAP2K1  & MAP2K2  & Seq.\ paralog & Drug (trametinib) & Clinical & Yes \\
+\bottomrule
+\end{tabular}
+\caption{Twelve gold-standard pairs with evidence provenance. Type: Seq.\ paralog (shared gene family, conserved domains), Func.\ analog (shared pathway role, no sequence homology), Partial hom.\ (same superfamily, divergent). Indep.: whether evidence is independent of DepMap CRISPR data. ``No'' indicates pairs whose SL status was originally identified from DepMap-derived analyses, creating potential circularity.}
+\end{table}
+
+\subsection{Table S4 — Pan-cancer summary statistics}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Cancer Type} & \textbf{Cell Lines} & \textbf{Pairs} & \textbf{DD AUROC} \\
+\midrule
+Biliary Tract      & 39 & 86  & 0.960 \\
+Mesothelioma       & 21 & 8   & 0.917 \\
+Colorectal         & 59 & 118 & 0.812 \\
+Esophagogastric    & 62 & 85  & 0.805 \\
+SCLC               & 121 & 122 & 0.750 \\
+Pancreatic         & 44 & 42  & 0.750 \\
+HNSCC              & 60 & 25  & 0.746 \\
+Breast             & 50 & 53  & 0.734 \\
+Neuroblastoma      & 33 & 9   & 0.722 \\
+\midrule
+Bladder Urothelial & 30 & 62  & 0.698 \\
+Hepatocellular     & 24 & 45  & 0.683 \\
+Ovarian            & 55 & 105 & 0.674 \\
+Cervical           & 16 & 11  & 0.643 \\
+Glioma             & 66 & 36  & 0.600 \\
+Endometrial        & 31 & 127 & 0.576 \\
+NSCLC              & 95 & 111 & 0.572 \\
+Melanoma           & 78 & 45  & 0.462 \\
+\bottomrule
+\end{tabular}
+\caption{DD AUROC across all 17 evaluable solid tumor types (sorted by AUROC). Horizontal line separates AUROC~$>$~0.7 (top) from AUROC~$\le$~0.7 (bottom).}
+\end{table}
+
+\subsection{Table S5 --- 40-gene driver panel}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{llll}
+\toprule
+\textbf{Gene} & \textbf{Cancer Types} & \textbf{Source} & \textbf{Category} \\
+\midrule
+TP53 & Pan-cancer & TCGA+COSMIC & TSG \\
+KRAS & Lung, CRC, Pancreatic & TCGA+COSMIC & Oncogene \\
+PIK3CA & Breast, Endometrial, Cervical & TCGA+COSMIC & Oncogene \\
+PTEN & Endometrial, Ovarian, Breast & TCGA+COSMIC & TSG \\
+ARID1A & Endometrial, Ovarian, CRC & TCGA+COSMIC & TSG \\
+BRCA1 & Ovarian, Breast & TCGA+COSMIC & TSG \\
+BRCA2 & Ovarian, Breast & TCGA+COSMIC & TSG \\
+BRAF & Melanoma, CRC, Thyroid & TCGA+COSMIC & Oncogene \\
+NF1 & Glioma, Breast, Lung & TCGA+COSMIC & TSG \\
+RB1 & SCLC, Breast, Bladder & TCGA+COSMIC & TSG \\
+\bottomrule
+\end{tabular}
+\caption{First 10 of 40 driver genes (complete list in TableS5\_DriverGenes.tsv).
+Selection criteria: recurrently mutated in $\ge$1 TCGA pan-cancer study or COSMIC Cancer Gene Census,
+with $\ge$3 mutant cell lines in at least one DepMap lineage.}
+\end{table}
+
+\subsection{Table S6 --- All 24 paralog pairs ranked by preclinical prioritization score}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{llrrrll}
+\toprule
+\textbf{Driver} & \textbf{Paralog} & \textbf{|DD|} & \textbf{TI} & \textbf{Select.} & \textbf{Class} & \textbf{Type} \\
+\midrule
+ARID1A & ARID1B & 0.267 & 4.130 & 0.237 & HS & Seq \\
+NF1 & RASA2 & 0.066 & 3.313 & 0.003 & MOD & Seq \\
+RB1 & RBL1 & 0.134 & 2.829 & 0.006 & MOD & Seq \\
+KMT2D & KMT2C & 0.087 & 2.155 & 0.097 & MOD & Seq \\
+ATR & ATM & 0.040 & 2.009 & 0.027 & MOD & Seq \\
+AKT1 & AKT2 & 0.141 & 1.948 & 0.049 & MOD & Seq \\
+PPP2R1A & PPP2R1B & 0.068 & 1.458 & 0.000 & LS & Seq \\
+PIK3CA & PIK3CB & 0.138 & 1.261 & $-$0.051 & LS & Seq \\
+FBXW7 & FBXW2 & 0.032 & 1.226 & 0.000 & LS & Seq \\
+SMARCA4 & SMARCA2 & 0.053 & 1.159 & 0.032 & MOD & Seq \\
+EP300 & CREBBP & 0.200 & 1.148 & 0.115 & MOD & Seq \\
+BRAF & RAF1 & 0.129 & 0.947 & $-$0.049 & LS & Seq \\
+TP53 & TP63 & 0.039 & 0.946 & 0.022 & MOD & Seq \\
+STK11 & SIK1 & 0.031 & 0.912 & $-$0.010 & LS & Part \\
+CDH1 & CDH2 & 0.049 & 0.542 & $-$0.032 & LS & Seq \\
+MAP2K1 & MAP2K2 & 0.062 & 0.370 & $-$0.017 & LS & Seq \\
+KRAS & NRAS & 0.068 & 0.344 & $-$0.053 & LS & Seq \\
+BRCA1 & BRCA2 & 0.125 & 0.289 & 0.045 & PE & Func \\
+PIK3R1 & CRKL & 0.231 & 0.245 & $-$0.148 & PE & Seq \\
+CDK4 & CDK6 & 0.107 & 0.212 & $-$0.161 & LS & Seq \\
+PTEN & TNS2 & 0.041 & 0.170 & $-$0.011 & LS & Seq \\
+BRCA2 & BRCA1 & 0.087 & 0.164 & $-$0.039 & PE & Func \\
+KRAS & HRAS & 0.029 & 0.144 & $-$0.046 & LS & Seq \\
+CCNE1 & CCNE2 & 0.006 & 0.081 & $-$0.022 & LS & Seq \\
+\bottomrule
+\end{tabular}
+\caption{All 24 analyzed paralog pairs ranked by mean Therapeutic Index (TI). |DD|: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog.}
+\end{table}
+
+\end{document}

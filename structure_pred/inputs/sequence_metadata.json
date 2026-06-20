@@ -1,0 +1,86 @@
+{
+  "ARID1A": {
+    "uniprot": "O14497",
+    "length": 2285
+  },
+  "ARID1B": {
+    "uniprot": "Q8NFD5",
+    "length": 2319
+  },
+  "EP300": {
+    "uniprot": "Q09472",
+    "length": 2414
+  },
+  "PIK3CA": {
+    "uniprot": "P42336",
+    "length": 1068
+  },
+  "PIK3CB": {
+    "uniprot": "P42338",
+    "length": 1070
+  },
+  "PPP2R1A": {
+    "uniprot": "P30153",
+    "length": 589
+  },
+  "PPP2R1B": {
+    "uniprot": "P30154",
+    "length": 601
+  },
+  "KRAS": {
+    "uniprot": "P01116",
+    "length": 189
+  },
+  "HRAS": {
+    "uniprot": "P01112",
+    "length": 189
+  },
+  "BRCA1": {
+    "uniprot": "P38398",
+    "length": 1863
+  },
+  "BRCA2": {
+    "uniprot": "P51587",
+    "length": 3418
+  },
+  "SMARCA4": {
+    "uniprot": "P51532",
+    "length": 1647
+  },
+  "SMARCA2": {
+    "uniprot": "P51531",
+    "length": 1590
+  },
+  "NF1": {
+    "uniprot": "P21359",
+    "length": 2839
+  },
+  "RASA2": {
+    "uniprot": "Q15283",
+    "length": 850
+  },
+  "KMT2D": {
+    "uniprot": "O14686",
+    "length": 5537
+  },
+  "KMT2C": {
+    "uniprot": "Q8NEZ4",
+    "length": 4911
+  },
+  "STK11": {
+    "uniprot": "Q15831",
+    "length": 433
+  },
+  "SIK1": {
+    "uniprot": "P57059",
+    "length": 783
+  },
+  "FBXW7": {
+    "uniprot": "Q969H0",
+    "length": 707
+  },
+  "FBXW2": {
+    "uniprot": "Q9UKT8",
+    "length": 454
+  }
+}

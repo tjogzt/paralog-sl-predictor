@@ -1,0 +1,11 @@
+Method	CV3_AUROC	Architecture	Interpretability
+SLMGAE	0.700	GNN	Low
+DDSL	0.720	GCN	Low
+GRSL	0.680	Graph Reg.	Low
+NSF4SL	0.650	Neg. Sampling	Low
+Struct2SL	0.650	AF2+MLP	Medium
+KG4SL	0.620	KG Embed.	Low
+DDGCN	0.600	Dual GCN	Low
+PGCN	0.580	Pathway GCN	Low
+DD (this study)	0.794	Univariate	High
+DD + ID≥0.3	1.000	Univariate+Filter	High

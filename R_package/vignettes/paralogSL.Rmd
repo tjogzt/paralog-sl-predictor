@@ -1,0 +1,182 @@
+---
+title: "paralogSL: De Novo Paralog Synthetic Lethality Discovery"
+author: "Tao Zhu"
+date: "2026-05-25"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{paralogSL: De Novo Paralog Synthetic Lethality Discovery}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(paralogSL)
+library(ggplot2)
+```
+
+## Overview
+
+`paralogSL` provides a lightweight R framework for de novo synthetic lethality
+(SL) discovery through paralog compensation analysis. It computes Delta
+Dependency (DD) scores from DepMap CRISPR dependency data and identifies
+paralog-SL candidates using HGNC gene family annotations.
+
+Key features:
+- **DD computation**: One-line subtraction outperforms deep learning
+- **Cross-cancer**: Built-in driver gene sets for 5 cancer types
+- **Benchmark**: Pre-loaded comparison against 8 published methods
+- **Visualization**: Publication-quality plots with Chinese-style palette
+
+## Quick Start
+
+```{r}
+# Load built-in data
+data("gyn_drivers")
+data("known_sl_pairs")
+data("benchmark_methods")
+
+# View driver genes
+str(gyn_drivers)
+
+# View gold standard
+head(known_sl_pairs)
+```
+
+## Loading DepMap Data
+
+```{r eval=FALSE}
+# Download from https://depmap.org/portal/download/
+dep <- load_dependency("CRISPRGeneEffect.csv")
+expr <- load_expression("OmicsExpressionProteinCodingGenesTPMLogp1.csv")
+models <- load_models("Model.csv")
+mutations <- data.table::fread("OmicsSomaticMutations.csv")
+```
+
+## Computing Delta Dependency
+
+```{r eval=FALSE}
+# Filter to ovarian cancer cell lines
+ov_cells <- filter_cancer_cell_lines(models,
+    c("Ovarian Serous Cystadenocarcinoma",
+      "Ovarian Clear Cell Adenocarcinoma",
+      "Ovarian Endometrioid Adenocarcinoma"))
+
+# Load HGNC paralog pairs
+paralogs <- data.table::fread("ensembl_paralogs.csv")
+
+# Run analysis
+results <- run_paralog_analysis(
+    dependency = dep,
+    expression = expr,
+    mutations_df = mutations,
+    paralogs_df = paralogs,
+    driver_genes = gyn_drivers$Ovarian,
+    cell_lines = ov_cells
+)
+
+head(results, 10)
+```
+
+## Computing AUROC
+
+```{r eval=FALSE}
+auroc <- compute_auroc(results, known_sl_pairs)
+cat("DD AUROC:", round(auroc, 3), "\n")
+```
+
+## Benchmark Comparison
+
+```{r}
+bench <- get_benchmark_table()
+print(bench)
+
+plot_benchmark(bench)
+```
+
+## Individual DD Computation
+
+```{r eval=FALSE}
+# Build mutation matrix for ARID1A
+mut_mat <- build_mutation_matrix(mutations, ov_cells, "ARID1A")
+arid1a_mut <- names(which(mut_mat[, "ARID1A"] == 1))
+arid1a_wt  <- names(which(mut_mat[, "ARID1A"] == 0))
+
+# Compute DD for ARID1A → ARID1B
+dd_result <- compute_dd(dep, "ARID1A", "ARID1B", arid1a_mut, arid1a_wt)
+cat("DD:", dd_result$DD, "p:", dd_result$p_value, "\n")
+```
+
+## CPTAC Protein Correlation Plot
+
+```{r eval=FALSE}
+prot <- read.table("FD_GLBL_MI_FFPEbridge_Abund_20201002.tsv",
+                   sep = "\t", header = TRUE, row.names = 1)
+
+plot_protein_correlation(prot, "ARID1A", "ARID1B")
+```
+
+## MSI Stratification
+
+```{r eval=FALSE}
+# Classify cell lines by MSI/dMMR status
+msi_status <- classify_msi_status(mutations, ov_cells)
+msi_h_cells <- names(msi_status[msi_status == "MSI_H"])
+mss_cells   <- names(msi_status[msi_status == "MSS"])
+
+# Run DD analysis separately for MSI-H vs MSS
+msi_h_results <- run_paralog_analysis(dep, expr, mutations,
+    paralogs, gyn_drivers$Colorectal, msi_h_cells)
+mss_results   <- run_paralog_analysis(dep, expr, mutations,
+    paralogs, gyn_drivers$Colorectal, mss_cells)
+
+# Compare AUROC
+msi_h_auc <- compute_auroc(msi_h_results, known_sl_pairs)
+mss_auc   <- compute_auroc(mss_results, known_sl_pairs)
+cat("MSI-H AUROC:", msi_h_auc, "\nMSS AUROC:", mss_auc, "\n")
+```
+
+## Therapeutic Window Analysis
+
+```{r eval=FALSE}
+# Compute therapeutic index for ARID1A → ARID1B
+tw <- compute_therapeutic_window(
+    dependency = dep,
+    driver_gene = "ARID1A",
+    paralog_gene = "ARID1B",
+    mut_lines = arid1a_mut,
+    wt_lines = arid1a_wt,
+    all_cell_lines = ov_cells
+)
+cat("TI:", tw$TI, "\n")
+cat("Classification:", tw$classification, "\n")
+cat("Selectivity:", tw$selectivity, "\n")
+```
+
+## Mutation Type Stratification
+
+```{r eval=FALSE}
+# Stratify BRCA1 mutations by type
+mt <- stratify_by_mutation_type(mutations, ov_cells, "BRCA1")
+cat("Truncating mutants:", length(mt$trunc_lines), "\n")
+cat("Missense mutants:", length(mt$miss_lines), "\n")
+
+# Compute DD separately for each mutation type
+dd_trunc <- compute_dd(dep, "BRCA1", "BRCA2", mt$trunc_lines, arid1a_wt)
+dd_miss  <- compute_dd(dep, "BRCA1", "BRCA2", mt$miss_lines, arid1a_wt)
+cat("DD (truncating):", dd_trunc$DD, "\nDD (missense):", dd_miss$DD, "\n")
+```
+
+## Reproducibility
+
+This vignette reproduces the core findings from the manuscript:
+
+> *When RNA Is Silent but Protein Speaks: Paralog Compensation at the
+> Protein Level Predicts Synthetic Lethality in Gynecological Cancers*
+
+- DD AUROC = 0.794 (vs best published CV3: 0.720)
+- DD + 30% identity filter → AUROC = 1.000
+- CPTAC protein co-variation: r = 0.50-0.60 (p < 0.001)
+
+See the manuscript (`manuscript_draft.md`) and Python pipeline
+(`paralog_sl_predictor/`) for full details.

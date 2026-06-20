@@ -1,0 +1,65 @@
+# === Large data files (download separately, see data/README.md) ===
+data/CRISPRGeneEffect.csv
+data/OmicsSomaticMutations.csv
+data/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+data/OmicsCNGene.csv
+data/PRISM_log2AUC.csv
+data/Model.csv
+data/FD_GLBL_MI_FFPEbridge_Abund_20201002.tsv
+data/string_neighbors.csv
+data/synlethdb_sl_pairs.csv
+
+# === OS / IDE artifacts ===
+.DS_Store
+**/.DS_Store
+__pycache__/
+.pytest_cache/
+*.pyc
+.idea/
+.vscode/
+
+# === LaTeX build artifacts ===
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# === R build artifacts ===
+R_package/man/*.Rd
+R_package/.Rbuildignore
+*.Rhistory
+.RData
+
+# === Temporary/intermediate files ===
+output/figures/archive/
+*.swp
+*~
+structure_pred/outputs/
+*.pdb
+*.cif
+
+# === Intermediate outputs (reproducible from pipeline) ===
+output/pancancer_*.csv
+output/solid_*.csv
+output/breast_results.csv
+output/cervical_results.csv
+output/endometrial_results.csv
+output/lung_results.csv
+output/ovarian_results.csv
+output/fcs_results.csv
+output/msi_*_results.csv
+output/muttype_*_results.csv
+output/cptac_*_correlations.csv
+output/prism_full_results.csv
+output/protein_enhanced_results.csv
+output/therapeutic_window_*_results.csv
+output/paralogSL_1.0.0.pdf
+
+# === Individual panel PDFs (composite figures sufficient) ===
+output/figures/*_panel_*.pdf
+output/figures/GraphicalAbstract.png

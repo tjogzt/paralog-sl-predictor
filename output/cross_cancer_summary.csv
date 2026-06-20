@@ -1,0 +1,4 @@
+cancer,n_pairs,n_known,dd_auroc
+Ovarian,43,4,0.8461538461538463
+Endometrial,68,4,0.796875
+Cervical,7,3,0.6666666666666666

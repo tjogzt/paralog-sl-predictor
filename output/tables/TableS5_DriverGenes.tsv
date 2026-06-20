@@ -1,0 +1,41 @@
+driver_gene	cancer_types	selection_source	functional_category
+TP53	Pan-cancer	TCGA + COSMIC	Tumor suppressor
+KRAS	Lung, Colorectal, Pancreatic, Endometrial	TCGA + COSMIC	Oncogene
+PIK3CA	Breast, Endometrial, Cervical, Colorectal	TCGA + COSMIC	Oncogene
+PTEN	Endometrial, Ovarian, Breast, Glioma	TCGA + COSMIC	Tumor suppressor
+ARID1A	Endometrial, Ovarian, Colorectal	TCGA + COSMIC	Tumor suppressor
+BRCA1	Ovarian, Breast	TCGA + COSMIC	Tumor suppressor
+BRCA2	Ovarian, Breast	TCGA + COSMIC	Tumor suppressor
+BRAF	Melanoma, Colorectal, Thyroid	TCGA + COSMIC	Oncogene
+NF1	Glioma, Breast, Lung	TCGA + COSMIC	Tumor suppressor
+RB1	SCLC, Breast, Bladder	TCGA + COSMIC	Tumor suppressor
+EGFR	Lung, Glioma, HNSCC	TCGA + COSMIC	Oncogene
+ERBB2	Breast, Esophagogastric	TCGA + COSMIC	Oncogene
+CDH1	Breast, Gastric	TCGA + COSMIC	Tumor suppressor
+CTNNB1	Endometrial, Hepatocellular	TCGA + COSMIC	Oncogene
+STK11	Lung	TCGA + COSMIC	Tumor suppressor
+KEAP1	Lung	TCGA + COSMIC	Tumor suppressor
+EP300	Cervical, Colorectal	TCGA + COSMIC	Tumor suppressor
+FBXW7	Endometrial, Cervical, Colorectal	TCGA + COSMIC	Tumor suppressor
+PPP2R1A	Endometrial	TCGA + COSMIC	Tumor suppressor
+PIK3R1	Endometrial	TCGA	Tumor suppressor
+KMT2D	Endometrial, HNSCC	TCGA + COSMIC	Tumor suppressor
+CCNE1	Ovarian	TCGA + COSMIC	Oncogene
+SMARCA4	Lung, Ovarian	TCGA + COSMIC	Tumor suppressor
+APC	Colorectal	TCGA + COSMIC	Tumor suppressor
+SMAD4	Colorectal, Pancreatic	TCGA + COSMIC	Tumor suppressor
+ATM	Pan-cancer	COSMIC	Tumor suppressor
+ATR	Pan-cancer	COSMIC	Tumor suppressor
+VHL	Renal	TCGA + COSMIC	Tumor suppressor
+SETD2	Renal	TCGA + COSMIC	Tumor suppressor
+BAP1	Mesothelioma, Renal	TCGA + COSMIC	Tumor suppressor
+PBRM1	Renal	TCGA + COSMIC	Tumor suppressor
+NOTCH1	HNSCC, Esophageal	TCGA + COSMIC	Tumor suppressor
+IDH1	Glioma	TCGA + COSMIC	Oncogene
+SPOP	Prostate, Endometrial	TCGA + COSMIC	Tumor suppressor
+NFE2L2	Lung, Esophageal	TCGA + COSMIC	Oncogene
+MET	Lung, Renal	TCGA + COSMIC	Oncogene
+ALK	Lung	COSMIC	Oncogene
+GATA3	Breast	TCGA	Tumor suppressor
+MAP3K1	Breast	TCGA	Tumor suppressor
+MYC	Pan-cancer	COSMIC	Oncogene

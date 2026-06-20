@@ -1,0 +1,19 @@
+{
+  "negative_control": {
+    "observed_auroc": 0.6685,
+    "null_auroc_mean": 0.5804,
+    "null_auroc_std": 0.0727,
+    "empirical_p_value": 0.1209,
+    "n_known": 8,
+    "n_total": 77,
+    "n_permutations": 10000
+  },
+  "component_decomposition": {
+    "expression_only": 0.4492
+  },
+  "bootstrap": {
+    "auroc_mean": 0.6681,
+    "auroc_ci_low": 0.415,
+    "auroc_ci_high": 0.8907
+  }
+}

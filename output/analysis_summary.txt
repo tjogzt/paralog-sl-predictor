@@ -1,0 +1,29 @@
+============================================================
+Paralog SL Predictor — Analysis Summary
+============================================================
+
+Total pairs analyzed: 206
+Known paralog-SL recovered: 15
+
+--- Top 20 ---
+
+ 1. ★ BRCA1      → BRCA2       PCS=0.4558  Score=0.474  [Breast]
+ 2. ★ EP300      → CREBBP      PCS=0.0265  Score=0.258  [Cervical]
+ 3. ★ ARID1A     → ARID1B      PCS=0.0033  Score=0.256  [Endometrial]
+ 4. ★ PIK3CA     → PIK3CB      PCS=0.0621  Score=0.246  [Endometrial]
+ 5. ★ STK11      → SIK1        PCS=0.0650  Score=0.245  [Lung]
+ 6. ★ PIK3CA     → PIK3CB      PCS=0.0060  Score=0.222  [Breast]
+ 7. ★ ARID1A     → ARID1B      PCS=0.0131  Score=0.195  [Ovarian]
+ 8. ★ BRCA1      → BRCA2       PCS=0.1012  Score=0.130  [Ovarian]
+ 9. ★ PIK3CA     → PIK3CB      PCS=0.0040  Score=0.129  [Ovarian]
+10. ★ PPP2R1A    → PPP2R1B     PCS=0.0000  Score=0.089  [Endometrial]
+11. ★ BRCA2      → BRCA1       PCS=0.0518  Score=0.087  [Ovarian]
+12. ★ PIK3CA     → PIK3CB      PCS=0.0000  Score=0.082  [Cervical]
+13. ★ STK11      → SIK1        PCS=0.0084  Score=0.076  [Cervical]
+14. ★ FBXW7      → FBXW2       PCS=0.0000  Score=0.057  [Endometrial]
+15. ★ PIK3CA     → PIK3CB      PCS=0.0000  Score=0.015  [Lung]
+16. · PIK3R1     → CRKL        PCS=0.5883  Score=0.673  [Endometrial]
+17. · PIK3R1     → SUPT6H      PCS=0.4479  Score=0.478  [Endometrial]
+18. · PTEN       → TNS2        PCS=0.0000  Score=0.212  [Endometrial]
+19. · TP53       → TP63        PCS=0.0327  Score=0.208  [Endometrial]
+20. · KRAS       → RAP1B       PCS=0.1061  Score=0.202  [Lung]

@@ -1,0 +1,13 @@
+Gene_A	Gene_B	Mechanism	Evidence
+AKT1	AKT2	Paralog compensation	Literature/SynLethDB
+ARID1A	ARID1B	Paralog compensation	Literature/SynLethDB
+BRCA1	BRCA2	Paralog compensation	Literature/SynLethDB
+CCNE1	CCNE2	Paralog compensation	Literature/SynLethDB
+CDK4	CDK6	Paralog compensation	Literature/SynLethDB
+EP300	CREBBP	Paralog compensation	Literature/SynLethDB
+FBXW7	FBXW2	Paralog compensation	Literature/SynLethDB
+MEK1	MEK2	Paralog compensation	Literature/SynLethDB
+PIK3CA	PIK3CB	Paralog compensation	Literature/SynLethDB
+PPP2R1A	PPP2R1B	Paralog compensation	Literature/SynLethDB
+SMARCA4	SMARCA2	Paralog compensation	Literature/SynLethDB
+STK11	SIK1	Paralog compensation	Literature/SynLethDB
