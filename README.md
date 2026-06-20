@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+**English** | **[中文](README_CN.md)**
+
 ## Overview
 
 Delta Dependency (DD) is a simple, interpretable, discovery-stage metric for prioritizing paralog-based synthetic lethality (SL) candidates from Cancer Dependency Map (DepMap) CRISPR screening data. DD measures the shift in Chronos gene-effect scores between driver-mutant and wild-type cell lines, computed separately per cancer lineage.
