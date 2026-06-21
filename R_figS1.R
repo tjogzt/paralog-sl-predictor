@@ -7,16 +7,18 @@ library(readr)
 
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 BASE_FS <- 7; TICK_FS <- 6
-RED <- "#CB181D"; BLUE <- "#2171B5"; GREEN <- "#238B45"
-GRAY <- "#969696"; DARK <- "#252525"
+RED   <- "#CB181D"; BLUE  <- "#2171B5"; GREEN <- "#238B45"
+GRAY  <- "#636363"; DARK <- "#252525"
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line  = element_line(linewidth = 0.4),
   axis.ticks = element_line(linewidth = 0.3),
   axis.text  = element_text(size = TICK_FS),
   axis.title = element_text(size = BASE_FS),
-  plot.margin = margin(4, 6, 4, 4, "pt"))
+  plot.margin = margin(4, 6, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 # Load real data
 d <- read_csv("paralog_sl_predictor/output/solid_tumor_summary.csv", show_col_types = FALSE)
@@ -73,4 +75,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "FigS1_CellLine_Landscape.pdf"), p,
        width = 180, height = 120, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS1_CellLine_Landscape.svg"), p,
+       width = 180, height = 120, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS1_CellLine_Landscape.tiff"), p,
+       width = 180, height = 120, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("FigS1_CellLine_Landscape.pdf (180×120mm, 23 cancer types, real data) ✓")

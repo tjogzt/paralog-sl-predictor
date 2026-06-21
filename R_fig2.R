@@ -10,17 +10,17 @@ library(readr)
 library(reshape2)
 
 # ── Constants ──
-BASE_FS <- 7; TICK_FS <- 6.5; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
 PANEL_W <- 90; PANEL_H <- 90
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
 # ── Colors ──
-BLUE   <- "#2171B5"; RED  <- "#CB181D"; GREEN <- "#238B45"
-ORANGE <- "#E6550D"; GRAY <- "#636363"; TEAL  <- "#0D7377"; LIGHT <- "#D9D9D9"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"; GREEN <- "#238B45"
+ORANGE <- "#E6550D"; GRAY  <- "#636363"; TEAL  <- "#0D7377"; LIGHT <- "#D9D9D9"; DARK <- "#252525"
 
 # ── Theme ──
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.4),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -30,7 +30,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.title = element_blank(),
   legend.background = element_blank(),
   legend.key        = element_blank(),
-  plot.margin  = margin(4, 4, 4, 4, "pt"))
+  plot.margin  = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 save_panel <- function(p, name) {
   ggsave(file.path(OUT_DIR, paste0("Fig2_panel_", name, ".pdf")), p,
@@ -119,14 +121,16 @@ panel_a <- function() {
     scale_x_discrete(expand = expansion(mult = c(0.05, 0.12))) +
     coord_cartesian(clip = "off") +
     labs(x = NULL, y = NULL) +
-    theme_minimal(base_size = BASE_FS) +
+    theme_minimal(base_size = 7, base_family = "Arial") +
     theme(panel.grid = element_blank(),
           axis.text.x = element_text(size = TICK_FS, angle = 45, hjust = 1),
           axis.text.y = element_text(size = 6),
           legend.position = "right",
           legend.key.height = unit(0.4, "cm"),
           legend.key.width  = unit(0.2, "cm"),
-          plot.margin = margin(4, 4, 4, 4, "pt"))
+          plot.margin = margin(4, 4, 4, 20, "pt"),
+          plot.background  = element_rect(fill = "white", color = NA),
+          panel.background = element_rect(fill = "white", color = NA))
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -183,26 +187,59 @@ panel_c <- function() {
 }
 
 # ═══════════════════════════════════════════════════════════════
+# PANEL D — Mutation-conditioned ARID1B protein (CPTAC UCEC)
+# ═══════════════════════════════════════════════════════════════
+panel_d <- function() {
+  rds_path <- "paralog_sl_predictor/data/cptac_cache/ucec_arid1b_by_arid1a_status.rds"
+  if (!file.exists(rds_path)) {
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) +
+             theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
+  }
+  dat <- readRDS(rds_path)
+  df <- data.frame(
+    ARID1B = c(dat$mut, dat$wt),
+    Group = factor(c(rep("ARID1A\nmutant", dat$n_mut), rep("ARID1A\nwild-type", dat$n_wt)),
+                   levels = c("ARID1A\nwild-type", "ARID1A\nmutant")))
+
+  p_val <- dat$p
+  ggplot(df, aes(Group, ARID1B, fill = Group)) +
+    geom_boxplot(alpha = 0.4, outlier.shape = NA, linewidth = 0.4) +
+    geom_jitter(width = 0.15, size = 1, alpha = 0.4, color = DARK) +
+    scale_fill_manual(values = c("ARID1A\nwild-type" = BLUE, "ARID1A\nmutant" = RED)) +
+    annotate("text", x = 1.5, y = max(df$ARID1B, na.rm=TRUE) + 0.1,
+             label = sprintf("p = %.3f\n(Wilcoxon)", p_val),
+             size = 2.5, hjust = 0.5) +
+    labs(x = NULL, y = "ARID1B protein\n(log2 abundance)", title = "UCEC CPTAC (n=95)") +
+    theme_sci + theme(legend.position = "none",
+                      plot.title = element_text(size = 7, hjust = 0.5))
+}
+
+# ═══════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════
 message("=== Fig2 Panel Generation (R) ===")
-pa <- panel_a(); pb <- panel_b(); pc <- panel_c()
+pa <- panel_a(); pb <- panel_b(); pc <- panel_c(); pd <- panel_d()
 
-# Save: A at 180×90mm, B/C at 90×90mm
+# Save individual panels
 ggsave(file.path(OUT_DIR, "Fig2_panel_a.pdf"), pa,
        width = 180, height = 90, units = "mm", device = cairo_pdf)
 message("  panel a ✓")
-save_panel(pb, "b"); save_panel(pc, "c")
+save_panel(pb, "b"); save_panel(pc, "c"); save_panel(pd, "d")
 
-# Composite: A top full-width, B left, C right
+# Composite: 2x2 layout
 p <- ggdraw() +
-  draw_plot(pa, x = 0,   y = 0.5, width = 1,   height = 0.5) +
-  draw_plot(pb, x = 0,   y = 0,   width = 0.5, height = 0.5) +
-  draw_plot(pc, x = 0.5, y = 0,   width = 0.5, height = 0.5) +
-  draw_plot_label(c("a","b","c"),
-                  x = c(0, 0, 0.5), y = c(1, 0.5, 0.5),
+  draw_plot(pa, x = 0,   y = 0.5, width = 0.55, height = 0.5) +
+  draw_plot(pb, x = 0.55, y = 0.5, width = 0.45, height = 0.5) +
+  draw_plot(pc, x = 0,   y = 0,   width = 0.5,  height = 0.5) +
+  draw_plot(pd, x = 0.5, y = 0,   width = 0.5,  height = 0.5) +
+  draw_plot_label(c("a","b","c","d"),
+                  x = c(0, 0.55, 0, 0.5), y = c(1, 1, 0.5, 0.5),
                   size = 9, fontface = "bold")
 
 ggsave(file.path(OUT_DIR, "Fig2_Proteomics.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "Fig2_Proteomics.svg"), p,
+       width = 180, height = 180, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "Fig2_Proteomics.tiff"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("Fig2_Proteomics.pdf (180×180mm) ✓")

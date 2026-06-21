@@ -5,15 +5,17 @@ library(jsonlite)
 
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 BASE_FS <- 7; TICK_FS <- 6
-BLUE <- "#2171B5"; RED <- "#CB181D"; GRAY <- "#636363"; DARK <- "#252525"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"; GRAY  <- "#636363"; DARK <- "#252525"
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line  = element_line(linewidth = 0.4),
   axis.ticks = element_line(linewidth = 0.3),
   axis.text  = element_text(size = TICK_FS),
   axis.title = element_text(size = BASE_FS),
-  plot.margin = margin(4, 4, 4, 4, "pt"))
+  plot.margin = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 vr <- fromJSON("paralog_sl_predictor/output/validation_report.json")
 perm_data <- readRDS("paralog_sl_predictor/output/permutation_10000.rds")
@@ -66,4 +68,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "FigS8_Bootstrap_NegCtrl.pdf"), p,
        width = 180, height = 90, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS8_Bootstrap_NegCtrl.svg"), p,
+       width = 180, height = 90, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS8_Bootstrap_NegCtrl.tiff"), p,
+       width = 180, height = 90, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("FigS8 updated with 10,000 real permutations ✓")

@@ -8,18 +8,18 @@ library(tidyr)
 library(readr)
 
 # ── Constants ──
-BASE_FS <- 7; TICK_FS <- 6.5; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
 PANEL_W <- 90; PANEL_H <- 90
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
 # ── Colors ──
-BLUE   <- "#2171B5"; RED  <- "#CB181D"; GREEN <- "#238B45"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"; GREEN <- "#238B45"
 ORANGE <- "#E6550D"; PURPLE <- "#6A51A3"
-GRAY   <- "#636363"; DARK  <- "#252525"
+GRAY  <- "#636363"; DARK  <- "#252525"
 
 # ── Theme ──
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.4),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -29,7 +29,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.title = element_blank(),
   legend.background = element_blank(),
   legend.key        = element_blank(),
-  plot.margin  = margin(4, 4, 4, 4, "pt"))
+  plot.margin  = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 save_panel <- function(p, name) {
   ggsave(file.path(OUT_DIR, paste0("Fig3_panel_", name, ".pdf")), p,
@@ -158,4 +160,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "Fig3_Clinical.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "Fig3_Clinical.svg"), p,
+       width = 180, height = 180, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "Fig3_Clinical.tiff"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("Fig3_Clinical.pdf (180×180mm) ✓")

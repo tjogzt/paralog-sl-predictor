@@ -13,10 +13,10 @@ dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
 PANEL_W <- 90; PANEL_H <- 90
 
-RED   <- "#CB181D"; BLUE <- "#2171B5"; GRAY  <- "#636363"
+RED   <- "#CB181D"; BLUE  <- "#2171B5"; GRAY  <- "#636363"
 GREEN <- "#238B45"; DARK <- "#252525"
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.4),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -26,7 +26,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.title = element_blank(),
   legend.background = element_blank(),
   legend.key        = element_blank(),
-  plot.margin  = margin(4, 4, 4, 4, "pt"))
+  plot.margin  = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 save_panel <- function(p, name) {
   ggsave(file.path(OUT_DIR, paste0("FigS6_panel_", name, ".pdf")), p,
@@ -47,7 +49,7 @@ if (file.exists(mut_path)) {
 # ═══════════════════════════════════════════════════════════════
 panel_a <- function() {
   if (is.null(mut)) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   cancers <- c("Ovarian","Endometrial","Colorectal","Breast")
   plot_data <- data.frame()
@@ -66,7 +68,7 @@ panel_a <- function() {
     }
   }
   if (nrow(plot_data) == 0) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Insufficient data", size=5) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Insufficient data", size=5) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   plot_data$type <- factor(plot_data$type, levels = c("dd_all","dd_trunc","dd_miss"),
                            labels = c("All","Truncating","Missense"))
@@ -88,11 +90,11 @@ panel_a <- function() {
 # ═══════════════════════════════════════════════════════════════
 panel_b <- function() {
   if (is.null(mut)) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   sub <- mut[!is.na(mut$dd_trunc) & !is.na(mut$dd_miss), ]
   if (nrow(sub) < 10) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="n<10", size=5) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="n<10", size=5) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   diff_vals <- abs(sub$dd_trunc) - abs(sub$dd_miss)
   df <- data.frame(diff = diff_vals)
@@ -113,11 +115,11 @@ panel_b <- function() {
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
   if (is.null(mut)) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   known <- mut[mut$is_known_sl == TRUE & !is.na(mut$dd_trunc) & !is.na(mut$dd_miss), ]
   if (nrow(known) < 2) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Known SL pairs insufficient", size=4) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Known SL pairs insufficient", size=4) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   # Deduplicate by driver-paralog pair, take max |DD_trunc|
   known <- known %>%
@@ -148,15 +150,15 @@ panel_c <- function() {
 # ═══════════════════════════════════════════════════════════════
 panel_d <- function() {
   if (is.null(mut)) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   breast <- mut[mut$cancer == "Breast", ]
   if (nrow(breast) < 5) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Breast: insufficient data", size=4) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Breast: insufficient data", size=4) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
   yt <- as.integer(breast$is_known_sl)
   if (sum(yt) < 2) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Breast: known SL < 2", size=4) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="Breast: known SL < 2", size=4) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
 
   roc_data <- data.frame()
@@ -176,7 +178,7 @@ panel_d <- function() {
     roc_data <- rbind(roc_data, df_roc)
   }
   if (nrow(roc_data) == 0) {
-    return(ggplot() + annotate("text", x=0.5, y=0.5, label="ROC computation failed", size=5) + theme_void())
+    return(ggplot() + annotate("text", x=0.5, y=0.5, label="ROC computation failed", size=5) + theme_void() + theme(plot.background = element_rect(fill="white", color=NA)))
   }
 
   roc_colors <- c()
@@ -217,4 +219,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "FigS6_MutationType.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS6_MutationType.svg"), p,
+       width = 180, height = 180, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS6_MutationType.tiff"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("FigS6_MutationType.pdf (180×180mm) ✓")

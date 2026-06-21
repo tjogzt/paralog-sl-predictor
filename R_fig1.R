@@ -9,17 +9,17 @@ library(readr)
 library(ggrepel)
 
 # ── Constants ──
-BASE_FS <- 7; TICK_FS <- 6.5; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
 PANEL_W <- 90; PANEL_H <- 90
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
 # ── Colors ──
-BLUE   <- "#2171B5"; RED  <- "#CB181D"; GREEN <- "#238B45"
-ORANGE <- "#E6550D"; GRAY <- "#636363"; DARK <- "#252525"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"; GREEN <- "#238B45"
+ORANGE <- "#E6550D"; GRAY  <- "#636363"; DARK <- "#252525"
 
 # ── Theme ──
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.4),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -29,7 +29,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.title = element_blank(),
   legend.background = element_blank(),
   legend.key        = element_blank(),
-  plot.margin  = margin(4, 4, 4, 4, "pt"))
+  plot.margin  = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 save_panel <- function(p, name) {
   ggsave(file.path(OUT_DIR, paste0("Fig1_panel_", name, ".pdf")), p,
@@ -112,8 +114,9 @@ panel_c <- function() {
     scale_color_manual(values = c(`TRUE` = RED, `FALSE` = "#9ECAE1"), guide = "none") +
     geom_vline(xintercept = 0.5, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.35) +
     labs(x = "CV3 AUROC", y = NULL) +
-    scale_x_continuous(expand = expansion(mult = c(0, 0.25))) +
-    theme_sci +
+    scale_x_continuous(limits = c(0, 1.3), breaks = seq(0, 1, 0.25),
+                       expand = expansion(mult = c(0, 0))) +
+    theme_sci + theme(plot.margin = margin(4, 8, 4, 20, "pt")) +
     annotate("text", x = 1.0, y = 9.5, label = "This study", size = 2.5, color = RED, hjust = 0) +
     annotate("text", x = 0.55, y = 7.5, label = "Published", size = 2.5, color = "#9ECAE1", hjust = 0)
 }
@@ -163,7 +166,7 @@ panel_d <- function() {
     theme_bw(base_size = 5) +
     theme(panel.grid = element_blank(),
           panel.background = element_rect(fill = "transparent", color = NA),
-          plot.background  = element_rect(fill = "transparent", color = NA),
+          plot.background  = element_rect(fill = "white", color = NA),
           axis.text = element_text(size = 4.5),
           axis.title = element_text(size = 5))
 
@@ -191,4 +194,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.svg"), p,
+       width = 180, height = 180, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.tiff"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("Fig1_Framework_Validation.pdf (180×180mm) ✓")

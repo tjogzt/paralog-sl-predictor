@@ -12,7 +12,7 @@ dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
 BASE_FS <- 7; TICK_FS <- 6
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_blank(),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -22,7 +22,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.position = "right",
   legend.key.height = unit(0.5, "cm"),
   legend.key.width  = unit(0.3, "cm"),
-  plot.margin  = margin(4, 4, 4, 4, "pt"))
+  plot.margin  = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 # ── Load data ──
 prism_path <- "paralog_sl_predictor/output/prism_top_hits.csv"
@@ -73,4 +75,8 @@ p <- ggplot(pr_sub, aes(pair_label, drug_short, fill = delta_capped)) +
 
 ggsave(file.path(OUT_DIR, "FigS5_PRISM_Selectivity.pdf"), p,
        width = 180, height = 120, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS5_PRISM_Selectivity.svg"), p,
+       width = 180, height = 120, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS5_PRISM_Selectivity.tiff"), p,
+       width = 180, height = 120, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("FigS5_PRISM_Selectivity.pdf (180×120mm) ✓")

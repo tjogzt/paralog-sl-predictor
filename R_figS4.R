@@ -10,18 +10,20 @@ library(readr)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 5
+BASE_FS <- 7; TICK_FS <- 6
 
 # Colors
-BLUE <- "#2171B5"; RED <- "#CB181D"; GRAY <- "#636363"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"; GRAY  <- "#636363"
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.3),
   axis.ticks   = element_line(linewidth = 0.2),
   axis.text    = element_text(size = TICK_FS),
   axis.title   = element_text(size = TICK_FS),
-  plot.margin  = margin(2, 2, 2, 2, "pt"))
+  plot.margin  = margin(2, 2, 2, 2, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 # ── Load DepMap data ──
 message("Loading CNV data...")
@@ -90,4 +92,8 @@ p <- plot_grid(plotlist = plots, ncol = ncol, align = "hv",
 
 ggsave(file.path(OUT_DIR, "FigS4_CNV_Independence.pdf"), p,
        width = 180, height = h_mm, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS4_CNV_Independence.svg"), p,
+       width = 180, height = 180, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS4_CNV_Independence.tiff"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message(sprintf("FigS4_CNV_Independence.pdf (180×%dmm) ✓", h_mm))

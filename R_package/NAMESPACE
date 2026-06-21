@@ -13,8 +13,10 @@ export(plot_benchmark)
 export(plot_pancancer_summary)
 export(plot_protein_correlation)
 export(plot_therapeutic_window)
+export(predict_trial_response)
 export(run_paralog_analysis)
 export(stratify_by_mutation_type)
+export(visualize_dependency_shift)
 importFrom(ggplot2, ggplot, aes, geom_bar, geom_point, geom_smooth,
            geom_hline, geom_text, coord_flip, theme_bw, labs,
            scale_fill_manual, annotate, geom_segment)

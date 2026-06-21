@@ -63,3 +63,6 @@ output/paralogSL_1.0.0.pdf
 # === Individual panel PDFs (composite figures sufficient) ===
 output/figures/*_panel_*.pdf
 output/figures/GraphicalAbstract.png
+# Large figure outputs (regenerable from R scripts)
+output/figures/*.tiff
+output/figures/*.svg

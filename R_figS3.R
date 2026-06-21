@@ -11,15 +11,17 @@ dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
 PANEL_W <- 60; PANEL_H <- 60
 
-BLUE  <- "#2171B5"; RED <- "#CB181D"; GRAY <- "#636363"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"; GRAY  <- "#636363"
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.35),
   axis.ticks   = element_line(linewidth = 0.3),
   axis.text    = element_text(size = TICK_FS),
   axis.title   = element_text(size = BASE_FS),
-  plot.margin  = margin(3, 3, 3, 3, "pt"))
+  plot.margin  = margin(3, 3, 3, 3, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 # Load real UCEC CPTAC data
 d <- fromJSON("paralog_sl_predictor/data/cptac_cache/UCEC_protein_data.json")
@@ -66,4 +68,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "FigS3_CPTAC_PerCohort.pdf"), p,
        width = 180, height = 60, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS3_CPTAC_PerCohort.svg"), p,
+       width = 180, height = 60, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS3_CPTAC_PerCohort.tiff"), p,
+       width = 180, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("FigS3_CPTAC_PerCohort.pdf (180×60mm) ✓")

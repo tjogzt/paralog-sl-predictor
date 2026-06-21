@@ -10,13 +10,13 @@ library(readr)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 5.5; LEGEND_FS <- 5.5
+BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 5.5
 PANEL_W <- 60; PANEL_H <- 60
 
-BLUE   <- "#2171B5"; RED  <- "#CB181D"
-GRAY   <- "#636363"; DARK <- "#252525"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"
+GRAY  <- "#636363"; DARK <- "#252525"
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.35),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -26,7 +26,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.title = element_blank(),
   legend.background = element_blank(),
   legend.key        = element_blank(),
-  plot.margin  = margin(3, 3, 3, 3, "pt"))
+  plot.margin  = margin(3, 3, 3, 3, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 # Load real data
 solid_path <- "paralog_sl_predictor/output/solid_tumor_summary.csv"
@@ -99,4 +101,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.pdf"), p,
        width = 180, height = 60, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.svg"), p,
+       width = 180, height = 60, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.tiff"), p,
+       width = 180, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("FigS2_CrossCancer_AUROC.pdf (180×60mm) ✓")

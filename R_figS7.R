@@ -13,10 +13,10 @@ dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
 PANEL_W <- 90; PANEL_H <- 90
 
-RED   <- "#CB181D"; BLUE <- "#2171B5"; GRAY  <- "#636363"
+RED   <- "#CB181D"; BLUE  <- "#2171B5"; GRAY  <- "#636363"
 GREEN <- "#238B45"; ORANGE <- "#E6550D"; DARK <- "#252525"
 
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.4),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -26,7 +26,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.title = element_blank(),
   legend.background = element_blank(),
   legend.key        = element_blank(),
-  plot.margin  = margin(4, 4, 4, 4, "pt"))
+  plot.margin  = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 save_panel <- function(p, name) {
   ggsave(file.path(OUT_DIR, paste0("FigS7_panel_", name, ".pdf")), p,
@@ -67,7 +69,11 @@ panel_a <- function() {
     geom_col(width = 0.55) +
     scale_fill_manual(values = class_colors, drop = FALSE) +
     labs(x = "Mean Therapeutic Index (TI)", y = NULL) +
-    theme_sci + theme(legend.position = "bottom")
+    theme_sci + theme(legend.position = "bottom",
+                      plot.margin = margin(15, 4, 4, 10, "pt"),
+                      legend.key.size = unit(3.5, "mm"),
+                      legend.spacing.x = unit(3, "mm"),
+                      legend.text = element_text(size = 5.5, margin = margin(l = 1, r = 4, unit = "pt")))
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -95,7 +101,9 @@ panel_b <- function() {
     xlim(c(1, 4.8)) +
     theme_void() +
     theme(legend.position = "none",
-          plot.margin = margin(0, 0, 0, 0, "pt"))
+          plot.margin = margin(0, 0, 0, 0, "pt"),
+          plot.background  = element_rect(fill = "white", color = NA),
+          panel.background = element_rect(fill = "white", color = NA))
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -160,4 +168,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "FigS7_TherapeuticWindow.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "FigS7_TherapeuticWindow.svg"), p,
+       width = 180, height = 180, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "FigS7_TherapeuticWindow.tiff"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("FigS7_TherapeuticWindow.pdf (180×180mm) ✓")

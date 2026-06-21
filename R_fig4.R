@@ -10,17 +10,17 @@ library(readr)
 library(ggrepel)
 
 # ── Constants ──
-BASE_FS   <- 7; TICK_FS <- 6.5; LEGEND_FS <- 6; ANNOT_FS <- 5.5
+BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6; ANNOT_FS <- 5.5
 PANEL_W   <- 90; PANEL_H <- 90  # mm
 OUT_DIR   <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
 # ── Colors ──
-BLUE   <- "#2171B5"; RED  <- "#CB181D"; GREEN <- "#238B45"
-ORANGE <- "#E6550D"; GRAY <- "#636363"; TEAL  <- "#0D7377"
+BLUE  <- "#2171B5"; RED   <- "#CB181D"; GREEN <- "#238B45"
+ORANGE <- "#E6550D"; GRAY  <- "#636363"; TEAL  <- "#0D7377"
 
 # ── Theme ──
-theme_sci <- theme_classic(base_size = BASE_FS) + theme(
+theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   panel.grid = element_blank(),
   axis.line    = element_line(linewidth = 0.4),
   axis.ticks   = element_line(linewidth = 0.3),
@@ -30,7 +30,9 @@ theme_sci <- theme_classic(base_size = BASE_FS) + theme(
   legend.title = element_blank(),
   legend.background = element_blank(),
   legend.key        = element_blank(),
-  plot.margin  = margin(4, 4, 4, 4, "pt"))
+  plot.margin  = margin(4, 4, 4, 4, "pt"),
+  plot.background  = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA))
 
 save_panel <- function(p, name) {
   ggsave(file.path(OUT_DIR, paste0("Fig4_panel_", name, ".pdf")), p,
@@ -79,7 +81,8 @@ panel_a <- function() {
     scale_fill_manual(values = c(MEKi = RED, `mTOR/AKTi` = BLUE, HDACi = ORANGE, Other = GREEN),
                       drop = FALSE) +
     labs(x = "|ΔAUC|", y = NULL) +
-    theme_sci + theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0))
+    theme_sci + theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0),
+                      plot.margin = margin(4, 4, 8, 20, "pt"))
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -153,7 +156,8 @@ panel_c <- function() {
     geom_col(position = position_dodge(0.7), width = 0.55) +
     scale_fill_manual(values = c(Structural = TEAL, Domain = ORANGE)) +
     labs(x = "Score", y = NULL) +
-    theme_sci + theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0))
+    theme_sci + theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0),
+                      plot.margin = margin(4, 4, 8, 20, "pt"))
 }
 
 # (panel_c end — bottom bar: FBXW7/FBXW2 has both Structural & Domain, short values)
@@ -214,4 +218,8 @@ p <- ggdraw() +
 
 ggsave(file.path(OUT_DIR, "Fig4_Translational.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)
+ggsave(file.path(OUT_DIR, "Fig4_Translational.svg"), p,
+       width = 180, height = 180, units = "mm", device = svglite::svglite)
+ggsave(file.path(OUT_DIR, "Fig4_Translational.tiff"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
 message("Fig4_Translational.pdf (180×180mm) ✓")
