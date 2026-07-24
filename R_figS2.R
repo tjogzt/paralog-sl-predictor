@@ -45,7 +45,7 @@ if (file.exists(solid_path)) {
 }
 
 df_raw <- df_raw %>% arrange(dd_auroc)
-df_raw$cancer_short <- abbreviate(df_raw$cancer, minlength = 6)
+df_raw$cancer_short <- df_raw$cancer  # full names; abbreviate() produced unreadable labels
 
 # ── Panel A: High AUROC (>= 0.7) ──
 panel_a <- function() {
@@ -92,17 +92,16 @@ ggsave(file.path(OUT_DIR, "FigS2_panel_b.pdf"), pb, width = PANEL_W, height = PA
 ggsave(file.path(OUT_DIR, "FigS2_panel_c.pdf"), pc, width = PANEL_W, height = PANEL_H, units = "mm", device = cairo_pdf)
 message("  panels saved")
 
-p <- ggdraw() +
-  draw_plot(pa, x = 0,     y = 0, width = 1/3, height = 1) +
-  draw_plot(pb, x = 1/3,   y = 0, width = 1/3, height = 1) +
-  draw_plot(pc, x = 2/3,   y = 0, width = 1/3, height = 1) +
-  draw_plot_label(c("a","b","c"), x = c(0, 1/3, 2/3), y = c(1, 1, 1),
-                  size = 8, fontface = "bold")
+# plot_grid allocates widths properly — fixed draw_plot cells clipped the
+# right-most value labels when full lineage names widened panel b's gtable.
+p <- cowplot::plot_grid(pa, pb, pc, nrow = 1,
+                        labels = c("a","b","c"),
+                        label_size = 8, label_fontface = "bold")
 
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.pdf"), p,
-       width = 180, height = 60, units = "mm", device = cairo_pdf)
+       width = 200, height = 60, units = "mm", device = cairo_pdf)
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.svg"), p,
-       width = 180, height = 60, units = "mm", device = svglite::svglite)
+       width = 200, height = 60, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.tiff"), p,
-       width = 180, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
-message("FigS2_CrossCancer_AUROC.pdf (180×60mm) ✓")
+       width = 200, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
+message("FigS2_CrossCancer_AUROC.pdf (200×60mm) ✓")

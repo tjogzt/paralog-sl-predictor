@@ -104,8 +104,8 @@ panel_b <- function() {
     geom_histogram(bins = 25, fill = "#8E44AD", alpha = 0.7, color = "white", linewidth = 0.2) +
     geom_vline(xintercept = 0, linewidth = 0.5, color = DARK) +
     geom_vline(xintercept = mean_diff, linewidth = 0.5, color = RED, linetype = "dashed") +
-    annotate("text", x = mean_diff, y = Inf, label = sprintf("Mean = %+.4f", mean_diff),
-             size = 2.8, color = RED, hjust = -0.05, vjust = 1.5) +
+    annotate("text", x = mean_diff + 0.08, y = Inf, label = sprintf("Mean = %+.4f", mean_diff),
+             size = 2.8, color = RED, hjust = 0, vjust = 1.5) +
     labs(x = "|DD_trunc| − |DD_miss|", y = "Frequency") +
     theme_sci
 }
@@ -127,7 +127,9 @@ panel_c <- function() {
     summarise(dd_trunc = max(abs(dd_trunc), na.rm = TRUE),
               dd_miss  = max(abs(dd_miss), na.rm = TRUE), .groups = "drop") %>%
     arrange(desc(dd_trunc)) %>% head(8)
-  known$pair_label <- paste0(known$driver, "->", known$paralog)
+  # two-line labels keep the combined gtable within the 180mm device width
+  # (one-line labels overflowed and were clipped at the figure's left edge)
+  known$pair_label <- paste0(known$driver, "->\n", known$paralog)
   known$pair_label <- factor(known$pair_label, levels = rev(known$pair_label))
 
   df <- bind_rows(
@@ -140,7 +142,8 @@ panel_c <- function() {
     geom_col(position = position_dodge(0.7), width = 0.55) +
     scale_fill_manual(values = c(Truncating = RED, Missense = BLUE)) +
     labs(x = "|DD|", y = NULL) +
-    theme_sci + theme(legend.position = "bottom")
+    theme_sci + theme(legend.position = "bottom",
+                      axis.text.y = element_text(size = 6.5))
 }
 
 # (panel c — legend below)
@@ -208,19 +211,16 @@ pa <- panel_a(); pb <- panel_b(); pc <- panel_c(); pd <- panel_d()
 
 save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c"); save_panel(pd, "d")
 
-p <- ggdraw() +
-  draw_plot(pa, x = 0,    y = 0.5,  width = 0.5, height = 0.5) +
-  draw_plot(pb, x = 0.5,  y = 0.5,  width = 0.5, height = 0.5) +
-  draw_plot(pc, x = 0,    y = 0,    width = 0.5, height = 0.5) +
-  draw_plot(pd, x = 0.5,  y = 0,    width = 0.5, height = 0.5) +
-  draw_plot_label(c("a","b","c","d"),
-                  x = c(0, 0.5, 0, 0.5), y = c(1, 1, 0.5, 0.5),
-                  size = 9, fontface = "bold")
+# plot_grid measures each gtable and allocates widths — long y labels in
+# panel c are no longer clipped (draw_plot with fixed cells clipped them).
+p <- cowplot::plot_grid(pa, pb, pc, pd, ncol = 2,
+                        labels = c("a","b","c","d"),
+                        label_size = 9, label_fontface = "bold")
 
 ggsave(file.path(OUT_DIR, "FigS6_MutationType.pdf"), p,
-       width = 180, height = 180, units = "mm", device = cairo_pdf)
+       width = 190, height = 180, units = "mm", device = cairo_pdf)
 ggsave(file.path(OUT_DIR, "FigS6_MutationType.svg"), p,
        width = 180, height = 180, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "FigS6_MutationType.tiff"), p,
        width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
-message("FigS6_MutationType.pdf (180×180mm) ✓")
+message("FigS6_MutationType.pdf (190×180mm) ✓")

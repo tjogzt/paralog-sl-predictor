@@ -170,7 +170,7 @@ panel_d <- function() {
   if (file.exists(struct_path)) {
     st <- read_csv(struct_path, show_col_types = FALSE)
     if ("clinical_targetability" %in% names(st)) {
-      cand <- st %>% arrange(clinical_targetability) %>% head(10) %>%
+      cand <- st %>% arrange(desc(clinical_targetability)) %>% head(10) %>%
         mutate(label = paste0(driver, "->", paralog), score = clinical_targetability)
     } else { cand <- NULL }
   } else { cand <- NULL }
@@ -196,7 +196,7 @@ panel_d <- function() {
     scale_x_continuous(expand = expansion(mult = c(0, 0.12))) +
     labs(x = "Targetability Score", y = NULL) +
     theme_sci +
-    theme(legend.position = c(0.98, 0.98), legend.justification = c(1, 1))
+    theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0))
 }
 
 # ═══════════════════════════════════════════════════════════════

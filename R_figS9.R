@@ -99,15 +99,19 @@ kmer_jaccard <- function(seq_a, seq_b, k = 3) {
 # ── Needleman-Wunsch global alignment identity (simple implementation) ──
 nw_identity <- function(seq_a, seq_b) {
   if (is.na(seq_a) || is.na(seq_b)) return(NA)
-  # Use REAL Needleman-Wunsch via pwalign (Bioconductor)
+  # Use REAL Needleman-Wunsch via Bioconductor: pwalign (BioC >= 3.19)
+  # with Biostrings fallback for environments where pwalign is absent.
+  aln_ns <- if (requireNamespace("pwalign", quietly = TRUE)) "pwalign" else "Biostrings"
   tryCatch({
-    aln <- pwalign::pairwiseAlignment(
+    pa_fun  <- get("pairwiseAlignment", envir = asNamespace(aln_ns))
+    pid_fun <- get("pid", envir = asNamespace(aln_ns))
+    aln <- pa_fun(
       Biostrings::AAString(seq_a),
       Biostrings::AAString(seq_b),
       type = "global",
       substitutionMatrix = "BLOSUM62",
       gapOpening = 10, gapExtension = 0.5)
-    pwalign::pid(aln, type = "PID1") / 100
+    pid_fun(aln, type = "PID1") / 100
   }, error = function(e) NA)
 }
 
@@ -163,7 +167,7 @@ if (nrow(results) >= 5) {
 
   p <- ggplot(results, aes(nw_identity, kmer_jaccard, color = is_paralog)) +
     geom_point(size = 1.5, alpha = 0.6) +
-    scale_color_manual(values = c(`TRUE` = RED, `FALSE` = BLUE),
+    scale_color_manual(name = NULL, values = c(`TRUE` = RED, `FALSE` = BLUE),
                        labels = c(`TRUE` = "Known paralog", `FALSE` = "Non-paralog")) +
     geom_smooth(method = "lm", se = TRUE, color = GRAY, linewidth = 0.5, alpha = 0.15,
                 inherit.aes = FALSE, aes(x = nw_identity, y = kmer_jaccard)) +

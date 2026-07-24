@@ -178,12 +178,13 @@ panel_c <- function() {
   df <- tibble(
     level = c("Protein\n(DD)", "RNA\n(ΔExpression)", "Random"),
     auroc = c(hm_num("component_dd"), hm_num("component_delta_expression"), 0.500),
-    clr   = c(RED, GRAY, LIGHT))
+    clr   = c(RED, GRAY, LIGHT),
+    tclr  = c(RED, GRAY, GRAY))
   df$level <- factor(df$level, levels = df$level)
 
   ggplot(df, aes(auroc, level)) +
     geom_col(aes(fill = clr), width = 0.55) +
-    geom_text(aes(label = sprintf("%.3f", auroc), color = clr),
+    geom_text(aes(label = sprintf("%.3f", auroc), color = tclr),
               hjust = -0.15, size = 3, fontface = "bold") +
     scale_fill_identity() +
     scale_color_identity() +

@@ -88,6 +88,14 @@ Rscript R_fig3.R
 Rscript R_fig4.R
 ```
 
+R figure dependencies (install once):
+
+```r
+install.packages(c("ggplot2", "dplyr", "readr", "cowplot",
+                   "svglite", "ragg", "jsonlite", "tidyr"))
+BiocManager::install(c("Biostrings", "pwalign"))  # FigS9 NW alignment
+```
+
 ### R Package
 
 Standalone R package repository: **[tjogzt/paralogSL](https://github.com/tjogzt/paralogSL)** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502114.svg)](https://doi.org/10.5281/zenodo.21502114)
