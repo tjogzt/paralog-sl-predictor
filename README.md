@@ -1,6 +1,6 @@
 # Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502031.svg)](https://doi.org/10.5281/zenodo.21502031)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502030.svg)](https://doi.org/10.5281/zenodo.21502030)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **English** | **[中文](README_CN.md)**
