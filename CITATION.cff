@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata from this file."
 type: software
 title: "Delta Dependency: Paralog-Based Synthetic Lethality Prediction Across Solid Tumor Types"
-version: 1.0.0
-date-released: 2026-06-19
+version: 1.1.0
+date-released: 2026-07-25
 authors:
   - family-names: Mo
     given-names: Qingqing

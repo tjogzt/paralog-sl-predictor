@@ -1,0 +1,32 @@
+{
+  "title": "Delta Dependency: Paralog-Based Synthetic Lethality Prediction Across Solid Tumor Types",
+  "description": "Full analysis pipeline for Delta Dependency (DD) — an interpretable metric for prioritizing paralog-based synthetic lethality candidates from DepMap CRISPR screening data across 23 solid tumor types. This submission-version release includes a one-command reproducibility audit (verify_all.sh) that recomputes every quantitative claim in the accompanying manuscript from raw DepMap data, with automated claim-by-claim verification (16/16 headline claims, 10/10 regression-control claims, 31/31 tests).",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Mo, Qingqing",
+      "affiliation": "Department of Obstetrics and Gynecology, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+    },
+    {
+      "name": "Zhu, Tao",
+      "affiliation": "Department of Obstetrics and Gynecology, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+      "orcid": "0009-0001-0779-2245"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "synthetic lethality",
+    "paralog",
+    "DepMap",
+    "CRISPR screening",
+    "delta dependency",
+    "cancer dependency"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/tjogzt/paralogSL",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
