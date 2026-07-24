@@ -139,14 +139,14 @@ def fig2_benchmark():
 
     # (a) Benchmark bar chart
     ax = axes[0]
-    methods = ["SLMGAE", "DDSL", "GRSL", "NSF4SL", "PGCN", "DDGCN",
-               "KG4SL", "Struct2SL", "DD (ours)", "DD+ID≥0.3"]
+    methods = ["SLMGAE", "NSF4SL", "GCATSL", "GRSMF", "PiLSL", "KG4SL",
+               "SLGNN", "PTGNN", "DD (ours)", "DD+ID≥0.3"]
     idf3 = hm.get("identity_filter", {}).get("id_ge_0.3", {}).get("auroc")
     if idf3 is None:
         raise SystemExit("identity-filter metric missing — run compute_sequence_identity.R "
                          "then compute_headline_metrics.py")
-    aucs   = [pub["SLMGAE"], pub["DDSL"], pub["GRSL"], pub["NSF4SL"],
-              pub["PGCN"], pub["DDGCN"], pub["KG4SL"], pub["Struct2SL"],
+    aucs   = [pub["SLMGAE"], pub["NSF4SL"], pub["GCATSL"], pub["GRSMF"],
+              pub["PiLSL"], pub["KG4SL"], pub["SLGNN"], pub["PTGNN"],
               hm["lineage_full"]["auroc"], idf3]
     colors = [LOTUS]*8 + [CINNABAR, CINNABAR]
     alphas = [0.5]*8 + [0.95, 0.95]

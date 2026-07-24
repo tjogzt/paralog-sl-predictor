@@ -110,20 +110,21 @@ panel_b <- function() {
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
   # This-study values from the metrics single-source-of-truth (never literals);
-  # published values are literature constants (Feng et al. 2024, CV3).
+  # published values are literature constants (Feng et al. 2024, Suppl. Data 1,
+  # CV3 NSMRand 1:1, complete dataset).
   metrics_path <- "paralog_sl_predictor/output/tables/headline_metrics.tsv"
   if (!file.exists(metrics_path))
     stop("headline_metrics.tsv not found — run compute_headline_metrics.py first")
   mt <- read_tsv(metrics_path, show_col_types = FALSE)
   getv <- function(name) as.numeric(mt$value[mt$metric == name])
   df <- tibble(
-    method = c("DD+ID>=30%","DD","DDSL","SLMGAE","GRSL","NSF4SL",
-               "Struct2SL","PGCN","DDGCN","KG4SL"),
+    method = c("DD+ID>=30%","DD","SLMGAE","NSF4SL","GCATSL","GRSMF",
+               "PiLSL","KG4SL","SLGNN","PTGNN"),
     auroc  = c(getv("dd_auroc_id_filter_0.3"), getv("dd_auroc_lineage_full"),
-               getv("published_DDSL"), getv("published_SLMGAE"),
-               getv("published_GRSL"), getv("published_NSF4SL"),
-               getv("published_Struct2SL"), getv("published_PGCN"),
-               getv("published_DDGCN"), getv("published_KG4SL")),
+               getv("published_SLMGAE"), getv("published_NSF4SL"),
+               getv("published_GCATSL"), getv("published_GRSMF"),
+               getv("published_PiLSL"), getv("published_KG4SL"),
+               getv("published_SLGNN"), getv("published_PTGNN")),
     ours   = c(TRUE,TRUE,rep(FALSE,8)))
   if (any(is.na(df$auroc)))
     stop("headline_metrics.tsv is missing required metrics — re-run compute_headline_metrics.py")

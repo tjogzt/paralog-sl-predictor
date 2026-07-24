@@ -51,7 +51,8 @@ if all_candidates:
 # ── Table 2 (benchmark) ──
 # Headline AUROCs are read from output/headline_metrics.json (written by
 # compute_headline_metrics.py) — never hard-code this-study values here.
-# Published values are literature constants (Feng et al. 2024, CV3).
+# Published values are literature constants (Feng et al. 2024, Suppl. Data 1,
+# CV3 gene-pair isolation, NSMRand 1:1, complete dataset).
 import json
 _metrics_path = OUT.parent / "headline_metrics.json"
 if not _metrics_path.exists():
@@ -65,16 +66,16 @@ if _dd_id_val is None:
     raise SystemExit("identity-filter metric missing — run compute_sequence_identity.R "
                      "then compute_headline_metrics.py")
 _THIS = "This study (recomputed)"
-_LIT = "Feng et al. 2024 (CV3)"
+_LIT = "Feng et al. 2024 (CV3, SD1)"
 
 bench = pd.DataFrame({
-    "Method": ["SLMGAE","DDSL","GRSL","NSF4SL","Struct2SL","KG4SL","DDGCN","PGCN","DD (this study)","DD + ID≥0.3"],
-    "CV3_AUROC": [f"{_pub['SLMGAE']:.3f}", f"{_pub['DDSL']:.3f}", f"{_pub['GRSL']:.3f}",
-                  f"{_pub['NSF4SL']:.3f}", f"{_pub['Struct2SL']:.3f}", f"{_pub['KG4SL']:.3f}",
-                  f"{_pub['DDGCN']:.3f}", f"{_pub['PGCN']:.3f}",
+    "Method": ["SLMGAE","NSF4SL","GCATSL","GRSMF","PiLSL","KG4SL","SLGNN","PTGNN","DD (this study)","DD + ID≥0.3"],
+    "CV3_AUROC": [f"{_pub['SLMGAE']:.3f}", f"{_pub['NSF4SL']:.3f}", f"{_pub['GCATSL']:.3f}",
+                  f"{_pub['GRSMF']:.3f}", f"{_pub['PiLSL']:.3f}", f"{_pub['KG4SL']:.3f}",
+                  f"{_pub['SLGNN']:.3f}", f"{_pub['PTGNN']:.3f}",
                   f"{_dd_val:.3f}", f"{_dd_id_val:.3f}"],
-    "Architecture": ["GNN","GCN","Graph Reg.","Neg. Sampling","AF2+MLP","KG Embed.","Dual GCN","Pathway GCN","Univariate","Univariate+Filter"],
-    "Interpretability": ["Low","Low","Low","Low","Medium","Low","Low","Low","High","High"],
+    "Architecture": ["Multi-view GAE","Contrastive","Graph Attention","Matrix Factor.","Pairwise GNN","KG Embed.","KG GNN","Pre-trained GNN","Univariate","Univariate+Filter"],
+    "Interpretability": ["Low","Low","Low","Low","Low","Low","Low","Low","High","High"],
     "Source": [_LIT]*8 + [_THIS, _THIS],
 })
 bench.to_csv(OUT / "Table2_Benchmark.tsv", sep="\t", index=False)

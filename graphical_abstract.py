@@ -65,7 +65,7 @@ fig.text(0.625, 0.669, "KRAS→HRAS  PIK3R1→CRKL", ha="center", fontsize=10, c
 box(76.5, T, 20, H, YELLOW, "#fef6e0")
 fig.text(0.87, 0.79, "vs Published", ha="center", fontsize=14, fontweight="bold", color=NAVY)
 fig.text(0.87, 0.745, "DD: 0.794", ha="center", fontsize=12.5, fontweight="bold", color=RED)
-fig.text(0.87, 0.707, "DDSL: 0.720", ha="center", fontsize=10.5, color="#34495e")
+fig.text(0.87, 0.707, "SLMGAE: 0.790", ha="center", fontsize=10.5, color="#34495e")
 fig.text(0.87, 0.669, "+ID>30%: 1.000", ha="center", fontsize=10.5, color=GREEN)
 
 for x1, x2 in [(23.6, 27.2), (48.1, 51.7), (72.6, 76.2)]:

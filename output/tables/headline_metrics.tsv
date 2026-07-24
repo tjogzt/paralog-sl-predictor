@@ -22,11 +22,11 @@ composite_auroc_per_pair_mean	0.7301	recomputed:TableS2(per-pair mean)
 auprc_composite_per_pair	0.2721	recomputed:TableS2(per-pair mean)
 llo_auroc_min	0.7626	recomputed:TableS2(LLO)
 llo_auroc_max	0.8206	recomputed:TableS2(LLO)
-published_DDSL	0.7200	literature:Feng2024_CV3
-published_SLMGAE	0.7000	literature:Feng2024_CV3
-published_GRSL	0.6800	literature:Feng2024_CV3
-published_NSF4SL	0.6500	literature:Feng2024_CV3
-published_Struct2SL	0.6500	literature:Feng2024_CV3
-published_PGCN	0.6200	literature:Feng2024_CV3
-published_DDGCN	0.6000	literature:Feng2024_CV3
-published_KG4SL	0.5800	literature:Feng2024_CV3
+published_SLMGAE	0.7900	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
+published_NSF4SL	0.6830	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
+published_GCATSL	0.6780	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
+published_GRSMF	0.6560	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
+published_PiLSL	0.6260	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
+published_KG4SL	0.5630	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
+published_SLGNN	0.5300	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
+published_PTGNN	0.5290	literature:Feng2024_SuppData1_CV3_NSMRand_1to1

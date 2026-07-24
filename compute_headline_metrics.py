@@ -56,10 +56,12 @@ FUNCTIONAL_ANALOGS = {("BRCA1", "BRCA2"), ("STK11", "SIK1")}
 DEPMAP_ERA = {("FBXW7", "FBXW2"), ("PPP2R1A", "PPP2R1B")}
 
 # Published CV3 AUROC values — literature constants, NOT recomputed here.
-# Source: Feng et al. (2024) Nat Commun 15:9058, CV3 (gene-pair isolation).
+# Source: Feng et al. (2024) Nat Commun 15:9058, Supplementary Data 1,
+# CV3 (gene-pair isolation), NSMRand negative sampling, 1:1 pos:neg ratio,
+# complete dataset. Values cross-checked against main-text Table 3 F1 scores.
 PUBLISHED_BENCHMARKS = {
-    "DDSL": 0.720, "SLMGAE": 0.700, "GRSL": 0.680, "NSF4SL": 0.650,
-    "Struct2SL": 0.650, "PGCN": 0.620, "DDGCN": 0.600, "KG4SL": 0.580,
+    "SLMGAE": 0.790, "NSF4SL": 0.683, "GCATSL": 0.678, "GRSMF": 0.656,
+    "PiLSL": 0.626, "KG4SL": 0.563, "SLGNN": 0.530, "PTGNN": 0.529,
 }
 
 # Values stated in the manuscript, for the automated claims check.
@@ -300,7 +302,7 @@ def main():
     # ── 5. Published benchmarks (literature constants, labelled) ──
     metrics["published_benchmarks"] = {
         "values": PUBLISHED_BENCHMARKS,
-        "provenance": "Literature constants (Feng et al. 2024, CV3); not recomputed",
+        "provenance": "Literature constants (Feng et al. 2024, Suppl. Data 1, CV3 NSMRand 1:1); not recomputed",
     }
 
     # ── 6. Automated claims check against manuscript values ──
@@ -378,7 +380,7 @@ def main():
     add("llo_auroc_min", metrics["leave_one_lineage_out"]["range"][0], "recomputed:TableS2(LLO)")
     add("llo_auroc_max", metrics["leave_one_lineage_out"]["range"][1], "recomputed:TableS2(LLO)")
     for m, v in PUBLISHED_BENCHMARKS.items():
-        add(f"published_{m}", v, "literature:Feng2024_CV3")
+        add(f"published_{m}", v, "literature:Feng2024_SuppData1_CV3_NSMRand_1to1")
 
     tsv = pd.DataFrame(rows)
     TSV_OUT.parent.mkdir(parents=True, exist_ok=True)

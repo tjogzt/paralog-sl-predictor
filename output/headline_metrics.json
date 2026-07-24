@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-24T19:21:56+00:00",
+  "generated_at": "2026-07-24T20:42:01+00:00",
   "generated_by": "compute_headline_metrics.py",
   "source_files": [
     "output/tables/TableS2_FullResults.tsv",
@@ -121,16 +121,16 @@
   },
   "published_benchmarks": {
     "values": {
-      "DDSL": 0.72,
-      "SLMGAE": 0.7,
-      "GRSL": 0.68,
-      "NSF4SL": 0.65,
-      "Struct2SL": 0.65,
-      "PGCN": 0.62,
-      "DDGCN": 0.6,
-      "KG4SL": 0.58
+      "SLMGAE": 0.79,
+      "NSF4SL": 0.683,
+      "GCATSL": 0.678,
+      "GRSMF": 0.656,
+      "PiLSL": 0.626,
+      "KG4SL": 0.563,
+      "SLGNN": 0.53,
+      "PTGNN": 0.529
     },
-    "provenance": "Literature constants (Feng et al. 2024, CV3); not recomputed"
+    "provenance": "Literature constants (Feng et al. 2024, Suppl. Data 1, CV3 NSMRand 1:1); not recomputed"
   },
   "manuscript_claims_check": [
     {

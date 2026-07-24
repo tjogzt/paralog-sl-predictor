@@ -28,11 +28,11 @@ known_sl_pairs <- data.frame(
 
 # --- benchmark_methods ---
 benchmark_methods <- data.frame(
-  Method = c("SLMGAE", "DDSL", "GRSL", "NSF4SL", "PGCN", "DDGCN",
-             "KG4SL", "Struct2SL", "DD (this study)", "DD + ID >= 0.3"),
-  CV3_AUROC = c(0.700, 0.720, 0.680, 0.650, 0.620, 0.600, 0.580,
-                0.650, 0.794, 1.000),
-  Reference = c(rep("Feng et al. 2024", 8), "This study", "This study"),
+  Method = c("SLMGAE", "NSF4SL", "GCATSL", "GRSMF", "PiLSL", "KG4SL",
+             "SLGNN", "PTGNN", "DD (this study)", "DD + ID >= 0.3"),
+  CV3_AUROC = c(0.790, 0.683, 0.678, 0.656, 0.626, 0.563, 0.530,
+                0.529, 0.794, 1.000),
+  Reference = c(rep("Feng et al. 2024 (SD1)", 8), "This study", "This study"),
   Interpretability = c(rep("Low", 8), "High", "High"),
   stringsAsFactors = FALSE
 )
