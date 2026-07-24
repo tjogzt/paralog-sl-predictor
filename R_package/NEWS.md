@@ -1,5 +1,16 @@
 # paralogSL News
 
+## v1.0.1 (2026-07-25)
+
+### Documentation & test corrections
+
+- Vignette and testthat expectations aligned with the audited leave-one-out
+  cross-validation benchmark in the companion analysis repository
+  (paralog-sl-predictor v1.1.0); DD-only baseline (AUROC 0.736) outperforms
+  all benchmarked classifiers
+- No changes to package functions or APIs
+- Added `CITATION.cff` and `inst/CITATION`
+
 ## v1.0.0 (2026-05-25)
 
 ### Initial Release

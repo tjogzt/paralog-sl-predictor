@@ -1,8 +1,8 @@
 Package: paralogSL
 Type: Package
 Title: Paralog-Based Synthetic Lethality Prioritization via Delta Dependency
-Version: 1.0.0
-Date: 2026-05-25
+Version: 1.0.1
+Date: 2026-07-25
 Authors@R: c(
     person("Qingqing", "Mo", role = "aut"),
     person("Tao", "Zhu", role = c("aut", "cre"), 
