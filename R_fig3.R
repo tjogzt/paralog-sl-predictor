@@ -69,15 +69,17 @@ panel_a <- function() {
 # PANEL B — Mutation Type ΔDD
 # ═══════════════════════════════════════════════════════════════
 panel_b <- function() {
+  # Values recomputed from output/muttype_{cancer}_results.csv (WT − MUT,
+  # manuscript Eq. 1; positive = stronger dependency in the mutant subgroup)
   df <- bind_rows(
-    tibble(pair = "ARID1A->ARID1B\n(Ovarian)",    type = "Truncating", dd = 0.368),
-    tibble(pair = "ARID1A->ARID1B\n(Ovarian)",    type = "Missense",   dd = -0.25),
-    tibble(pair = "EP300->CREBBP\n(Colorectal)",   type = "Truncating", dd = 0.314),
-    tibble(pair = "EP300->CREBBP\n(Colorectal)",   type = "Missense",   dd = -0.10),
+    tibble(pair = "ARID1A->ARID1B\n(Ovarian)",    type = "Truncating", dd = 0.388),
+    tibble(pair = "ARID1A->ARID1B\n(Ovarian)",    type = "Missense",   dd = 0.020),
+    tibble(pair = "EP300->CREBBP\n(Colorectal)",   type = "Truncating", dd = 0.464),
+    tibble(pair = "EP300->CREBBP\n(Colorectal)",   type = "Missense",   dd = 0.150),
     tibble(pair = "BRCA1->BRCA2\n(Ovarian)",       type = "Truncating", dd = 0.080),
-    tibble(pair = "BRCA1->BRCA2\n(Ovarian)",       type = "Missense",   dd = 0.020),
-    tibble(pair = "BRCA1->BRCA2\n(Breast)",        type = "Truncating", dd = 0.180),
-    tibble(pair = "BRCA1->BRCA2\n(Breast)",        type = "Missense",   dd = -0.05))
+    tibble(pair = "BRCA1->BRCA2\n(Ovarian)",       type = "Missense",   dd = 0.000),
+    tibble(pair = "BRCA1->BRCA2\n(Breast)",        type = "Truncating", dd = -0.136),
+    tibble(pair = "BRCA1->BRCA2\n(Breast)",        type = "Missense",   dd = 0.000))
   df$pair <- factor(df$pair, levels = unique(df$pair))
   df$type <- factor(df$type, levels = c("Truncating","Missense"))
 
@@ -85,7 +87,7 @@ panel_b <- function() {
     geom_col(position = position_dodge(0.7), width = 0.55) +
     scale_fill_manual(values = c(Truncating = "#CB181D", Missense = "#9ECAE1")) +
     geom_vline(xintercept = 0, linewidth = 0.3, color = DARK) +
-    labs(x = expression(Delta*"DD (MUT - WT)"), y = NULL) +
+    labs(x = "DD (WT - MUT)", y = NULL) +
     theme_sci + theme(legend.position = c(0.98, 0.98), legend.justification = c(1, 1))
 }
 

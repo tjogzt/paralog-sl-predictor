@@ -5,13 +5,13 @@
 **To:** The Editors
 *Genome Biology*
 
-**Re:** Submission of "Paralog Compensation Predicts Synthetic Lethality Across 27 Solid Tumor Types"
+**Re:** Submission of "Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types"
 
 ---
 
 Dear Editors,
 
-We submit for consideration in *Genome Biology* our manuscript entitled **"Paralog Compensation Predicts Synthetic Lethality Across 27 Solid Tumor Types."** This work presents Delta Dependency (DD)—a simple, univariate metric for paralog-based synthetic lethality (SL) prediction—and validates it through five orthogonal layers of evidence spanning genomic, proteomic, pharmacologic, clinical-stratification, and structural analyses.
+We submit for consideration in *Genome Biology* our manuscript entitled **"Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types."** This work presents Delta Dependency (DD), a simple, univariate metric for paralog-based synthetic lethality (SL) prediction, and validates it through five orthogonal layers of evidence spanning genomic, proteomic, pharmacologic, clinical-stratification, and structural analyses.
 
 **Key contributions:**
 
@@ -23,7 +23,7 @@ We submit for consideration in *Genome Biology* our manuscript entitled **"Paral
 
 4. **Clinical stratification and safety analysis.** MSI status stratifies patients for paralog-SL signal (MSS tumors show stronger signal), mutation type modulates compensation strength (truncating > missense for well-characterized TSGs), and a quantitative therapeutic window framework identifies ARID1A→ARID1B as the safest paralog-SL target.
 
-5. **Fully reproducible, no specialized infrastructure.** All analyses use publicly available DepMap and CPTAC data. The method requires only subtraction—no GPU, no model training. We provide an open-source R package (`paralogSL`) and a complete Python pipeline.
+5. **Fully reproducible, no specialized infrastructure.** All analyses use publicly available DepMap and CPTAC data. The method requires only subtraction: no GPU, no model training. We provide an open-source R package (`paralogSL`) and a complete Python pipeline.
 
 We believe this manuscript is well-suited for *Genome Biology* because it combines methodological simplicity with exceptionally broad validation, addresses a clinically important problem (SL-based cancer target discovery), and provides resources (code, data, R package) that the community can immediately use. The pan-cancer CPTAC validation and PRISM drug selectivity analysis substantially extend the evidence base beyond prior computational SL studies.
 
@@ -31,7 +31,7 @@ All data are from public repositories (DepMap, cBioPortal, PDC, TCGA). All code 
 
 **Competing interests:** The authors declare no competing interests.
 
-**Author contributions:** T.Z. conceived the study, developed the methodology, performed all analyses, wrote the manuscript, and developed the R package.
+**Author contributions:** Q.Q.M. and T.Z. conceived the study. T.Z. developed the methodology, performed all computational analyses, and developed the R package. Q.Q.M. curated clinical datasets and provided gynecological oncology domain expertise. Q.Q.M. and T.Z. wrote the manuscript.
 
 **Acknowledgments:** We thank the DepMap, CPTAC, TCGA, and cBioPortal teams for making their data publicly available.
 
@@ -39,8 +39,11 @@ We thank you for your consideration and look forward to your response.
 
 Sincerely,
 
-Tao Zhu
-(on behalf of all authors)
+Qingqing Mo and Tao Zhu
+$^{1}$Department of Obstetrics and Gynecology, National Clinical Research Center for Obstetrics and Gynecology, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China
+$^{2}$Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education), Hubei Key Laboratory of Tumor Invasion and Metastasis, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China
+
+$^{\ast}$Correspondence: zhutao@tjh.tjmu.edu.cn
 
 ---
 

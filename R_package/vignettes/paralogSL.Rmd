@@ -171,12 +171,12 @@ cat("DD (truncating):", dd_trunc$DD, "\nDD (missense):", dd_miss$DD, "\n")
 
 This vignette reproduces the core findings from the manuscript:
 
-> *When RNA Is Silent but Protein Speaks: Paralog Compensation at the
-> Protein Level Predicts Synthetic Lethality in Gynecological Cancers*
+> *Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
+> Candidates Across Solid Tumor Types* (Zhu, Genome Biology, 2026)
 
 - DD AUROC = 0.794 (vs best published CV3: 0.720)
 - DD + 30% identity filter → AUROC = 1.000
 - CPTAC protein co-variation: r = 0.50-0.60 (p < 0.001)
 
-See the manuscript (`manuscript_draft.md`) and Python pipeline
-(`paralog_sl_predictor/`) for full details.
+See the manuscript and Python pipeline at
+\url{https://github.com/tjogzt/paralog-sl-predictor} for full details.

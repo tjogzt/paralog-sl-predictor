@@ -169,7 +169,9 @@ def compute_dd_per_mutation_type(dep, mut_type_matrix, driver, paralog, cell_lin
         trunc_dep = dep.loc[trunc_ids, paralog].dropna()
         wt_dep_t = dep.loc[wt_ids, paralog].dropna()
         if len(trunc_dep) >= 3 and len(wt_dep_t) >= 3:
-            result["dd_trunc"] = trunc_dep.mean() - wt_dep_t.mean()
+            # DD = mean(Chronos | WT) − mean(Chronos | MUT) (manuscript Eq. 1);
+            # positive = stronger dependency in the mutant subgroup.
+            result["dd_trunc"] = wt_dep_t.mean() - trunc_dep.mean()
             t_stat, p_val = stats.ttest_ind(trunc_dep, wt_dep_t, equal_var=False)
             result["dd_trunc_p"] = p_val
     
@@ -178,7 +180,7 @@ def compute_dd_per_mutation_type(dep, mut_type_matrix, driver, paralog, cell_lin
         miss_dep = dep.loc[miss_ids, paralog].dropna()
         wt_dep_m = dep.loc[wt_ids, paralog].dropna()
         if len(miss_dep) >= 3 and len(wt_dep_m) >= 3:
-            result["dd_miss"] = miss_dep.mean() - wt_dep_m.mean()
+            result["dd_miss"] = wt_dep_m.mean() - miss_dep.mean()
             t_stat, p_val = stats.ttest_ind(miss_dep, wt_dep_m, equal_var=False)
             result["dd_miss_p"] = p_val
     
@@ -189,7 +191,7 @@ def compute_dd_per_mutation_type(dep, mut_type_matrix, driver, paralog, cell_lin
         mut_dep = dep.loc[mut_ids, paralog].dropna()
         wt_dep_all = dep.loc[wt_ids, paralog].dropna()
         if len(mut_dep) >= 3 and len(wt_dep_all) >= 3:
-            result["dd_all"] = mut_dep.mean() - wt_dep_all.mean()
+            result["dd_all"] = wt_dep_all.mean() - mut_dep.mean()
     
     return result
 

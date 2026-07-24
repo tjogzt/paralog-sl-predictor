@@ -92,33 +92,42 @@ def main():
         known_set.add((a.upper(), b.upper()))
         known_set.add((b.upper(), a.upper()))
 
-    all_results = {}
-    summary_rows = []
+    # ── Performance: one shared PCS object (necessity is global) and one
+    # mutation matrix per driver over the union of valid cell lines, sliced
+    # per lineage (build_mutation_matrix is row-independent per cell line).
+    pcs = ParalogCompensationScore(dep, expr, mod, mut, para)
 
+    lineage_cells = {}
     for cancer_name, patterns in SOLID_TUMORS.items():
         pat = "|".join(patterns)
         mask = mod["OncotreePrimaryDisease"].str.contains(pat, case=False, na=False)
         lin_mod = mod[mask]
-        n_total = len(lin_mod)
-        if n_total < 6:
+        if len(lin_mod) < 6:
             continue
+        cell_ids = [c for c in lin_mod["DepMap_ID"].tolist()
+                    if c in dep.index and c in expr.index]
+        if len(cell_ids) >= 6:
+            lineage_cells[cancer_name] = cell_ids
 
-        cell_ids = lin_mod["DepMap_ID"].tolist()
-        cell_ids = [c for c in cell_ids if c in dep.index and c in expr.index]
-        n_valid = len(cell_ids)
-        if n_valid < 6:
-            continue
+    from data_loader import build_mutation_matrix
+    all_cells = sorted({c for ids in lineage_cells.values() for c in ids})
+    drivers = [d for d in SOLID_DRIVERS if d in dep.columns]
+    print(f"  Precomputing mutation matrices for {len(drivers)} drivers "
+          f"over {len(all_cells)} cell lines ...")
+    mut_mats = {d: build_mutation_matrix(mut, all_cells, [d]) for d in drivers}
 
-        print(f"  {cancer_name:25s}: {n_total:>3d} lines ({n_valid:>3d} valid)")
+    all_results = {}
+    summary_rows = []
 
-        pcs = ParalogCompensationScore(dep, expr, mod, mut, para)
+    for cancer_name, cell_ids in lineage_cells.items():
+        print(f"  {cancer_name:25s}: {len(cell_ids):>3d} valid lines")
+
         results_list = []
-
-        for driver in SOLID_DRIVERS:
-            if driver not in dep.columns:
-                continue
+        for driver in drivers:
             try:
-                result = pcs.compute_pcs_for_driver(driver, cell_ids, cancer_label=cancer_name)
+                result = pcs.compute_pcs_for_driver(
+                    driver, cell_ids, cancer_label=cancer_name,
+                    mut_matrix=mut_mats[driver])
                 if result is not None and not result.empty:
                     results_list.append(result)
             except Exception:
@@ -141,7 +150,7 @@ def main():
         auc = roc_auc_score(yt, ys) if nk >= 2 else float("nan")
 
         summary_rows.append({
-            "cancer": cancer_name, "n_lines": n_valid,
+            "cancer": cancer_name, "n_lines": len(cell_ids),
             "n_pairs": len(results_df), "n_known": nk, "dd_auroc": auc
         })
 

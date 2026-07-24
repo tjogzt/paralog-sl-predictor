@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[margin=2cm]{geometry}
-\usepackage{graphicx,booktabs,hyperref,caption,multirow,array,float}
+\usepackage{graphicx,booktabs,hyperref,caption,multirow,array,float,amsmath}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage{setspace}\onehalfspacing
 \hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
@@ -15,7 +15,30 @@
 \date{}
 
 \begin{document}
+
+% --- Custom title block ---
+\begin{center}
+{\LARGE\bfseries Supplementary Information\par}
+\vspace{0.5em}
+{\large Delta Dependency Prioritizes Paralog-Based\\[0.2em] Synthetic Lethality Candidates Across Solid Tumor Types\par}
+\vspace{1.2em}
+
+{\large Qingqing Mo$^{1,2}$, Tao Zhu$^{1,2,\ast}$\par}
+\vspace{0.6em}
+
+{\small
+\begin{tabular}{p{0.85\textwidth}}
+$^{1}$ Department of Obstetrics and Gynecology, National Clinical Research Center for Obstetrics and Gynecology, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China\\[0.3em]
+$^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education), Hubei Key Laboratory of Tumor Invasion and Metastasis, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China
+\end{tabular}\par}
+\vspace{0.6em}
+
+{\small $^{\ast}$ Correspondence: \texttt{zhutao@tjh.tjmu.edu.cn}\par}
+\end{center}
+
 \maketitle
+\vspace{-2em}
+\newpage
 \tableofcontents
 \newpage
 
@@ -25,7 +48,7 @@
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS1_CellLine_Landscape.pdf}
-\caption{\textbf{Panoramic baseline: cell lines and evaluation summary across 23 solid tumor types.} a, Cell line counts per cancer type, colored by DD AUROC performance tier (red: AUROC~$>$~0.7; blue: 0.5--0.7; gray: $<$~0.5; light gray: not evaluable). b, Tested paralog pairs per cancer type; red bars show known gold-standard positives. Numbers indicate known/total pairs.}
+\caption{\textbf{Cell line landscape and evaluation summary across 23 solid tumor types.} a, Cell line counts per cancer type, colored by DD AUROC tier (red: AUROC~$>$~0.7; blue: 0.5--0.7; gray: $<$~0.5; light gray: not evaluable). b, Tested paralog pairs per cancer type; red bars show known gold-standard positives. Numbers indicate known/total pairs.}
 \end{figure}
 
 % S2
@@ -46,21 +69,21 @@
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{output/figures/FigS4_CNV_Independence.pdf}
-\caption{\textbf{CNV independence analysis.} Scatter plots of relative copy number (x-axis) vs.\ Chronos gene-effect score (y-axis) for each of 23 paralog genes across 1,192 cell lines with both CNV and dependency data. Each panel shows one gene with the linear regression fit (red line) and $R^2$ value. All $R^2 < 0.10$, indicating that copy number variation explains $<$10\% of gene-effect variance. Multivariate regression additionally controlling for driver mutation and TP53 co-mutation confirmed that DD estimates are virtually unchanged after CNV adjustment (see main text).}
+\caption{\textbf{CNV independence analysis.} Scatter plots of relative copy number (x-axis) vs.\ Chronos gene-effect score (y-axis) for each of 23 paralog genes across 1,192 cell lines with both CNV and dependency data. Each panel shows one gene with the linear regression fit (red line) and $R^2$ value. All $R^2 < 0.10$, indicating that copy number variation explains $<$10\% of gene-effect variance. Multivariate regression controlling for driver mutation and TP53 co-mutation left DD estimates essentially unchanged after CNV adjustment (see main text).}
 \end{figure}
 
 % S5
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{output/figures/FigS5_PRISM_Selectivity.pdf}
-\caption{\textbf{PRISM drug selectivity heatmap.} Heatmap of drug sensitivity differential ($\Delta$AUC = mean AUC in driver-mutant minus mean AUC in wild-type cell lines) for the top compound--paralog pair associations from the PRISM Repurposing screen (1,482 compounds, 727 cell lines). Negative $\Delta$AUC indicates selective sensitivity in driver-mutant cells. Associations shown met discovery-stage criteria (BH $q<0.25$, $\Delta$AUC$<0$, enrichment$>0.1$). Known drug--target biology is recapitulated: MEK inhibitors with KRAS-mutant lines, mTOR/AKT inhibitors with PTEN-mutant lines, HDAC inhibitors with EP300-mutant lines.}
+\caption{\textbf{PRISM drug selectivity heatmap.} Heatmap of drug sensitivity differential ($\Delta$AUC = mean AUC in driver-mutant minus mean AUC in wild-type cell lines) for the top compound--paralog pair associations from the PRISM Repurposing screen (1,482 compounds, 727 cell lines). Negative $\Delta$AUC indicates selective sensitivity in driver-mutant cells. Associations shown met discovery-stage criteria (BH $q<0.25$, $\Delta$AUC$<0$, enrichment$>0.1$). Known drug--target biology is recovered: MEK inhibitors with KRAS-mutant lines, mTOR/AKT inhibitors with PTEN-mutant lines, HDAC inhibitors with EP300-mutant lines.}
 \end{figure}
 
 % S6
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS6_MutationType.pdf}
-\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.016$), indicating that truncating~$>$~missense is not universal but pair-specific. c, $\Delta$DD for known gold-standard SL pairs showing that ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal) drive the trend. d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.726) vs.\ overall DD performance.}
+\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.016$), indicating that truncating~$>$~missense is pair-specific rather than universal. c, $\Delta$DD for known gold-standard SL pairs showing that ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal) drive the trend. d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.726) vs.\ overall DD performance.}
 \end{figure}
 
 % S7
@@ -74,13 +97,19 @@
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth,keepaspectratio]{output/figures/FigS8_Bootstrap_NegCtrl.pdf}
-\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 77 pairs, 8 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.415--0.891). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.121$). The observed AUROC (0.668) exceeds the null mean (0.580) but does not reach conventional significance, reflecting limited statistical power with only 8 positive pairs. Note: the per-pair AUROC (0.668) differs from the cancer-type-specific AUROC (0.794) reported in the benchmark comparison because the latter evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
+\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 77 pairs, 8 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.431--0.892). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.060$). The observed per-pair AUROC (0.668) exceeds the null mean (0.500) but does not reach conventional significance, reflecting limited power with only 8 positive pairs. The cancer-type-specific AUROC (0.794, reported in the benchmark comparison) is higher because it evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.45\textwidth,keepaspectratio]{output/figures/FigS9_kmer_validation.pdf}
 \caption{\textbf{$k$-mer Jaccard vs.\ Needleman-Wunsch alignment identity validation.} Scatter plot of $k$-mer Jaccard similarity ($k=3$) vs.\ global alignment identity for 50 protein pairs (13 known paralogs, 37 non-paralog controls). Red: known paralog-SL pairs; Blue: non-paralog pairs. Gray line: linear regression with 95\% CI.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\textwidth,keepaspectratio]{output/figures/FigS10_Druggability.pdf}
+\caption{\textbf{Structure-based druggability assessment.} Composite druggability score for 15 proteins (7 paralog targets in red, 8 driver genes in blue) based on ESMFold-predicted structures. Scores integrate structural confidence (pLDDT), hydrophobic content, lysine density (K, relevant for PROTAC conjugation), and predicted pocket count (P). Structures were limited to 400 residues per protein; ARID1A/ARID1B structures were not available from AlphaFold DB and are assessed by sequence-level features only (main text Table~2). FBXW2 (0.871) and KRAS/HRAS (0.858--0.859) show the highest scores due to well-folded compact domains.}
 \end{figure}
 
 \clearpage

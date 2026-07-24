@@ -81,7 +81,17 @@ panel_b <- function() {
 
   # Strip plot (not boxplot) — n=3 oncogene too small for boxplot
   pval <- wilcox.test(dd_auroc ~ group, data = df, exact = TRUE)$p.value
-  perm_p <- 0.070  # pre-computed permutation p
+  # Exact two-sided permutation p for the TSG-minus-oncogene mean difference,
+  # enumerated over all choose(n, 3) label assignments (replaces the previous
+  # hard-coded Monte Carlo value 0.070; exact two-sided = 0.071, consistent).
+  # Computed live from solid_tumor_summary.csv.
+  obs_diff <- mean(df$dd_auroc[df$group == "TSG-driven"]) -
+              mean(df$dd_auroc[df$group == "Oncogene-driven"])
+  n_onc <- sum(df$group == "Oncogene-driven")
+  combos <- combn(seq_len(nrow(df)), n_onc)
+  perm_diffs <- apply(combos, 2, function(ii)
+    mean(df$dd_auroc[-ii]) - mean(df$dd_auroc[ii]))
+  perm_p <- min(1, 2 * min(mean(perm_diffs >= obs_diff), mean(perm_diffs <= obs_diff)))
 
   ggplot(df, aes(group, dd_auroc)) +
     geom_jitter(aes(color = group), width = 0.1, size = 2, alpha = 0.7) +
@@ -99,11 +109,24 @@ panel_b <- function() {
 # PANEL C — Benchmark Comparison
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
+  # This-study values from the metrics single-source-of-truth (never literals);
+  # published values are literature constants (Feng et al. 2024, CV3).
+  metrics_path <- "paralog_sl_predictor/output/tables/headline_metrics.tsv"
+  if (!file.exists(metrics_path))
+    stop("headline_metrics.tsv not found — run compute_headline_metrics.py first")
+  mt <- read_tsv(metrics_path, show_col_types = FALSE)
+  getv <- function(name) as.numeric(mt$value[mt$metric == name])
   df <- tibble(
     method = c("DD+ID>=30%","DD","DDSL","SLMGAE","GRSL","NSF4SL",
                "Struct2SL","PGCN","DDGCN","KG4SL"),
-    auroc  = c(1.000,0.794,0.720,0.700,0.680,0.650,0.650,0.620,0.600,0.580),
+    auroc  = c(getv("dd_auroc_id_filter_0.3"), getv("dd_auroc_lineage_full"),
+               getv("published_DDSL"), getv("published_SLMGAE"),
+               getv("published_GRSL"), getv("published_NSF4SL"),
+               getv("published_Struct2SL"), getv("published_PGCN"),
+               getv("published_DDGCN"), getv("published_KG4SL")),
     ours   = c(TRUE,TRUE,rep(FALSE,8)))
+  if (any(is.na(df$auroc)))
+    stop("headline_metrics.tsv is missing required metrics — re-run compute_headline_metrics.py")
   df$method <- factor(df$method, levels = rev(df$method))
 
   ggplot(df, aes(auroc, method, fill = ours)) +
@@ -125,10 +148,20 @@ panel_c <- function() {
 # PANEL D — Component Decomposition + Bootstrap
 # ═══════════════════════════════════════════════════════════════
 panel_d <- function() {
+  # Component decomposition values recomputed from TableS2 (single source of
+  # truth); see compute_headline_metrics.py.
+  metrics_path <- "paralog_sl_predictor/output/tables/headline_metrics.tsv"
+  if (!file.exists(metrics_path))
+    stop("headline_metrics.tsv not found — run compute_headline_metrics.py first")
+  mt <- read_tsv(metrics_path, show_col_types = FALSE)
+  getv <- function(name) as.numeric(mt$value[mt$metric == name])
   df <- tibble(
     metric = c("DD","PCS","ΔExpr","Necessity"),
-    auroc  = c(0.794,0.478,0.339,0.576),
+    auroc  = c(getv("component_dd"), getv("component_pcs"),
+               getv("component_delta_expression"), getv("component_necessity")),
     clr    = c(RED, BLUE, GRAY, ORANGE))
+  if (any(is.na(df$auroc)))
+    stop("headline_metrics.tsv is missing component metrics — re-run compute_headline_metrics.py")
   df$metric <- factor(df$metric, levels = df$metric)
 
   main <- ggplot(df, aes(metric, auroc)) +
@@ -142,12 +175,13 @@ panel_d <- function() {
     scale_y_continuous(expand = expansion(mult = c(0, 0.18))) +
     theme_sci
 
-  # Bootstrap inset — use REAL validation_report.json summary stats
+  # Bootstrap inset — read live from validation_report.json (values change
+  # whenever the pipeline re-runs; do not paste numbers into comments)
   vr <- jsonlite::fromJSON("paralog_sl_predictor/output/validation_report.json")
-  obs_auroc <- vr$negative_control$observed_auroc  # 0.773
-  bs_mean   <- vr$bootstrap$auroc_mean             # 0.773
-  bs_ci_lo  <- vr$bootstrap$auroc_ci_low           # 0.608
-  bs_ci_hi  <- vr$bootstrap$auroc_ci_high          # 0.909
+  obs_auroc <- vr$negative_control$observed_auroc
+  bs_mean   <- vr$bootstrap$auroc_mean
+  bs_ci_lo  <- vr$bootstrap$auroc_ci_low
+  bs_ci_hi  <- vr$bootstrap$auroc_ci_high
   bs_sd     <- (bs_ci_hi - bs_ci_lo) / (2 * 1.96)  # reconstruct SD from CI
 
   set.seed(42)

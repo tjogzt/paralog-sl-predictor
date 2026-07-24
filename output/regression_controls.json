@@ -1,0 +1,277 @@
+{
+  "generated_at": "2026-07-24T19:22:15+00:00",
+  "generated_by": "regression_controls.py",
+  "sign_convention": "DD = mean(dep|WT) - mean(dep|MUT) (manuscript Eq. 1)",
+  "results": {
+    "pairs": {
+      "SMARCA4->SMARCA2": {
+        "dd_base": 0.17059626899429342,
+        "p_base": 5.05624275575764e-16,
+        "n_base": 1116,
+        "n_mut": 141,
+        "n_wt": 975,
+        "dd_cnv_adj": 0.17337154020509488,
+        "p_cnv_adj": 1.5331297446619644e-16,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0027752712108014554,
+        "dd_expr_adj": 0.17582318301962196,
+        "p_expr_adj": 1.4217561658602068e-16,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.005226914025328544
+      },
+      "ARID1A->ARID1B": {
+        "dd_base": 0.19026515066282224,
+        "p_base": 8.902275230787686e-27,
+        "n_base": 1116,
+        "n_mut": 159,
+        "n_wt": 957,
+        "dd_cnv_adj": 0.19256548619369973,
+        "p_cnv_adj": 4.482095075699396e-28,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0023003355308774953,
+        "dd_expr_adj": 0.19091952927549777,
+        "p_expr_adj": 9.261637219911898e-28,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.0006543786126755324
+      },
+      "BRCA1->BRCA2": {
+        "dd_base": 0.01923862021617906,
+        "p_base": 0.5549247041202781,
+        "n_base": 1116,
+        "n_mut": 66,
+        "n_wt": 1050,
+        "dd_cnv_adj": 0.02195718682903757,
+        "p_cnv_adj": 0.49272615852976276,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0027185666128585126,
+        "dd_expr_adj": 0.02362492724023204,
+        "p_expr_adj": 0.46826338256564154,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.004386307024052981
+      },
+      "EP300->CREBBP": {
+        "dd_base": 0.24748451910499858,
+        "p_base": 8.680731356930234e-12,
+        "n_base": 1116,
+        "n_mut": 137,
+        "n_wt": 979,
+        "dd_cnv_adj": 0.24566600856467943,
+        "p_cnv_adj": 1.268957488465772e-11,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.001818510540319146,
+        "dd_expr_adj": 0.23306142581434924,
+        "p_expr_adj": 1.2201367317150173e-10,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.014423093290649336
+      },
+      "PIK3CA->PIK3CB": {
+        "dd_base": -0.10973246306919197,
+        "p_base": 3.939096690816077e-09,
+        "n_base": 1116,
+        "n_mut": 130,
+        "n_wt": 986,
+        "dd_cnv_adj": -0.11074055332630986,
+        "p_cnv_adj": 2.8160685753330106e-09,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0010080902571178857,
+        "dd_expr_adj": -0.11728125920358806,
+        "p_expr_adj": 1.635929475853993e-10,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.007548796134396088
+      },
+      "AKT1->AKT2": {
+        "dd_base": 0.1632581615654847,
+        "p_base": 0.0030156256969069914,
+        "n_base": 1116,
+        "n_mut": 14,
+        "n_wt": 1102,
+        "dd_cnv_adj": 0.16660116483958715,
+        "p_cnv_adj": 0.002250350010319445,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0033430032741024462,
+        "dd_expr_adj": 0.16590383551207025,
+        "p_expr_adj": 0.002344561535424572,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.0026456739465855472
+      },
+      "STK11->SIK1": {
+        "dd_base": -0.013272749368466528,
+        "p_base": 0.5152387405742471,
+        "n_base": 1116,
+        "n_mut": 59,
+        "n_wt": 1057,
+        "dd_expr_adj": -0.011984872037859693,
+        "p_expr_adj": 0.5636386287470264,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.001287877330606835
+      },
+      "FBXW7->FBXW2": {
+        "dd_base": 0.01504839053070806,
+        "p_base": 0.32679342344098994,
+        "n_base": 1116,
+        "n_mut": 70,
+        "n_wt": 1046,
+        "dd_cnv_adj": 0.013665798202326211,
+        "p_cnv_adj": 0.37380202579791466,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0013825923283818497,
+        "dd_expr_adj": 0.01495279973318718,
+        "p_expr_adj": 0.3301485796586512,
+        "n_expr": 1116,
+        "abs_ddd_expr": 9.55907975208805e-05
+      },
+      "PPP2R1A->PPP2R1B": {
+        "dd_base": 0.01173059321819277,
+        "p_base": 0.587680791511248,
+        "n_base": 1116,
+        "n_mut": 41,
+        "n_wt": 1075,
+        "dd_cnv_adj": 0.011761597656300953,
+        "p_cnv_adj": 0.5869170750289441,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 3.100443810818282e-05,
+        "dd_expr_adj": 0.011630500408559211,
+        "p_expr_adj": 0.5911151924256723,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.00010009280963355939
+      },
+      "CCNE1->CCNE2": {
+        "dd_base": -0.006062549910395863,
+        "p_base": 0.9069878239537363,
+        "n_base": 1116,
+        "n_mut": 12,
+        "n_wt": 1104,
+        "dd_cnv_adj": -0.004662424793385521,
+        "p_cnv_adj": 0.9284101488192036,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0014001251170103418,
+        "dd_expr_adj": -0.016561303545754597,
+        "p_expr_adj": 0.7357234006427501,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.010498753635358734
+      },
+      "CDK4->CDK6": {
+        "dd_base": -0.0693186438756419,
+        "p_base": 0.5985239870708112,
+        "n_base": 1116,
+        "n_mut": 18,
+        "n_wt": 1098,
+        "dd_cnv_adj": -0.0690958024838196,
+        "p_cnv_adj": 0.5985933303807978,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.0002228413918223121,
+        "dd_expr_adj": -0.01229970485958009,
+        "p_expr_adj": 0.9163990287428598,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.057018939016061816
+      },
+      "MAP2K1->MAP2K2": {
+        "dd_base": 0.004217511805622451,
+        "p_base": 0.9104471782856057,
+        "n_base": 1116,
+        "n_mut": 21,
+        "n_wt": 1095,
+        "dd_cnv_adj": 0.00037314302945707506,
+        "p_cnv_adj": 0.9919463369745086,
+        "n_cnv": 1116,
+        "abs_ddd_cnv": 0.003844368776165376,
+        "dd_expr_adj": -0.00352254898697036,
+        "p_expr_adj": 0.9248744010050343,
+        "n_expr": 1116,
+        "abs_ddd_expr": 0.007740060792592811
+      }
+    },
+    "tp53_control": {
+      "arid1a_mut_lines": 159,
+      "tp53_comut_lines": 96,
+      "dd_base": 0.19026515066282224,
+      "p_base": 8.902275230787686e-27,
+      "n": 1116,
+      "dd_adj": 0.1920787039864148,
+      "p_adj": 4.7462405534357594e-28,
+      "n_adj": 1116,
+      "abs_ddd": 0.001813553323592565,
+      "controls": "TP53_MUT+CNV_ARID1B",
+      "mutation_file_frame": {
+        "ARID1A_mut_lines_mutfile": 239,
+        "TP53_mut_lines_mutfile": 1115,
+        "tp53_comut_in_arid1a_mutfile": 138
+      }
+    }
+  },
+  "computed": {
+    "cnv_r2_max": 0.0573300309840755,
+    "cnv_r2_n_genes": 23,
+    "cnv_mean_abs_ddd": 0.0018949735888695459,
+    "arid1b_cnv_adj_p": 4.482095075699396e-28,
+    "arid1b_expr_adj_p": 9.261637219911898e-28,
+    "ep300_crebbp_cnv_adj_p": 1.268957488465772e-11,
+    "expr_mean_abs_ddd": 0.009302206451288555,
+    "tp53_comut_n": 96,
+    "tp53_mut_total": 159,
+    "tp53_abs_ddd": 0.001813553323592565,
+    "tp53_adj_p": 4.7462405534357594e-28
+  },
+  "manuscript_claims_check": [
+    {
+      "metric": "cnv_r2_max",
+      "claimed": 0.1,
+      "computed": 0.0573300309840755,
+      "status": "match"
+    },
+    {
+      "metric": "cnv_mean_abs_ddd",
+      "claimed": 0.002,
+      "computed": 0.0018949735888695459,
+      "status": "match"
+    },
+    {
+      "metric": "arid1b_cnv_adj_p",
+      "claimed": 4.5e-28,
+      "computed": 4.482095075699396e-28,
+      "status": "match"
+    },
+    {
+      "metric": "arid1b_expr_adj_p",
+      "claimed": 9.3e-28,
+      "computed": 9.261637219911898e-28,
+      "status": "match"
+    },
+    {
+      "metric": "ep300_crebbp_cnv_adj_p",
+      "claimed": 1.3e-11,
+      "computed": 1.268957488465772e-11,
+      "status": "match"
+    },
+    {
+      "metric": "expr_mean_abs_ddd",
+      "claimed": 0.01,
+      "computed": 0.009302206451288555,
+      "status": "match"
+    },
+    {
+      "metric": "tp53_comut_n",
+      "claimed": 96,
+      "computed": 96,
+      "status": "match"
+    },
+    {
+      "metric": "tp53_mut_total",
+      "claimed": 159,
+      "computed": 159,
+      "status": "match"
+    },
+    {
+      "metric": "tp53_abs_ddd",
+      "claimed": 0.002,
+      "computed": 0.001813553323592565,
+      "status": "match"
+    },
+    {
+      "metric": "tp53_adj_p",
+      "claimed": 4.7e-28,
+      "computed": 4.7462405534357594e-28,
+      "status": "match"
+    }
+  ]
+}

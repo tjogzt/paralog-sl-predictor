@@ -11,6 +11,13 @@ Where:
                minus mean expression of B in A-wildtype cell lines
   Necessity(B) = -mean(CERES/Chronos dependency of B)
                  (negative CERES = essential, so -CERES = positive necessity)
+
+DD (Delta Dependency, manuscript Eq. 1):
+  DD = mean(Chronos of paralog B | A-WT) − mean(Chronos of B | A-MUT)
+  Positive DD = stronger paralog dependency in driver-mutant lines,
+  consistent with paralog compensation. All AUROC/scoring uses |DD|
+  (see manuscript), so the sign convention is presentation-only here;
+  it matches manuscript Eq. 1 and the paralogSL R package (compute_dd).
 """
 
 import pandas as pd
@@ -36,6 +43,21 @@ def _normalize_series(s: pd.Series) -> pd.Series:
     if s.max() == s.min():
         return pd.Series(0.0, index=s.index)
     return (s - s.min()) / (s.max() - s.min())
+
+
+def _bh_adjust(p_values: np.ndarray) -> np.ndarray:
+    """Benjamini-Hochberg adjusted q-values (step-up with ranked monotonicity).
+
+    Thin wrapper around scipy.stats.false_discovery_control. NaN p-values are
+    treated as 1.0 (never significant) so they cannot corrupt the correction.
+    Replaces a previous hand-rolled implementation that enforced monotonicity
+    along the dataframe row order instead of the p-value rank order.
+    """
+    p = np.asarray(p_values, dtype=float)
+    p = np.where(np.isnan(p), 1.0, p).clip(0.0, 1.0)
+    if p.size <= 1:
+        return p.copy()
+    return false_discovery_control(p, method="bh")
 
 
 class ParalogCompensationScore:
@@ -96,7 +118,8 @@ class ParalogCompensationScore:
     def compute_pcs_for_driver(self,
                                 driver_gene: str,
                                 cell_lines: List[str],
-                                cancer_label: str = "Gyn"
+                                cancer_label: str = "Gyn",
+                                mut_matrix: Optional[pd.DataFrame] = None
                                 ) -> pd.DataFrame:
         """
         Compute PCS for all paralogs of a given driver gene.
@@ -109,6 +132,12 @@ class ParalogCompensationScore:
             List of cell line IDs to analyze.
         cancer_label : str
             Label for the cancer type (Ovarian/Endometrial/Cervical/Gyn).
+        mut_matrix : pd.DataFrame, optional
+            Precomputed binary mutation matrix (rows = cell lines, must
+            include a column named `driver_gene`). When provided, the internal
+            build_mutation_matrix call is skipped and rows are sliced to
+            `cell_lines` — used by pancancer.py to avoid rebuilding the
+            matrix once per lineage x driver combination.
 
         Returns
         -------
@@ -129,8 +158,11 @@ class ParalogCompensationScore:
         if not valid_paralogs:
             return pd.DataFrame()
 
-        # Build mutation matrix for this driver only
-        mut_matrix = build_mutation_matrix(self.mutations, cell_lines, [driver_gene])
+        # Build (or reuse) the mutation matrix for this driver only
+        if mut_matrix is None:
+            mut_matrix = build_mutation_matrix(self.mutations, cell_lines, [driver_gene])
+        else:
+            mut_matrix = mut_matrix.reindex(index=cell_lines, fill_value=0)
         if driver_gene not in mut_matrix.columns:
             return pd.DataFrame()
 
@@ -163,18 +195,27 @@ class ParalogCompensationScore:
             else:
                 t_stat, p_val = stats.ttest_ind(expr_mut_vals, expr_wt_vals, equal_var=False)
 
-            # ── 2. Dependency change (DD for reference) ──
+            # ── 2. Dependency change: Delta Dependency (manuscript Eq. 1) ──
             dep_mut_vals = self.dep.loc[mut_cl, paralog].dropna()
             dep_wt_vals = self.dep.loc[wt_cl, paralog].dropna()
 
             if len(dep_mut_vals) >= MIN_MUT_SAMPLES and len(dep_wt_vals) >= MIN_WT_SAMPLES:
-                dd = dep_mut_vals.mean() - dep_wt_vals.mean()
-                # Cohen's d on dependency
+                # DD = mean(Chronos | WT) − mean(Chronos | MUT).
+                # Positive DD = stronger paralog dependency in driver-mutant
+                # lines (paralog compensation); matches manuscript Eq. 1 and
+                # paralogSL::compute_dd. Validation/AUROC ranks by |DD|.
+                dd = dep_wt_vals.mean() - dep_mut_vals.mean()
+                # Cohen's d on dependency (positive = stronger in mutant)
                 pooled_std = np.sqrt((dep_mut_vals.var() + dep_wt_vals.var()) / 2)
                 cohens_d = dd / pooled_std if pooled_std > 0 else 0.0
+                # Welch's t-test on dependency scores; mirrors the p_value
+                # returned by paralogSL::compute_dd (kept distinct from the
+                # expression-based expr_p_value above).
+                _, dd_p_val = stats.ttest_ind(dep_mut_vals, dep_wt_vals, equal_var=False)
             else:
                 dd = 0.0
                 cohens_d = 0.0
+                dd_p_val = 1.0
 
             # ── 3. Paralog compensation score ──
             necessity = self.get_necessity(paralog)
@@ -190,6 +231,7 @@ class ParalogCompensationScore:
                 "necessity": necessity,
                 "dependency_dd": dd,
                 "cohens_d": cohens_d,
+                "dd_p_value": dd_p_val,
                 "expr_p_value": p_val,
                 "expr_t_stat": t_stat,
                 "n_mut": len(mut_cl),
@@ -204,18 +246,7 @@ class ParalogCompensationScore:
         df = pd.DataFrame(results)
 
         # ── 4. Benjamini-Hochberg correction ──
-        n = len(df)
-        if n > 1:
-            p_vals = df["expr_p_value"].values
-            ranked = np.argsort(p_vals)
-            q_vals = np.zeros(n)
-            for i, idx in enumerate(ranked):
-                q_vals[idx] = min(p_vals[idx] * n / (i + 1), 1.0)
-            for i in range(n - 2, -1, -1):
-                q_vals[i] = min(q_vals[i], q_vals[i + 1])
-            df["q_value"] = q_vals
-        else:
-            df["q_value"] = df["expr_p_value"].values
+        df["q_value"] = _bh_adjust(df["expr_p_value"].values)
 
         # ── 5. Threshold filtering ──
         df["pass_threshold"] = (

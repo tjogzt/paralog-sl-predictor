@@ -1,5 +1,6 @@
 # Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502031.svg)](https://doi.org/10.5281/zenodo.21502031)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **English** | **[中文](README_CN.md)**
@@ -8,11 +9,11 @@
 
 Delta Dependency (DD) is a simple, interpretable, discovery-stage metric for prioritizing paralog-based synthetic lethality (SL) candidates from Cancer Dependency Map (DepMap) CRISPR screening data. DD measures the shift in Chronos gene-effect scores between driver-mutant and wild-type cell lines, computed separately per cancer lineage.
 
-**Key findings:**
-- DD achieves AUROC = 0.736 using a single feature in head-to-head comparison with multi-feature ML classifiers on identical test sets
-- CPTAC proteomics across 7 cohorts (n=672) reveals protein-level paralog co-variation undetectable at the RNA level
-- Therapeutic window analysis nominates ARID1A→ARID1B as the leading selective candidate (TI = 4.13)
-- All candidates are computationally nominated and require experimental validation
+**Key findings (see manuscript for full context):**
+- **DD vs. published methods:** AUROC = 0.794 (CV3 framework, 12-pair gold standard), exceeding 8 deep learning methods (best published: DDSL, 0.720)
+- **Primary test set (10 true sequence paralogs):** AUROC = 0.837
+- **Head-to-head (identical 77-pair test set):** DD alone (0.736) outperforms all four multi-feature classifiers under leave-one-pair-out CV (LR 0.632, RF 0.629, SVM-Linear 0.699, SVM-RBF 0.563) — a single interpretable feature generalizes best
+- DD + ≥30% sequence identity filter → AUROC = 1.000
 
 ## Directory Structure
 
@@ -89,6 +90,8 @@ Rscript R_fig4.R
 
 ### R Package
 
+Standalone R package repository: **[tjogzt/paralogSL](https://github.com/tjogzt/paralogSL)** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502114.svg)](https://doi.org/10.5281/zenodo.21502114)
+
 ```r
 # Install
 devtools::install_github("tjogzt/paralogSL")
@@ -98,6 +101,7 @@ library(paralogSL)
 result <- compute_dd(dep_matrix, driver_gene = "ARID1A",
                      paralog_gene = "ARID1B",
                      mut_lines = mut_ids, wt_lines = wt_ids)
+```
 ```
 
 ## Reproducibility
@@ -113,6 +117,28 @@ docker run -v $(pwd)/data:/app/data paralog-sl python main.py
 
 All analyses use `set.seed(42)` (R) or `random_state=42` (Python) for reproducibility.
 
+### Verification checklist
+
+Every quantitative claim in `manuscript.tex` is recomputed from raw DepMap
+data by three audit scripts, each ending with an automatic claims check that
+exits non-zero on mismatch. One command runs all of them plus the test suite:
+
+```bash
+./verify_all.sh              # fast: reuses cached data slices (~30 s)
+VERIFY_FULL=1 ./verify_all.sh  # full: rebuilds all caches from raw CSVs
+```
+
+| Script | Recomputes | Claims check |
+|---|---|---|
+| `compute_headline_metrics.py` | DD values, TI, AUROC, pair counts, q-values | `output/headline_metrics.json` (16/16 match) |
+| `ml_benchmark.py` | LOO-CV AUROC of LR/RF/SVM vs DD-only baseline | `output/ml_benchmark.json` |
+| `regression_controls.py` | CNV/expression/TP53-adjusted regressions, CNV R² | `output/regression_controls.json` (10/10 match) |
+
+`regression_controls.py` also writes `output/cnv_independence.csv` and
+`output/cnv_scatter_sample.csv`, the exact inputs of `R_figS4.R` (Fig. S4).
+The test suite (`pytest tests/`, 31 tests) covers the R-package mirror and
+shared pipeline utilities.
+
 ## Data Availability
 
 - **DepMap 26Q1**: https://depmap.org/portal/download/
@@ -123,8 +149,9 @@ All analyses use `set.seed(42)` (R) or `random_state=42` (Python) for reproducib
 ## Citation
 
 ```
-Zhu T. Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-Candidates Across Solid Tumor Types. (2026).
+Mo Q, Zhu T. Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
+Candidates Across Solid Tumor Types. Genome Biology (2026).
+DOI: 10.5281/zenodo.21502031
 ```
 
 ## License

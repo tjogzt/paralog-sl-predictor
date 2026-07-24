@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "Delta Dependency: Paralog-Based Synthetic Lethality Prediction Across Solid Tumor Types"
+version: 1.0.0
+date-released: 2026-06-19
+authors:
+  - family-names: Mo
+    given-names: Qingqing
+  - family-names: Zhu
+    given-names: Tao
+    email: zhutao@tjh.tjmu.edu.cn
+    orcid: "https://orcid.org/0009-0001-0779-2245"
+repository-code: "https://github.com/tjogzt/paralog-sl-predictor"
+url: "https://github.com/tjogzt/paralog-sl-predictor"
+abstract: >-
+  Full analysis pipeline for Delta Dependency (DD) — a simple, interpretable
+  discovery-stage metric for prioritizing paralog-based synthetic lethality
+  candidates from DepMap CRISPR screening data across 23 solid tumor types.
+  Validated through CPTAC proteomics, PRISM drug screening, MSI stratification,
+  and therapeutic window analysis.
+keywords:
+  - synthetic lethality
+  - paralog compensation
+  - DepMap
+  - CPTAC proteomics
+  - drug target discovery
+  - therapeutic window
+  - computational biology
+license: MIT
+preferred-citation:
+  type: article
+  title: "Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types"
+  authors:
+    - family-names: Mo
+      given-names: Qingqing
+    - family-names: Zhu
+      given-names: Tao
+  journal: "Genome Biology"
+  year: 2026
+  doi: "10.5281/zenodo.21502031"

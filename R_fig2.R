@@ -40,6 +40,13 @@ save_panel <- function(p, name) {
   message(sprintf("  panel %s ✓", name))
 }
 
+# ── Headline metrics (single source of truth: compute_headline_metrics.py) ──
+.hm <- tryCatch(
+  read.delim("paralog_sl_predictor/output/tables/headline_metrics.tsv",
+             stringsAsFactors = FALSE),
+  error = function(e) stop("headline_metrics.tsv not found — run compute_headline_metrics.py first"))
+hm_num <- function(m) as.numeric(.hm$value[.hm$metric == m][1])
+
 # ═══════════════════════════════════════════════════════════════
 # PANEL A — CPTAC Cross-cancer Heatmap
 # ═══════════════════════════════════════════════════════════════
@@ -170,7 +177,7 @@ panel_b <- function() {
 panel_c <- function() {
   df <- tibble(
     level = c("Protein\n(DD)", "RNA\n(ΔExpression)", "Random"),
-    auroc = c(0.794, 0.339, 0.500),
+    auroc = c(hm_num("component_dd"), hm_num("component_delta_expression"), 0.500),
     clr   = c(RED, GRAY, LIGHT))
   df$level <- factor(df$level, levels = df$level)
 

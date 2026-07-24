@@ -12,6 +12,8 @@ data/synlethdb_sl_pairs.csv
 # === OS / IDE artifacts ===
 .DS_Store
 **/.DS_Store
+._*
+**/._*
 __pycache__/
 .pytest_cache/
 *.pyc
@@ -70,3 +72,7 @@ output/figures/*.jpg
 output/figures/*.jpeg
 output/figures/*.eps
 output/figures/*.bmp
+
+# === Reproducibility-audit intermediates (regenerable) ===
+output/cache/
+output/backup_prerun_*/

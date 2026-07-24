@@ -116,8 +116,24 @@ def fig1_schema():
 # Figure 2 — Benchmark comparison (DD vs Published Methods)
 # ═══════════════════════════════════════════════════════════════
 
+def _load_headline_metrics():
+    """Load the single source of truth written by compute_headline_metrics.py."""
+    import json
+    path = OUT.parent / "headline_metrics.json"
+    if not path.exists():
+        raise SystemExit("output/headline_metrics.json not found — "
+                         "run compute_headline_metrics.py first")
+    return json.loads(path.read_text())
+
+
 def fig2_benchmark():
-    """DD performance vs published SL prediction methods."""
+    """DD performance vs published SL prediction methods.
+
+    All this-study values are read from output/headline_metrics.json
+    (recomputed from artifacts); published values are literature constants.
+    """
+    hm = _load_headline_metrics()
+    pub = hm["published_benchmarks"]["values"]
     fig, axes = plt.subplots(1, 3, figsize=(8.5, 3.5),
                               gridspec_kw={"width_ratios": [2.5, 1.5, 2]})
 
@@ -125,7 +141,13 @@ def fig2_benchmark():
     ax = axes[0]
     methods = ["SLMGAE", "DDSL", "GRSL", "NSF4SL", "PGCN", "DDGCN",
                "KG4SL", "Struct2SL", "DD (ours)", "DD+ID≥0.3"]
-    aucs   = [0.700, 0.720, 0.680, 0.650, 0.620, 0.600, 0.580, 0.650, 0.794, 1.000]
+    idf3 = hm.get("identity_filter", {}).get("id_ge_0.3", {}).get("auroc")
+    if idf3 is None:
+        raise SystemExit("identity-filter metric missing — run compute_sequence_identity.R "
+                         "then compute_headline_metrics.py")
+    aucs   = [pub["SLMGAE"], pub["DDSL"], pub["GRSL"], pub["NSF4SL"],
+              pub["PGCN"], pub["DDGCN"], pub["KG4SL"], pub["Struct2SL"],
+              hm["lineage_full"]["auroc"], idf3]
     colors = [LOTUS]*8 + [CINNABAR, CINNABAR]
     alphas = [0.5]*8 + [0.95, 0.95]
 
@@ -139,11 +161,14 @@ def fig2_benchmark():
     for i, (v, c) in enumerate(zip(aucs, colors)):
         ax.text(v + 0.01, i, f"{v:.3f}", va="center", fontsize=6, color=c, fontweight="bold")
 
-    # (b) Identity filter
+    # (b) Identity filter — recomputed from TableS2 + paralog_identity.csv
     ax = axes[1]
-    ids = ["All\n(118)", "≥0.2\n(14)", "≥0.3\n(10)"]
-    dd_aucs = [0.794, 0.792, 1.000]
-    n_known = [11, 6, 4]
+    full = hm["lineage_full"]
+    idf2 = hm["identity_filter"]["id_ge_0.2"]
+    idf3d = hm["identity_filter"]["id_ge_0.3"]
+    ids = [f"All\n({full['n_entries']})", f"≥0.2\n({idf2['n_entries']})", f"≥0.3\n({idf3d['n_entries']})"]
+    dd_aucs = [full["auroc"], idf2["auroc"], idf3d["auroc"]]
+    n_known = [full["n_positives"], idf2["n_positives"], idf3d["n_positives"]]
     ax.plot([0, 1, 2], dd_aucs, "o-", color=CINNABAR, lw=2, ms=8, mec="white", mew=1)
     ax.set_xticks([0, 1, 2])
     ax.set_xticklabels(ids, fontsize=7)
@@ -152,10 +177,13 @@ def fig2_benchmark():
     ax.set_title("b  Identity Filter", fontsize=8, fontweight="bold", loc="left")
     ax.axhline(y=0.5, color=INK, ls="--", lw=0.5, alpha=0.3)
 
-    # (c) Component decomposition
+    # (c) Component decomposition — recomputed; "Protein features" retained as
+    # a claim (not reproducible from current artifacts) and marked accordingly
     ax = axes[2]
-    comps = ["DD", "PCS", "Necessity\nonly", "ΔExpression\nonly", "Protein\nfeatures", "Random"]
-    comp_aucs = [0.794, 0.478, 0.579, 0.339, 0.234, 0.500]
+    comp = hm["component_decomposition_lineage"]
+    comps = ["DD", "PCS", "Necessity\nonly", "ΔExpression\nonly", "Protein\nfeatures*", "Random"]
+    comp_aucs = [comp["dd"], comp["pcs"], comp["necessity"],
+                 comp["delta_expression_abs"], 0.234, 0.500]
     comp_colors = [CINNABAR, TIBETAN, CELADON, OCHRE, LOTUS, "#cccccc"]
     bars = ax.bar(range(len(comps)), comp_aucs, color=comp_colors, alpha=0.85, width=0.55)
     ax.set_xticks(range(len(comps)))
@@ -166,6 +194,8 @@ def fig2_benchmark():
     for bar, v in zip(bars, comp_aucs):
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02,
                 f"{v:.3f}", ha="center", fontsize=6.5, fontweight="bold")
+    ax.text(0.98, 0.02, "*not recomputed from artifacts", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=5, color="gray")
 
     fig.tight_layout()
     fig.savefig(OUT / "Fig2_Benchmark.pdf")
@@ -182,11 +212,22 @@ def fig3_cross_cancer():
     fig, axes = plt.subplots(1, 3, figsize=(8.5, 3.5),
                               gridspec_kw={"width_ratios": [1.5, 1.5, 2]})
 
-    # (a) Cross-cancer AUROC heatmap-like bar chart
+    # (a) Cross-cancer AUROC — recomputed from output/paralog_sl_candidates.csv
+    # (per-cancer AUROC of |DD| against the known paralog-SL positive set;
+    # values verified to match the previously hard-coded numbers)
     ax = axes[0]
+    cand_path = OUT.parent / "paralog_sl_candidates.csv"
+    if not cand_path.exists():
+        raise SystemExit("output/paralog_sl_candidates.csv not found — run main.py first")
+    cand = pd.read_csv(cand_path)
     cancers = ["Breast", "Ovarian", "Endometrial", "Cervical", "Lung"]
-    aucs = [0.889, 0.846, 0.797, 0.667, 0.353]
-    n_pairs = [11, 43, 68, 7, 77]
+    aucs, n_pairs = [], []
+    for ct in cancers:
+        sub = cand[cand["cancer_type"] == ct]
+        yt = sub["is_known_paralog_sl"].astype(int).values
+        ys = sub["dependency_dd"].abs().fillna(0).values
+        aucs.append(roc_auc_score(yt, ys) if yt.sum() >= 2 else np.nan)
+        n_pairs.append(len(sub))
     colors = [CANCER_COLORS[c] for c in cancers]
     bars = ax.bar(range(len(cancers)), aucs, color=colors, alpha=0.85, width=0.55)
     ax.set_xticks(range(len(cancers)))
@@ -201,7 +242,8 @@ def fig3_cross_cancer():
         ax.text(bar.get_x()+bar.get_width()/2, 0.05,
                 f"n={n}", ha="center", fontsize=5.5, color="gray")
 
-    # (b) Transfer matrix
+    # (b) Transfer matrix — NOT reproducible from any artifact in this repo
+    # (no train/test split script exists); retained as a claim and marked.
     ax = axes[1]
     transfer = np.array([
         [1.000, 0.889, 0.821, 1.000, np.nan],
@@ -220,8 +262,11 @@ def fig3_cross_cancer():
                 ax.text(j, i, f"{transfer[i,j]:.2f}", ha="center", va="center", fontsize=7,
                         color="white" if transfer[i,j] > 0.7 else INK, fontweight="bold")
     plt.colorbar(im, ax=ax, shrink=0.7, label="AUROC")
+    ax.text(0.98, -0.22, "*not recomputed from artifacts", transform=ax.transAxes,
+            ha="right", va="top", fontsize=5, color="gray")
 
-    # (c) De novo candidates
+    # (c) De novo candidates — PCS values traceable to paralog_sl_candidates.csv;
+    # protein-correlation annotations (prot_r) are CPTAC claims, not recomputed here.
     ax = axes[2]
     candidates = [
         ("KRAS→HRAS", "Ovarian", 0.087, 0.522),
@@ -423,67 +468,87 @@ def fig6_proteomics():
 from sklearn.metrics import roc_auc_score
 from scipy.stats import mannwhitneyu
 
-def run_full_validation(results):
+def run_full_validation(results, n_permutations: int = 10000,
+                        n_bootstrap: int = 1000, seed: int = 42):
     """
-    Run full validation suite on paralog-SL results:
-    negative control, bootstrap, component decomposition.
-    Returns dict of validation metrics.
+    Run the validation suite on paralog-SL results and return a metrics dict.
+
+    Frameworks (manuscript "Evaluation frameworks" paragraph):
+      * per-pair  — unique driver->paralog pairs in the three gynecological
+        lineages (Ovarian/Endometrial/Cervical), scored by max |DD| across
+        lineages. This reproduces the 77-pair / 8-positive framework cited in
+        the manuscript (observed AUROC 0.6685 on the frozen artifact).
+        Bootstrap and permutation analyses use this framework.
+      * lineage-level — each driver x paralog x lineage entry separately
+        (206 entries, 11 positives; AUROC 0.794).
+
+    The pre-2026-07-25 output/validation_report.json (cited by the manuscript
+    and by R_figS8.R) was produced by a no-longer-present script whose
+    label-null had mean 0.58 — inconsistent with a true label shuffle (which
+    must have mean 0.5). That historical version is preserved under
+    output/backup_prerun_20260725/; main.py now regenerates
+    output/validation_report.json reproducibly with a seeded, correct
+    label-shuffle null, and writes the raw null to
+    output/permutation_null_10000.csv for figure scripts.
     """
-    import numpy as np
-    
-    yt = results["is_known_paralog_sl"].astype(int).values
+    rng = np.random.default_rng(seed)
+
+    # ── Per-pair framework: gyn3 lineages, max |DD| across lineages ──
+    gyn = results[results["cancer_type"].isin(["Ovarian", "Endometrial", "Cervical"])]
+    pp = (gyn.groupby(["driver_gene", "paralog_gene"])
+             .agg(score=("dependency_dd", lambda s: s.abs().max()),
+                  known=("is_known_paralog_sl", "max"))
+             .reset_index())
+    yt = pp["known"].astype(int).values
+    ys = pp["score"].fillna(0).values
     n_known = int(yt.sum())
-    n_total = len(results)
-    
-    # DD AUROC
-    ys_dd = results["dependency_dd"].abs().fillna(0).values
-    dd_auroc = roc_auc_score(yt, ys_dd) if n_known >= 2 else float("nan")
-    
-    # Composite score AUROC
-    ys_comp = results.get("composite_score", pd.Series(0, index=results.index)).fillna(0).values
-    comp_auroc = roc_auc_score(yt, ys_comp) if n_known >= 2 else float("nan")
-    
-    # Component decomposition
+    n_total = len(pp)
+    dd_auroc = roc_auc_score(yt, ys) if n_known >= 2 else float("nan")
+
+    # Negative control: seeded label shuffle (null mean is ~0.5 by construction)
+    null_aurocs = np.array([
+        roc_auc_score(rng.permutation(yt), ys) for _ in range(n_permutations)
+    ])
+    null_mean = float(np.mean(null_aurocs))
+    null_std = float(np.std(null_aurocs))
+    emp_p = float((np.sum(null_aurocs >= dd_auroc) + 1) / (len(null_aurocs) + 1))
+
+    # Bootstrap CI on the per-pair frame
+    bs_aurocs = []
+    for _ in range(n_bootstrap):
+        idx = rng.integers(0, n_total, n_total)
+        if yt[idx].sum() >= 2:
+            bs_aurocs.append(roc_auc_score(yt[idx], ys[idx]))
+    bs_mean = float(np.mean(bs_aurocs)) if bs_aurocs else dd_auroc
+    bs_ci_low = float(np.percentile(bs_aurocs, 2.5)) if bs_aurocs else 0.0
+    bs_ci_high = float(np.percentile(bs_aurocs, 97.5)) if bs_aurocs else 1.0
+
+    # ── Lineage-level frame (gyn3 entries; manuscript's "cancer-type-specific"
+    # evaluation: 118 driver x paralog x lineage entries, 11 positives) ──
+    yt_lin = gyn["is_known_paralog_sl"].astype(int).values
+    ys_lin = gyn["dependency_dd"].abs().fillna(0).values
+    nk_lin = int(yt_lin.sum())
+    lin_dd_auroc = roc_auc_score(yt_lin, ys_lin) if nk_lin >= 2 else float("nan")
+    ys_comp = gyn.get("composite_score", pd.Series(0, index=gyn.index)).fillna(0).values
+    lin_comp_auroc = roc_auc_score(yt_lin, ys_comp) if nk_lin >= 2 else float("nan")
+
     component_metrics = {}
     if "delta_expression" in results.columns:
+        # component "expression_only" follows the historical artifact:
+        # |delta_expression| AUROC over the full all-lineage frame
+        yt_all = results["is_known_paralog_sl"].astype(int).values
         ys_expr = results["delta_expression"].abs().fillna(0).values
         try:
-            expr_auroc = roc_auc_score(yt, ys_expr) if n_known >= 2 else float("nan")
+            component_metrics["expression_only"] = (
+                roc_auc_score(yt_all, ys_expr) if yt_all.sum() >= 2 else float("nan"))
         except Exception:
-            expr_auroc = float("nan")
-        component_metrics["expression_only"] = expr_auroc
-    
-    # Negative control (shuffle labels)
-    np.random.seed(42)
-    null_aurocs = []
-    for _ in range(100):
-        yt_shuffled = np.random.permutation(yt)
-        try:
-            null_aurocs.append(roc_auc_score(yt_shuffled, ys_dd))
-        except Exception:
-            pass
-    null_mean = np.mean(null_aurocs) if null_aurocs else 0.5
-    null_std = np.std(null_aurocs) if null_aurocs else 0.1
-    
-    # Empirical p-value
-    emp_p = (sum(1 for na in null_aurocs if na >= dd_auroc) + 1) / (len(null_aurocs) + 1) if null_aurocs else 0.5
-    
-    # Bootstrap CI
-    bs_aurocs = []
-    for _ in range(1000):
-        idx = np.random.choice(n_total, n_total, replace=True)
-        yt_bs = yt[idx]
-        ys_bs = ys_dd[idx]
-        try:
-            if yt_bs.sum() >= 2:
-                bs_aurocs.append(roc_auc_score(yt_bs, ys_bs))
-        except Exception:
-            pass
-    bs_mean = np.mean(bs_aurocs) if bs_aurocs else dd_auroc
-    bs_ci_low = np.percentile(bs_aurocs, 2.5) if bs_aurocs else 0
-    bs_ci_high = np.percentile(bs_aurocs, 97.5) if bs_aurocs else 1
-    
+            component_metrics["expression_only"] = float("nan")
+
     return {
+        "framework": "per_pair: gyn3 unique pairs, score = max |DD| across lineages",
+        "note": ("Reproducible companion to the frozen historical "
+                 "output/validation_report.json; label-shuffle null is seeded "
+                 "and has mean ~0.5 by construction."),
         "negative_control": {
             "observed_auroc": dd_auroc,
             "null_auroc_mean": null_mean,
@@ -491,13 +556,24 @@ def run_full_validation(results):
             "empirical_p_value": emp_p,
             "n_known": str(n_known),
             "n_total": n_total,
+            "n_permutations": n_permutations,
+            "seed": seed,
         },
         "component_decomposition": component_metrics,
         "bootstrap": {
             "auroc_mean": bs_mean,
             "auroc_ci_low": bs_ci_low,
             "auroc_ci_high": bs_ci_high,
+            "n_bootstrap": n_bootstrap,
         },
+        "lineage_level": {
+            "frame": "gyn3 (Ovarian/Endometrial/Cervical) lineage-level entries",
+            "dd_auroc": lin_dd_auroc,
+            "composite_auroc": lin_comp_auroc,
+            "n_entries": int(len(gyn)),
+            "n_positives": nk_lin,
+        },
+        "null_distribution": null_aurocs,
     }
 
 

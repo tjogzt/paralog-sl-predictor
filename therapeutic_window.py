@@ -91,8 +91,11 @@ def compute_therapeutic_window(dep, driver, paralog, mut_ids, wt_ids, all_ids):
     if len(mut_vals) < 3 or len(wt_vals) < 3:
         return None
     
-    # Basic DD
-    dd = mut_vals.mean() - wt_vals.mean()
+    # Basic DD (manuscript Eq. 1: WT − MUT; positive = compensation in
+    # driver-mutant lines). All downstream ranking uses |dd| (dd_abs), so
+    # this sign convention is presentation-only but kept consistent with
+    # pcs.py and the paralogSL R package (compute_dd).
+    dd = wt_vals.mean() - mut_vals.mean()
     
     # Pan-essentiality
     pan_mean = all_vals.mean()

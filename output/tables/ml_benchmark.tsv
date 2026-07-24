@@ -1,0 +1,9 @@
+metric	value	claimed
+LR	0.6322	0.632
+RF	0.6286	0.629
+SVM_RBF_low	0.5634	0.563
+SVM_Linear_high	0.6993	0.699
+dd_alone	0.7355	0.736
+composite_alone	0.7301	0.73
+lr_beta_dd	2.1211	2.12
+lr_p_dd	0.3116	0.312

@@ -1,5 +1,5 @@
 # Tests for paralogSL core functions (v2 - fixed matrix dimensions)
-source("../../R/paralogSL.R", chdir = TRUE)
+library(paralogSL)
 test_that("compute_dd returns correct structure", {
   vals <- c(-0.5, -0.3, -0.1, -0.8, -0.4, -0.2,
             -0.3, -0.1, 0.1, -0.5, -0.2, -0.3)

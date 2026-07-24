@@ -25,28 +25,15 @@ theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   plot.background  = element_rect(fill = "white", color = NA),
   panel.background = element_rect(fill = "white", color = NA))
 
-# ── Load DepMap data ──
-message("Loading CNV data...")
-cnv_raw <- read_csv("paralog_sl_predictor/data/OmicsCNGene.csv", show_col_types = FALSE)
-cnv_ids <- cnv_raw[[1]]
-cnv_mat <- as.matrix(cnv_raw[, -1])
-cnv_genes <- gsub(" \\(\\d+\\)", "", colnames(cnv_mat))
-colnames(cnv_mat) <- cnv_genes
-rownames(cnv_mat) <- cnv_ids
+# ── Load precomputed artifacts (regression_controls.py) ──
+# R² values: per-gene lm(CERES ~ CNV) on all CNV∩dep cell lines (n = 1192).
+# Scatter points: 300 sampled cell lines per gene (same data, subsampled for plotting).
+r2_tab <- read_csv("paralog_sl_predictor/output/cnv_independence.csv", show_col_types = FALSE)
+scatter <- read_csv("paralog_sl_predictor/output/cnv_scatter_sample.csv", show_col_types = FALSE)
+message(sprintf("Loaded R² for %d genes; %d scatter points",
+                nrow(r2_tab), nrow(scatter)))
 
-message("Loading CRISPR dependency data...")
-dep_raw <- read_csv("paralog_sl_predictor/data/CRISPRGeneEffect.csv", show_col_types = FALSE)
-dep_ids <- dep_raw[[1]]
-dep_mat <- as.matrix(dep_raw[, -1])
-dep_genes <- gsub(" \\(\\d+\\)", "", colnames(dep_mat))
-colnames(dep_mat) <- dep_genes
-rownames(dep_mat) <- dep_ids
-
-# Find common cell lines
-common_cl <- intersect(rownames(cnv_mat), rownames(dep_mat))
-message(sprintf("Common cell lines: %d / %d CNV, %d CERES", length(common_cl), nrow(cnv_mat), nrow(dep_mat)))
-
-# Paralog genes to analyze
+# Paralog genes to analyze (panel order)
 paralog_genes <- c("ARID1A","ARID1B","PIK3CA","PIK3CB","PIK3R1","CRKL",
                    "EP300","CREBBP","KRAS","HRAS","PTEN","TNS2",
                    "SMARCA4","SMARCA2","PPP2R1A","PPP2R1B",
@@ -54,18 +41,11 @@ paralog_genes <- c("ARID1A","ARID1B","PIK3CA","PIK3CB","PIK3R1","CRKL",
                    "STK11","SIK1")
 
 make_cnv_plot <- function(gene) {
-  if (!(gene %in% cnv_genes && gene %in% dep_genes)) {
+  r2 <- r2_tab$r2[r2_tab$gene == gene]
+  df <- scatter %>% filter(gene == !!gene)
+  if (length(r2) == 0 || nrow(df) < 10) {
     return(NULL)
   }
-  cnv <- cnv_mat[common_cl, gene]
-  dep <- dep_mat[common_cl, gene]
-  ok <- !is.na(cnv) & !is.na(dep)
-  cnv <- cnv[ok]; dep <- dep[ok]
-  if (length(cnv) < 10) {
-    return(NULL)
-  }
-  r2 <- summary(lm(dep ~ cnv))$r.squared
-  df <- tibble(cnv = cnv, dep = dep)
   ggplot(df, aes(cnv, dep)) +
     geom_point(size = 0.3, alpha = 0.3, color = BLUE) +
     geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 0.3) +

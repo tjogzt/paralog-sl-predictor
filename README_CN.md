@@ -1,5 +1,6 @@
 # Delta Dependency：跨实体瘤类型的旁系同源基因合成致死候选优先排序
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502031.svg)](https://doi.org/10.5281/zenodo.21502031)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **[English](README.md)** | **中文**
@@ -10,11 +11,11 @@
 
 Delta Dependency（DD）是一个简单、可解释的发现阶段指标，用于从癌症依赖图谱（DepMap）CRISPR 筛选数据中优先排序基于旁系同源基因的合成致死（SL）候选靶点。DD 测量驱动基因突变型与野生型细胞系之间 Chronos 基因效应评分的偏移量，按癌症谱系分别计算。
 
-**核心发现：**
-- DD 仅使用单一特征在与多特征 ML 分类器的同一测试集头对头比较中达到 AUROC = 0.736
-- 7 个 CPTAC 蛋白质组学队列（n=672）揭示了 RNA 水平无法检测到的蛋白质水平旁系同源基因共变
-- 治疗窗分析将 ARID1A→ARID1B 提名为选择性最强的候选靶点（TI = 4.13）
-- 所有候选靶点均为计算提名，需要实验验证
+**核心发现（详见论文全文）：**
+- **DD vs. 已发表方法：** AUROC = 0.794（CV3 框架，12 对金标准），超过 8 种深度学习模型（最佳已发表：DDSL, 0.720）
+- **主要测试集（10 对 true sequence paralogs）：** AUROC = 0.837
+- **头对头比较（同一 77 对测试集）：** 仅用 DD（0.736）即在留一交叉验证下超过全部四种多特征分类器（LR 0.632、RF 0.629、SVM-Linear 0.699、SVM-RBF 0.563）——单一可解释特征泛化最佳
+- DD + ≥30% 序列一致性过滤 → AUROC = 1.000
 
 ## 方法原理
 
@@ -144,7 +145,7 @@ DepMap 基因效应矩阵
 
 ## R 包
 
-独立 R 包仓库：**[tjogzt/paralogSL](https://github.com/tjogzt/paralogSL)**
+独立 R 包仓库：**[tjogzt/paralogSL](https://github.com/tjogzt/paralogSL)** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502114.svg)](https://doi.org/10.5281/zenodo.21502114)
 
 | 功能 | 函数 |
 |------|------|
@@ -160,8 +161,20 @@ DepMap 基因效应矩阵
 ## 引用
 
 ```
-Zhu T. Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-Candidates Across Solid Tumor Types. (2026).
+Mo Q, Zhu T. Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
+Candidates Across Solid Tumor Types. Genome Biology (2026).
+DOI: 10.5281/zenodo.21502031
+```
+
+```bibtex
+@article{Zhu2026,
+  title   = {Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
+             Candidates Across Solid Tumor Types},
+  author  = {Zhu, Tao},
+  journal = {Genome Biology},
+  year    = {2026},
+  doi     = {10.5281/zenodo.21502031},
+}
 ```
 
 ## 许可证

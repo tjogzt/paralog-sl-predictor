@@ -165,3 +165,66 @@ class TestRunFullAnalysis:
             cancer_types=["Ovarian"]
         )
         assert result.empty
+
+
+class TestDDSignConventionAndBH:
+    """Numerical-correctness tests for the DD sign convention (manuscript
+    Eq. 1: DD = mean WT - mean MUT) and the BH q-value implementation."""
+
+    def test_dd_sign_matches_manuscript_eq1(self, small_dependency, small_expression,
+                                            small_models, small_mutations, small_paralogs):
+        """Mutant lines MORE dependent on the paralog (lower Chronos) must
+        yield POSITIVE DD (compensation), per manuscript Eq. 1 and the
+        paralogSL R package."""
+        pcs = ParalogCompensationScore(
+            small_dependency, small_expression, small_models,
+            small_mutations, small_paralogs
+        )
+        result = pcs.compute_pcs_for_driver("BRCA1", [f"CL{i}" for i in range(1, 7)], "Ovarian")
+        brca2 = result[result["paralog_gene"] == "BRCA2"].iloc[0]
+        # Fixture: BRCA2 Chronos ~ -0.9 in MUT vs ~ -0.15 in WT (stronger
+        # dependency in mutant) -> DD = mean(WT) - mean(MUT) ~ +0.75
+        assert brca2["dependency_dd"] > 0
+        assert brca2["dependency_dd"] == pytest.approx(0.75, abs=0.05)
+        assert brca2["cohens_d"] > 0
+
+    def test_dd_p_value_on_dependency(self, small_dependency, small_expression,
+                                      small_models, small_mutations, small_paralogs):
+        """dd_p_value is the Welch t-test on dependency scores (distinct
+        statistic from expr_p_value, mirroring R compute_dd()$p_value)."""
+        pcs = ParalogCompensationScore(
+            small_dependency, small_expression, small_models,
+            small_mutations, small_paralogs
+        )
+        result = pcs.compute_pcs_for_driver("BRCA1", [f"CL{i}" for i in range(1, 7)], "Ovarian")
+        assert "dd_p_value" in result.columns
+        brca2 = result[result["paralog_gene"] == "BRCA2"].iloc[0]
+        assert brca2["dd_p_value"] < 0.01  # groups are strongly separated in fixture
+
+    def test_bh_adjust_matches_r_reference(self):
+        """_bh_adjust must equal R's p.adjust(method='BH') reference values
+        (verified against R 4.5: see compute_headline_metrics.py docs)."""
+        from pcs import _bh_adjust
+        v = np.array([0.9, 0.001, 0.5, 0.02, 0.2, 0.01, 0.03, 0.05])
+        r_ref = np.array([0.9, 0.008, 0.5714285714286, 0.0533333333333,
+                          0.2666666666667, 0.04, 0.06, 0.08])
+        assert np.allclose(_bh_adjust(v), r_ref, atol=1e-10)
+
+    def test_bh_adjust_monotone_and_bounded(self):
+        """For sorted p-values, q-values must be non-decreasing and within [0, 1]
+        (the property the previous row-order implementation could violate)."""
+        from pcs import _bh_adjust
+        rng = np.random.default_rng(7)
+        for _ in range(50):
+            p = np.sort(rng.uniform(0, 1, size=rng.integers(2, 40)))
+            q = _bh_adjust(p)
+            assert np.all(np.diff(q) >= -1e-12)
+            assert (q >= 0).all() and (q <= 1).all()
+
+    def test_bh_adjust_nan_safe(self):
+        """NaN p-values are treated as 1.0 (never significant) and cannot
+        poison the correction of the remaining p-values."""
+        from pcs import _bh_adjust
+        q = _bh_adjust(np.array([0.01, np.nan, 0.04]))
+        # Reference: R p.adjust(c(0.01, 1.0, 0.04), 'BH') = c(0.03, 1.0, 0.06)
+        assert np.allclose(q, [0.03, 1.0, 0.06], atol=1e-12)

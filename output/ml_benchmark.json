@@ -1,0 +1,118 @@
+{
+  "generated_at": "2026-07-24T19:22:14+00:00",
+  "generated_by": "ml_benchmark.py",
+  "source": "output/tables/TableS2_FullResults.tsv",
+  "universe": {
+    "n_pairs": 77,
+    "n_positives": 8,
+    "aggregation": "mean across gyn3 lineages per pair"
+  },
+  "features": [
+    "dd_abs",
+    "pcs",
+    "dexpr_abs",
+    "necessity",
+    "composite",
+    "mut_freq"
+  ],
+  "cv": "leave-one-pair-out (77 folds), AUROC on out-of-fold scores",
+  "seed": 42,
+  "classifiers": {
+    "LR": {
+      "auroc": 0.6322463768115942
+    },
+    "RF": {
+      "auroc": 0.6286231884057971
+    },
+    "SVM_RBF": {
+      "auroc": 0.5634057971014492
+    },
+    "SVM_Linear": {
+      "auroc": 0.6992753623188406
+    }
+  },
+  "single_feature": {
+    "dd_alone": 0.7355072463768116,
+    "composite_alone": 0.730072463768116
+  },
+  "lr_coefficients": {
+    "const": {
+      "beta": -2.9229539777538305,
+      "p_value": 3.7131269126820283e-05
+    },
+    "dd_abs": {
+      "beta": 2.1211361789958474,
+      "p_value": 0.3116351164073179
+    },
+    "pcs": {
+      "beta": 2.509552306373024,
+      "p_value": 0.6477108766015637
+    },
+    "dexpr_abs": {
+      "beta": -1.074191464566514,
+      "p_value": 0.3268871794583611
+    },
+    "necessity": {
+      "beta": 0.3703190290233004,
+      "p_value": 0.5793991218061492
+    },
+    "composite": {
+      "beta": -3.343606999139475,
+      "p_value": 0.6062547327547654
+    },
+    "mut_freq": {
+      "beta": 0.8260151897599447,
+      "p_value": 0.6127467750171119
+    }
+  },
+  "manuscript_claims_check": [
+    {
+      "metric": "LR",
+      "claimed": 0.632,
+      "computed": 0.6322,
+      "status": "match"
+    },
+    {
+      "metric": "RF",
+      "claimed": 0.629,
+      "computed": 0.6286,
+      "status": "match"
+    },
+    {
+      "metric": "SVM_RBF_low",
+      "claimed": 0.563,
+      "computed": 0.5634,
+      "status": "match"
+    },
+    {
+      "metric": "SVM_Linear_high",
+      "claimed": 0.699,
+      "computed": 0.6993,
+      "status": "match"
+    },
+    {
+      "metric": "dd_alone",
+      "claimed": 0.736,
+      "computed": 0.7355,
+      "status": "match"
+    },
+    {
+      "metric": "composite_alone",
+      "claimed": 0.73,
+      "computed": 0.7301,
+      "status": "match"
+    },
+    {
+      "metric": "lr_beta_dd",
+      "claimed": 2.12,
+      "computed": 2.1211,
+      "status": "match"
+    },
+    {
+      "metric": "lr_p_dd",
+      "claimed": 0.312,
+      "computed": 0.3116,
+      "status": "match"
+    }
+  ]
+}

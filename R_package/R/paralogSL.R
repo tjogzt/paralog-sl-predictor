@@ -76,6 +76,10 @@ build_mutation_matrix <- function(mutations_df, cell_lines, genes) {
 #' Delta Dependency DD(D, P, c) = mean(G_P | D wild-type) - mean(G_P | D mutant),
 #' where G is the Chronos gene-effect score. Positive values indicate greater
 #' paralog dependency in the mutant context (consistent with paralog compensation).
+#' This matches Equation 1 of the companion manuscript and pcs.py in the
+#' Python pipeline. The returned p_value is a Welch t-test on the dependency
+#' scores themselves (distinct from the expression-based test in pcs.py,
+#' which is exported there as expr_p_value and dd_p_value respectively).
 #'
 #' @param dependency Numeric matrix (cell lines x genes) of Chronos gene-effect scores
 #' @param driver_gene Character, the driver gene name
@@ -99,6 +103,7 @@ compute_dd <- function(dependency, driver_gene, paralog_gene,
   dep_wt  <- dependency[wt_lines,  paralog_gene]
 
   dd <- mean(dep_wt, na.rm = TRUE) - mean(dep_mut, na.rm = TRUE)
+  # Welch t-test on dependency scores (t.test defaults to unequal variances)
   t_res <- tryCatch(t.test(dep_mut, dep_wt), error = function(e) NULL)
   p_val <- if (!is.null(t_res)) t_res$p.value else NA
 
@@ -237,6 +242,13 @@ filter_cancer_cell_lines <- function(models_df, cancer_types) {
 
 #' Compute AUROC for DD prediction against known SL pairs
 #'
+#' Ranks pairs by |DD| (absolute Delta Dependency), matching the validation
+#' convention used throughout the companion manuscript and Python pipeline
+#' ("DD alone, using only |DD|"). With the manuscript sign convention
+#' (DD = mean WT − mean MUT), a large positive DD indicates compensatory
+#' dependency in mutant lines; the absolute value additionally credits pairs
+#' where dependency shifts strongly in either direction.
+#'
 #' @param results_df Results from run_paralog_analysis()
 #' @param known_pairs data.frame with columns gene_A, gene_B
 #' @return The AUROC value
@@ -250,14 +262,17 @@ compute_auroc <- function(results_df, known_pairs) {
 
   if (sum(is_known) < 2 || sum(!is_known) < 2) return(NA_real_)
 
-  roc_obj <- pROC::roc(is_known, results_df$DD)
+  roc_obj <- pROC::roc(is_known, abs(results_df$DD), quiet = TRUE)
   as.numeric(roc_obj$auc)
 }
 
 #' Benchmark DD against published method performance
 #'
 #' Returns the pre-computed CV3 AUROC values from Feng et al. (2024)
-#' for comparison with DD performance.
+#' for comparison with DD performance. This-study values (0.794 on the
+#' lineage-level gyn3 frame; 1.000 for DD + ID >= 0.3) were re-verified
+#' on 2026-07-25 against compute_headline_metrics.py in the
+#' paralog_sl_predictor pipeline.
 #'
 #' @return A data.frame with Method, CV3_AUROC, and Reference columns
 #' @export

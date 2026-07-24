@@ -51,21 +51,29 @@ def main():
         print("No results."); sys.exit(1)
 
     # ── Validation ──
+    # output/validation_report.json is now regenerated reproducibly by
+    # run_full_validation (per-pair framework, 77 pairs / 8 positives, seeded
+    # 10,000-permutation label-shuffle null). The pre-2026-07-25 historical
+    # version — whose null had an anomalous mean of 0.58 (a true label shuffle
+    # must center at 0.5) — is preserved under output/backup_prerun_20260725/.
     vr = run_full_validation(results)
-    with open("output/validation_report.json","w") as f:
-        json.dump({k:v for k,v in vr.items() if not isinstance(v,pd.DataFrame)}, f, indent=2, default=str)
+    null_dist = vr.pop("null_distribution", None)
+    if null_dist is not None:
+        pd.DataFrame({"null_auroc": null_dist}).to_csv(
+            "output/permutation_null_10000.csv", index=False)
+    with open("output/validation_report.json", "w") as f:
+        json.dump({k: v for k, v in vr.items() if not isinstance(v, pd.DataFrame)},
+                  f, indent=2, default=str)
 
-    # ── Cross-cancer validation ──
-    all_res = {}
-    for ct in ["Ovarian","Endometrial","Cervical"]:
-        r = run_full_analysis(dep, expr, mod, mut, para, cancer_types=[ct])
-        if not r.empty: all_res[ct] = r
+    # ── Cross-cancer validation (slice the full run; no redundant re-analysis) ──
+    all_res = {ct: results[results["cancer_type"] == ct]
+               for ct in results["cancer_type"].unique()}
     cross_cancer_validation(all_res)
 
     # ── Export ──
     ranked = rank_and_export(results, RESULTS_FILE, SUMMARY_FILE)
 
-    print(f"\n{'='*60}\nOutputs:\n  Results:  {RESULTS_FILE}\n  Summary:  {SUMMARY_FILE}\n  Validation: output/validation_report.json\n{'='*60}\n")
+    print(f"\n{'='*60}\nOutputs:\n  Results:  {RESULTS_FILE}\n  Summary:  {SUMMARY_FILE}\n  Validation: output/validation_report.json (+ permutation_null_10000.csv)\n{'='*60}\n")
 
     top_novel = ranked[ranked["novelty"]=="Novel"].head(10)
     if not top_novel.empty:

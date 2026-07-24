@@ -1,3 +1,43 @@
+#' Cross-Cancer Summary
+#'
+#' A data.frame of gynecological cancer cross-cancer analysis results.
+#'
+#' @format A data.frame with columns:
+#' \describe{
+#'   \item{cancer}{Cancer type name}
+#'   \item{n_lines}{Number of cell lines}
+#'   \item{n_pairs}{Number of paralog pairs tested}
+#'   \item{n_known}{Number of known paralog-SL pairs}
+#'   \item{dd_auroc}{DD AUROC against gold standard}
+#' }
+"cross_cancer_summary"
+
+#' Solid Tumor Pan-Cancer Summary
+#'
+#' A data.frame of DD AUROC results across 24 solid tumor types.
+#'
+#' @format A data.frame with columns:
+#' \describe{
+#'   \item{cancer}{Cancer type name}
+#'   \item{n_lines}{Number of available cell lines}
+#' }
+"solid_tumor_summary"
+
+#' Therapeutic Window Summary
+#'
+#' A data.frame summarizing therapeutic index (TI) metrics across contexts.
+#'
+#' @format A data.frame with columns:
+#' \describe{
+#'   \item{context}{Cancer/tissue context}
+#'   \item{n_lines}{Number of cell lines}
+#'   \item{n_pairs}{Number of paralog pairs}
+#'   \item{n_known}{Number of known SL pairs}
+#'   \item{n_selective}{Number of selective candidates}
+#'   \item{n_good_window}{Number with favorable TI}
+#' }
+"therapeutic_window_summary"
+
 #' Gynecological and Breast/Lung Cancer Driver Genes
 #'
 #' A named list of driver genes for five cancer types, curated from

@@ -17,7 +17,7 @@ for d in [DATA_DIR, OUTPUT_DIR, FIG_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
 # ── DepMap data (download from https://depmap.org/portal/download/) ──
-DEPMAP_VERSION = "24Q4"  # or "25Q1"
+DEPMAP_VERSION = "26Q1"
 DEPMAP_FILES = {
     "dependency": DATA_DIR / "CRISPRGeneEffect.csv",
     "expression": DATA_DIR / "OmicsExpressionProteinCodingGenesTPMLogp1.csv",

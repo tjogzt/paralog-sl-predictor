@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "paralogSL: Paralog-Based Synthetic Lethality Prioritization via Delta Dependency"
+version: 1.0.0
+date-released: 2026-05-25
+doi: 10.5281/zenodo.21502114
+authors:
+  - family-names: Mo
+    given-names: Qingqing
+  - family-names: Zhu
+    given-names: Tao
+    email: zhutao@tjh.tjmu.edu.cn
+    orcid: "https://orcid.org/0009-0001-0779-2245"
+repository-code: "https://github.com/tjogzt/paralogSL"
+url: "https://github.com/tjogzt/paralogSL"
+abstract: >-
+  A lightweight R package for prioritizing paralog-based synthetic lethality (SL)
+  candidates through Delta Dependency analysis. Computes DD scores from DepMap
+  Chronos gene-effect data, identifies candidate paralog-SL pairs using HGNC gene
+  family annotations, and provides discovery-stage evaluation metrics.
+keywords:
+  - synthetic lethality
+  - paralog compensation
+  - cancer dependency map
+  - drug target discovery
+  - computational biology
+license: MIT
