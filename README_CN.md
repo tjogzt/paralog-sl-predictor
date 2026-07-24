@@ -1,6 +1,6 @@
 # Delta Dependency：跨实体瘤类型的旁系同源基因合成致死候选优先排序
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502031.svg)](https://doi.org/10.5281/zenodo.21502031)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502030.svg)](https://doi.org/10.5281/zenodo.21502030)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **[English](README.md)** | **中文**
