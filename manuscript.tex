@@ -70,7 +70,7 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 
 The PARP inhibitor story crystallizes what makes synthetic lethality (SL) so compelling: BRCA1/2-mutant tumors depend on PARP-mediated repair, and drugging PARP kills them while sparing normal cells \cite{ONeil2017,Huang2020,Lord2017,Bryant2005,Farmer2005}. The logic is elegant; repeating it for other mutations has proven hard. Fewer than 30,000 human SL interactions are catalogued in SynLethDB \cite{Zheng2022}, and the existing computational prediction methods — graph neural networks \cite{Chen2023}, graph convolutional networks with dual dropout \cite{Das2024}, graph-regularized approaches \cite{Liu2024}, negative sampling frameworks \cite{Li2023}, and structure-based methods \cite{Zhang2024} — train almost entirely on these limited known pairs. Feng et al.\ \cite{Feng2024} showed that these methods degrade sharply from the CV1 setting (AUROC~$>$~0.90) to the CV3 gene-pair isolation setting (AUROC~$=$~0.58--0.72), which is precisely where predictive models matter: nominating genuinely new SL pairs.
 
-Paralog compensation provides a simpler route into this problem \cite{Koonin2005,DAntonio2023}. Gene duplication events leave behind paralogs — sequence-similar gene pairs with overlapping biochemical roles. When a paralog acting as a tumor suppressor (the ``driver'') is inactivated by mutation, its partner paralog can become conditionally essential. This is \textit{sequence-paralog SL}: synthetic lethality between two genes that share $>$30\% sequence identity and conserved functional domains. Known examples include \textit{SMARCA4}$\rightarrow$\textit{SMARCA2} (SWI/SNF ATPase subunits) \cite{Hoffman2014}, \textit{ARID1A}$\rightarrow$\textit{ARID1B} (BAF complex subunits) \cite{Helming2014,Bitler2015}, \textit{EP300}$\rightarrow$\textit{CREBBP} (histone acetyltransferases), \textit{PIK3CA}$\rightarrow$\textit{PIK3CB} (PI3K catalytic isoforms), \textit{AKT1}$\rightarrow$\textit{AKT2}, \textit{CCNE1}$\rightarrow$\textit{CCNE2}, \textit{CDK4}$\rightarrow$\textit{CDK6}, and \textit{MAP2K1}$\rightarrow$\textit{MAP2K2}. In every case, the driver and paralog share sequence homology and biochemical function; when the driver is inactivated by mutation, the remaining paralog becomes the cancer cell's dependency.
+Paralog compensation provides a simpler route into this problem \cite{Koonin2005,DAntonio2023}. Gene duplication events leave behind paralogs — sequence-similar gene pairs with overlapping biochemical roles. When a paralog acting as a tumor suppressor (the ``driver'') is inactivated by mutation, its partner paralog can become conditionally essential. This is \textit{sequence-paralog SL}: synthetic lethality between two genes that share $>$30\% sequence identity and conserved functional domains. Known examples include \textit{SMARCA4}$\rightarrow$\textit{SMARCA2} (SWI/SNF ATPase subunits) \cite{Hoffman2014}, \textit{ARID1A}$\rightarrow$\textit{ARID1B} (BAF complex subunits) \cite{Helming2014,Bitler2015}, \textit{EP300}$\rightarrow$\textit{CREBBP} (histone acetyltransferases) \cite{Ogiwara2016}, \textit{PIK3CA}$\rightarrow$\textit{PIK3CB} (PI3K catalytic isoforms) \cite{Zheng2022}, \textit{AKT1}$\rightarrow$\textit{AKT2}, \textit{CCNE1}$\rightarrow$\textit{CCNE2}, \textit{CDK4}$\rightarrow$\textit{CDK6}, and \textit{MAP2K1}$\rightarrow$\textit{MAP2K2} \cite{Zheng2022}. In every case, the driver and paralog share sequence homology and biochemical function; when the driver is inactivated by mutation, the remaining paralog becomes the cancer cell's dependency.
 
 Two related phenomena need to be separated from sequence-paralog SL. \textit{Functional analogs} such as BRCA1 and BRCA2 share pathway roles (homologous recombination repair) but have no sequence homology. \textit{Pathway-level SL} interactions, such as BRCA1$\leftrightarrow$PARP1 and PTEN$\leftrightarrow$PIK3CB \cite{Jia2008,Wee2008}, exploit indirect pathway wiring rather than direct biochemical redundancy. Our analysis concentrates on sequence-paralog pairs; functional analogs including BRCA1/BRCA2 are retained as negative controls and flagged throughout (Supplementary Table~S3).
 
@@ -426,11 +426,27 @@ We thank the DepMap, CPTAC, TCGA, PRISM, and cBioPortal teams for making their d
 
 \bibitem{Helming2014} Helming KC, Wang X, Wilson BG, Vazquez F, Haswell JR, Manchester HE, et al.\ ARID1B is a specific vulnerability in ARID1A-mutant cancers. \textit{Nat Med}. 2014;20(3):251--254.
 
+\bibitem{Bitler2015} Bitler BG, Aird KM, Garipov A, Li H, Amatangelo M, Kossenkov AV, et al.\ Synthetic lethality by targeting EZH2 methyltransferase activity in ARID1A-mutated cancers. \textit{Nat Med}. 2015;21(3):231--238.
+
+\bibitem{Ogiwara2016} Ogiwara H, Sasaki M, Mitachi T, Oike T, Higuchi S, Tominaga Y, et al.\ Targeting p300 addiction in CBP-deficient cancers causes synthetic lethality by apoptotic cell death due to abrogation of MYC expression. \textit{Cancer Discov}. 2016;6(4):430--445.
+
 \bibitem{Jia2008} Jia S, Liu Z, Zhang S, Liu P, Zhang L, Lee SH, et al.\ Essential roles of PI(3)K-p110$\beta$ in cell growth, metabolism and tumorigenesis. \textit{Nature}. 2008;454(7205):776--779.
 
 \bibitem{Wee2008} Wee S, Wiederschain D, Maira SM, Loo A, Miller C, deBeaumont R, et al.\ PTEN-deficient cancers depend on PIK3CB. \textit{Proc Natl Acad Sci USA}. 2008;105(35):13057--13062.
 
-\bibitem{Taylor2022} Taylor SE, O'Connor CM, Wang Z, Shen G, Song H, Leonard D, et al.\ PPP2R1A mutations cause synthetic lethality with RNR inhibition through a p53-dependent mechanism. \textit{Cancer Res}. 2022;82(4):721--733.
+\bibitem{Bailey2018} Bailey MH, Tokheim C, Porta-Pardo E, Sengupta S, Bertrand D, Weerasinghe A, et al.\ Comprehensive characterization of cancer driver genes and mutations. \textit{Cell}. 2018;173(2):371--385.e18.
+
+\bibitem{ICGC2020} ICGC/TCGA Pan-Cancer Analysis of Whole Genomes Consortium. Pan-cancer analysis of whole genomes. \textit{Nature}. 2020;578(7793):82--93.
+
+\bibitem{Cerami2012} Cerami E, Gao J, Dogrusoz U, Gross BE, Sumer SO, Aksoy BA, et al.\ The cBio cancer genomics portal: an open platform for exploring multidimensional cancer genomics data. \textit{Cancer Discov}. 2012;2(5):401--404.
+
+\bibitem{Gao2013} Gao J, Aksoy BA, Dogrusoz U, Dresdner G, Gross B, Sumer SO, et al.\ Integrative analysis of complex cancer genomics and clinical profiles using the cBioPortal. \textit{Sci Signal}. 2013;6(269):pl1.
+
+\bibitem{Edwards2015} Edwards NJ, Oberti M, Thangudu RR, Cai S, McGarvey PB, Jacob S, et al.\ The CPTAC data portal: a resource for cancer proteomics research. \textit{J Proteome Res}. 2015;14(6):2707--2713.
+
+\bibitem{Liu2018} Liu J, Lichtenberg T, Hoadley KA, Poisson LM, Lazar AJ, Cherniack AD, et al.\ An integrated TCGA pan-cancer clinical data resource to drive high-quality survival outcome analytics. \textit{Cell}. 2018;173(2):400--416.e11.
+
+\bibitem{Corsello2020} Corsello SM, Nagari RT, Spangler RD, Rossen J, Kocak M, Bryan JG, et al.\ Discovering the anticancer potential of non-oncology drugs by systematic viability profiling. \textit{Nat Cancer}. 2020;1(2):235--248.
 
 \bibitem{DepMap2026} Cancer Dependency Map Portal. DepMap 26Q1 Public Release. \url{https://depmap.org}. 2026.
 
@@ -438,31 +454,15 @@ We thank the DepMap, CPTAC, TCGA, PRISM, and cBioPortal teams for making their d
 
 \bibitem{Dempster2021} Dempster JM, Boyle I, Vazquez F, Root DE, Boehm JS, Hahn WC, et al.\ Chronos: a cell population dynamics model of CRISPR experiments that improves inference of gene fitness effects. \textit{Genome Biol}. 2021;22:343.
 
-\bibitem{Cerami2012} Cerami E, Gao J, Dogrusoz U, Gross BE, Sumer SO, Aksoy BA, et al.\ The cBio cancer genomics portal: an open platform for exploring multidimensional cancer genomics data. \textit{Cancer Discov}. 2012;2(5):401--404.
-
-\bibitem{Gao2013} Gao J, Aksoy BA, Dogrusoz U, Dresdner G, Gross B, Sumer SO, et al.\ Integrative analysis of complex cancer genomics and clinical profiles using the cBioPortal. \textit{Sci Signal}. 2013;6(269):pl1.
-
-\bibitem{Corsello2020} Corsello SM, Nagari RT, Spangler RD, Rossen J, Kocak M, Bryan JG, et al.\ Discovering the anticancer potential of non-oncology drugs by systematic viability profiling. \textit{Nat Cancer}. 2020;1(2):235--248.
-
-\bibitem{Liu2018} Liu J, Lichtenberg T, Hoadley KA, Poisson LM, Lazar AJ, Cherniack AD, et al.\ An integrated TCGA pan-cancer clinical data resource to drive high-quality survival outcome analytics. \textit{Cell}. 2018;173(2):400--416.e11.
-
-\bibitem{Bailey2018} Bailey MH, Tokheim C, Porta-Pardo E, Sengupta S, Bertrand D, Weerasinghe A, et al.\ Comprehensive characterization of cancer driver genes and mutations. \textit{Cell}. 2018;173(2):371--385.e18.
-
-\bibitem{ICGC2020} ICGC/TCGA Pan-Cancer Analysis of Whole Genomes Consortium. Pan-cancer analysis of whole genomes. \textit{Nature}. 2020;578(7793):82--93.
+\bibitem{Pacini2021} Pacini C, Dempster JM, Boyle I, Gon\c{c}alves E, Najgebauer H, Karakoc E, et al.\ Integrated cross-study datasets of genetic dependencies in cancer. \textit{Nat Commun}. 2021;12:1661.
 
 \bibitem{Benjamini1995} Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. \textit{J R Stat Soc B}. 1995;57(1):289--300.
 
-\bibitem{Edwards2015} Edwards NJ, Oberti M, Thangudu RR, Cai S, McGarvey PB, Jacob S, et al.\ The CPTAC data portal: a resource for cancer proteomics research. \textit{J Proteome Res}. 2015;14(6):2707--2713.
-
-\bibitem{Pacini2021} Pacini C, Dempster JM, Boyle I, Gon\c{c}alves E, Najgebauer H, Karakoc E, et al.\ Integrated cross-study datasets of genetic dependencies in cancer. \textit{Nat Commun}. 2021;12:1661.
-
-\bibitem{Bitler2015} Bitler BG, Aird KM, Garipov A, Li H, Amatangelo M, Kossenkov AV, et al.\ Synthetic lethality by targeting EZH2 methyltransferase activity in ARID1A-mutated cancers. \textit{Nat Med}. 2015;21(3):231--238.
-
 \bibitem{Pedregosa2011} Pedregosa F, Varoquaux G, Gramfort A, Michel V, Thirion B, Grisel O, et al.\ Scikit-learn: machine learning in Python. \textit{J Mach Learn Res}. 2011;12:2825--2830.
 
-\bibitem{Virtanen2020} Virtanen P, Gommers R, Oliphant TE, Haberland M, Reddy T, Cournapeau D, et al.\ SciPy 1.0: fundamental algorithms for scientific computing in Python. \textit{Nat Methods}. 2020;17(3):261--272.
-
 \bibitem{Harris2020} Harris CR, Millman KJ, van der Walt SJ, Gommers R, Virtanen P, Cournapeau D, et al.\ Array programming with NumPy. \textit{Nature}. 2020;585(7825):357--362.
+
+\bibitem{Virtanen2020} Virtanen P, Gommers R, Oliphant TE, Haberland M, Reddy T, Cournapeau D, et al.\ SciPy 1.0: fundamental algorithms for scientific computing in Python. \textit{Nat Methods}. 2020;17(3):261--272.
 
 \end{thebibliography}
 
