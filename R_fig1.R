@@ -173,7 +173,8 @@ panel_d <- function() {
     scale_color_identity() +
     geom_hline(yintercept = 0.5, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     labs(x = NULL, y = "AUROC") +
-    scale_y_continuous(expand = expansion(mult = c(0, 0.18))) +
+    scale_y_continuous(limits = c(0, 1.05), breaks = seq(0, 1, 0.25),
+                       expand = expansion(mult = c(0, 0))) +
     theme_sci
 
   # Bootstrap inset — read live from validation_report.json (values change
@@ -205,9 +206,11 @@ panel_d <- function() {
           axis.text = element_text(size = 4.5),
           axis.title = element_text(size = 5))
 
-  # Place inset at upper right
+  # Place inset in the upper-right band, clear of every bar and value label:
+  # horizontally it starts right of the PCS bar (bar 2 right edge ~0.44 in
+  # panel fraction); vertically it floats above the Necessity label (~0.60).
   ggdraw(main) +
-    draw_plot(inset, x = 0.30, y = 0.58, width = 0.47, height = 0.41)
+    draw_plot(inset, x = 0.52, y = 0.66, width = 0.46, height = 0.32)
 }
 
 # ═══════════════════════════════════════════════════════════════
