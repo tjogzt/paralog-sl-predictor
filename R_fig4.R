@@ -10,7 +10,7 @@ library(readr)
 library(ggrepel)
 
 # ── Constants ──
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6; ANNOT_FS <- 5.5
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7; ANNOT_FS <- 5.5
 PANEL_W   <- 90; PANEL_H <- 90  # mm
 OUT_DIR   <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
@@ -118,7 +118,7 @@ panel_b <- function() {
     ggrepel::geom_text_repel(
               data = filter(tw, mean_ti > 2 | class_label %in% c("HIGH","PAN")),
               aes(label = paste0(driver, "->", paralog)),
-              size = 1.8, show.legend = FALSE, max.overlaps = 20,
+              size = 2.5, show.legend = FALSE, max.overlaps = 20,
               min.segment.length = 0, box.padding = 0.3) +
     geom_hline(yintercept = 0, linewidth = 0.3, color = GRAY, alpha = 0.4) +
     geom_vline(xintercept = 1, linewidth = 0.3, color = GRAY, alpha = 0.3, linetype = "dashed") +
@@ -188,7 +188,7 @@ panel_d <- function() {
   ggplot(cand, aes(score, label, fill = is_top)) +
     geom_col(width = 0.55) +
     geom_text(aes(label = sprintf("%.3f", score), color = txt_col),
-              hjust = -0.1, size = 2.2, fontface = "bold", show.legend = FALSE) +
+              hjust = -0.1, size = 2.5, fontface = "bold", show.legend = FALSE) +
     scale_color_identity() +
     scale_fill_manual(values = c(`TRUE` = RED, `FALSE` = BLUE),
                       labels = c(`TRUE` = "Top candidate", `FALSE` = "Others")) +
@@ -214,7 +214,7 @@ p <- ggdraw() +
   draw_plot(pd, x = 0.5,  y = 0,    width = 0.5, height = 0.5) +
   draw_plot_label(c("a","b","c","d"),
                   x = c(0, 0.5, 0, 0.5), y = c(1, 1, 0.5, 0.5),
-                  size = 9, fontface = "bold")
+                  size = 9, fontface = "bold", fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "Fig4_Translational.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)

@@ -10,7 +10,7 @@ library(readr)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 5.5
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7
 PANEL_W <- 60; PANEL_H <- 60
 
 BLUE  <- "#2171B5"; RED   <- "#CB181D"
@@ -54,7 +54,7 @@ panel_a <- function() {
   ggplot(df, aes(dd_auroc, cancer_short)) +
     geom_col(fill = RED, width = 0.6) +
     geom_text(aes(label = sprintf("%.3f", dd_auroc)), hjust = -0.1, size = 2.5, color = RED) +
-    scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.35))) +
     labs(x = "DD AUROC", y = NULL, title = "Strong signal") +
     theme_sci + theme(plot.title = element_text(size = 7, face = "bold"))
 }
@@ -66,7 +66,7 @@ panel_b <- function() {
   ggplot(df, aes(dd_auroc, cancer_short)) +
     geom_col(fill = BLUE, width = 0.6) +
     geom_text(aes(label = sprintf("%.3f", dd_auroc)), hjust = -0.1, size = 2.5, color = BLUE) +
-    scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.35))) +
     labs(x = "DD AUROC", y = NULL, title = "Moderate signal") +
     theme_sci + theme(plot.title = element_text(size = 7, face = "bold"))
 }
@@ -78,7 +78,7 @@ panel_c <- function() {
   ggplot(df, aes(dd_auroc, cancer_short)) +
     geom_col(fill = GRAY, width = 0.6) +
     geom_text(aes(label = sprintf("%.3f", dd_auroc)), hjust = -0.1, size = 2.5, color = GRAY) +
-    scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.35))) +
     labs(x = "DD AUROC", y = NULL, title = "Weak signal") +
     theme_sci + theme(plot.title = element_text(size = 7, face = "bold"))
 }
@@ -96,12 +96,12 @@ message("  panels saved")
 # right-most value labels when full lineage names widened panel b's gtable.
 p <- cowplot::plot_grid(pa, pb, pc, nrow = 1,
                         labels = c("a","b","c"),
-                        label_size = 8, label_fontface = "bold")
+                        label_size = 8, label_fontface = "bold", label_fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.pdf"), p,
-       width = 200, height = 60, units = "mm", device = cairo_pdf)
+       width = 180, height = 60, units = "mm", device = cairo_pdf)
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.svg"), p,
-       width = 200, height = 60, units = "mm", device = svglite::svglite)
+       width = 180, height = 60, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.tiff"), p,
-       width = 200, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
-message("FigS2_CrossCancer_AUROC.pdf (200×60mm) ✓")
+       width = 180, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
+message("FigS2_CrossCancer_AUROC.pdf (180×60mm) ✓")

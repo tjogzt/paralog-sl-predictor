@@ -10,7 +10,7 @@ library(readr)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7
 PANEL_W <- 90; PANEL_H <- 90
 
 RED   <- "#CB181D"; BLUE  <- "#2171B5"; GRAY  <- "#636363"
@@ -59,8 +59,11 @@ panel_a <- function() {
     return(ggplot() + annotate("text", x=0.5, y=0.5, label="No data", size=5) + theme_void())
   }
   tw_sorted <- tw %>% arrange(mean_ti)
-  tw_sorted$label <- factor(paste0(tw_sorted$driver, "->", tw_sorted$paralog),
-                            levels = paste0(tw_sorted$driver, "->", tw_sorted$paralog))
+  # two-line labels (house style, same as FigS6c); margin(l) guarantees headroom
+  # against the y-label column's slight underestimate of rendered text width,
+  # which clipped leading characters at the figure's left edge
+  tw_sorted$label <- factor(paste0(tw_sorted$driver, "->\n", tw_sorted$paralog),
+                            levels = paste0(tw_sorted$driver, "->\n", tw_sorted$paralog))
   tw_sorted$class_short <- factor(tw_sorted$classification,
                                   levels = names(class_labels),
                                   labels = class_labels)
@@ -70,10 +73,12 @@ panel_a <- function() {
     scale_fill_manual(values = class_colors, drop = FALSE) +
     labs(x = "Mean Therapeutic Index (TI)", y = NULL) +
     theme_sci + theme(legend.position = "bottom",
-                      plot.margin = margin(15, 4, 4, 10, "pt"),
+                      plot.margin = margin(10, 4, 4, 4, "pt"),
+                      axis.text.y = element_text(size = 7, lineheight = 0.85,
+                                                 margin = margin(l = 10, r = 2)),
                       legend.key.size = unit(3.5, "mm"),
                       legend.spacing.x = unit(3, "mm"),
-                      legend.text = element_text(size = 5.5, margin = margin(l = 1, r = 4, unit = "pt")))
+                      legend.text = element_text(size = 7, margin = margin(l = 1, r = 4, unit = "pt")))
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -140,7 +145,8 @@ panel_d <- function() {
     ggrepel::geom_text_repel(
       data = tw_d %>% group_by(class_short) %>% slice_max(abs(mean_dd), n = 1),
       aes(label = paste0(driver, "->", paralog)),
-      size = 2, show.legend = FALSE, max.overlaps = 20, box.padding = 0.3) +
+      size = 2.5, show.legend = FALSE, max.overlaps = 20, box.padding = 0.3,
+      point.padding = 0.5) +
     geom_hline(yintercept = 1, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     geom_vline(xintercept = 0.15, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     scale_color_manual(values = class_colors, drop = FALSE) +
@@ -157,14 +163,18 @@ pa <- panel_a(); pb <- panel_b(); pc <- panel_c(); pd <- panel_d()
 
 save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c"); save_panel(pd, "d")
 
-p <- ggdraw() +
-  draw_plot(pa, x = 0,    y = 0.5,  width = 0.5, height = 0.5) +
-  draw_plot(pb, x = 0.5,  y = 0.5,  width = 0.5, height = 0.5) +
-  draw_plot(pc, x = 0,    y = 0,    width = 0.5, height = 0.5) +
-  draw_plot(pd, x = 0.5,  y = 0,    width = 0.5, height = 0.5) +
-  draw_plot_label(c("a","b","c","d"),
-                  x = c(0, 0.5, 0, 0.5), y = c(1, 1, 0.5, 0.5),
-                  size = 9, fontface = "bold")
+# Left column: TI ranking (full height, two-line labels); right column: b/c/d
+# stacked. Nested plot_grid (not ggdraw/draw_plot): draw_plot anchored the
+# panel region to the viewport edge and the y-label column was clipped at the
+# figure's left edge regardless of cell width or label margins.
+right_col <- cowplot::plot_grid(pb, pc, pd, ncol = 1,
+                                labels = c("b","c","d"),
+                                label_size = 9, label_fontface = "bold",
+                                label_fontfamily = "Arial")
+p <- cowplot::plot_grid(pa, right_col, ncol = 2, rel_widths = c(0.42, 0.58),
+                        labels = c("a",""),
+                        label_size = 9, label_fontface = "bold",
+                        label_fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS7_TherapeuticWindow.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)

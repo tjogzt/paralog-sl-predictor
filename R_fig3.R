@@ -8,7 +8,7 @@ library(tidyr)
 library(readr)
 
 # ── Constants ──
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7
 PANEL_W <- 90; PANEL_H <- 90
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
@@ -58,7 +58,7 @@ panel_a <- function() {
     geom_col(position = position_dodge(0.7), width = 0.55) +
     geom_text(aes(y = bar_val + 0.03,
                   label = ifelse(!is.na(auroc), paste0("n=", n), paste0("n=", n, "*\n(insuff.)"))),
-              position = position_dodge(0.7), size = 2.2, color = GRAY, vjust = 0) +
+              position = position_dodge(0.7), size = 2.5, color = GRAY, vjust = 0) +
     scale_fill_manual(values = c("MSI-H" = "#F4A582", "MSS" = BLUE)) +
     geom_hline(yintercept = 0.5, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     labs(x = NULL, y = "DD AUROC") +
@@ -158,7 +158,7 @@ p <- ggdraw() +
   draw_plot(pd, x = 0.5,  y = 0,    width = 0.5, height = 0.5) +
   draw_plot_label(c("a","b","c","d"),
                   x = c(0, 0.5, 0, 0.5), y = c(1, 1, 0.5, 0.5),
-                  size = 9, fontface = "bold")
+                  size = 9, fontface = "bold", fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "Fig3_Clinical.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)

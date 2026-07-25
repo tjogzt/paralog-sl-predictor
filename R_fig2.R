@@ -10,7 +10,7 @@ library(readr)
 library(reshape2)
 
 # ── Constants ──
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7
 PANEL_W <- 90; PANEL_H <- 90
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
@@ -131,7 +131,7 @@ panel_a <- function() {
     theme_minimal(base_size = 7, base_family = "Arial") +
     theme(panel.grid = element_blank(),
           axis.text.x = element_text(size = TICK_FS, angle = 45, hjust = 1),
-          axis.text.y = element_text(size = 6),
+          axis.text.y = element_text(size = 7),
           legend.position = "right",
           legend.key.height = unit(0.4, "cm"),
           legend.key.width  = unit(0.2, "cm"),
@@ -242,7 +242,7 @@ p <- ggdraw() +
   draw_plot(pd, x = 0.5, y = 0,   width = 0.5,  height = 0.5) +
   draw_plot_label(c("a","b","c","d"),
                   x = c(0, 0.55, 0, 0.5), y = c(1, 1, 0.5, 0.5),
-                  size = 9, fontface = "bold")
+                  size = 9, fontface = "bold", fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "Fig2_Proteomics.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)

@@ -10,7 +10,7 @@ library(readr)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7
 PANEL_W <- 90; PANEL_H <- 90
 
 RED   <- "#CB181D"; BLUE  <- "#2171B5"; GRAY  <- "#636363"
@@ -143,7 +143,7 @@ panel_c <- function() {
     scale_fill_manual(values = c(Truncating = RED, Missense = BLUE)) +
     labs(x = "|DD|", y = NULL) +
     theme_sci + theme(legend.position = "bottom",
-                      axis.text.y = element_text(size = 6.5))
+                      axis.text.y = element_text(size = 7))
 }
 
 # (panel c — legend below)
@@ -215,12 +215,12 @@ save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c"); save_panel(pd, "d
 # panel c are no longer clipped (draw_plot with fixed cells clipped them).
 p <- cowplot::plot_grid(pa, pb, pc, pd, ncol = 2,
                         labels = c("a","b","c","d"),
-                        label_size = 9, label_fontface = "bold")
+                        label_size = 9, label_fontface = "bold", label_fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS6_MutationType.pdf"), p,
-       width = 190, height = 180, units = "mm", device = cairo_pdf)
+       width = 180, height = 180, units = "mm", device = cairo_pdf)
 ggsave(file.path(OUT_DIR, "FigS6_MutationType.svg"), p,
        width = 180, height = 180, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "FigS6_MutationType.tiff"), p,
        width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
-message("FigS6_MutationType.pdf (190×180mm) ✓")
+message("FigS6_MutationType.pdf (180×180mm) ✓")

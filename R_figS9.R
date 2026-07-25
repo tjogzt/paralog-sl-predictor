@@ -11,7 +11,7 @@ library(httr)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7
 BLUE  <- "#2171B5"; RED   <- "#CB181D"; GRAY  <- "#636363"
 
 theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(

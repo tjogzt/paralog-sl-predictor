@@ -10,7 +10,7 @@ library(readr)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7
 
 # Colors
 BLUE  <- "#2171B5"; RED   <- "#CB181D"; GRAY  <- "#636363"
@@ -68,7 +68,7 @@ h_mm <- nrow * 45  # ~45mm per row
 message(sprintf("  Layout: %d×%d, canvas 180×%dmm", ncol, nrow, h_mm))
 p <- plot_grid(plotlist = plots, ncol = ncol, align = "hv",
                labels = letters[1:n_plots],
-               label_size = 6, label_fontface = "bold")
+               label_size = 7, label_fontface = "bold", label_fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS4_CNV_Independence.pdf"), p,
        width = 180, height = h_mm, units = "mm", device = cairo_pdf)

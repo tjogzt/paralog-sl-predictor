@@ -8,7 +8,7 @@ library(jsonlite)
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7
 PANEL_W <- 60; PANEL_H <- 60
 
 BLUE  <- "#2171B5"; RED   <- "#CB181D"; GRAY  <- "#636363"
@@ -64,7 +64,7 @@ p <- ggdraw() +
   draw_plot(pb, x = 1/3,   y = 0, width = 1/3, height = 1) +
   draw_plot(pc, x = 2/3,   y = 0, width = 1/3, height = 1) +
   draw_plot_label(c("a","b","c"), x = c(0, 1/3, 2/3), y = c(1, 1, 1),
-                  size = 8, fontface = "bold")
+                  size = 8, fontface = "bold", fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS3_CPTAC_PerCohort.pdf"), p,
        width = 180, height = 60, units = "mm", device = cairo_pdf)

@@ -6,7 +6,7 @@ library(dplyr)
 library(readr)
 
 OUT_DIR <- "paralog_sl_predictor/output/figures"
-BASE_FS <- 7; TICK_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7
 RED   <- "#CB181D"; BLUE  <- "#2171B5"; GREEN <- "#238B45"
 GRAY  <- "#636363"; DARK <- "#252525"
 
@@ -39,12 +39,12 @@ tier_colors <- c("AUROC > 0.7" = RED, "AUROC 0.5-0.7" = BLUE,
 pa <- ggplot(d, aes(n_lines, cancer, fill = auroc_tier)) +
   geom_col(width = 0.7) +
   scale_fill_manual(values = tier_colors, name = NULL) +
-  geom_text(aes(label = n_lines), hjust = -0.15, size = 2.2, color = DARK) +
+  geom_text(aes(label = n_lines), hjust = -0.15, size = 2.5, color = DARK) +
   labs(x = "Cell lines in DepMap 26Q1", y = NULL) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
   theme_sci +
   theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0),
-        legend.text = element_text(size = 5.5),
+        legend.text = element_text(size = 7),
         legend.key.size = unit(3, "mm"))
 
 # Panel B: Tested pairs and known positives (AUROC-tier colored + red known overlay)
@@ -53,10 +53,10 @@ pb <- ggplot(d, aes(n_pairs, cancer, fill = auroc_tier)) +
   geom_col(aes(x = n_known), width = 0.7, fill = RED, alpha = 0.9) +
   scale_fill_manual(values = tier_colors, name = NULL, guide = "none") +
   geom_text(aes(x = n_pairs, label = sprintf("%d/%d", n_known, n_pairs)),
-            hjust = -0.05, size = 2, color = DARK) +
+            hjust = -0.05, size = 2.5, color = DARK) +
   annotate("text", x = Inf, y = -Inf,
            label = "Background: AUROC tier (see a)\nRed bars: known positives",
-           hjust = 1.05, vjust = -0.3, size = 2.2, color = DARK, fontface = "italic") +
+           hjust = 1.05, vjust = -0.3, size = 2.5, color = DARK, fontface = "italic") +
   labs(x = "Tested pairs", y = NULL) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
   theme_sci +
@@ -71,7 +71,7 @@ message("  Individual panels saved ✓")
 p <- ggdraw() +
   draw_plot(pa, x = 0,    y = 0, width = 0.55, height = 1) +
   draw_plot(pb, x = 0.55, y = 0, width = 0.45, height = 1) +
-  draw_plot_label(c("a","b"), x = c(0, 0.52), y = c(1, 1), size = 9, fontface = "bold")
+  draw_plot_label(c("a","b"), x = c(0, 0.52), y = c(1, 1), size = 9, fontface = "bold", fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS1_CellLine_Landscape.pdf"), p,
        width = 180, height = 120, units = "mm", device = cairo_pdf)

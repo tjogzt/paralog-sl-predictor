@@ -4,7 +4,7 @@ library(cowplot)
 library(jsonlite)
 
 OUT_DIR <- "paralog_sl_predictor/output/figures"
-BASE_FS <- 7; TICK_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7
 BLUE  <- "#2171B5"; RED   <- "#CB181D"; GRAY  <- "#636363"; DARK <- "#252525"
 
 theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
@@ -64,7 +64,7 @@ pb <- ggplot(data.frame(x = null_vals), aes(x)) +
 p <- ggdraw() +
   draw_plot(pa, x = 0,   y = 0, width = 0.5, height = 1) +
   draw_plot(pb, x = 0.5, y = 0, width = 0.5, height = 1) +
-  draw_plot_label(c("a","b"), x = c(0, 0.5), y = c(1, 1), size = 9, fontface = "bold")
+  draw_plot_label(c("a","b"), x = c(0, 0.5), y = c(1, 1), size = 9, fontface = "bold", fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS8_Bootstrap_NegCtrl.pdf"), p,
        width = 180, height = 90, units = "mm", device = cairo_pdf)

@@ -9,7 +9,7 @@ library(readr)
 library(ggrepel)
 
 # ── Constants ──
-BASE_FS <- 7; TICK_FS <- 6; LEGEND_FS <- 6
+BASE_FS <- 7; TICK_FS <- 7; LEGEND_FS <- 7
 PANEL_W <- 90; PANEL_H <- 90
 OUT_DIR <- "paralog_sl_predictor/output/figures"
 dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
@@ -199,12 +199,12 @@ panel_d <- function() {
              size = 3.5, color = RED, fontface = "bold", hjust = 0, vjust = 1.5) +
     geom_vline(xintercept = ci, color = GRAY, linewidth = 0.4, linetype = "dashed") +
     labs(x = "AUROC", y = "N") +
-    theme_bw(base_size = 5) +
+    theme_bw(base_size = 7) +
     theme(panel.grid = element_blank(),
           panel.background = element_rect(fill = "transparent", color = NA),
           plot.background  = element_rect(fill = "white", color = NA),
-          axis.text = element_text(size = 4.5),
-          axis.title = element_text(size = 5))
+          axis.text = element_text(size = 7),
+          axis.title = element_text(size = 7))
 
   # Place inset in the upper-right band, clear of every bar and value label:
   # horizontally it starts right of the PCS bar (bar 2 right edge ~0.44 in
@@ -228,7 +228,7 @@ p <- ggdraw() +
   draw_plot(pd, x = 0.5,  y = 0,    width = 0.5, height = 0.5) +
   draw_plot_label(c("a","b","c","d"),
                   x = c(0, 0.5, 0, 0.5), y = c(1, 1, 0.5, 0.5),
-                  size = 9, fontface = "bold")
+                  size = 9, fontface = "bold", fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)
