@@ -176,7 +176,7 @@ panel_b <- function() {
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
   df <- tibble(
-    level = c("Protein\n(DD)", "RNA\n(ΔExpression)", "Random"),
+    level = c("Dependency\n(DD)", "RNA\n(ΔExpression)", "Random"),
     auroc = c(hm_num("component_dd"), hm_num("component_delta_expression"), 0.500),
     clr   = c(RED, GRAY, LIGHT),
     tclr  = c(RED, GRAY, GRAY))

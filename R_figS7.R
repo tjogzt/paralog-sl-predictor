@@ -52,7 +52,7 @@ class_labels <- c(HIGH_SELECTIVITY = "HIGH", MODERATE = "MODERATE",
                   LOW_SELECTIVITY = "LOW", PAN_ESSENTIAL = "PAN")
 
 # ═══════════════════════════════════════════════════════════════
-# PANEL A — TI Ranking
+# PANEL A — DWS Ranking
 # ═══════════════════════════════════════════════════════════════
 panel_a <- function() {
   if (is.null(tw)) {
@@ -71,7 +71,7 @@ panel_a <- function() {
   ggplot(tw_sorted, aes(mean_ti, label, fill = class_short)) +
     geom_col(width = 0.55) +
     scale_fill_manual(values = class_colors, drop = FALSE) +
-    labs(x = "Mean Therapeutic Index (TI)", y = NULL) +
+    labs(x = "Mean Dependency Window Score (DWS)", y = NULL) +
     theme_sci + theme(legend.position = "bottom",
                       plot.margin = margin(10, 4, 4, 4, "pt"),
                       axis.text.y = element_text(size = 7, lineheight = 0.85,
@@ -126,7 +126,7 @@ panel_b <- function() {
 }
 
 # ═══════════════════════════════════════════════════════════════
-# PANEL C — TI by Cancer Context
+# PANEL C — DWS by Cancer Context
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
   if (is.null(tw_all)) {
@@ -137,15 +137,15 @@ panel_c <- function() {
 
   ggplot(ctx, aes(context_short, therapeutic_index)) +
     geom_boxplot(fill = BLUE, alpha = 0.3, outlier.size = 0.8, linewidth = 0.3) +
-    geom_hline(aes(yintercept = 1.0, linetype = "TI = 1"), linewidth = 0.4, color = RED, alpha = 0.5) +
-    scale_linetype_manual(values = c("TI = 1" = "dashed")) +
-    labs(x = NULL, y = "Therapeutic Index") +
+    geom_hline(aes(yintercept = 1.0, linetype = "DWS = 1"), linewidth = 0.4, color = RED, alpha = 0.5) +
+    scale_linetype_manual(values = c("DWS = 1" = "dashed")) +
+    labs(x = NULL, y = "Dependency Window Score") +
     theme_sci + theme(axis.text.x = element_text(angle = 30, hjust = 1),
                       legend.position = c(0.98, 0.98), legend.justification = c(1, 1))
 }
 
 # ═══════════════════════════════════════════════════════════════
-# PANEL D — Selectivity vs TI Scatter
+# PANEL D — Selectivity vs DWS Scatter
 # ═══════════════════════════════════════════════════════════════
 panel_d <- function() {
   if (is.null(tw)) {
@@ -168,7 +168,7 @@ panel_d <- function() {
     # larger, evenly spaced legend keys: default glyphs were tiny and the
     # labels sat closer to the NEXT key than to their own
     guides(color = guide_legend(override.aes = list(size = 3.2, alpha = 1))) +
-    labs(x = "Selectivity", y = "Therapeutic Index (TI)") +
+    labs(x = "Selectivity", y = "Dependency Window Score (DWS)") +
     theme_sci + theme(legend.position = "bottom",
                       legend.spacing.x = unit(1, "mm"),
                       legend.text = element_text(size = 7, margin = margin(l = 2, r = 8, unit = "pt")))
@@ -182,7 +182,7 @@ pa <- panel_a(); pb <- panel_b(); pc <- panel_c(); pd <- panel_d()
 
 save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c"); save_panel(pd, "d")
 
-# Left column: TI ranking (full height, two-line labels); right column: b/c/d
+# Left column: DWS ranking (full height, two-line labels); right column: b/c/d
 # stacked. Nested plot_grid (not ggdraw/draw_plot): draw_plot anchored the
 # panel region to the viewport edge and the y-label column was clipped at the
 # figure's left edge regardless of cell width or label margins.

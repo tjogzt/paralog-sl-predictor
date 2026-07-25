@@ -90,7 +90,7 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS7_TherapeuticWindow.pdf}
-\caption{\textbf{Therapeutic window analysis.} a, All 24 paralog pairs ranked by mean Therapeutic Index (TI) across 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer). ARID1A$\rightarrow$ARID1B ranks first (TI~$=$~4.13). b, In vitro selectivity tier classification: HIGH\_SELECTIVITY (selectivity~$>$~0.15 and TI~$>$~1.0), MODERATE, LOW\_SELECTIVITY, and PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$). c, TI values broken down by individual cancer context showing cross-lineage consistency for top candidates. d, Selectivity vs.\ TI scatter plot; ARID1A$\rightarrow$ARID1B is the only pair in the upper-right quadrant (high TI and high selectivity).}
+\caption{\textbf{Therapeutic window analysis.} a, All 24 paralog pairs ranked by mean dependency window score (DWS) across 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer). ARID1A$\rightarrow$ARID1B ranks first (DWS~$=$~4.13). b, In vitro selectivity tier classification: HIGH\_SELECTIVITY (selectivity~$>$~0.15 and DWS~$>$~1.0), MODERATE, LOW\_SELECTIVITY, and PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$). c, DWS values broken down by individual cancer context showing cross-lineage consistency for top candidates. d, Selectivity vs.\ DWS scatter plot; ARID1A$\rightarrow$ARID1B is the only pair in the upper-right quadrant (high DWS and high selectivity).}
 \end{figure}
 
 % S8
@@ -262,7 +262,7 @@ with $\ge$3 mutant cell lines in at least one DepMap lineage.}
 \footnotesize
 \begin{tabular}{llrrrll}
 \toprule
-\textbf{Driver} & \textbf{Paralog} & \textbf{|DD|} & \textbf{TI} & \textbf{Select.} & \textbf{Class} & \textbf{Type} \\
+\textbf{Driver} & \textbf{Paralog} & \textbf{|DD|} & \textbf{DWS} & \textbf{Select.} & \textbf{Class} & \textbf{Type} \\
 \midrule
 ARID1A & ARID1B & 0.267 & 4.130 & 0.237 & HS & Seq \\
 NF1 & RASA2 & 0.066 & 3.313 & 0.003 & MOD & Seq \\
@@ -290,7 +290,7 @@ KRAS & HRAS & 0.029 & 0.144 & $-$0.046 & LS & Seq \\
 CCNE1 & CCNE2 & 0.006 & 0.081 & $-$0.022 & LS & Seq \\
 \bottomrule
 \end{tabular}
-\caption{All 24 analyzed paralog pairs ranked by mean Therapeutic Index (TI). |DD|: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog.}
+\caption{All 24 analyzed paralog pairs ranked by mean dependency window score (DWS). |DD|: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog.}
 \end{table}
 
 \end{document}

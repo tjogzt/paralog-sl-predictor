@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25T12:44:30+00:00",
+  "generated_at": "2026-07-25T15:03:09+00:00",
   "generated_by": "regression_controls.py",
   "sign_convention": "DD = mean(dep|WT) - mean(dep|MUT) (manuscript Eq. 1)",
   "results": {

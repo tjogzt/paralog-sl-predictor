@@ -125,7 +125,7 @@ panel_b <- function() {
     scale_color_manual(values = c(HIGH = RED, MODERATE = ORANGE, LOW = BLUE, PAN = GRAY),
                       limits = c("HIGH","MODERATE","LOW","PAN"), drop = FALSE) +
     scale_size(range = c(1.5, 6), guide = "none") +
-    labs(x = "Therapeutic Index (TI)", y = "Selectivity") +
+    labs(x = "Dependency Window Score (DWS)", y = "Selectivity") +
     guides(color = guide_legend(override.aes = list(size = 3))) +
     theme_sci + theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0))
 }

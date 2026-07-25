@@ -56,8 +56,8 @@ for i, s in enumerate(["1,208 cell lines × 18,531 genes",
     fig.text(0.135, 0.745 - i * 0.038, s, ha="center", fontsize=7.6, color="#34495e")
 
 box(27.5, T, 20, H, GREEN, "#e8f8ee")
-fig.text(0.38, 0.79, "D = μ(CERES|WT)", ha="center", fontsize=10.1, fontweight="bold", color=NAVY)
-fig.text(0.38, 0.745, "− μ(CERES|MUT)", ha="center", fontsize=10.1, fontweight="bold", color=NAVY)
+fig.text(0.38, 0.79, "D = μ(Chronos|WT)", ha="center", fontsize=10.1, fontweight="bold", color=NAVY)
+fig.text(0.38, 0.745, "− μ(Chronos|MUT)", ha="center", fontsize=10.1, fontweight="bold", color=NAVY)
 fig.text(0.38, 0.685, "Univariate", ha="center", fontsize=7.6, color=GREEN)
 fig.text(0.38, 0.647, "No training needed", ha="center", fontsize=7.6, color=GREEN)
 
@@ -84,7 +84,7 @@ layers = [
     ("1", "Genomic", BLUE, ["23 lineages", "AUROC > 0.7", "in 9 of 17 lineages"]),
     ("2", "Proteomic", GREEN, ["7 CPTAC cohorts", "EP300-CREBBP", "5/7 significant"]),
     ("3", "Pharmacologic", RED, ["1,482 PRISM drugs", "553 selective hits", "MEK/mTOR/HDAC"]),
-    ("4", "Clinical Strat.", YELLOW, ["MSI: MSS > MSI-H", "MutType: trunc > miss", "TI: safety tiers"]),
+    ("4", "Clinical Strat.", YELLOW, ["MSI: MSS > MSI-H", "MutType: trunc > miss", "DWS: safety tiers"]),
     ("5", "Structural", PURPLE, ["Sequence features", "Domain architecture", "PROTAC suitability"]),
 ]
 W, GAP, Y0, HH = 17.6, 1.6, 12, 38

@@ -56,7 +56,7 @@ paralog_sl_predictor/
 │   ├── tables/                # TSV data tables (S1-S6)
 │   └── *.csv                  # Intermediate results
 │
-└── R_package/                 # paralogSL R package (v1.0.0)
+└── R_package/                 # paralogSL R package (v1.0.2)
     ├── DESCRIPTION
     ├── R/
     ├── man/
