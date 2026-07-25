@@ -52,7 +52,7 @@ box(3, T, 20, H, BLUE, "#e9f4fc")
 fig.text(0.135, 0.79, "DepMap 26Q1", ha="center", fontsize=10.1, fontweight="bold", color=NAVY)
 for i, s in enumerate(["1,208 cell lines × 18,531 genes",
                        "HGNC 66,595 paralog pairs",
-                       "12 gold-standard SL pairs"]):
+                       "12 curated pairs (evidence-tiered)"]):
     fig.text(0.135, 0.745 - i * 0.038, s, ha="center", fontsize=7.6, color="#34495e")
 
 box(27.5, T, 20, H, GREEN, "#e8f8ee")

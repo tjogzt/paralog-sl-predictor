@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25T15:02:47+00:00",
+  "generated_at": "2026-07-25T15:47:24+00:00",
   "generated_by": "compute_headline_metrics.py",
   "source_files": [
     "output/tables/TableS2_FullResults.tsv",
@@ -43,6 +43,49 @@
     "n_entries": 114,
     "n_positives": 7,
     "label": "Pre-DepMap evidence only (8 pairs)"
+  },
+  "lineage_tier_a": {
+    "auroc": 1.0,
+    "n_entries": 109,
+    "n_positives": 2,
+    "label": "Tier A (2 pairs, directional external experimental evidence)",
+    "tier_a_pairs": [
+      "ARID1A->ARID1B",
+      "SMARCA4->SMARCA2"
+    ],
+    "excluded_pairs": [
+      "AKT1->AKT2",
+      "BRCA1->BRCA2",
+      "CCNE1->CCNE2",
+      "CDK4->CDK6",
+      "EP300->CREBBP",
+      "FBXW7->FBXW2",
+      "MAP2K1->MAP2K2",
+      "PIK3CA->PIK3CB",
+      "PPP2R1A->PPP2R1B",
+      "STK11->SIK1"
+    ]
+  },
+  "lineage_tier_a_with_comparators": {
+    "auroc": 0.8006230529595015,
+    "n_entries": 113,
+    "n_positives": 6,
+    "label": "Tier A + reciprocal-validated pair + 2 mechanistic comparators (5 pairs)",
+    "excluded_pairs": [
+      "AKT1->AKT2",
+      "CCNE1->CCNE2",
+      "CDK4->CDK6",
+      "FBXW7->FBXW2",
+      "MAP2K1->MAP2K2",
+      "PIK3CA->PIK3CB",
+      "PPP2R1A->PPP2R1B"
+    ]
+  },
+  "lineage_full_direction_strict": {
+    "auroc": 0.7666666666666667,
+    "n_entries": 118,
+    "n_positives": 10,
+    "label": "Full set, direction-strict (EP300->CREBBP relabelled non-positive)"
   },
   "component_decomposition_lineage": {
     "dd": 0.794392523364486,
@@ -140,12 +183,6 @@
       "status": "match"
     },
     {
-      "metric": "dd_auroc_lineage_primary",
-      "claimed": 0.837,
-      "computed": 0.837,
-      "status": "match"
-    },
-    {
       "metric": "dd_auroc_lineage_leave_out_depmap_era",
       "claimed": 0.833,
       "computed": 0.8339,
@@ -155,6 +192,12 @@
       "metric": "dd_auroc_lineage_pre_depmap_only",
       "claimed": 0.9,
       "computed": 0.8999,
+      "status": "match"
+    },
+    {
+      "metric": "dd_auroc_lineage_full_direction_strict",
+      "claimed": 0.767,
+      "computed": 0.7667,
       "status": "match"
     },
     {

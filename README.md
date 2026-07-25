@@ -10,8 +10,8 @@
 Delta Dependency (DD) is a simple, interpretable, discovery-stage metric for prioritizing paralog-based synthetic lethality (SL) candidates from Cancer Dependency Map (DepMap) CRISPR screening data. DD measures the shift in Chronos gene-effect scores between driver-mutant and wild-type cell lines, computed separately per cancer lineage.
 
 **Key findings (see manuscript for full context):**
-- **DD vs. published methods:** AUROC = 0.794 (CV3 framework, 12-pair gold standard), exceeding 8 deep learning methods (best published: DDSL, 0.720)
-- **Primary test set (10 true sequence paralogs):** AUROC = 0.837
+- **Gold-standard evaluation (evidence-tiered, citation-verified):** AUROC = 0.794 on the full 12-pair curated set; 0.833 excluding two DepMap-derived pairs; 0.900 on pre-DepMap evidence only; 0.767 under direction-strict relabelling. Both lineage-evaluable Tier A pairs (directional external evidence) rank above all unlabeled controls
+- **DD vs. published methods (contextual reference, CV3-analogous framework):** AUROC = 0.794 without training; best published CV3 result 0.790 (SLMGAE) — analogous, not identical, evaluation frameworks
 - **Head-to-head (identical 77-pair test set):** DD alone (0.736) outperforms all four multi-feature classifiers under leave-one-pair-out CV (LR 0.632, RF 0.629, SVM-Linear 0.699, SVM-RBF 0.563) — a single interpretable feature generalizes best
 - DD + ≥30% sequence identity filter → AUROC = 1.000
 

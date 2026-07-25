@@ -26,6 +26,15 @@ Manuscript definitions (see manuscript.tex):
   * Primary set: 10 true sequence paralogs — excludes the two functional
                  analogs BRCA1<->BRCA2 and STK11->SIK1 (Methods: "Secondary
                  set of 2 functional analogs").
+  * Tier A:      5 pairs with directional external experimental evidence
+                 (the NEW primary evaluation set): SMARCA4->SMARCA2,
+                 ARID1A->ARID1B, EP300->CREBBP, AKT1->AKT2, CCNE1->CCNE2.
+  * Tier A + comparators: Tier A plus the 2 mechanistic comparators
+                 (BRCA1<->BRCA2, STK11->SIK1).
+  * Tier B:      3 pairs with redundancy/pharmacologic evidence only (not
+                 directional genotype-conditional): PIK3CA->PIK3CB,
+                 CDK4->CDK6, MAP2K1->MAP2K2.
+  * Tier C:      2 DepMap-derived pairs (circularity risk) = DEPMAP_ERA.
   * Leave-out:   excludes the two pairs whose evidence is DepMap-era
                  (FBXW7->FBXW2, PPP2R1A->PPP2R1B).
   * Pre-DepMap:  keeps only the 8 pairs with pre-DepMap experimental evidence
@@ -52,8 +61,35 @@ TSV_OUT = ROOT / "output" / "tables" / "headline_metrics.tsv"
 
 # Pairs excluded from the Primary set (manuscript Methods: functional analogs)
 FUNCTIONAL_ANALOGS = {("BRCA1", "BRCA2"), ("STK11", "SIK1")}
-# Pairs whose gold-standard evidence is DepMap-era (manuscript Results)
+# Pairs whose gold-standard evidence is DepMap-era (manuscript Results);
+# = Tier C in the evidence-tier system (Supplementary Table S3)
 DEPMAP_ERA = {("FBXW7", "FBXW2"), ("PPP2R1A", "PPP2R1B")}
+
+# Evidence tiers after the citation audit (Supplementary Table S3).
+# Tier A: directional external experimental evidence — the primary
+# evaluation set (independent of DepMap).
+TIER_A = {
+    ("SMARCA4", "SMARCA2"),  # Hoffman 2014 CRISPR
+    ("ARID1A", "ARID1B"),    # Helming 2014
+}
+# Reciprocal-direction validated: direct experimental evidence establishes
+# the SL interaction in the CREBBP->EP300 direction only (Ogiwara 2016
+# CBP-deficient -> p300 addiction; Nie 2021 CREBBP-mutant DLBCL -> EP300).
+# The direction scored here (EP300->CREBBP) is supported only by paralog
+# redundancy, so the pair is excluded from directional Tier A claims.
+TIER_RECIPROCAL = {
+    ("EP300", "CREBBP"),  # Ogiwara 2016 + Nie 2021, reciprocal direction
+}
+# Tier B: paralog redundancy / pharmacologic / digenic-KO evidence only —
+# NOT directional genotype-conditional; reported separately from the
+# primary evaluation.
+TIER_B = {
+    ("AKT1", "AKT2"),      # Najm 2018 combinatorial CRISPR digenic KO
+    ("CCNE1", "CCNE2"),    # Geng 2003 mouse double-KO redundancy
+    ("PIK3CA", "PIK3CB"),  # Wee 2008 supports PTEN->PIK3CB only, not this direction
+    ("CDK4", "CDK6"),      # Parrish 2021 digenic KO (pgPEN) + drug
+    ("MAP2K1", "MAP2K2"),  # Parrish 2021 digenic KO (pgPEN) + drug
+}
 
 # Published CV3 AUROC values — literature constants, NOT recomputed here.
 # Source: Feng et al. (2024) Nat Commun 15:9058, Supplementary Data 1,
@@ -69,9 +105,9 @@ PUBLISHED_BENCHMARKS = {
 # the manuscript text alignment (see manuscript.tex git history).
 MANUSCRIPT_CLAIMS = {
     "dd_auroc_lineage_full": 0.794,
-    "dd_auroc_lineage_primary": 0.837,
     "dd_auroc_lineage_leave_out_depmap_era": 0.833,
     "dd_auroc_lineage_pre_depmap_only": 0.900,
+    "dd_auroc_lineage_full_direction_strict": 0.767,
     "dd_auroc_id_filter_0.2": 0.778,
     "dd_auroc_id_filter_0.3": 1.000,
     "component_dd": 0.794,
@@ -177,6 +213,44 @@ def main():
     mask_pre = ~pd.Series([(k in DEPMAP_ERA) or (k in FUNCTIONAL_ANALOGS) for k in keys], index=df.index)
     metrics["lineage_pre_depmap_only"] = lineage_metrics(
         df[mask_pre], "Pre-DepMap evidence only (8 pairs)")
+
+    # ── 1b. Evidence-tier evaluation sets (post citation audit; Table S3) ──
+    # Computed exactly like lineage_primary (mask entries, then lineage_metrics
+    # on |DD|). Tier A pairs are directional; comparator pairs are treated as
+    # UNORDERED (BRCA1<->BRCA2 is scored in both directions in TableS2) so that
+    # the Tier A set contains only Tier A positives. The reciprocal-validated
+    # pair (EP300->CREBBP; evidence direction CREBBP->EP300) is excluded from
+    # directional Tier A. Tier B and Tier C (DepMap-era) pairs are excluded
+    # from both sets and reported separately.
+    COMPARATOR_UNORDERED = {frozenset(p) for p in FUNCTIONAL_ANALOGS}
+    keys_unordered = [frozenset(k) for k in keys]
+
+    mask_tier_a = ~pd.Series(
+        [(k in TIER_B) or (k in TIER_RECIPROCAL) or (k in DEPMAP_ERA) or (u in COMPARATOR_UNORDERED)
+         for k, u in zip(keys, keys_unordered)], index=df.index)
+    metrics["lineage_tier_a"] = lineage_metrics(
+        df[mask_tier_a], "Tier A (2 pairs, directional external experimental evidence)")
+    metrics["lineage_tier_a"]["tier_a_pairs"] = sorted(f"{a}->{b}" for a, b in TIER_A)
+    metrics["lineage_tier_a"]["excluded_pairs"] = sorted(
+        f"{a}->{b}" for a, b in (TIER_B | TIER_RECIPROCAL | DEPMAP_ERA | FUNCTIONAL_ANALOGS))
+
+    mask_tier_a_comp = ~pd.Series(
+        [(k in TIER_B) or (k in DEPMAP_ERA) for k in keys], index=df.index)
+    metrics["lineage_tier_a_with_comparators"] = lineage_metrics(
+        df[mask_tier_a_comp], "Tier A + reciprocal-validated pair + 2 mechanistic comparators (5 pairs)")
+    metrics["lineage_tier_a_with_comparators"]["excluded_pairs"] = sorted(
+        f"{a}->{b}" for a, b in (TIER_B | DEPMAP_ERA))
+
+    # Direction-strict full set: EP300->CREBBP relabelled non-positive because
+    # direct experimental evidence supports only the reciprocal direction.
+    yt_ds = df["is_known_paralog_sl"].astype(int).copy()
+    yt_ds[pd.Series([k in TIER_RECIPROCAL for k in keys], index=df.index)] = 0
+    metrics["lineage_full_direction_strict"] = {
+        "auroc": auroc(yt_ds.values, df["dependency_dd"].abs().fillna(0).values),
+        "n_entries": int(len(df)),
+        "n_positives": int(yt_ds.sum()),
+        "label": "Full set, direction-strict (EP300->CREBBP relabelled non-positive)",
+    }
 
     # ── 2. Component decomposition (same lineage-level universe) ──
     yt = df["is_known_paralog_sl"].astype(int).values
@@ -311,6 +385,9 @@ def main():
         "dd_auroc_lineage_primary": metrics["lineage_primary"]["auroc"],
         "dd_auroc_lineage_leave_out_depmap_era": metrics["lineage_leave_out_depmap_era"]["auroc"],
         "dd_auroc_lineage_pre_depmap_only": metrics["lineage_pre_depmap_only"]["auroc"],
+        "dd_auroc_lineage_full_direction_strict": metrics["lineage_full_direction_strict"]["auroc"],
+        "dd_auroc_lineage_tier_a": metrics["lineage_tier_a"]["auroc"],
+        "dd_auroc_lineage_tier_a_with_comparators": metrics["lineage_tier_a_with_comparators"]["auroc"],
         "component_dd": comp["dd"],
         "component_pcs": comp["pcs"],
         "component_delta_expression": comp["delta_expression_abs"],
@@ -354,6 +431,9 @@ def main():
     add("dd_auroc_lineage_primary", metrics["lineage_primary"]["auroc"], "recomputed:TableS2")
     add("dd_auroc_lineage_leave_out_depmap_era", metrics["lineage_leave_out_depmap_era"]["auroc"], "recomputed:TableS2")
     add("dd_auroc_lineage_pre_depmap_only", metrics["lineage_pre_depmap_only"]["auroc"], "recomputed:TableS2")
+    add("dd_auroc_lineage_full_direction_strict", metrics["lineage_full_direction_strict"]["auroc"], "recomputed:TableS2")
+    add("dd_auroc_lineage_tier_a", metrics["lineage_tier_a"]["auroc"], "recomputed:TableS2")
+    add("dd_auroc_lineage_tier_a_with_comparators", metrics["lineage_tier_a_with_comparators"]["auroc"], "recomputed:TableS2")
     add("component_dd", comp["dd"], "recomputed:TableS2")
     add("component_pcs", comp["pcs"], "recomputed:TableS2")
     add("component_delta_expression", comp["delta_expression_abs"], "recomputed:TableS2")

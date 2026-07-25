@@ -175,29 +175,35 @@ The full analysis results are provided as a tab-separated file: \texttt{TableS2\
 \end{itemize}
 \stepcounter{table} % Table S2 has no \begin{table}, manually increment counter
 
-\subsection{Table S3: Gold-standard paralog-SL pairs with evidence provenance}
+\subsection{Table S3: Gold-standard paralog-SL pairs with evidence provenance and tier assignment}
 \begin{table}[H]
 \centering
 \footnotesize
-\begin{tabular}{lllllc}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllllc}
 \toprule
-\textbf{Driver} & \textbf{Paralog} & \textbf{Type} & \textbf{Evidence} & \textbf{Key Ref} & \textbf{Indep.} \\
+\textbf{Tier} & \textbf{Driver} & \textbf{Paralog} & \textbf{Type} & \textbf{Evidence} & \textbf{Key Ref} & \textbf{Indep.} \\
 \midrule
-SMARCA4 & SMARCA2 & Seq.\ paralog & CRISPR screen & Hoffman 2014 & Yes \\
-ARID1A  & ARID1B  & Seq.\ paralog & CRISPR + drug & Helming 2014 & Yes \\
-BRCA1   & BRCA2   & Func.\ analog & Genetic screen & Bryant 2005 & Yes \\
-EP300   & CREBBP  & Seq.\ paralog & shRNA screen & Ogiwara 2016 & Yes \\
-PIK3CA  & PIK3CB  & Seq.\ paralog & Drug + KO & Wee 2008 & Yes \\
-AKT1    & AKT2    & Seq.\ paralog & siRNA viability & Literature & Partial \\
-STK11   & SIK1    & Partial hom.  & Genetic screen & Literature & Partial \\
-FBXW7   & FBXW2   & Seq.\ paralog & DepMap analysis & DepMap & No \\
-PPP2R1A & PPP2R1B & Seq.\ paralog & DepMap analysis & DepMap & No \\
-CCNE1   & CCNE2   & Seq.\ paralog & Genetic screen & Literature & Yes \\
-CDK4    & CDK6    & Seq.\ paralog & Drug (palbociclib) & Clinical & Yes \\
-MAP2K1  & MAP2K2  & Seq.\ paralog & Drug (trametinib) & Clinical & Yes \\
+A & SMARCA4 & SMARCA2 & Seq.\ paralog & CRISPR screen & Hoffman 2014 & Yes \\
+A & ARID1A  & ARID1B  & Seq.\ paralog & CRISPR + drug & Helming 2014 & Yes \\
+\midrule
+A$^*$ & EP300 & CREBBP & Seq.\ paralog & Reciprocal SL (CREBBP$\rightarrow$EP300) & Ogiwara 2016; Nie 2021 & Yes \\
+\midrule
+comparator & BRCA1 & BRCA2 & Func.\ analog & Genetic screen & Bryant 2005 & Yes \\
+comparator & STK11 & SIK1  & Partial hom.  & LKB1--SIK axis (mouse genetics) & Hollstein 2019 & Yes \\
+\midrule
+B & AKT1    & AKT2    & Seq.\ paralog & Digenic KO (comb.\ CRISPR) & Najm 2018 & Yes \\
+B & CCNE1   & CCNE2   & Seq.\ paralog & Mouse double-KO redundancy & Geng 2003 & Yes \\
+B & PIK3CA  & PIK3CB  & Seq.\ paralog & Redundancy/pharmacologic & Wee 2008 (PTEN$\rightarrow$PIK3CB only) & Yes \\
+B & CDK4    & CDK6    & Seq.\ paralog & Digenic KO (pgPEN) + drug & Parrish 2021 & Yes \\
+B & MAP2K1  & MAP2K2  & Seq.\ paralog & Digenic KO (pgPEN) + drug & Parrish 2021 & Yes \\
+\midrule
+C & FBXW7   & FBXW2   & Seq.\ paralog & DepMap analysis & DepMap & No \\
+C & PPP2R1A & PPP2R1B & Seq.\ paralog & DepMap analysis & DepMap & No \\
 \bottomrule
-\end{tabular}
-\caption{Twelve gold-standard pairs with evidence provenance. Type: Seq.\ paralog (shared gene family, conserved domains), Func.\ analog (shared pathway role, no sequence homology), Partial hom.\ (same superfamily, divergent). Indep.: whether evidence is independent of DepMap CRISPR data. ``No'' indicates pairs whose SL status was originally identified from DepMap-derived analyses, creating potential circularity.}
+\end{tabular}%
+}
+\caption{Twelve curated pairs with evidence provenance and tier assignment. Tier A (2 pairs): directional external experimental evidence matching the direction scored here; used for directional claims. A$^*$ (1 pair): synthetic lethality experimentally established in the reciprocal direction only (CREBBP$\rightarrow$EP300); the direction scored here (EP300$\rightarrow$CREBBP) is supported by paralog redundancy alone, so the pair is excluded from directional Tier A claims and relabelled non-positive in the direction-strict sensitivity analysis. Comparator (2 pairs): mechanistic reference pairs (functional analog or pathway axis), reported separately. Tier B (5 pairs): paralog-redundancy, digenic-knockout, or pharmacologic evidence only, not directional genotype-conditional. Tier C (2 pairs): DepMap-derived, excluded from directional claims to avoid circularity. Type: Seq.\ paralog (shared gene family, conserved domains), Func.\ analog (shared pathway role, no sequence homology), Partial hom.\ (same superfamily, divergent). Indep.: whether evidence is independent of DepMap CRISPR data. ``No'' indicates pairs whose SL status was originally identified from DepMap-derived analyses, creating potential circularity.}
 \end{table}
 
 \subsection{Table S4: Pan-cancer summary statistics}

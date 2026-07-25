@@ -3,6 +3,9 @@ dd_auroc_lineage_full	0.7944	recomputed:TableS2
 dd_auroc_lineage_primary	0.8370	recomputed:TableS2
 dd_auroc_lineage_leave_out_depmap_era	0.8339	recomputed:TableS2
 dd_auroc_lineage_pre_depmap_only	0.8999	recomputed:TableS2
+dd_auroc_lineage_full_direction_strict	0.7667	recomputed:TableS2
+dd_auroc_lineage_tier_a	1.0000	recomputed:TableS2
+dd_auroc_lineage_tier_a_with_comparators	0.8006	recomputed:TableS2
 component_dd	0.7944	recomputed:TableS2
 component_pcs	0.7201	recomputed:TableS2
 component_delta_expression	0.3483	recomputed:TableS2
