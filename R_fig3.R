@@ -109,16 +109,22 @@ panel_c <- function() {
 
   ggplot(df, aes(hr, gene)) +
     geom_vline(xintercept = 1, linewidth = 0.4, color = DARK, alpha = 0.5) +
+    # Gene labels drawn INSIDE the plot panel (left side): the composite
+    # figure's left edge clipped the widest y-axis label ("SMARCA2"), so the
+    # y-axis text column is removed entirely.
+    geom_text(aes(x = 0.79, label = gene), hjust = 0, size = 2.5,
+              family = "Arial", color = DARK) +
     geom_point(aes(color = clr), size = 2) +
     geom_errorbarh(aes(xmin = hr - 1.96*se, xmax = hr + 1.96*se, color = clr),
                    height = 0.15, linewidth = 0.8) +
     geom_text(aes(label = sig, color = clr, y = ypos),
               size = 2.5, fontface = "bold", hjust = 0.5, vjust = 0) +
     scale_color_identity() +
-    labs(x = "Hazard Ratio (High vs Low paralog expression)", y = NULL) +
-    annotate("text", x = -Inf, y = Inf, label = "TCGA BRCA\n(n=1,082)",
-             size = 2.5, color = GRAY, hjust = -0.05, vjust = 1.2, lineheight = 0.9) +
-    theme_sci
+    scale_x_continuous(limits = c(0.78, 1.26), breaks = seq(0.8, 1.2, 0.1)) +
+    labs(x = "Hazard Ratio\n(high vs low paralog expression)", y = NULL) +
+    theme_sci +
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          axis.line.y = element_blank())
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -151,14 +157,12 @@ pa <- panel_a(); pb <- panel_b(); pc <- panel_c(); pd <- panel_d()
 
 save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c"); save_panel(pd, "d")
 
-p <- ggdraw() +
-  draw_plot(pa, x = 0,    y = 0.5,  width = 0.5, height = 0.5) +
-  draw_plot(pb, x = 0.5,  y = 0.5,  width = 0.5, height = 0.5) +
-  draw_plot(pc, x = 0,    y = 0,    width = 0.5, height = 0.5) +
-  draw_plot(pd, x = 0.5,  y = 0,    width = 0.5, height = 0.5) +
-  draw_plot_label(c("a","b","c","d"),
-                  x = c(0, 0.5, 0, 0.5), y = c(1, 1, 0.5, 0.5),
-                  size = 9, fontface = "bold", fontfamily = "Arial")
+# plot_grid (not ggdraw/draw_plot) with a wider left column: draw_plot clipped
+# panel c's widest y-label ("SMARCA2") at the figure's left edge
+p <- cowplot::plot_grid(pa, pb, pc, pd, ncol = 2, rel_widths = c(0.53, 0.47),
+                        labels = c("a","b","c","d"),
+                        label_size = 9, label_fontface = "bold",
+                        label_fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "Fig3_Clinical.pdf"), p,
        width = 180, height = 180, units = "mm", device = cairo_pdf)

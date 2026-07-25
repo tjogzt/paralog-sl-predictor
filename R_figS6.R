@@ -140,10 +140,19 @@ panel_c <- function() {
 
   ggplot(df, aes(dd, pair, fill = type)) +
     geom_col(position = position_dodge(0.7), width = 0.55) +
+    # Pair labels drawn INSIDE the plot above each bar group: y-axis text
+    # was clipped at the composite figure's left edge (same issue as Fig3c)
+    geom_text(data = known,
+              aes(x = 0, y = as.numeric(pair_label) + 0.45,
+                  label = paste0(driver, "->", paralog)),
+              hjust = 0, size = 2.3, family = "Arial", color = DARK,
+              inherit.aes = FALSE) +
     scale_fill_manual(values = c(Truncating = RED, Missense = BLUE)) +
     labs(x = "|DD|", y = NULL) +
     theme_sci + theme(legend.position = "bottom",
-                      axis.text.y = element_text(size = 7))
+                      axis.text.y = element_blank(),
+                      axis.ticks.y = element_blank(),
+                      axis.line.y = element_blank())
 }
 
 # (panel c — legend below)

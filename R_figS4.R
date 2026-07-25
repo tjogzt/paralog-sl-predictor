@@ -49,6 +49,9 @@ make_cnv_plot <- function(gene) {
   ggplot(df, aes(cnv, dep)) +
     geom_point(size = 0.3, alpha = 0.3, color = BLUE) +
     geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 0.3) +
+    # n.breaks keeps the rightmost tick label clear of the cell edge
+    # (plot_grid clips each cell; TP53's "1.6" label was previously cut)
+    scale_x_continuous(n.breaks = 4) +
     labs(x = "Relative copy number", y = "Gene effect score",
          title = sprintf("%s  R²=%.3f", gene, r2)) +
     theme_sci + theme(plot.title = element_text(size = 6, face = "bold"))
