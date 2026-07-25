@@ -77,8 +77,10 @@ panel_a <- function() {
                       axis.text.y = element_text(size = 7, lineheight = 0.85,
                                                  margin = margin(l = 10, r = 2)),
                       legend.key.size = unit(3.5, "mm"),
-                      legend.spacing.x = unit(3, "mm"),
-                      legend.text = element_text(size = 7, margin = margin(l = 1, r = 4, unit = "pt")))
+                      legend.spacing.x = unit(1, "mm"),
+                      # gap AFTER each label lives in the label's right margin,
+                      # so every label sits tight against its own key
+                      legend.text = element_text(size = 7, margin = margin(l = 2, r = 8, unit = "pt")))
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -151,8 +153,13 @@ panel_d <- function() {
     geom_vline(xintercept = 0.15, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     scale_color_manual(values = class_colors, drop = FALSE) +
     scale_size(range = c(1.5, 6), guide = "none") +
+    # larger, evenly spaced legend keys: default glyphs were tiny and the
+    # labels sat closer to the NEXT key than to their own
+    guides(color = guide_legend(override.aes = list(size = 3.2, alpha = 1))) +
     labs(x = "Selectivity", y = "Therapeutic Index (TI)") +
-    theme_sci + theme(legend.position = "bottom")
+    theme_sci + theme(legend.position = "bottom",
+                      legend.spacing.x = unit(1, "mm"),
+                      legend.text = element_text(size = 7, margin = margin(l = 2, r = 8, unit = "pt")))
 }
 
 # ═══════════════════════════════════════════════════════════════
