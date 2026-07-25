@@ -156,8 +156,12 @@ panel_c <- function() {
     geom_col(position = position_dodge(0.7), width = 0.55) +
     scale_fill_manual(values = c(Structural = TEAL, Domain = ORANGE)) +
     labs(x = "Score", y = NULL) +
-    theme_sci + theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0),
-                      plot.margin = margin(4, 4, 8, 20, "pt"))
+    # Legend moved out of the panel to the right: inside the panel it
+    # overlapped the bottom bars (TP53/TP63 Domain, STK11/SIK1 Structural)
+    coord_cartesian(clip = "off") +
+    theme_sci + theme(legend.position = c(1.02, 0), legend.justification = c(0, 0),
+                      legend.margin = margin(0, 0, 0, 0),
+                      plot.margin = margin(4, 58, 8, 20, "pt"))
 }
 
 # (panel_c end — bottom bar: FBXW7/FBXW2 has both Structural & Domain, short values)
