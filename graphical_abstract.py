@@ -32,7 +32,7 @@ ax.axis("off")
 
 fig.text(0.5, 0.945, "Delta Dependency: Paralog Compensation Predicts Synthetic Lethality",
          ha="center", va="center", fontsize=12.5, fontweight="bold", color=NAVY)
-fig.text(0.5, 0.895, "A Pan-Cancer Framework with Five-Layer Orthogonal Validation",
+fig.text(0.5, 0.895, "A Pan-Cancer Framework with Five-Layer Orthogonal Evidence",
          ha="center", va="center", fontsize=9.4, color=GRAY)
 
 
@@ -77,7 +77,7 @@ for x1, x2 in [(23.6, 27.2), (48.1, 51.7), (72.6, 76.2)]:
     arrow(x1, x2, T + H / 2)
 
 # ── Five-layer validation ──────────────────────────────────────
-fig.text(0.5, 0.545, "Five-Layer Orthogonal Validation",
+fig.text(0.5, 0.545, "Five-Layer Orthogonal Evidence",
          ha="center", fontsize=10.8, fontweight="bold", color=NAVY)
 
 layers = [

@@ -11,7 +11,7 @@
 
 Dear Editors,
 
-We submit for consideration in *Genome Biology* our manuscript entitled **"Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types."** This work presents Delta Dependency (DD), a simple, univariate metric for paralog-based synthetic lethality (SL) prediction, and validates it through five orthogonal layers of evidence spanning genomic, proteomic, pharmacologic, clinical-stratification, and structural analyses.
+We submit for consideration in *Genome Biology* our manuscript entitled **"Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types."** This work presents Delta Dependency (DD), a simple, univariate metric for paralog-based synthetic lethality (SL) prediction, supported by exploratory analyses across five orthogonal layers of evidence spanning genomic, proteomic, pharmacologic, clinical-stratification, and structural analyses.
 
 **Key contributions:**
 
