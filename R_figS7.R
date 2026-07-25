@@ -98,17 +98,29 @@ panel_b <- function() {
   counts$ymax <- cumsum(counts$pct)
   counts$ymin <- c(0, head(counts$ymax, -1))
   counts$label_pos <- (counts$ymax + counts$ymin) / 2
+  # Nudge the small top segments' labels sideways (HIGH -> upper right,
+  # PAN -> upper left) so the top of the cell holds only the ring; the
+  # xlim can then be tightened and the donut grows without stealing
+  # height from panels c/d
+  counts$label_y <- counts$label_pos
+  counts$label_y[counts$class_short == "HIGH"] <- 7
+  counts$label_y[counts$class_short == "PAN"]  <- 86
+  # outward horizontal justification: labels extend AWAY from the ring
+  counts$hj <- ifelse(counts$class_short %in% c("HIGH", "LOW"), 0, 1)
 
   ggplot(counts, aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 2, fill = class_short)) +
     geom_rect(color = "white", linewidth = 0.3) +
-    geom_text(aes(x = 4.5, y = label_pos, label = sprintf("%s\n%d (%.0f%%)", class_short, n, pct)),
-              size = 2.5, hjust = 0.5) +
+    geom_text(aes(x = 4.28, y = label_y, hjust = hj,
+                  label = sprintf("%s\n%d (%.0f%%)", class_short, n, pct)),
+              size = 2.5) +
     scale_fill_manual(values = class_colors, drop = FALSE) +
-    coord_polar(theta = "y") +
-    xlim(c(1, 4.8)) +
+    coord_polar(theta = "y", clip = "off") +
+    # labels sit just beyond the scale range; oob_keep retains them (plain
+    # xlim() would drop them as NA) so the ring gets ~98% of the cell
+    scale_x_continuous(limits = c(1.2, 4.1), oob = scales::oob_keep) +
     theme_void() +
     theme(legend.position = "none",
-          plot.margin = margin(0, 0, 0, 0, "pt"),
+          plot.margin = margin(2, 10, 2, 10, "pt"),
           plot.background  = element_rect(fill = "white", color = NA),
           panel.background = element_rect(fill = "white", color = NA))
 }
