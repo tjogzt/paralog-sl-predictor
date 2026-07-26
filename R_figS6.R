@@ -104,8 +104,10 @@ panel_b <- function() {
     geom_histogram(bins = 25, fill = "#8E44AD", alpha = 0.7, color = "white", linewidth = 0.2) +
     geom_vline(xintercept = 0, linewidth = 0.5, color = DARK) +
     geom_vline(xintercept = mean_diff, linewidth = 0.5, color = RED, linetype = "dashed") +
-    annotate("text", x = mean_diff + 0.08, y = Inf, label = sprintf("Mean = %+.4f", mean_diff),
+    annotate("text", x = mean_diff + 0.08, y = Inf, label = sprintf("Mean = %+.3f", mean_diff),
              size = 2.8, color = RED, hjust = 0, vjust = 1.5) +
+    # right-side headroom keeps the outermost tick label inside the panel
+    scale_x_continuous(expand = expansion(mult = c(0.03, 0.14))) +
     labs(x = "|DD_trunc| − |DD_miss|", y = "Frequency") +
     theme_sci
 }

@@ -66,37 +66,28 @@ panel_b <- function() {
     theme_sci + theme(plot.title = element_text(size = 7, face = "bold"))
 }
 
-# ── Panel C: Weak AUROC (<0.5) ──
-panel_c <- function() {
-  df <- df_raw %>% filter(dd_auroc < 0.5)
-  df$cancer_short <- factor(df$cancer_short, levels = df$cancer_short)
-  ggplot(df, aes(dd_auroc, cancer_short)) +
-    geom_col(fill = GRAY, width = 0.6) +
-    geom_text(aes(label = sprintf("%.3f", dd_auroc)), hjust = -0.1, size = 2.5, color = GRAY) +
-    scale_x_continuous(expand = expansion(mult = c(0, 0.35))) +
-    labs(x = "DD AUROC", y = NULL, title = "Weak signal") +
-    theme_sci + theme(plot.title = element_text(size = 7, face = "bold"))
-}
+# ── Panel C (weak signal, AUROC < 0.5) intentionally omitted:
+# no evaluable lineage falls below 0.5 on the primary >=5 frame, so the panel
+# would be empty. The caption describes panels a and b only.
 
 # ── MAIN ──
 message("=== FigS2 Panel Generation (R) ===")
-pa <- panel_a(); pb <- panel_b(); pc <- panel_c()
+pa <- panel_a(); pb <- panel_b()
 
 ggsave(file.path(OUT_DIR, "FigS2_panel_a.pdf"), pa, width = PANEL_W, height = PANEL_H, units = "mm", device = cairo_pdf)
 ggsave(file.path(OUT_DIR, "FigS2_panel_b.pdf"), pb, width = PANEL_W, height = PANEL_H, units = "mm", device = cairo_pdf)
-ggsave(file.path(OUT_DIR, "FigS2_panel_c.pdf"), pc, width = PANEL_W, height = PANEL_H, units = "mm", device = cairo_pdf)
 message("  panels saved")
 
 # plot_grid allocates widths properly — fixed draw_plot cells clipped the
 # right-most value labels when full lineage names widened panel b's gtable.
-p <- cowplot::plot_grid(pa, pb, pc, nrow = 1,
-                        labels = c("a","b","c"),
+p <- cowplot::plot_grid(pa, pb, nrow = 1,
+                        labels = c("a","b"),
                         label_size = 8, label_fontface = "bold", label_fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.pdf"), p,
-       width = 180, height = 60, units = "mm", device = cairo_pdf)
+       width = 120, height = 60, units = "mm", device = cairo_pdf)
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.svg"), p,
-       width = 180, height = 60, units = "mm", device = svglite::svglite)
+       width = 120, height = 60, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.tiff"), p,
-       width = 180, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
-message("FigS2_CrossCancer_AUROC.pdf (180×60mm) ✓")
+       width = 120, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
+message("FigS2_CrossCancer_AUROC.pdf (120x60mm, 2 panels; weak-signal panel dropped) ✓")

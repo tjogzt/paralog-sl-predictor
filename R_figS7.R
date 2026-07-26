@@ -154,13 +154,25 @@ panel_d <- function() {
   tw_d <- tw %>% filter(!is.na(mean_selectivity), !is.na(mean_ti))
   tw_d$class_short <- factor(tw_d$classification, levels = names(class_labels), labels = class_labels)
 
+  # Label only the pairs the caption discusses: both HIGH pairs plus the top
+  # |DD| representative of MODERATE and LOW. The PAN top pair (PIK3R1->CRKL)
+  # is left unlabeled: a neighbouring LOW point sat on its label, and the
+  # pair is already identified as PAN_ESSENTIAL in panel a.
+  label_df <- tw_d %>%
+    filter(class_short %in% c("HIGH", "MODERATE", "LOW")) %>%
+    group_by(class_short) %>% slice_max(abs(mean_dd), n = 1) %>% ungroup()
+  label_df <- bind_rows(label_df,
+                        tw_d %>% filter(driver == "SMARCA4", paralog == "SMARCA2")) %>%
+    distinct()
+
   ggplot(tw_d, aes(mean_selectivity, mean_ti, color = class_short)) +
     geom_point(aes(size = abs(mean_dd) * 50), alpha = 0.75) +
     ggrepel::geom_text_repel(
-      data = tw_d %>% group_by(class_short) %>% slice_max(abs(mean_dd), n = 1),
+      data = label_df,
       aes(label = paste0(driver, "->", paralog)),
-      size = 2.5, show.legend = FALSE, max.overlaps = 20, box.padding = 0.3,
-      point.padding = 0.5) +
+      size = 2.5, show.legend = FALSE, max.overlaps = 20,
+      box.padding = 0.5, point.padding = 0.9, force = 2,
+      min.segment.length = 0.2, segment.size = 0.3, seed = 42) +
     geom_hline(yintercept = 1, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     geom_vline(xintercept = 0.15, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     scale_color_manual(values = class_colors, drop = FALSE) +
@@ -168,8 +180,10 @@ panel_d <- function() {
     # larger, evenly spaced legend keys: default glyphs were tiny and the
     # labels sat closer to the NEXT key than to their own
     guides(color = guide_legend(override.aes = list(size = 3.2, alpha = 1))) +
-    labs(x = "Selectivity", y = "Dependency Window Score (DWS)") +
+    # y title identical to panel c; top margin leaves room for the "d" letter
+    labs(x = "Selectivity", y = "Dependency Window Score") +
     theme_sci + theme(legend.position = "bottom",
+                      plot.margin = margin(12, 4, 4, 4, "pt"),
                       legend.spacing.x = unit(1, "mm"),
                       legend.text = element_text(size = 7, margin = margin(l = 2, r = 8, unit = "pt")))
 }

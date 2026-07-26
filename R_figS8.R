@@ -50,13 +50,15 @@ pb <- ggplot(data.frame(x = null_vals), aes(x)) +
   geom_vline(xintercept = obs_auroc, color = RED, linewidth = 1.2) +
   geom_vline(xintercept = null_mean, color = DARK, linewidth = 0.5, linetype = "dashed") +
   annotate("text", x = obs_auroc - 0.02, y = Inf,
-           label = "Observed DD", size = 2.5, color = RED, hjust = 1, vjust = 1.5) +
-  annotate("text", x = null_mean, y = Inf,
-           label = sprintf("Null: %.3f", null_mean),
-           size = 2.5, color = DARK, hjust = 0.5, vjust = 3) +
-  annotate("text", x = -Inf, y = -Inf,
+           label = sprintf("Observed %.3f", obs_auroc),
+           size = 2.5, color = RED, hjust = 1, vjust = 1.5) +
+  annotate("text", x = obs_auroc - 0.02, y = Inf,
+           label = sprintf("Null mean %.3f", null_mean),
+           size = 2.5, color = DARK, hjust = 1, vjust = 3.3) +
+  annotate("text", x = Inf, y = Inf,
            label = sprintf("empirical p = %.3f\n(10,000 permutations)", emp_p),
-           size = 2.8, color = RED, fontface = "bold", hjust = -0.05, vjust = -0.5) +
+           size = 2.8, color = RED, fontface = "bold", hjust = 1.05, vjust = 1.5,
+           lineheight = 0.9) +
   labs(x = "AUROC (shuffled labels)", y = "Frequency (10,000 permutations)") +
   theme_sci
 
