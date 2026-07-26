@@ -1,6 +1,6 @@
 # Cover Letter
 
-**Date:** July 25, 2026
+**Date:** July 27, 2026
 
 **To:** The Editors
 *Genome Biology*
@@ -49,7 +49,10 @@ $^{\ast}$Correspondence: zhutao@tjh.tjmu.edu.cn
 
 ---
 
+\newpage
+
 **Suggested Reviewers:**
+
 1. Dr. Francisca Vazquez — DepMap / Broad Institute (CRISPR dependency expertise)
 2. Dr. Michael P. Snyder — Stanford (proteogenomics, CPTAC expertise)
 3. Dr. Jason Moffat — University of Toronto (synthetic lethality screening)
