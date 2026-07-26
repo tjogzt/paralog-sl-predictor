@@ -53,10 +53,10 @@ $^{\ast}$Correspondence: zhutao@tjh.tjmu.edu.cn
 
 **Suggested Reviewers:**
 
-1. Dr. Francisca Vazquez — DepMap / Broad Institute (CRISPR dependency expertise)
-2. Dr. Michael P. Snyder — Stanford (proteogenomics, CPTAC expertise)
-3. Dr. Jason Moffat — University of Toronto (synthetic lethality screening)
-4. Dr. Rameen Beroukhim — Dana-Farber / Broad Institute (cancer genomics, paralog dependencies)
-5. Dr. Bing Zhang — Baylor College of Medicine (CPTAC proteogenomics)
+1. Dr. Francisca Vazquez — DepMap / Broad Institute (CRISPR dependency expertise); <vazquez@broadinstitute.org>
+2. Dr. Michael P. Snyder — Stanford University (proteogenomics, CPTAC expertise); <mpsnyder@stanford.edu>
+3. Dr. Jason Moffat — University of Toronto / The Hospital for Sick Children (synthetic lethality screening); <jason.moffat@sickkids.ca>
+4. Dr. Rameen Beroukhim — Dana-Farber / Broad Institute (cancer genomics, paralog dependencies); <rameen_beroukhim@dfci.harvard.edu>
+5. Dr. Bing Zhang — Baylor College of Medicine (CPTAC proteogenomics); <bing.zhang@bcm.edu>
 
 **Opposed Reviewers:** None.

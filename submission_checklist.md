@@ -76,17 +76,17 @@ Huazhong University of Science and Technology, Wuhan, China
 
 ## 6. 推荐审稿人（Suggested Reviewers，5 位）
 
-| # | 姓名 | 单位 | 专长 | 邮箱 |
-|---|---|---|---|---|
-| 1 | Dr. Francisca Vazquez | DepMap / Broad Institute | CRISPR dependency | 【待补】 |
-| 2 | Dr. Michael P. Snyder | Stanford University | proteogenomics, CPTAC | 【待补】 |
-| 3 | Dr. Jason Moffat | University of Toronto | synthetic lethality screening | 【待补】 |
-| 4 | Dr. Rameen Beroukhim | Dana-Farber / Broad Institute | cancer genomics, paralog dependencies | 【待补】 |
-| 5 | Dr. Bing Zhang | Baylor College of Medicine | CPTAC proteogenomics | 【待补】 |
+| # | 姓名 | 单位 | 邮箱 |
+|---|---|---|---|
+| 1 | Dr. Francisca Vazquez | DepMap / Broad Institute | vazquez@broadinstitute.org |
+| 2 | Dr. Michael P. Snyder | Stanford University | mpsnyder@stanford.edu |
+| 3 | Dr. Jason Moffat | University of Toronto / SickKids | jason.moffat@sickkids.ca |
+| 4 | Dr. Rameen Beroukhim | Dana-Farber / Broad Institute | rameen_beroukhim@dfci.harvard.edu |
+| 5 | Dr. Bing Zhang | Baylor College of Medicine | bing.zhang@bcm.edu |
 
 **Opposed reviewers:** None
 
-【待补】：BMC 系统要求推荐审稿人的**机构邮箱**（不接受 Gmail 等私人邮箱），投稿前请到各单位官网查到公开学术邮箱填入。
+【已核实 2026-07-27】邮箱均取自各单位官网：Vazquez（[target-discovery.depmap.org](https://target-discovery.depmap.org/)）、Snyder（[med.stanford.edu/snyderlab](https://med.stanford.edu/snyderlab/about.html)）、Moffat（[moleculargenetics.utoronto.ca](https://moleculargenetics.utoronto.ca/faculty/jason-moffat)）、Beroukhim（[ogephd.hms.harvard.edu](https://ogephd.hms.harvard.edu/people/rameen-beroukhim)）、Zhang（[bcm.edu/people-search](https://www.bcm.edu/people-search/bing-zhang-33575)）。全部为机构邮箱，已同步至 cover_letter.md。
 
 ## 7. 上传文件清单（Files）
 
@@ -162,5 +162,5 @@ Graphical abstract caption（较长，完整版见 `submission_texts.md`）。
 
 1. 【待补】确定最终作者名单；补 Qingqing Mo 邮箱（第 5 节）
 2. 【待补】补两位作者 ORCID（第 5 节）
-3. 【待补】补 5 位推荐审稿人机构邮箱（第 6 节）
+3. ~~补 5 位推荐审稿人机构邮箱~~ 【已解决 2026-07-27】官网核实，见第 6 节
 4. ~~摘要超限~~ 【已解决】压缩版已同步 manuscript.tex（第 3 节）
