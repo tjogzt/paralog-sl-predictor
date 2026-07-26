@@ -108,3 +108,15 @@ ts2_arid_q	ARID1A→ARID1B Ovarian q-value	0.39	0.386	output/tables/TableS2_Full
 ts2_arid_q2	ARID1A→ARID1B Endometrial q-value	0.88	0.879	output/tables/TableS2_FullResults.tsv	match
 reg_lin_p	ARID1A lineage-adjusted p	2.2e-13	2.24e-13	output/regression_controls.json	match
 reg_tp53_lin_p	TP53+CNV+lineage adjusted p	7.0e-13	7.03e-14	output/regression_controls.json	match
+id03_auroc	DD + ID >= 0.3 AUROC (Table 1)	1.000	1.000	output/headline_metrics.json	match
+id03_npairs	DD + ID >= 0.3 unique pairs	3	3	output/headline_metrics.json	match
+id03_npos	DD + ID >= 0.3 positives	2	2	output/headline_metrics.json	match
+Table1_dd	Table1_Benchmark.tsv DD row	0.676	0.676	output/tables/Table1_Benchmark.tsv	match
+Table1_id	Table1_Benchmark.tsv DD+ID row	1.000	1.000	output/tables/Table1_Benchmark.tsv	match
+Table1_slm	Table1_Benchmark.tsv SLMGAE row	0.790	0.790	output/tables/Table1_Benchmark.tsv	match
+Table2_dd	Table2_Benchmark.tsv DD row	0.676	0.676	output/tables/Table2_Benchmark.tsv	match
+Table2_id	Table2_Benchmark.tsv DD+ID row	1.000	1.000	output/tables/Table2_Benchmark.tsv	match
+Table2_slm	Table2_Benchmark.tsv SLMGAE row	0.790	0.790	output/tables/Table2_Benchmark.tsv	match
+s3_rows	Table S3 pairs	12	12	output/tables/TableS3_GoldStandard.tsv	match
+s3_tier_a	Table S3 Tier A == headline tier_a_pairs	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	output/tables/TableS3_GoldStandard.tsv	match
+s3_tier_b	Table S3 Tier B == headline tier_b_pairs	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	output/tables/TableS3_GoldStandard.tsv	match

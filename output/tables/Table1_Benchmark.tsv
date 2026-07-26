@@ -1,11 +1,11 @@
-Method	CV3_AUROC	Architecture	Interpretability
-SLMGAE	0.790	Multi-view GAE	Low
-NSF4SL	0.683	Contrastive	Low
-GCATSL	0.678	Graph Attention	Low
-GRSMF	0.656	Matrix Factor.	Low
-PiLSL	0.626	Pairwise GNN	Low
-KG4SL	0.563	KG Embed.	Low
-SLGNN	0.530	KG GNN	Low
-PTGNN	0.529	Pre-trained GNN	Low
-DD (this study)	0.794	Univariate	High
-DD + ID≥0.3	1.000	Univariate+Filter	High
+Method	CV3_AUROC	Interpretability
+SLMGAE	0.790	Low
+NSF4SL	0.683	Low
+GCATSL	0.678	Low
+GRSMF	0.656	Low
+PiLSL	0.626	Low
+KG4SL	0.563	Low
+SLGNN	0.530	Low
+PTGNN	0.529	Low
+DD (this study)	0.676	High
+DD + ID≥0.3	1.000	High

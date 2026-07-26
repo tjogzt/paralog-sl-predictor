@@ -118,7 +118,7 @@ Leave-one-lineage-out AUROC was stable (range 0.656--0.704). Bootstrap resamplin
 
 \begin{table}[H]
 \centering
-\caption{\textbf{DD performance in context of published CV3 results (not a head-to-head benchmark).} Published values are CV3 (gene-pair isolation) AUROCs from Feng et al.\ (2024), Supplementary Data 1 (NSMRand negative sampling, 1:1 positive:negative ratio, complete dataset). DD and DD~+~ID values from this study, evaluated on a paralog-SL-specific test set (12 positives, $\sim$194 negatives). \textit{Evaluation frameworks differ: published methods were tested on general SL gene-pair universes; DD was tested on paralog-SL pairs only. Direct AUROC comparison is not warranted.} Interpretability: whether predictions can be directly traced to specific biological features.}
+\caption{\textbf{DD performance in context of published CV3 results (not a head-to-head benchmark).} Published values are CV3 (gene-pair isolation) AUROCs from Feng et al.\ (2024), Supplementary Data 1 (NSMRand negative sampling, 1:1 positive:negative ratio, complete dataset). DD and DD~+~ID values from this study: DD was evaluated on the full lineage-level frame (110 driver--paralog--lineage entries, 8 positives); DD~+~ID on the high-identity subset (3 pairs, 2 positives) and is reported as anecdotal. \textit{Evaluation frameworks differ: published methods were tested on general SL gene-pair universes; DD was tested on paralog-SL pairs only. Direct AUROC comparison is not warranted.} Interpretability: whether predictions can be directly traced to specific biological features.}
 \label{tab:benchmark}
 \begin{tabular}{lcc}
 \toprule

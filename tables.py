@@ -81,6 +81,54 @@ bench = pd.DataFrame({
 })
 bench.to_csv(OUT / "Table2_Benchmark.tsv", sep="\t", index=False)
 
+# Manuscript Table 1 layout (Method / AUROC / Interpretability) — same data,
+# fewer columns. Kept script-owned so it can never drift from Table 2 again.
+bench[["Method", "CV3_AUROC", "Interpretability"]].to_csv(
+    OUT / "Table1_Benchmark.tsv", sep="\t", index=False)
+
+# ── Table S3: evidence-tiered gold standard ──
+# Machine-readable mirror of supplementary.tex Table S3. Tier membership MUST
+# match the TIER_A/TIER_B/TIER_C/FUNCTIONAL_ANALOGS constants in
+# compute_headline_metrics.py — audit_manuscript_numbers.py enforces this.
+_s3_rows = [
+    # tier, driver, paralog, assay, model, direction, dual, indep, direct_sl, inclusion, ref
+    ("A", "AKT1", "AKT2", "Combinatorial CRISPR digenic KO", "Cancer cell lines",
+     "AKT1->AKT2", "Yes", "Yes", "Yes", "Primary", "Najm 2018"),
+    ("A", "CDK4", "CDK6", "Digenic KO (pgPEN library)", "Cancer cell lines",
+     "CDK4->CDK6", "Yes", "Yes", "Yes", "Primary", "Parrish 2021"),
+    ("A", "MAP2K1", "MAP2K2", "Digenic KO (pgPEN library)", "Cancer cell lines",
+     "MAP2K1->MAP2K2", "Yes", "Yes", "Yes", "Primary", "Parrish 2021"),
+    ("B", "SMARCA4", "SMARCA2", "CRISPR KO conditioned on natural SMARCA4 mutation",
+     "SMARCA4-mutant cancer lines", "SMARCA4->SMARCA2", "No", "Yes", "Conditional",
+     "Primary", "Hoffman 2014"),
+    ("B", "ARID1A", "ARID1B", "shRNA knockdown conditioned on natural ARID1A mutation",
+     "ARID1A-mutant cancer lines", "ARID1A->ARID1B", "No", "Yes", "Conditional",
+     "Primary", "Helming 2014"),
+    ("C", "EP300", "CREBBP", "p300 degradation / CRISPR in CREBBP-deficient lines",
+     "CREBBP-mutant cancer lines", "Reciprocal only (CREBBP->EP300)", "No", "Yes",
+     "Reciprocal", "Secondary", "Ogiwara 2016; Nie 2021"),
+    ("C", "PIK3CA", "PIK3CB", "shRNA / PI3K inhibitor in PTEN-deficient lines",
+     "PTEN-deficient cancer lines", "PTEN->PIK3CB only", "No", "Yes",
+     "No (other driver)", "Secondary", "Wee 2008"),
+    ("C", "CCNE1", "CCNE2", "Mouse developmental double knockout", "Mouse embryo",
+     "CCNE1<->CCNE2 redundancy", "Yes (mouse)", "Yes", "No (redundancy)",
+     "Secondary", "Geng 2003"),
+    ("C", "FBXW7", "FBXW2", "DepMap computational analysis", "700+ cell lines",
+     "FBXW7->FBXW2", "No", "No", "No (computational)", "Secondary", "DepMap"),
+    ("C", "PPP2R1A", "PPP2R1B", "DepMap computational analysis", "700+ cell lines",
+     "PPP2R1A->PPP2R1B", "No", "No", "No (computational)", "Secondary", "DepMap"),
+    ("Comparator", "BRCA1", "BRCA2", "PARP inhibition / genetic screen (functional analogs)",
+     "BRCA-mutant cancer lines", "BRCA1/2->PARP axis", "No", "Yes",
+     "Functional analog", "Comparator", "Bryant 2005"),
+    ("Comparator", "STK11", "SIK1", "Mouse genetics, LKB1-SIK axis (partial homolog)",
+     "Mouse NSCLC models", "STK11->SIK1/3 axis", "No", "Yes",
+     "Pathway axis", "Comparator", "Hollstein 2019"),
+]
+s3 = pd.DataFrame(_s3_rows, columns=[
+    "Tier", "Driver", "Paralog", "Assay", "Model", "Validated_Direction",
+    "Dual_Perturbation", "DepMap_Independent", "Direct_SL", "Inclusion", "Key_Ref"])
+s3.to_csv(OUT / "TableS3_GoldStandard.tsv", sep="\t", index=False)
+
 # ── Table S1: Cell line counts ──
 cl_counts = summary[["cancer","n_lines"]].copy()
 cl_counts.columns = ["Cancer Type","Cell Lines (with data)"]
@@ -88,6 +136,8 @@ cl_counts.to_csv(OUT / "TableS1_CellLineCounts.tsv", sep="\t", index=False)
 
 print(f"Tables saved to {OUT}")
 print(f"  Table1_DeNovoCandidates.tsv: {len(cand) if all_candidates else 0} rows")
+print(f"  Table1_Benchmark.tsv: {len(bench)} rows")
 print(f"  Table2_Benchmark.tsv: {len(bench)} rows")
 print(f"  TableS1_CellLineCounts.tsv: {len(cl_counts)} rows")
+print(f"  TableS3_GoldStandard.tsv: {len(s3)} rows")
 print(f"  TableS4_PancancerSummary.tsv: {len(t)} rows")

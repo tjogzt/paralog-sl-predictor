@@ -1,13 +1,13 @@
-Gene_A	Gene_B	Mechanism	Evidence
-AKT1	AKT2	Paralog compensation	Literature/SynLethDB
-ARID1A	ARID1B	Paralog compensation	Literature/SynLethDB
-BRCA1	BRCA2	Paralog compensation	Literature/SynLethDB
-CCNE1	CCNE2	Paralog compensation	Literature/SynLethDB
-CDK4	CDK6	Paralog compensation	Literature/SynLethDB
-EP300	CREBBP	Paralog compensation	Literature/SynLethDB
-FBXW7	FBXW2	Paralog compensation	Literature/SynLethDB
-MEK1	MEK2	Paralog compensation	Literature/SynLethDB
-PIK3CA	PIK3CB	Paralog compensation	Literature/SynLethDB
-PPP2R1A	PPP2R1B	Paralog compensation	Literature/SynLethDB
-SMARCA4	SMARCA2	Paralog compensation	Literature/SynLethDB
-STK11	SIK1	Paralog compensation	Literature/SynLethDB
+Tier	Driver	Paralog	Assay	Model	Validated_Direction	Dual_Perturbation	DepMap_Independent	Direct_SL	Inclusion	Key_Ref
+A	AKT1	AKT2	Combinatorial CRISPR digenic KO	Cancer cell lines	AKT1->AKT2	Yes	Yes	Yes	Primary	Najm 2018
+A	CDK4	CDK6	Digenic KO (pgPEN library)	Cancer cell lines	CDK4->CDK6	Yes	Yes	Yes	Primary	Parrish 2021
+A	MAP2K1	MAP2K2	Digenic KO (pgPEN library)	Cancer cell lines	MAP2K1->MAP2K2	Yes	Yes	Yes	Primary	Parrish 2021
+B	SMARCA4	SMARCA2	CRISPR KO conditioned on natural SMARCA4 mutation	SMARCA4-mutant cancer lines	SMARCA4->SMARCA2	No	Yes	Conditional	Primary	Hoffman 2014
+B	ARID1A	ARID1B	shRNA knockdown conditioned on natural ARID1A mutation	ARID1A-mutant cancer lines	ARID1A->ARID1B	No	Yes	Conditional	Primary	Helming 2014
+C	EP300	CREBBP	p300 degradation / CRISPR in CREBBP-deficient lines	CREBBP-mutant cancer lines	Reciprocal only (CREBBP->EP300)	No	Yes	Reciprocal	Secondary	Ogiwara 2016; Nie 2021
+C	PIK3CA	PIK3CB	shRNA / PI3K inhibitor in PTEN-deficient lines	PTEN-deficient cancer lines	PTEN->PIK3CB only	No	Yes	No (other driver)	Secondary	Wee 2008
+C	CCNE1	CCNE2	Mouse developmental double knockout	Mouse embryo	CCNE1<->CCNE2 redundancy	Yes (mouse)	Yes	No (redundancy)	Secondary	Geng 2003
+C	FBXW7	FBXW2	DepMap computational analysis	700+ cell lines	FBXW7->FBXW2	No	No	No (computational)	Secondary	DepMap
+C	PPP2R1A	PPP2R1B	DepMap computational analysis	700+ cell lines	PPP2R1A->PPP2R1B	No	No	No (computational)	Secondary	DepMap
+Comparator	BRCA1	BRCA2	PARP inhibition / genetic screen (functional analogs)	BRCA-mutant cancer lines	BRCA1/2->PARP axis	No	Yes	Functional analog	Comparator	Bryant 2005
+Comparator	STK11	SIK1	Mouse genetics, LKB1-SIK axis (partial homolog)	Mouse NSCLC models	STK11->SIK1/3 axis	No	Yes	Pathway axis	Comparator	Hollstein 2019

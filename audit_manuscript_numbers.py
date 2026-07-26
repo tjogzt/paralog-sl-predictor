@@ -324,6 +324,38 @@ check("reg_tp53_lin_p", "TP53+CNV+lineage adjusted p", "7.0e-13",
       reg["results"]["tp53_control"]["p_adj_lineage"], REG)
 
 # ═══════════════════════════════════════════════════════════════════
+# 11. Identity filter, benchmark tables, Table S3 tier consistency
+# ═══════════════════════════════════════════════════════════════════
+idf = hm["identity_filter"]["id_ge_0.3"]
+check("id03_auroc", "DD + ID >= 0.3 AUROC (Table 1)", "1.000", idf["auroc"], HM)
+check_int("id03_npairs", "DD + ID >= 0.3 unique pairs", 3, idf["n_unique_pairs"], HM)
+check_int("id03_npos", "DD + ID >= 0.3 positives", 2, idf["n_positives"], HM)
+
+for tname in ["Table1_Benchmark.tsv", "Table2_Benchmark.tsv"]:
+    tb = pd.read_csv(OUT / "tables" / tname, sep="\t")
+    src = f"output/tables/{tname}"
+    tb_dd = tb.loc[tb.Method == "DD (this study)", "CV3_AUROC"].iloc[0]
+    tb_id = tb.loc[tb.Method.str.startswith("DD + ID"), "CV3_AUROC"].iloc[0]
+    tb_sl = tb.loc[tb.Method == "SLMGAE", "CV3_AUROC"].iloc[0]
+    check(f"{tname[:6]}_dd", f"{tname} DD row", "0.676", tb_dd, src)
+    check(f"{tname[:6]}_id", f"{tname} DD+ID row", "1.000", tb_id, src)
+    check(f"{tname[:6]}_slm", f"{tname} SLMGAE row", "0.790", tb_sl, src)
+
+s3 = pd.read_csv(OUT / "tables" / "TableS3_GoldStandard.tsv", sep="\t")
+S3 = "output/tables/TableS3_GoldStandard.tsv"
+check_int("s3_rows", "Table S3 pairs", 12, len(s3), S3)
+s3_a = sorted(f"{r.Driver}->{r.Paralog}" for r in s3[s3.Tier == "A"].itertuples())
+s3_b = sorted(f"{r.Driver}->{r.Paralog}" for r in s3[s3.Tier == "B"].itertuples())
+ROWS.append({"id": "s3_tier_a", "description": "Table S3 Tier A == headline tier_a_pairs",
+             "manuscript": str(hm["lineage_tier_ab"]["tier_a_pairs"]),
+             "recomputed": str(s3_a), "source": S3,
+             "status": "match" if s3_a == sorted(hm["lineage_tier_ab"]["tier_a_pairs"]) else "MISMATCH"})
+ROWS.append({"id": "s3_tier_b", "description": "Table S3 Tier B == headline tier_b_pairs",
+             "manuscript": str(hm["lineage_tier_ab"]["tier_b_pairs"]),
+             "recomputed": str(s3_b), "source": S3,
+             "status": "match" if s3_b == sorted(hm["lineage_tier_ab"]["tier_b_pairs"]) else "MISMATCH"})
+
+# ═══════════════════════════════════════════════════════════════════
 # Report
 # ═══════════════════════════════════════════════════════════════════
 df = pd.DataFrame(ROWS)
