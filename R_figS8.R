@@ -19,20 +19,19 @@ theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
 
 vr <- fromJSON("paralog_sl_predictor/output/validation_report.json")
 perm_data <- readRDS("paralog_sl_predictor/output/permutation_10000.rds")
+bs_real <- read.csv("paralog_sl_predictor/output/bootstrap_perpair_1000.csv")$bootstrap_auroc
 
-obs_auroc <- perm_data$obs
+obs_auroc <- vr$negative_control$observed_auroc
+emp_p     <- vr$negative_control$empirical_p_value
 null_vals <- perm_data$null
-emp_p     <- perm_data$p
-null_mean <- perm_data$mean
+null_mean <- vr$negative_control$null_auroc_mean
 bs_mean   <- vr$bootstrap$auroc_mean
 bs_ci_lo  <- vr$bootstrap$auroc_ci_low
 bs_ci_hi  <- vr$bootstrap$auroc_ci_high
-bs_sd     <- (bs_ci_hi - bs_ci_lo) / (2 * 1.96)
 
-# Panel A: Bootstrap
-set.seed(42)
-bs_vals <- pmax(pmin(rnorm(1000, bs_mean, bs_sd), 1.0), 0.3)
-pa <- ggplot(data.frame(x = bs_vals), aes(x)) +
+# Panel A: Bootstrap (REAL 1,000 resample draws from run_full_validation —
+# dumped to output/bootstrap_perpair_1000.csv; no simulated shape)
+pa <- ggplot(data.frame(x = bs_real), aes(x)) +
   geom_histogram(bins = 30, fill = BLUE, alpha = 0.5, color = "white", linewidth = 0.2) +
   geom_vline(xintercept = obs_auroc, color = RED, linewidth = 1.2) +
   geom_vline(xintercept = c(bs_ci_lo, bs_ci_hi), color = GRAY, linewidth = 0.5, linetype = "dashed") +

@@ -62,6 +62,10 @@ def main():
     if null_dist is not None:
         pd.DataFrame({"null_auroc": null_dist}).to_csv(
             "output/permutation_null_10000.csv", index=False)
+    bs_dist = vr.pop("bootstrap_distribution", None)
+    if bs_dist is not None:
+        pd.DataFrame({"bootstrap_auroc": bs_dist}).to_csv(
+            "output/bootstrap_perpair_1000.csv", index=False)
     with open("output/validation_report.json", "w") as f:
         json.dump({k: v for k, v in vr.items() if not isinstance(v, pd.DataFrame)},
                   f, indent=2, default=str)

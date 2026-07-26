@@ -566,6 +566,10 @@ def run_full_validation(results, n_permutations: int = 10000,
             "auroc_ci_high": bs_ci_high,
             "n_bootstrap": n_bootstrap,
         },
+        # Raw bootstrap resample AUROCs — popped by main.py and written to
+        # output/bootstrap_perpair_1000.csv for the Fig. S8a histogram
+        # (replaces the old rnorm-simulated shape with the real draws).
+        "bootstrap_distribution": bs_aurocs,
         "lineage_level": {
             "frame": "gyn3 (Ovarian/Endometrial/Cervical) lineage-level entries",
             "dd_auroc": lin_dd_auroc,
