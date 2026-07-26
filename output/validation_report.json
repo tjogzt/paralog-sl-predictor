@@ -2,29 +2,29 @@
   "framework": "per_pair: gyn3 unique pairs, score = max |DD| across lineages",
   "note": "Reproducible companion to the frozen historical output/validation_report.json; label-shuffle null is seeded and has mean ~0.5 by construction.",
   "negative_control": {
-    "observed_auroc": 0.49275362318840576,
-    "null_auroc_mean": 0.5014507246376811,
-    "null_auroc_std": 0.12395763150570555,
-    "empirical_p_value": 0.5302469753024698,
+    "observed_auroc": 0.5,
+    "null_auroc_mean": 0.5006060606060606,
+    "null_auroc_std": 0.12379884063906732,
+    "empirical_p_value": 0.5027497250274973,
     "n_known": "6",
-    "n_total": 75,
+    "n_total": 72,
     "n_permutations": 10000,
     "seed": 42
   },
   "component_decomposition": {
-    "expression_only": 0.5753205128205129
+    "expression_only": 0.5675675675675675
   },
   "bootstrap": {
-    "auroc_mean": 0.49391229048814084,
-    "auroc_ci_low": 0.16524853228962819,
-    "auroc_ci_high": 0.8287037037037036,
+    "auroc_mean": 0.49636178267449665,
+    "auroc_ci_low": 0.18507246376811595,
+    "auroc_ci_high": 0.8127060439560438,
     "n_bootstrap": 1000
   },
   "lineage_level": {
     "frame": "gyn3 (Ovarian/Endometrial/Cervical) lineage-level entries",
-    "dd_auroc": 0.6822429906542057,
-    "composite_auroc": 0.8286604361370716,
-    "n_entries": 116,
-    "n_positives": 9
+    "dd_auroc": 0.6764705882352942,
+    "composite_auroc": 0.8590686274509804,
+    "n_entries": 110,
+    "n_positives": 8
   }
 }

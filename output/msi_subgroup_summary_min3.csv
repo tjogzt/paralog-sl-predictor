@@ -1,0 +1,5 @@
+cancer,subgroup,n_lines,n_pairs,n_known,dd_auroc
+Endometrial,MSI_H,17,81,3,0.8376068376068375
+Endometrial,MSS,11,9,3,0.5555555555555556
+Colorectal,MSI_H,14,47,4,0.7674418604651163
+Colorectal,MSS,45,47,3,0.7121212121212122

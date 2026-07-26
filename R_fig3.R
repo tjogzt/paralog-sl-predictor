@@ -43,14 +43,17 @@ save_panel <- function(p, name) {
 # PANEL A — MSI Stratification
 # ═══════════════════════════════════════════════════════════════
 panel_a <- function() {
-  # Values from output/msi_subgroup_summary.csv (official DepMap 26Q1
-  # MSIsensor2 annotation; MSI-H = MSIscore > 20), msi_analysis.py
+  # Values from output/msi_subgroup_summary_min3.csv (sensitivity frame,
+  # >=3 mutant/WT per group; official DepMap 26Q1 MSIsensor2 annotation,
+  # MSI-H = MSIscore > 20), msi_analysis.py. On the primary >=5 frame the
+  # endometrial subgroups are not evaluable and colorectal shows no
+  # difference (0.574 vs 0.595); see manuscript text.
   df <- tibble(
     cancer = factor(c("Colorectal","Colorectal","Endometrial","Endometrial"),
                     levels = c("Colorectal","Endometrial")),
     msi_status = factor(c("MSI-H","MSS","MSI-H","MSS"),
                         levels = c("MSI-H","MSS")),
-    auroc = c(0.947, 0.617, 0.723, 0.611),
+    auroc = c(0.767, 0.712, 0.838, 0.556),
     n     = c(14, 45, 17, 11))
 
   # For hatched bar, use a dummy value with patterned fill

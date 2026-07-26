@@ -62,13 +62,16 @@ SEED = 42
 # (deterministic function of the other features -> collinearity) and kept
 # as single-feature baseline only. With n_pos = 6, linear-classifier LOO
 # AUROCs are unstable and are reported with an explicit small-n caveat.
+# Updated 2026-07-26 to the min>=5/mutation-rule framework: 72 unique
+# pairs, 6 positives; SVM-RBF and the composite are statistically
+# indistinguishable at this sample size (paired resamples overlap).
 CLAIMS = {
-    "LR": 0.138,
-    "RF": 0.617,
-    "SVM_RBF_low": 0.744,
-    "SVM_Linear_high": 0.217,
-    "dd_alone": 0.551,
-    "composite_alone": 0.841,
+    "LR": 0.136,
+    "RF": 0.722,
+    "SVM_RBF_low": 0.843,
+    "SVM_Linear_high": 0.114,
+    "dd_alone": 0.566,
+    "composite_alone": 0.831,
     "lr_beta_dd": 0.40,
     "lr_p_dd": 0.253,
 }
@@ -129,7 +132,7 @@ def main():
     X = pairs[FEATURES].fillna(0.0).values.astype(float)
     n_pairs, n_pos = len(pairs), int(y.sum())
     print(f"Universe: {n_pairs} unique pairs, {n_pos} positives "
-          f"(expected 77/8)")
+          f"(expected 72/6 under min>=5)")
 
     # Standardize features
     mu, sd = X.mean(axis=0), X.std(axis=0, ddof=1)

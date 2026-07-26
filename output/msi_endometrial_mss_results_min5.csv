@@ -1,0 +1,2 @@
+driver_gene,paralog_gene,pcs,delta_expression,necessity,dependency_dd,cohens_d,hedges_g,dd_p_value,expr_p_value,expr_t_stat,n_mut,n_wt,cancer_type,mutation_frequency,q_value,pass_threshold,pcs_rank,pcs_norm,dd_norm,composite_score,is_known_paralog_sl
+ARID1A,ARID1B,0.0,-0.015143528191709166,0.07510336169996921,0.2851013519140545,1.0845933897318716,0.9916282420405683,0.15702412264757004,0.961060799749263,-0.05020480684209239,5,6,Endometrial_MSS,0.45454545454545453,0.961060799749263,False,1.0,0.0,0.0,0.0,True

@@ -14,7 +14,8 @@ def rank_and_export(results, results_file, summary_file):
     summary_file = summary_file or SUMMARY_FILE
     results["novelty"] = results["is_known_paralog_sl"].map({True: "Known", False: "Novel"})
     display = ["driver_gene","paralog_gene","cancer_type","pcs","delta_expression",
-               "necessity","dependency_dd","composite_score","novelty",
+               "necessity","dependency_dd","cohens_d","hedges_g","dd_p_value",
+               "composite_score","novelty",
                "q_value","mutation_frequency","n_mut","n_wt","is_known_paralog_sl"]
     available = [c for c in display if c in results.columns]
     ranked = results.sort_values(["is_known_paralog_sl","composite_score"],

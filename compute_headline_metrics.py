@@ -11,35 +11,44 @@ files instead of using hard-coded literals:
 
     output/headline_metrics.json        full detail + claims check
     output/tables/headline_metrics.tsv  flat metric/value/provenance table (for R)
+    output/tables/TableS8_EffectSizes.tsv  per-entry DD/Cohen's d/Hedges' g
 
 Inputs (all small artifacts; no DepMap re-download, no sklearn required —
 AUROC is computed with the rank-based Mann-Whitney formula, identical to
-sklearn.metrics.roc_auc_score for binary labels):
+sklearn.metrics.roc_auc_score for binary labels; AUPRC is average precision,
+identical to sklearn.metrics.average_precision_score):
 
-    output/tables/TableS2_FullResults.tsv   118 driver x paralog x lineage entries
+    output/tables/TableS2_FullResults.tsv   driver x paralog x lineage entries
     output/validation_report.json           per-pair negative control + bootstrap
     output/paralog_identity.csv             k-mer Jaccard identity (optional;
                                             run compute_sequence_identity.R first)
 
-Manuscript definitions (see manuscript.tex):
-  * Full set:    12 gold-standard positives (TableS3), lineage-level entries.
-  * Primary set: 10 true sequence paralogs — excludes the two functional
-                 analogs BRCA1<->BRCA2 and STK11->SIK1 (Methods: "Secondary
-                 set of 2 functional analogs").
-  * Tier A:      5 pairs with directional external experimental evidence
-                 (the NEW primary evaluation set): SMARCA4->SMARCA2,
-                 ARID1A->ARID1B, EP300->CREBBP, AKT1->AKT2, CCNE1->CCNE2.
-  * Tier A + comparators: Tier A plus the 2 mechanistic comparators
-                 (BRCA1<->BRCA2, STK11->SIK1).
-  * Tier B:      3 pairs with redundancy/pharmacologic evidence only (not
-                 directional genotype-conditional): PIK3CA->PIK3CB,
-                 CDK4->CDK6, MAP2K1->MAP2K2.
-  * Tier C:      2 DepMap-derived pairs (circularity risk) = DEPMAP_ERA.
-  * Leave-out:   excludes the two pairs whose evidence is DepMap-era
-                 (FBXW7->FBXW2, PPP2R1A->PPP2R1B).
+Manuscript definitions (see manuscript.tex) — evidence tiers after the
+round-4 methods review (Supplementary Table S3):
+  * Tier A:      3 pairs with DIRECT genetic synthetic-lethal evidence from
+                 dual-gene perturbation: AKT1->AKT2 (Najm 2018 combinatorial
+                 CRISPR), CDK4->CDK6 and MAP2K1->MAP2K2 (Parrish 2021 pgPEN).
+  * Tier B:      2 pairs with natural-genotype conditional dependency +
+                 functional validation: SMARCA4->SMARCA2 (Hoffman 2014),
+                 ARID1A->ARID1B (Helming 2014).
+  * PRIMARY external benchmark: Tier A ∪ Tier B (5 pairs).
+  * Tier C:      5 pairs with indirect evidence only — EP300->CREBBP
+                 (reciprocal direction only), PIK3CA->PIK3CB (Wee 2008
+                 supports PTEN->PIK3CB only), CCNE1->CCNE2 (mouse
+                 developmental double-KO redundancy), and the two
+                 DepMap-derived pairs (FBXW7->FBXW2, PPP2R1A->PPP2R1B).
+                 Excluded from the primary benchmark.
+  * Comparators: BRCA1<->BRCA2, STK11->SIK1 — not sequence paralogs;
+                 specificity references only.
+  * Full set:    all 12 curated pairs (secondary analysis).
+  * Leave-out:   excludes the two DepMap-era pairs.
   * Pre-DepMap:  keeps only the 8 pairs with pre-DepMap experimental evidence
-                 (12 - 2 functional analogs - 2 DepMap-era).
-  * Scoring:     AUROC of |DD| (manuscript: "DD alone, using only |DD|").
+                 (12 - 2 comparators - 2 DepMap-era).
+  * Scoring:     AUROC of |DD| (manuscript: "DD alone, using only |DD|");
+                 AUPRC (average precision) reported alongside.
+  * Bootstrap:   10,000 resamples of evaluation entries (or pairs for
+                 per-pair frames), percentile 95% CI; paired resamples for
+                 component head-to-head comparisons.
 
 Usage: python compute_headline_metrics.py   (run from repo root)
 """
@@ -58,38 +67,37 @@ VALIDATION_REPORT = ROOT / "output" / "validation_report.json"
 IDENTITY_CSV = ROOT / "output" / "paralog_identity.csv"
 JSON_OUT = ROOT / "output" / "headline_metrics.json"
 TSV_OUT = ROOT / "output" / "tables" / "headline_metrics.tsv"
+EFFECTS_OUT = ROOT / "output" / "tables" / "TableS8_EffectSizes.tsv"
 
-# Pairs excluded from the Primary set (manuscript Methods: functional analogs)
+N_BOOT = 10_000
+BOOT_SEED = 42
+
+# ── Evidence tiers (round-4 review; Supplementary Table S3) ────────────
+# Comparators: mechanistic reference pairs, NOT sequence paralogs; scored
+# as UNORDERED (BRCA1<->BRCA2 appears in both directions in TableS2).
 FUNCTIONAL_ANALOGS = {("BRCA1", "BRCA2"), ("STK11", "SIK1")}
-# Pairs whose gold-standard evidence is DepMap-era (manuscript Results);
-# = Tier C in the evidence-tier system (Supplementary Table S3)
-DEPMAP_ERA = {("FBXW7", "FBXW2"), ("PPP2R1A", "PPP2R1B")}
-
-# Evidence tiers after the citation audit (Supplementary Table S3).
-# Tier A: directional external experimental evidence — the primary
-# evaluation set (independent of DepMap).
+# Tier A: direct dual-perturbation genetic SL evidence.
 TIER_A = {
-    ("SMARCA4", "SMARCA2"),  # Hoffman 2014 CRISPR
-    ("ARID1A", "ARID1B"),    # Helming 2014
-}
-# Reciprocal-direction validated: direct experimental evidence establishes
-# the SL interaction in the CREBBP->EP300 direction only (Ogiwara 2016
-# CBP-deficient -> p300 addiction; Nie 2021 CREBBP-mutant DLBCL -> EP300).
-# The direction scored here (EP300->CREBBP) is supported only by paralog
-# redundancy, so the pair is excluded from directional Tier A claims.
-TIER_RECIPROCAL = {
-    ("EP300", "CREBBP"),  # Ogiwara 2016 + Nie 2021, reciprocal direction
-}
-# Tier B: paralog redundancy / pharmacologic / digenic-KO evidence only —
-# NOT directional genotype-conditional; reported separately from the
-# primary evaluation.
-TIER_B = {
     ("AKT1", "AKT2"),      # Najm 2018 combinatorial CRISPR digenic KO
-    ("CCNE1", "CCNE2"),    # Geng 2003 mouse double-KO redundancy
-    ("PIK3CA", "PIK3CB"),  # Wee 2008 supports PTEN->PIK3CB only, not this direction
-    ("CDK4", "CDK6"),      # Parrish 2021 digenic KO (pgPEN) + drug
-    ("MAP2K1", "MAP2K2"),  # Parrish 2021 digenic KO (pgPEN) + drug
+    ("CDK4", "CDK6"),      # Parrish 2021 digenic KO (pgPEN)
+    ("MAP2K1", "MAP2K2"),  # Parrish 2021 digenic KO (pgPEN)
 }
+# Tier B: natural-genotype conditional dependency + functional validation.
+TIER_B = {
+    ("SMARCA4", "SMARCA2"),  # Hoffman 2014 CRISPR in SMARCA4-mutant lines
+    ("ARID1A", "ARID1B"),    # Helming 2014 shRNA in ARID1A-mutant lines
+}
+# Tier C: indirect evidence only (excluded from the primary benchmark).
+TIER_C_INDIRECT = {
+    ("EP300", "CREBBP"),   # Ogiwara 2016 + Nie 2021, reciprocal direction only
+    ("PIK3CA", "PIK3CB"),  # Wee 2008 supports PTEN->PIK3CB only
+    ("CCNE1", "CCNE2"),    # Geng 2003 mouse developmental double-KO redundancy
+}
+DEPMAP_ERA = {("FBXW7", "FBXW2"), ("PPP2R1A", "PPP2R1B")}  # DepMap-derived
+TIER_C = TIER_C_INDIRECT | DEPMAP_ERA
+# Reciprocal-direction set retained for the direction-strict sensitivity
+# analysis (EP300->CREBBP relabelled non-positive).
+TIER_RECIPROCAL = {("EP300", "CREBBP")}
 
 # Published CV3 AUROC values — literature constants, NOT recomputed here.
 # Source: Feng et al. (2024) Nat Commun 15:9058, Supplementary Data 1,
@@ -101,28 +109,30 @@ PUBLISHED_BENCHMARKS = {
 }
 
 # Values stated in the manuscript, for the automated claims check.
-# Updated 2026-07-26 to the recomputed values after the C7 class-specific
-# driver-mutation rules (TSG: LikelyLoF; ONC: Hotspot; default-entry
-# profiles only). See output/driver_mutation_rules.csv for the variant
-# classification table and output/direction_audit.json for the |DD|
-# direction audit (C6).
+# Updated 2026-07-26 to the round-4 primary framework: minimum 5 mutant +
+# 5 WT cell lines per driver x lineage stratum, Tier A∪B primary benchmark
+# (Tier A pairs have no >=5/>=5 stratum in the gyn3 frame; primary carried
+# by the two Tier B pairs — see manuscript "Evaluation frameworks").
 MANUSCRIPT_CLAIMS = {
-    "dd_auroc_lineage_full": 0.682,
-    "dd_auroc_lineage_leave_out_depmap_era": 0.728,
+    "dd_auroc_lineage_full": 0.676,
+    "auprc_lineage_full": 0.386,
+    "dd_auroc_lineage_tier_ab": 1.000,
+    "auprc_lineage_tier_ab": 1.000,
+    "dd_auroc_lineage_leave_out_depmap_era": 0.725,
     "dd_auroc_lineage_pre_depmap_only": 0.774,
-    "dd_auroc_lineage_full_direction_strict": 0.682,
+    "dd_auroc_lineage_full_direction_strict": 0.676,
     "dd_auroc_id_filter_0.2": 0.583,
     "dd_auroc_id_filter_0.3": 1.000,
-    "component_dd": 0.682,
-    "component_pcs": 0.777,
-    "component_delta_expression": 0.564,
-    "component_necessity": 0.647,
-    "per_pair_auroc": 0.493,
-    "dd_auroc_per_pair_mean": 0.551,
-    "composite_auroc_per_pair_mean": 0.841,
-    "auprc_composite_per_pair": 0.363,
-    "llo_auroc_min": 0.674,
-    "llo_auroc_max": 0.702,
+    "component_dd": 0.676,
+    "component_pcs": 0.825,
+    "component_delta_expression": 0.547,
+    "component_necessity": 0.642,
+    "per_pair_auroc": 0.500,
+    "dd_auroc_per_pair_mean": 0.566,
+    "composite_auroc_per_pair_mean": 0.831,
+    "auprc_composite_per_pair": 0.357,
+    "llo_auroc_min": 0.656,
+    "llo_auroc_max": 0.704,
 }
 TOL = 0.005  # claims match if |computed - claimed| <= TOL
 
@@ -155,19 +165,46 @@ def auprc(labels, scores):
     return float(np.mean([y[: i + 1].mean() for i in range(len(y)) if y[i] == 1]))
 
 
+def bootstrap_ci(labels, scores, stat_fn, n_boot=N_BOOT, seed=BOOT_SEED):
+    """Percentile 95% CI of stat_fn under entry resampling with replacement."""
+    labels = np.asarray(labels).astype(int)
+    scores = np.asarray(scores, dtype=float)
+    ok = ~np.isnan(scores)
+    labels, scores = labels[ok], scores[ok]
+    n = len(labels)
+    if n == 0:
+        return (float("nan"), float("nan"))
+    rng = np.random.default_rng(seed)
+    vals = []
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, n)
+        v = stat_fn(labels[idx], scores[idx])
+        if not np.isnan(v):
+            vals.append(v)
+    if len(vals) < 100:
+        return (float("nan"), float("nan"))
+    lo, hi = np.percentile(vals, [2.5, 97.5])
+    return (float(lo), float(hi))
+
+
 def pair_key(df):
     return list(zip(df["driver_gene"], df["paralog_gene"]))
 
 
-def lineage_metrics(df, label):
+def lineage_metrics(df, label, with_ci=True):
     yt = df["is_known_paralog_sl"].astype(int).values
     ys = df["dependency_dd"].abs().fillna(0).values
-    return {
+    out = {
         "auroc": auroc(yt, ys),
+        "auprc": auprc(yt, ys),
         "n_entries": int(len(df)),
         "n_positives": int(yt.sum()),
         "label": label,
     }
+    if with_ci and len(df) >= 20:
+        out["auroc_ci95"] = list(bootstrap_ci(yt, ys, auroc))
+        out["auprc_ci95"] = list(bootstrap_ci(yt, ys, auprc))
+    return out
 
 
 def main():
@@ -187,26 +224,45 @@ def main():
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "generated_by": "compute_headline_metrics.py",
         "source_files": [str(TABLES2.relative_to(ROOT))],
-        "scoring": "AUROC of |DD| (manuscript convention)",
+        "scoring": "AUROC of |DD| (manuscript convention); AUPRC = average precision",
+        "bootstrap": f"percentile 95% CI, {N_BOOT} entry resamples, seed {BOOT_SEED}",
         "sign_convention": "DD = mean(Chronos|WT) - mean(Chronos|MUT); positive = compensation",
+        "min_samples": "primary analysis: >=5 mutant and >=5 WT cell lines per stratum",
     }
 
-    # ── 1. Lineage-level AUROC: full / primary / leave-out / pre-DepMap ──
-    full = lineage_metrics(df, "Full set (12 gold-standard pairs)")
+    def exclude(df_, pairs, unordered=None):
+        unordered = unordered or set()
+        ku = [frozenset(k) for k in pair_key(df_)]
+        mask = ~pd.Series([(k in pairs) or (u in unordered) for k, u in zip(pair_key(df_), ku)],
+                          index=df_.index)
+        return df_[mask]
+
+    COMPARATOR_UNORDERED = {frozenset(p) for p in FUNCTIONAL_ANALOGS}
+
+    # ── 1. Lineage-level frames ────────────────────────────────────────
+    full = lineage_metrics(df, "Full set (12 curated pairs; secondary)")
     metrics["lineage_full"] = full
+
+    # PRIMARY external benchmark: Tier A ∪ Tier B positives; Tier C and
+    # comparator entries removed from the frame.
+    tier_ab_df = exclude(df, TIER_C, COMPARATOR_UNORDERED)
+    metrics["lineage_tier_ab"] = lineage_metrics(
+        tier_ab_df, "PRIMARY: Tier A ∪ Tier B (5 pairs, external direct/conditional evidence)")
+    metrics["lineage_tier_ab"]["tier_a_pairs"] = sorted(f"{a}->{b}" for a, b in TIER_A)
+    metrics["lineage_tier_ab"]["tier_b_pairs"] = sorted(f"{a}->{b}" for a, b in TIER_B)
+
+    metrics["lineage_tier_a"] = lineage_metrics(
+        exclude(df, TIER_B | TIER_C, COMPARATOR_UNORDERED),
+        "Tier A only (3 pairs, direct dual-perturbation evidence)")
+
+    metrics["lineage_tier_b"] = lineage_metrics(
+        exclude(df, TIER_A | TIER_C, COMPARATOR_UNORDERED),
+        "Tier B only (2 pairs, genotype-conditional dependency)")
 
     mask_primary = ~pd.Series([k in FUNCTIONAL_ANALOGS for k in keys], index=df.index)
     metrics["lineage_primary"] = lineage_metrics(
-        df[mask_primary], "Primary set (10 true sequence paralogs; functional analogs excluded)")
+        df[mask_primary], "Curated sequence paralogs (10 pairs; comparators excluded)")
     metrics["lineage_primary"]["excluded_pairs"] = sorted(f"{a}->{b}" for a, b in FUNCTIONAL_ANALOGS)
-    # Variant for transparency: functional analogs kept but relabelled as negatives
-    yt_variant = df["is_known_paralog_sl"].astype(int).copy()
-    yt_variant[pd.Series([k in FUNCTIONAL_ANALOGS for k in keys], index=df.index)] = 0
-    metrics["lineage_primary_variant_analogs_as_negatives"] = {
-        "auroc": auroc(yt_variant.values, df["dependency_dd"].abs().fillna(0).values),
-        "n_entries": int(len(df)),
-        "n_positives": int(yt_variant.sum()),
-    }
 
     mask_leave = ~pd.Series([k in DEPMAP_ERA for k in keys], index=df.index)
     metrics["lineage_leave_out_depmap_era"] = lineage_metrics(
@@ -217,54 +273,62 @@ def main():
     metrics["lineage_pre_depmap_only"] = lineage_metrics(
         df[mask_pre], "Pre-DepMap evidence only (8 pairs)")
 
-    # ── 1b. Evidence-tier evaluation sets (post citation audit; Table S3) ──
-    # Computed exactly like lineage_primary (mask entries, then lineage_metrics
-    # on |DD|). Tier A pairs are directional; comparator pairs are treated as
-    # UNORDERED (BRCA1<->BRCA2 is scored in both directions in TableS2) so that
-    # the Tier A set contains only Tier A positives. The reciprocal-validated
-    # pair (EP300->CREBBP; evidence direction CREBBP->EP300) is excluded from
-    # directional Tier A. Tier B and Tier C (DepMap-era) pairs are excluded
-    # from both sets and reported separately.
-    COMPARATOR_UNORDERED = {frozenset(p) for p in FUNCTIONAL_ANALOGS}
-    keys_unordered = [frozenset(k) for k in keys]
-
-    mask_tier_a = ~pd.Series(
-        [(k in TIER_B) or (k in TIER_RECIPROCAL) or (k in DEPMAP_ERA) or (u in COMPARATOR_UNORDERED)
-         for k, u in zip(keys, keys_unordered)], index=df.index)
-    metrics["lineage_tier_a"] = lineage_metrics(
-        df[mask_tier_a], "Tier A (2 pairs, directional external experimental evidence)")
-    metrics["lineage_tier_a"]["tier_a_pairs"] = sorted(f"{a}->{b}" for a, b in TIER_A)
-    metrics["lineage_tier_a"]["excluded_pairs"] = sorted(
-        f"{a}->{b}" for a, b in (TIER_B | TIER_RECIPROCAL | DEPMAP_ERA | FUNCTIONAL_ANALOGS))
-
-    mask_tier_a_comp = ~pd.Series(
-        [(k in TIER_B) or (k in DEPMAP_ERA) for k in keys], index=df.index)
-    metrics["lineage_tier_a_with_comparators"] = lineage_metrics(
-        df[mask_tier_a_comp], "Tier A + reciprocal-validated pair + 2 mechanistic comparators (5 pairs)")
-    metrics["lineage_tier_a_with_comparators"]["excluded_pairs"] = sorted(
-        f"{a}->{b}" for a, b in (TIER_B | DEPMAP_ERA))
-
     # Direction-strict full set: EP300->CREBBP relabelled non-positive because
     # direct experimental evidence supports only the reciprocal direction.
     yt_ds = df["is_known_paralog_sl"].astype(int).copy()
     yt_ds[pd.Series([k in TIER_RECIPROCAL for k in keys], index=df.index)] = 0
     metrics["lineage_full_direction_strict"] = {
         "auroc": auroc(yt_ds.values, df["dependency_dd"].abs().fillna(0).values),
+        "auprc": auprc(yt_ds.values, df["dependency_dd"].abs().fillna(0).values),
         "n_entries": int(len(df)),
         "n_positives": int(yt_ds.sum()),
         "label": "Full set, direction-strict (EP300->CREBBP relabelled non-positive)",
     }
 
-    # ── 2. Component decomposition (same lineage-level universe) ──
+    # ── 2. Component decomposition + paired bootstrap (same universe) ──
     yt = df["is_known_paralog_sl"].astype(int).values
-    comp = {
-        "dd": auroc(yt, df["dependency_dd"].abs().fillna(0).values),
-        "pcs": auroc(yt, df["pcs"].fillna(0).values),
-        "delta_expression_abs": auroc(yt, df["delta_expression"].abs().fillna(0).values),
-        "delta_expression_signed": auroc(yt, df["delta_expression"].fillna(0).values),
-        "necessity": auroc(yt, df["necessity"].fillna(0).values),
+    comp_scores = {
+        "dd": df["dependency_dd"].abs().fillna(0).values,
+        "pcs": df["pcs"].fillna(0).values,
+        "delta_expression_abs": df["delta_expression"].abs().fillna(0).values,
+        "delta_expression_signed": df["delta_expression"].fillna(0).values,
+        "necessity": df["necessity"].fillna(0).values,
     }
+    comp = {k: auroc(yt, v) for k, v in comp_scores.items()}
+    comp_auprc = {k: auprc(yt, v) for k, v in comp_scores.items()}
     metrics["component_decomposition_lineage"] = comp
+    metrics["component_decomposition_lineage_auprc"] = comp_auprc
+
+    # Paired bootstrap: same resampled entries for every component per draw.
+    n = len(yt)
+    rng = np.random.default_rng(BOOT_SEED)
+    boot_stats = {k: [] for k in ("dd", "pcs", "delta_expression_abs", "necessity")}
+    boot_delta = {k: [] for k in ("pcs", "delta_expression_abs", "necessity")}
+    for _ in range(N_BOOT):
+        idx = rng.integers(0, n, n)
+        yb = yt[idx]
+        if yb.sum() == 0 or yb.sum() == len(yb):
+            continue
+        vals = {k: auroc(yb, v[idx]) for k, v in comp_scores.items() if k != "delta_expression_signed"}
+        for k, v in vals.items():
+            if not np.isnan(v):
+                boot_stats[k].append(v)
+        for k in boot_delta:
+            if not np.isnan(vals.get(k, float("nan"))) and not np.isnan(vals.get("dd", float("nan"))):
+                boot_delta[k].append(vals[k] - vals["dd"])
+    paired = {}
+    for k, vals in boot_stats.items():
+        arr = np.asarray(vals)
+        paired[k] = {"ci95": [float(np.percentile(arr, 2.5)), float(np.percentile(arr, 97.5))],
+                     "n_boot": int(len(arr))}
+    for k, vals in boot_delta.items():
+        arr = np.asarray(vals)
+        paired[f"{k}_minus_dd"] = {
+            "mean_delta": float(arr.mean()),
+            "ci95": [float(np.percentile(arr, 2.5)), float(np.percentile(arr, 97.5))],
+            "frac_above_dd": float((arr > 0).mean()),
+        }
+    metrics["component_paired_bootstrap"] = paired
 
     # ── 3. Sequence-identity filter (needs output/paralog_identity.csv) ──
     if IDENTITY_CSV.exists():
@@ -273,7 +337,7 @@ def main():
         df["_kmer_id"] = [id_map.get(k, np.nan) for k in keys]
         metrics["identity_filter"] = {
             "source": str(IDENTITY_CSV.relative_to(ROOT)),
-            "metric": "k-mer Jaccard (k=3), Methods-validated proxy for >=30% identity",
+            "metric": "k-mer Jaccard (k=3), Methods-validated identity-enrichment proxy",
             "pairs_with_identity": int(df['_kmer_id'].notna().sum()),
         }
         for thr in (0.2, 0.3):
@@ -310,10 +374,6 @@ def main():
         metrics["per_pair_framework"] = {"status": "validation_report.json missing"}
 
     # ── 4b. Per-pair mean framework recomputed from TableS2 ──
-    # This is the "head-to-head" universe of the manuscript (77 unique pairs,
-    # |DD| averaged across lineages per pair). NOTE: validation_report.json's
-    # per-pair value (0.6685) derives from a different aggregation/source;
-    # both are reported — see manuscript "Evaluation frameworks".
     g = df.groupby(["driver_gene", "paralog_gene"], as_index=False).agg(
         known=("is_known_paralog_sl", "max"),
         dd=("dependency_dd", lambda s: s.abs().mean()),
@@ -328,14 +388,13 @@ def main():
         "auroc_pcs": auroc(yt_g, g["pcs"].values),
         "auroc_delta_expression": auroc(yt_g, g["dexpr"].values),
         "auroc_necessity": auroc(yt_g, g["necessity"].values),
+        "auroc_dd_ci95": list(bootstrap_ci(yt_g, g["dd"].values, auroc)),
         "n_pairs": int(len(g)),
         "n_positives": int(yt_g.sum()),
         "aggregation": "mean across lineages per pair, from TableS2",
     }
 
-    # ── 4c. Per-pair MAX aggregation — reproduces validation_report.json's
-    # observed per-pair AUROC (0.6685) exactly; documented framework of the
-    # bootstrap/negative-control analyses.
+    # ── 4c. Per-pair MAX aggregation ──
     gmax = df.groupby(["driver_gene", "paralog_gene"], as_index=False).agg(
         known=("is_known_paralog_sl", "max"),
         dd=("dependency_dd", lambda s: s.abs().max()),
@@ -349,9 +408,7 @@ def main():
         "aggregation": "max |DD| across lineages per pair, from TableS2",
     }
 
-    # ── 4d. Composite score on the per-pair mean frame (head-to-head universe).
-    # Manuscript: "the composite score (AUROC)" and "AUPRC reached 0.271
-    # (2.6x baseline prevalence of 0.104)" — both reproduce on this frame.
+    # ── 4d. Composite score on the per-pair mean frame ──
     gcomp = df.groupby(["driver_gene", "paralog_gene"], as_index=False).agg(
         known=("is_known_paralog_sl", "max"),
         comp=("composite_score", "mean"),
@@ -360,6 +417,7 @@ def main():
     metrics["per_pair_composite_mean"] = {
         "auroc": auroc(yt_c, gcomp["comp"].values),
         "auprc": auprc(yt_c, gcomp["comp"].values),
+        "auroc_ci95": list(bootstrap_ci(yt_c, gcomp["comp"].values, auroc)),
         "baseline_prevalence": float(yt_c.mean()),
         "n_pairs": int(len(gcomp)),
         "n_positives": int(yt_c.sum()),
@@ -382,15 +440,31 @@ def main():
         "provenance": "Literature constants (Feng et al. 2024, Suppl. Data 1, CV3 NSMRand 1:1); not recomputed",
     }
 
+    # ── 5b. Per-entry effect sizes (Hedges' g) — Table S8 ──
+    if "hedges_g" in df.columns:
+        eff_cols = ["driver_gene", "paralog_gene", "cancer_type", "dependency_dd",
+                    "cohens_d", "hedges_g", "dd_p_value", "q_value",
+                    "n_mut", "n_wt", "is_known_paralog_sl"]
+        eff = df[[c for c in eff_cols if c in df.columns]].copy()
+        eff = eff.sort_values(["is_known_paralog_sl", "dependency_dd"],
+                              ascending=[False, False], key=lambda s: s.abs() if s.name == "dependency_dd" else s)
+        eff.to_csv(EFFECTS_OUT, sep="\t", index=False)
+        metrics["effect_sizes_table"] = str(EFFECTS_OUT.relative_to(ROOT))
+    else:
+        metrics["effect_sizes_table"] = "TableS2 lacks hedges_g — rerun tables.py after pcs.py update"
+
     # ── 6. Automated claims check against manuscript values ──
     computed_map = {
         "dd_auroc_lineage_full": metrics["lineage_full"]["auroc"],
+        "auprc_lineage_full": metrics["lineage_full"]["auprc"],
+        "dd_auroc_lineage_tier_ab": metrics["lineage_tier_ab"]["auroc"],
+        "auprc_lineage_tier_ab": metrics["lineage_tier_ab"]["auprc"],
+        "dd_auroc_lineage_tier_a": metrics["lineage_tier_a"]["auroc"],
+        "dd_auroc_lineage_tier_b": metrics["lineage_tier_b"]["auroc"],
         "dd_auroc_lineage_primary": metrics["lineage_primary"]["auroc"],
         "dd_auroc_lineage_leave_out_depmap_era": metrics["lineage_leave_out_depmap_era"]["auroc"],
         "dd_auroc_lineage_pre_depmap_only": metrics["lineage_pre_depmap_only"]["auroc"],
         "dd_auroc_lineage_full_direction_strict": metrics["lineage_full_direction_strict"]["auroc"],
-        "dd_auroc_lineage_tier_a": metrics["lineage_tier_a"]["auroc"],
-        "dd_auroc_lineage_tier_a_with_comparators": metrics["lineage_tier_a_with_comparators"]["auroc"],
         "component_dd": comp["dd"],
         "component_pcs": comp["pcs"],
         "component_delta_expression": comp["delta_expression_abs"],
@@ -419,8 +493,27 @@ def main():
                        "status": status})
     metrics["manuscript_claims_check"] = checks
 
-    JSON_OUT.write_text(json.dumps(metrics, indent=2, allow_nan=False, default=str))
+    def _jsonable(obj):
+        if isinstance(obj, float) and (np.isnan(obj) or np.isinf(obj)):
+            return None
+        if isinstance(obj, dict):
+            return {k: _jsonable(v) for k, v in obj.items()}
+        if isinstance(obj, (list, tuple)):
+            return [_jsonable(v) for v in obj]
+        return obj
+
+    JSON_OUT.write_text(json.dumps(_jsonable(metrics), indent=2, allow_nan=False, default=str))
     print(f"Wrote {JSON_OUT}")
+
+    # Key-number console summary (always visible, even when claims mismatch)
+    for key in ("lineage_full", "lineage_tier_ab", "lineage_tier_a", "lineage_tier_b",
+                "lineage_leave_out_depmap_era", "lineage_pre_depmap_only"):
+        fr = metrics[key]
+        print(f"  {key:34s} AUROC={fr['auroc']!s:>7} AUPRC={fr['auprc']!s:>7} "
+              f"n={fr['n_entries']:4d} pos={fr['n_positives']:3d}")
+    print(f"  per_pair_mean auroc={metrics['per_pair_mean_from_tables2']['auroc_dd']:.4f} "
+          f"composite={metrics['per_pair_composite_mean']['auroc']:.4f} "
+          f"LLO={metrics['leave_one_lineage_out']['range']}")
 
     # Flat TSV for R consumption
     rows = []
@@ -430,17 +523,45 @@ def main():
             return
         rows.append({"metric": metric, "value": f"{float(value):.4f}", "provenance": provenance})
 
+    def add_ci(prefix, frame, provenance):
+        for stat in ("auroc", "auprc"):
+            ci = frame.get(f"{stat}_ci95")
+            if ci and not any(np.isnan(ci)):
+                add(f"{prefix}_{stat}_ci_lo", ci[0], provenance)
+                add(f"{prefix}_{stat}_ci_hi", ci[1], provenance)
+
     add("dd_auroc_lineage_full", metrics["lineage_full"]["auroc"], "recomputed:TableS2")
+    add("auprc_lineage_full", metrics["lineage_full"]["auprc"], "recomputed:TableS2")
+    add_ci("dd_lineage_full", metrics["lineage_full"], "recomputed:TableS2(bootstrap)")
+    add("dd_auroc_lineage_tier_ab", metrics["lineage_tier_ab"]["auroc"], "recomputed:TableS2")
+    add("auprc_lineage_tier_ab", metrics["lineage_tier_ab"]["auprc"], "recomputed:TableS2")
+    add("n_entries_tier_ab", metrics["lineage_tier_ab"]["n_entries"], "recomputed:TableS2")
+    add("n_positives_tier_ab", metrics["lineage_tier_ab"]["n_positives"], "recomputed:TableS2")
+    add_ci("dd_lineage_tier_ab", metrics["lineage_tier_ab"], "recomputed:TableS2(bootstrap)")
+    add("dd_auroc_lineage_tier_a", metrics["lineage_tier_a"]["auroc"], "recomputed:TableS2")
+    add("dd_auroc_lineage_tier_b", metrics["lineage_tier_b"]["auroc"], "recomputed:TableS2")
+    add("n_positives_tier_a", metrics["lineage_tier_a"]["n_positives"], "recomputed:TableS2")
+    add("n_positives_tier_b", metrics["lineage_tier_b"]["n_positives"], "recomputed:TableS2")
     add("dd_auroc_lineage_primary", metrics["lineage_primary"]["auroc"], "recomputed:TableS2")
     add("dd_auroc_lineage_leave_out_depmap_era", metrics["lineage_leave_out_depmap_era"]["auroc"], "recomputed:TableS2")
     add("dd_auroc_lineage_pre_depmap_only", metrics["lineage_pre_depmap_only"]["auroc"], "recomputed:TableS2")
     add("dd_auroc_lineage_full_direction_strict", metrics["lineage_full_direction_strict"]["auroc"], "recomputed:TableS2")
-    add("dd_auroc_lineage_tier_a", metrics["lineage_tier_a"]["auroc"], "recomputed:TableS2")
-    add("dd_auroc_lineage_tier_a_with_comparators", metrics["lineage_tier_a_with_comparators"]["auroc"], "recomputed:TableS2")
     add("component_dd", comp["dd"], "recomputed:TableS2")
     add("component_pcs", comp["pcs"], "recomputed:TableS2")
     add("component_delta_expression", comp["delta_expression_abs"], "recomputed:TableS2")
     add("component_necessity", comp["necessity"], "recomputed:TableS2")
+    add("auprc_component_dd", comp_auprc["dd"], "recomputed:TableS2")
+    for k in ("dd", "pcs", "delta_expression_abs", "necessity"):
+        pb = paired.get(k, {})
+        if pb.get("ci95"):
+            add(f"component_{k}_ci_lo", pb["ci95"][0], "recomputed:TableS2(paired bootstrap)")
+            add(f"component_{k}_ci_hi", pb["ci95"][1], "recomputed:TableS2(paired bootstrap)")
+    for k in ("pcs", "delta_expression_abs", "necessity"):
+        pd_ = paired.get(f"{k}_minus_dd", {})
+        if pd_.get("ci95"):
+            add(f"paired_{k}_minus_dd", pd_["mean_delta"], "recomputed:TableS2(paired bootstrap)")
+            add(f"paired_{k}_minus_dd_ci_lo", pd_["ci95"][0], "recomputed:TableS2(paired bootstrap)")
+            add(f"paired_{k}_minus_dd_ci_hi", pd_["ci95"][1], "recomputed:TableS2(paired bootstrap)")
     if "id_ge_0.3" in idf:
         add("dd_auroc_id_filter_0.3", idf["id_ge_0.3"]["auroc"], "recomputed:TableS2+paralog_identity")
         add("dd_auroc_id_filter_0.2", idf["id_ge_0.2"]["auroc"], "recomputed:TableS2+paralog_identity")
@@ -451,6 +572,7 @@ def main():
         add("per_pair_empirical_p", pp["empirical_p_value"], "artifact:validation_report.json")
     ppm = metrics["per_pair_mean_from_tables2"]
     add("dd_auroc_per_pair_mean", ppm["auroc_dd"], "recomputed:TableS2(per-pair mean)")
+    add("auprc_dd_per_pair_mean", ppm["auprc_dd"], "recomputed:TableS2(per-pair mean)")
     add("component_pcs_per_pair_mean", ppm["auroc_pcs"], "recomputed:TableS2(per-pair mean)")
     add("component_delta_expression_per_pair_mean", ppm["auroc_delta_expression"], "recomputed:TableS2(per-pair mean)")
     add("component_necessity_per_pair_mean", ppm["auroc_necessity"], "recomputed:TableS2(per-pair mean)")

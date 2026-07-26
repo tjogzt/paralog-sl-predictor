@@ -72,7 +72,10 @@ panel_a <- function() {
 # PANEL B — TSG vs Oncogene
 # ═══════════════════════════════════════════════════════════════
 panel_b <- function() {
-  solid_path <- "paralog_sl_predictor/output/solid_tumor_summary.csv"
+  # Sensitivity frame (>=3 mutant/WT lines per group): the primary >=5 frame
+  # leaves only 1 oncogene-driven lineage, so the TSG/ONC mechanism contrast
+  # is shown on the relaxed frame and labelled as such in the caption.
+  solid_path <- "paralog_sl_predictor/output/solid_tumor_summary_min3.csv"
   df <- read_csv(solid_path, show_col_types = FALSE) %>% drop_na(dd_auroc)
   # Biological classification (not AUROC threshold)
   oncogene_types <- c("Melanoma", "NSCLC", "Pancreatic")

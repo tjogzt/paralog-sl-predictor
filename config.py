@@ -125,8 +125,12 @@ KNOWN_PARALOG_SL = {
 }
 
 # ── Analysis thresholds ───────────────────────────────────────
-MIN_MUT_SAMPLES = 3            # Minimum mutant cell lines per driver
-MIN_WT_SAMPLES = 3             # Minimum WT cell lines per driver
+# Primary analysis: >=5 mutant and >=5 WT cell lines per driver x lineage
+# stratum (round-4 methods review). The former >=3/>=3 threshold is kept as
+# a documented sensitivity analysis (artifacts:
+# output/tables/TableS2_FullResults_min3.tsv, output/headline_metrics_min3.json).
+MIN_MUT_SAMPLES = 5            # Minimum mutant cell lines per driver
+MIN_WT_SAMPLES = 5             # Minimum WT cell lines per driver
 MIN_DELTA_EXPR = 0.3           # Minimum |log2FC| for paralog expression change
 PCS_THRESHOLD = 0.15           # PCS threshold for candidate nomination
 SIGNIFICANCE_ALPHA = 0.05      # p-value threshold (after BH correction)

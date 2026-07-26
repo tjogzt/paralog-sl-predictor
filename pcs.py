@@ -208,6 +208,10 @@ class ParalogCompensationScore:
                 # Cohen's d on dependency (positive = stronger in mutant)
                 pooled_std = np.sqrt((dep_mut_vals.var() + dep_wt_vals.var()) / 2)
                 cohens_d = dd / pooled_std if pooled_std > 0 else 0.0
+                # Hedges' g: small-sample-corrected standardized effect size,
+                # J(N) = 1 - 3/(4N-9), N = n_mut + n_wt (Hedges & Olkin 1985)
+                _n_tot = len(dep_mut_vals) + len(dep_wt_vals)
+                hedges_g = cohens_d * (1 - 3 / (4 * _n_tot - 9)) if _n_tot > 3 else cohens_d
                 # Welch's t-test on dependency scores; mirrors the p_value
                 # returned by paralogSL::compute_dd (kept distinct from the
                 # expression-based expr_p_value above).
@@ -215,6 +219,7 @@ class ParalogCompensationScore:
             else:
                 dd = 0.0
                 cohens_d = 0.0
+                hedges_g = 0.0
                 dd_p_val = 1.0
 
             # ── 3. Paralog compensation score ──
@@ -231,6 +236,7 @@ class ParalogCompensationScore:
                 "necessity": necessity,
                 "dependency_dd": dd,
                 "cohens_d": cohens_d,
+                "hedges_g": hedges_g,
                 "dd_p_value": dd_p_val,
                 "expr_p_value": p_val,
                 "expr_t_stat": t_stat,

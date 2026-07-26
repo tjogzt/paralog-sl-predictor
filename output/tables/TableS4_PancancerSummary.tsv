@@ -1,15 +1,9 @@
 Cancer Type	Cell Lines	SL Pairs	Known SL	DD AUROC
-Biliary Tract	39	50	2	0.990
-Esophagogastric	62	69	4	0.969
-Pancreatic	44	41	2	0.949
-Glioma	66	28	2	0.885
-Bladder Urothelial	30	20	3	0.882
-Breast	50	48	4	0.852
-HNSCC	60	18	2	0.812
-SCLC	121	107	6	0.779
-NSCLC	95	104	6	0.738
-Colorectal	59	76	8	0.726
-Endometrial	31	77	6	0.690
-Ovarian	55	65	8	0.651
-Melanoma	78	31	4	0.481
-Cervical	16	10	3	0.476
+Esophagogastric	62	50	3	0.965
+SCLC	121	99	5	0.906
+Bladder Urothelial	30	18	2	0.844
+Colorectal	59	62	5	0.828
+Endometrial	31	62	5	0.818
+Breast	50	12	2	0.750
+NSCLC	95	96	5	0.741
+Ovarian	55	50	7	0.661

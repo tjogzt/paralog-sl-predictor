@@ -11,7 +11,8 @@ _gyn3 = ["Ovarian", "Endometrial", "Cervical"]
 _ts2 = _cand[_cand["cancer_type"].isin(_gyn3)].copy()
 _ts2["novelty"] = _ts2["is_known_paralog_sl"].map({True: "Known", False: "Novel"})
 _ts2_cols = ["driver_gene","paralog_gene","cancer_type","pcs","delta_expression",
-             "necessity","dependency_dd","composite_score","novelty","q_value",
+             "necessity","dependency_dd","cohens_d","hedges_g","dd_p_value",
+             "composite_score","novelty","q_value",
              "mutation_frequency","n_mut","n_wt","is_known_paralog_sl"]
 _ts2 = (_ts2.sort_values(["is_known_paralog_sl","composite_score"],
                          ascending=[False,False])[_ts2_cols])

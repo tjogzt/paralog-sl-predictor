@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-26T06:33:18+00:00",
+  "generated_at": "2026-07-26T08:21:53+00:00",
   "generated_by": "regression_controls.py",
   "sign_convention": "DD = mean(dep|WT) - mean(dep|MUT) (manuscript Eq. 1)",
   "results": {
@@ -180,12 +180,16 @@
       "n_adj": 1116,
       "abs_ddd": 0.00039399683158120036,
       "controls": "TP53_MUT+CNV_ARID1B",
+      "p_adj_lineage": 7.027082357910424e-14,
+      "dd_adj_lineage": 0.2683386883760461,
       "mutation_file_frame": {
         "ARID1A_mut_lines_mutfile": 240,
         "TP53_mut_lines_mutfile": 1171,
         "tp53_comut_in_arid1a_mutfile": 144
       }
-    }
+    },
+    "full_regression_table": "output/regression_table_full.csv",
+    "arid1a_arid1b_lineage_adj_p": 2.2399027421204218e-13
   },
   "computed": {
     "cnv_r2_max": 0.0573300309840755,

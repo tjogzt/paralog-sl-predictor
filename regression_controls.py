@@ -267,6 +267,81 @@ def stage_analyze():
               f"cnv p={_fmt(entry.get('p_cnv_adj'))} "
               f"expr p={_fmt(entry.get('p_expr_adj'))}")
 
+    # ── Full regression table: robust SE + lineage adjustment (round-4 review) ──
+    # For every evaluable gold-standard pair, report beta (=-DD), HC3-robust
+    # SE, 95% CI, p, BH q (within model), n, n_mut, n_wt for nested models:
+    # base / +CNV / +Expression / +Lineage (OncotreePrimaryDisease fixed
+    # effects, levels with <20 lines collapsed into "Other").
+    import statsmodels.formula.api as smf
+    from statsmodels.stats.multitest import multipletests
+
+    lin_map = {}
+    model_csv = DATA / "Model.csv"
+    if model_csv.exists():
+        mcols = pd.read_csv(model_csv, usecols=["ModelID", "OncotreePrimaryDisease"])
+        lin_map = dict(zip(mcols["ModelID"], mcols["OncotreePrimaryDisease"]))
+    lin = pd.Series({i: lin_map.get(i, "Other") for i in frame}, dtype=object)
+    _lc = lin.value_counts()
+    lin = lin.where(lin.map(_lc) >= 20, "Other")
+
+    def _fit_mut(dfj, rhs):
+        fit = smf.ols(f"dep ~ {rhs}", data=dfj).fit(cov_type="HC3")
+        ci = fit.conf_int().loc["mut"]
+        return {"beta_mut": float(fit.params["mut"]), "dd": float(-fit.params["mut"]),
+                "se": float(fit.bse["mut"]), "ci_lo": float(ci[0]), "ci_hi": float(ci[1]),
+                "p": float(fit.pvalues["mut"]), "n": int(fit.nobs)}
+
+    reg_rows = []
+    for d, p in GOLD_PAIRS:
+        key = f"{d}->{p}"
+        ent = results["pairs"].get(key)
+        if not ent or "skipped" in ent:
+            continue
+        m, y = mut[d], dep[p]
+        base = pd.concat([y.rename("dep"), m.rename("mut")], axis=1).dropna()
+        n_mut, n_wt = int(base["mut"].sum()), int((1 - base["mut"]).sum())
+        model_frames = {"base": (base, "mut")}
+        if p in cnv.columns:
+            f = pd.concat([base, cnv[p].rename("cnv")], axis=1).dropna()
+            if len(f) >= 10 and f["cnv"].std() > 0:
+                model_frames["cnv_adj"] = (f, "mut + cnv")
+        if p in expr.columns:
+            f = pd.concat([base, expr[p].rename("expr")], axis=1).dropna()
+            if len(f) >= 10 and f["expr"].std() > 0:
+                model_frames["expr_adj"] = (f, "mut + expr")
+        f = base.copy()
+        f["lineage"] = lin.loc[f.index].values
+        if f["lineage"].nunique() > 1:
+            model_frames["lineage_adj"] = (f, "mut + C(lineage)")
+        for mname, (fj, rhs) in model_frames.items():
+            try:
+                r = _fit_mut(fj, rhs)
+            except Exception as e:  # singular design etc.
+                r = {"beta_mut": None, "dd": None, "se": None, "ci_lo": None,
+                     "ci_hi": None, "p": None, "n": len(fj), "error": str(e)}
+            reg_rows.append({"pair": key, "model": mname,
+                             "n_mut": n_mut, "n_wt": n_wt, **r})
+
+    regtab = pd.DataFrame(reg_rows)
+    if len(regtab):
+        for mname, sub in regtab.groupby("model"):
+            ok = sub["p"].notna()
+            if ok.sum():
+                regtab.loc[sub.index[ok], "q_bh"] = multipletests(
+                    sub.loc[ok, "p"], method="fdr_bh")[1]
+        regtab_out = ROOT / "output" / "regression_table_full.csv"
+        regtab.to_csv(regtab_out, index=False)
+        results["full_regression_table"] = "output/regression_table_full.csv"
+        lin_p = (regtab[(regtab["model"] == "lineage_adj") &
+                        (regtab["pair"] == "ARID1A->ARID1B")]["p"])
+        results["arid1a_arid1b_lineage_adj_p"] = (float(lin_p.iloc[0])
+                                                  if len(lin_p) and pd.notna(lin_p.iloc[0]) else None)
+        print(f"  full regression table: {len(regtab)} rows, HC3 robust SE "
+              f"-> output/regression_table_full.csv; "
+              f"ARID1A->ARID1B lineage-adj p={results['arid1a_arid1b_lineage_adj_p']:.2e}"
+              if results['arid1a_arid1b_lineage_adj_p'] else
+              f"  full regression table written ({len(regtab)} rows)")
+
     # ── TP53 co-mutation control for ARID1A->ARID1B ──
     tp = {}
     if "ARID1A" in mut.columns and "TP53" in mut.columns and "ARID1B" in dep.columns:
@@ -286,6 +361,18 @@ def stage_analyze():
         tp["dd_adj"] = float(-ca[1]); tp["p_adj"] = float(pa[1]); tp["n_adj"] = na
         tp["abs_ddd"] = abs(tp["dd_adj"] - tp["dd_base"])
         tp["controls"] = "+".join(["TP53_MUT"] + (["CNV_ARID1B"] if "cnv" in cols else []))
+        # lineage-adjusted variant (round-4 review): + C(lineage), HC3 robust SE
+        try:
+            fj = dfj.copy()
+            fj["lineage"] = lin.loc[fj.index].values
+            rhs = "y ~ a + t" + (" + cnv" if "cnv" in fj.columns else "") + " + C(lineage)"
+            fitl = smf.ols(rhs, data=fj).fit(cov_type="HC3")
+            tp["p_adj_lineage"] = float(fitl.pvalues["a"])
+            tp["dd_adj_lineage"] = float(-fitl.params["a"])
+            print(f"  lineage-adjusted TP53 control: DD {tp['dd_adj_lineage']:.4f}, "
+                  f"p={tp['p_adj_lineage']:.2e}")
+        except Exception as e:
+            tp["p_adj_lineage_error"] = str(e)
         results["tp53_control"] = tp
         mutfile = {}
         mf_path = CACHE / "mutfile_counts.json"

@@ -1,30 +1,63 @@
 metric	value	provenance
-dd_auroc_lineage_full	0.6822	recomputed:TableS2
-dd_auroc_lineage_primary	0.7089	recomputed:TableS2
-dd_auroc_lineage_leave_out_depmap_era	0.7278	recomputed:TableS2
-dd_auroc_lineage_pre_depmap_only	0.7741	recomputed:TableS2
-dd_auroc_lineage_full_direction_strict	0.6822	recomputed:TableS2
-dd_auroc_lineage_tier_a	1.0000	recomputed:TableS2
-dd_auroc_lineage_tier_a_with_comparators	0.6374	recomputed:TableS2
-component_dd	0.6822	recomputed:TableS2
-component_pcs	0.7767	recomputed:TableS2
-component_delta_expression	0.5639	recomputed:TableS2
-component_necessity	0.6469	recomputed:TableS2
+dd_auroc_lineage_full	0.6765	recomputed:TableS2
+auprc_lineage_full	0.3858	recomputed:TableS2
+dd_lineage_full_auroc_ci_lo	0.4036	recomputed:TableS2(bootstrap)
+dd_lineage_full_auroc_ci_hi	0.9200	recomputed:TableS2(bootstrap)
+dd_lineage_full_auprc_ci_lo	0.0630	recomputed:TableS2(bootstrap)
+dd_lineage_full_auprc_ci_hi	0.7125	recomputed:TableS2(bootstrap)
+dd_auroc_lineage_tier_ab	1.0000	recomputed:TableS2
+auprc_lineage_tier_ab	1.0000	recomputed:TableS2
+n_entries_tier_ab	104.0000	recomputed:TableS2
+n_positives_tier_ab	2.0000	recomputed:TableS2
+dd_lineage_tier_ab_auroc_ci_lo	1.0000	recomputed:TableS2(bootstrap)
+dd_lineage_tier_ab_auroc_ci_hi	1.0000	recomputed:TableS2(bootstrap)
+dd_lineage_tier_ab_auprc_ci_lo	1.0000	recomputed:TableS2(bootstrap)
+dd_lineage_tier_ab_auprc_ci_hi	1.0000	recomputed:TableS2(bootstrap)
+dd_auroc_lineage_tier_b	1.0000	recomputed:TableS2
+n_positives_tier_a	0.0000	recomputed:TableS2
+n_positives_tier_b	2.0000	recomputed:TableS2
+dd_auroc_lineage_primary	0.7010	recomputed:TableS2
+dd_auroc_lineage_leave_out_depmap_era	0.7255	recomputed:TableS2
+dd_auroc_lineage_pre_depmap_only	0.7745	recomputed:TableS2
+dd_auroc_lineage_full_direction_strict	0.6765	recomputed:TableS2
+component_dd	0.6765	recomputed:TableS2
+component_pcs	0.8248	recomputed:TableS2
+component_delta_expression	0.5466	recomputed:TableS2
+component_necessity	0.6422	recomputed:TableS2
+auprc_component_dd	0.3858	recomputed:TableS2
+component_dd_ci_lo	0.4036	recomputed:TableS2(paired bootstrap)
+component_dd_ci_hi	0.9200	recomputed:TableS2(paired bootstrap)
+component_pcs_ci_lo	0.6438	recomputed:TableS2(paired bootstrap)
+component_pcs_ci_hi	0.9502	recomputed:TableS2(paired bootstrap)
+component_delta_expression_abs_ci_lo	0.2965	recomputed:TableS2(paired bootstrap)
+component_delta_expression_abs_ci_hi	0.7867	recomputed:TableS2(paired bootstrap)
+component_necessity_ci_lo	0.4510	recomputed:TableS2(paired bootstrap)
+component_necessity_ci_hi	0.8239	recomputed:TableS2(paired bootstrap)
+paired_pcs_minus_dd	0.1502	recomputed:TableS2(paired bootstrap)
+paired_pcs_minus_dd_ci_lo	-0.1096	recomputed:TableS2(paired bootstrap)
+paired_pcs_minus_dd_ci_hi	0.4564	recomputed:TableS2(paired bootstrap)
+paired_delta_expression_abs_minus_dd	-0.1275	recomputed:TableS2(paired bootstrap)
+paired_delta_expression_abs_minus_dd_ci_lo	-0.5028	recomputed:TableS2(paired bootstrap)
+paired_delta_expression_abs_minus_dd_ci_hi	0.2783	recomputed:TableS2(paired bootstrap)
+paired_necessity_minus_dd	-0.0324	recomputed:TableS2(paired bootstrap)
+paired_necessity_minus_dd_ci_lo	-0.3287	recomputed:TableS2(paired bootstrap)
+paired_necessity_minus_dd_ci_hi	0.3334	recomputed:TableS2(paired bootstrap)
 dd_auroc_id_filter_0.3	1.0000	recomputed:TableS2+paralog_identity
 dd_auroc_id_filter_0.2	0.5833	recomputed:TableS2+paralog_identity
-per_pair_auroc	0.4928	artifact:validation_report.json
-per_pair_null_mean	0.5015	artifact:validation_report.json
-per_pair_empirical_p	0.5302	artifact:validation_report.json
-dd_auroc_per_pair_mean	0.5507	recomputed:TableS2(per-pair mean)
-component_pcs_per_pair_mean	0.8080	recomputed:TableS2(per-pair mean)
-component_delta_expression_per_pair_mean	0.6232	recomputed:TableS2(per-pair mean)
-component_necessity_per_pair_mean	0.6618	recomputed:TableS2(per-pair mean)
-dd_auroc_per_pair_max	0.4928	recomputed:TableS2(per-pair max)
-auprc_dd_per_pair_max	0.2633	recomputed:TableS2(per-pair max)
-composite_auroc_per_pair_mean	0.8406	recomputed:TableS2(per-pair mean)
-auprc_composite_per_pair	0.3634	recomputed:TableS2(per-pair mean)
-llo_auroc_min	0.6744	recomputed:TableS2(LLO)
-llo_auroc_max	0.7018	recomputed:TableS2(LLO)
+per_pair_auroc	0.5000	artifact:validation_report.json
+per_pair_null_mean	0.5006	artifact:validation_report.json
+per_pair_empirical_p	0.5027	artifact:validation_report.json
+dd_auroc_per_pair_mean	0.5657	recomputed:TableS2(per-pair mean)
+auprc_dd_per_pair_mean	0.3036	recomputed:TableS2(per-pair mean)
+component_pcs_per_pair_mean	0.8144	recomputed:TableS2(per-pair mean)
+component_delta_expression_per_pair_mean	0.6086	recomputed:TableS2(per-pair mean)
+component_necessity_per_pair_mean	0.6591	recomputed:TableS2(per-pair mean)
+dd_auroc_per_pair_max	0.5000	recomputed:TableS2(per-pair max)
+auprc_dd_per_pair_max	0.2669	recomputed:TableS2(per-pair max)
+composite_auroc_per_pair_mean	0.8308	recomputed:TableS2(per-pair mean)
+auprc_composite_per_pair	0.3565	recomputed:TableS2(per-pair mean)
+llo_auroc_min	0.6564	recomputed:TableS2(LLO)
+llo_auroc_max	0.7043	recomputed:TableS2(LLO)
 published_SLMGAE	0.7900	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
 published_NSF4SL	0.6830	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
 published_GCATSL	0.6780	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
