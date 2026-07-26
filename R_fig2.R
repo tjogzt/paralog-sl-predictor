@@ -96,15 +96,8 @@ panel_a <- function() {
     # Known pair markers (for annotation layer)
     known_pairs_in_plot <- mat$pair_label[mat$is_known]
   } else {
-    # Fallback
-    df <- expand.grid(
-      pair = c("EP300/CREBBP","KRAS/NRAS","AKT1/AKT2","PTEN/TNS1",
-               "PTEN/TNS2","KRAS/HRAS","MAP2K1/MAP2K2","HRAS/NRAS",
-               "PIK3CA/PIK3CB","BRAF/RAF1","ARID1A/ARID1B","ATR/ATM"),
-      cohort = c("BRCA","COAD","LUAD","GBM","PDAC","UCEC","LUSC"))
-    set.seed(123)
-    df$r <- runif(nrow(df), -0.2, 0.7)
-    df$sig <- sample(c("***","**","*",""), nrow(df), replace = TRUE, prob = c(0.2,0.2,0.2,0.4))
+    stop("paralog_sl_predictor/output/cptac_pair_matrix.csv not found — ",
+         "run the pipeline first; simulated fallbacks are forbidden")
   }
 
   df$pair <- factor(df$pair, levels = rev(unique(df$pair)))

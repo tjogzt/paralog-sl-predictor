@@ -48,11 +48,8 @@ panel_a <- function() {
     df <- read_csv(solid_path, show_col_types = FALSE) %>%
       drop_na(dd_auroc) %>% arrange(dd_auroc)
   } else {
-    df <- tibble(
-      cancer = c("Skin","Pancreas","Lung","NSCLC","Endometrial","Cervical",
-                 "Ovarian","CNS/Brain","HNSCC","Breast","SCLC",
-                 "Soft Tissue","Esophagogastric","Colorectal","Mesothelioma","Biliary Tract"),
-      dd_auroc = c(.342,.457,.570,.572,.576,.643,.685,.707,.714,.746,.750,.800,.805,.812,.917,.993))
+    stop("paralog_sl_predictor/output/solid_tumor_summary.csv not found — ",
+         "run the pipeline first; simulated fallbacks are forbidden")
   }
   df$cancer <- factor(df$cancer, levels = df$cancer)
   df$clr <- ifelse(df$dd_auroc >= 0.7, RED, ifelse(df$dd_auroc >= 0.5, BLUE, GRAY))

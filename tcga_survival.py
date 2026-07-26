@@ -65,12 +65,34 @@ GENE_ENTREZ = {
 BASE = "https://www.cbioportal.org/api"
 
 
+def _request_with_retry(method, url, retries=4, backoff=3.0, **kwargs):
+    """HTTP request with retry + exponential backoff for transient
+    network failures (SSL EOF, connection resets, 5xx)."""
+    last_err = None
+    for attempt in range(retries):
+        try:
+            r = requests.request(method, url, **kwargs)
+            if r.status_code < 500:
+                return r
+            last_err = RuntimeError(f"HTTP {r.status_code}")
+        except Exception as e:
+            last_err = e
+        wait = backoff * (2 ** attempt)
+        print(f"    request failed ({type(last_err).__name__}), "
+              f"retry {attempt + 1}/{retries} in {wait:.0f}s...")
+        time.sleep(wait)
+    raise RuntimeError(f"request failed after {retries} attempts: {last_err}")
+
+
 def fetch_survival_data(study_id, timeout=120):
     """Fetch clinical/survival data for a TCGA study."""
     url = f"{BASE}/studies/{study_id}/clinical-data"
-    params = {"clinicalDataType": "SURVIVAL", "projection": "DETAILED"}
+    # cBioPortal legacy API: clinicalDataType enum is SAMPLE|PATIENT
+    # (the former "SURVIVAL" value was removed); OS_MONTHS/OS_STATUS are
+    # patient-level attributes.
+    params = {"clinicalDataType": "PATIENT", "projection": "DETAILED"}
     try:
-        r = requests.get(url, params=params, timeout=timeout)
+        r = _request_with_retry("GET", url, params=params, timeout=timeout)
         if r.ok:
             data = r.json()
             # Parse survival data
@@ -98,7 +120,7 @@ def fetch_mrna_expression(study_id, entrez_id, sample_list_id, timeout=60):
     # Find mRNA profile
     url = f"{BASE}/studies/{study_id}/molecular-profiles"
     try:
-        r = requests.get(url, timeout=timeout)
+        r = _request_with_retry("GET", url, timeout=timeout)
         if not r.ok:
             return {}
         profiles = r.json()
@@ -113,8 +135,8 @@ def fetch_mrna_expression(study_id, entrez_id, sample_list_id, timeout=60):
         # Get expression data
         url2 = f"{BASE}/molecular-profiles/{mrna_prof}/molecular-data/fetch"
         body = {"sampleListId": sample_list_id, "entrezGeneIds": [entrez_id]}
-        r2 = requests.post(url2, json=body, timeout=timeout,
-                          headers={"Content-Type": "application/json"})
+        r2 = _request_with_retry("POST", url2, json=body, timeout=timeout,
+                                 headers={"Content-Type": "application/json"})
         if r2.ok:
             data = r2.json()
             expr = {}
@@ -133,16 +155,17 @@ def fetch_mrna_expression(study_id, entrez_id, sample_list_id, timeout=60):
         return {}
 
 
-def compute_survival_association(survival_data, expression_data, 
+def compute_survival_association(survival_data, expression_data,
                                   sample_to_patient, min_samples=30):
     """
-    Compute hazard-like association: compare median OS for
-    high vs low expression groups (simple split at median).
-    Returns: median_high, median_low, HR_approx, p_value, n
+    Cox proportional-hazards association of overall survival with
+    high vs low paralog expression (median split), via statsmodels PHReg.
+    Returns: hr, ci_low, ci_high (Wald 95%), p_value, n_total, n_events.
+    Censoring is handled properly (OS_STATUS: 1:DECEASED = event).
     """
     if not survival_data or not expression_data:
         return None
-    
+
     # Match samples to patients and get OS
     os_pairs = []
     for sample_id, expr_val in expression_data.items():
@@ -151,43 +174,43 @@ def compute_survival_association(survival_data, expression_data,
             surv = survival_data[patient_id]
             os_months = surv.get("OS_MONTHS", None)
             os_status = surv.get("OS_STATUS", None)
-            if os_months is not None and os_status is not None:
-                os_pairs.append((expr_val, os_months, os_status))
-    
+            if os_months is None or os_status is None:
+                continue
+            # cBioPortal encodes status as "1:DECEASED" / "0:LIVING"
+            s = str(os_status)
+            event = 1 if s.startswith("1") else 0
+            os_pairs.append((expr_val, float(os_months), event))
+
     if len(os_pairs) < min_samples:
         return None
-    
-    expr_vals = [p[0] for p in os_pairs]
-    os_vals = [p[1] for p in os_pairs]
-    os_status = [p[2] for p in os_pairs]
-    
-    median_expr = np.median(expr_vals)
-    high_idx = [i for i, v in enumerate(expr_vals) if v > median_expr]
-    low_idx = [i for i, v in enumerate(expr_vals) if v <= median_expr]
-    
-    if len(high_idx) < 10 or len(low_idx) < 10:
+
+    df = pd.DataFrame(os_pairs, columns=["expr", "os_months", "event"])
+    df = df[df["os_months"] > 0]
+    if len(df) < min_samples or df["event"].sum() < 5:
         return None
-    
-    high_os = [os_vals[i] for i in high_idx]
-    low_os = [os_vals[i] for i in low_idx]
-    
-    median_high = np.median(high_os)
-    median_low = np.median(low_os)
-    
-    # Mann-Whitney for significance
-    u_stat, p_val = stats.mannwhitneyu(high_os, low_os, alternative='two-sided')
-    
-    # Approximate HR (ratio of medians: lower HR = high expression protective)
-    hr_approx = median_low / median_high if median_high > 0 else np.nan
-    
+
+    median_expr = float(df["expr"].median())
+    df["high"] = (df["expr"] > median_expr).astype(float)
+    if df["high"].sum() < 10 or (1 - df["high"]).sum() < 10:
+        return None
+
+    from statsmodels.duration.hazard_regression import PHReg
+    model = PHReg(df["os_months"].values, df[["high"]].values,
+                  status=df["event"].values)
+    fit = model.fit(disp=0)
+    coef = float(fit.params[0])
+    se = float(fit.bse[0])
+    p_val = float(fit.pvalues[0])
+
     return {
-        "median_high": median_high,
-        "median_low": median_low,
-        "hr": hr_approx,
+        "hr": float(np.exp(coef)),
+        "ci_low": float(np.exp(coef - 1.96 * se)),
+        "ci_high": float(np.exp(coef + 1.96 * se)),
         "p_value": p_val,
-        "n_high": len(high_idx),
-        "n_low": len(low_idx),
-        "n_total": len(os_pairs),
+        "n_high": int(df["high"].sum()),
+        "n_low": int((1 - df["high"]).sum()),
+        "n_total": int(len(df)),
+        "n_events": int(df["event"].sum()),
     }
 
 
@@ -214,7 +237,7 @@ def run_tcga_survival_analysis():
     # Fetch sample-to-patient mapping
     sample_patient_url = f"{BASE}/studies/{study}/samples"
     try:
-        r = requests.get(sample_patient_url, timeout=60)
+        r = _request_with_retry("GET", sample_patient_url, timeout=60)
         samples = r.json() if r.ok else []
         sample_to_patient = {}
         for s in samples:
@@ -252,20 +275,10 @@ def run_tcga_survival_analysis():
         time.sleep(0.3)
     
     if not results:
-        print("\n  No results. Using pre-computed literature values instead.")
-        # Use known TCGA survival associations as fallback
-        results = [
-            {"gene": "ARID1B", "hr": 1.084, "p_value": 0.117, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "BRCA2",  "hr": 1.116, "p_value": 0.032, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "ATR",    "hr": 1.112, "p_value": 0.039, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "CRKL",   "hr": 1.084, "p_value": 0.118, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "HRAS",   "hr": 0.971, "p_value": 0.564, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "PIK3CB", "hr": 0.981, "p_value": 0.704, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "CREBBP", "hr": 1.040, "p_value": 0.449, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "TNS2",   "hr": 1.052, "p_value": 0.231, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "PARP1",  "hr": 1.079, "p_value": 0.136, "n_total": 1082, "source": "TCGA PanCan"},
-            {"gene": "SMARCA2","hr": 1.045, "p_value": 0.312, "n_total": 1082, "source": "TCGA PanCan"},
-        ]
+        raise SystemExit(
+            "TCGA query returned no results — aborting rather than using "
+            "hardcoded fallback values (simulated/hardcoded data is forbidden)."
+        )
     
     # Save results
     df = pd.DataFrame(results)
@@ -276,11 +289,13 @@ def run_tcga_survival_analysis():
     print(f"\n{'─' * 70}")
     print(f"  Survival Association Summary (TCGA BRCA)")
     print(f"{'─' * 70}")
-    print(f"{'Gene':12s} {'HR':>7s} {'p_value':>8s} {'n':>6s}")
-    print("-" * 40)
+    print(f"{'Gene':12s} {'HR':>7s} {'95% CI':>16s} {'p_value':>8s} {'n':>6s}")
+    print("-" * 55)
     for _, r in df.iterrows():
         sig = " ★" if r["p_value"] < 0.05 else ""
-        print(f"{r['gene']:12s} {r['hr']:>7.3f} {r['p_value']:>8.4f} {int(r['n_total']):>6d}{sig}")
+        ci = f"[{r['ci_low']:.3f}-{r['ci_high']:.3f}]" if "ci_low" in r else ""
+        print(f"{r['gene']:12s} {r['hr']:>7.3f} {ci:>16s} {r['p_value']:>8.4f} "
+              f"{int(r['n_total']):>6d}{sig}")
     
     # Paralog pair association
     print(f"\n  Paralog pair survival concordance:")

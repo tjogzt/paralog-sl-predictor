@@ -64,12 +64,8 @@ panel_a <- function() {
     ) %>% distinct(drug, driver, paralog, .keep_all = TRUE) %>%
       slice_max(abs_delta, n = 8)
   } else {
-    pr <- tibble(
-      drug = c("AZD8330","Everolimus","Panobinostat","Triptolide","Ipatasertib","AT-9283"),
-      driver = c("KRAS","PTEN","EP300","STK11","PTEN","KRAS"),
-      paralog = c("HRAS","TNS2","CREBBP","SIK1","TNS2","HRAS"),
-      abs_delta = c(0.352,0.315,0.339,1.221,3.24,0.331),
-      drug_class = c("MEKi","mTOR/AKTi","HDACi","Other","mTOR/AKTi","Other"))
+    stop("paralog_sl_predictor/output/prism_top_hits.csv not found — ",
+         "run the pipeline first; simulated fallbacks are forbidden")
   }
   pr <- pr %>% mutate(
     label = paste0(drug, "\n", driver, "->", paralog),
@@ -93,15 +89,8 @@ panel_b <- function() {
   if (file.exists(tw_path)) {
     tw <- read_csv(tw_path, show_col_types = FALSE)
   } else {
-    tw <- tibble(
-      driver = c("ARID1A","NF1","KMT2D","ATR","PPP2R1A","EP300","PIK3CA","SMARCA4",
-                 "TP53","FBXW7","STK11","BRAF","KRAS","BRCA1","BRCA2","PIK3R1"),
-      paralog = c("ARID1B","RASA2","KMT2C","ATM","PPP2R1B","CREBBP","PIK3CB","SMARCA2",
-                  "TP63","FBXW2","SIK1","RAF1","HRAS","BRCA2","BRCA1","CRKL"),
-      mean_ti = c(4.13,3.31,2.16,2.01,1.46,1.15,1.26,1.16,0.95,1.23,0.91,0.95,0.14,0.29,0.16,0.24),
-      mean_selectivity = c(.237,.003,.097,.027,0,.115,-.051,.032,.022,-.0002,-.01,-.049,-.046,.045,-.039,-.148),
-      classification = c("HIGH","MODERATE","MODERATE","MODERATE","LOW","MODERATE","LOW","MODERATE",
-                         "MODERATE","LOW","LOW","LOW","LOW","PAN","PAN","PAN"))
+    stop("paralog_sl_predictor/output/therapeutic_window_paralog_classification.csv not found — ",
+         "run the pipeline first; simulated fallbacks are forbidden")
   }
   tw <- tw %>% mutate(
     class_label = case_when(
@@ -140,11 +129,8 @@ panel_c <- function() {
       filter(domain_similarity > 0) %>%  # exclude zero-domain pairs (e.g. BRCA1/BRCA2)
       arrange(desc(structural_similarity)) %>% head(8)
   } else {
-    st <- tibble(
-      gene_a = c("EP300","SMARCA4","ARID1A","PPP2R1A","PIK3CA","KMT2D","TP53","FBXW7"),
-      gene_b = c("CREBBP","SMARCA2","ARID1B","PPP2R1B","PIK3CB","KMT2C","TP63","FBXW2"),
-      structural_similarity = c(.976,.966,.952,.921,.847,.829,.803,.666),
-      domain_similarity     = c(1,1,.8,1,1,.6,.5,.333))
+    stop("paralog_sl_predictor/output/alphafold_structural_analysis.csv not found — ",
+         "run the pipeline first; simulated fallbacks are forbidden")
   }
   st$pair <- factor(paste0(st$gene_a, "/", st$gene_b),
                     levels = rev(paste0(st$gene_a, "/", st$gene_b)))
@@ -179,11 +165,9 @@ panel_d <- function() {
     } else { cand <- NULL }
   } else { cand <- NULL }
   if (is.null(cand) || nrow(cand) == 0) {
-    cand <- tibble(
-      label = c("ARID1A>ARID1B","NF1>RASA2","KMT2D>KMT2C","PPP2R1A>PPP2R1B",
-                "EP300>CREBBP","PIK3CA>PIK3CB","FBXW7>FBXW2","TP53>TP63",
-                "STK11>SIK1","KRAS>HRAS"),
-      score = c(.815,.652,.638,.543,.533,.509,.418,.417,.409,.392))
+    stop("clinical_targetability column missing in ",
+         "alphafold_structural_analysis.csv — run the structural/targetability ",
+         "pipeline first; simulated fallbacks are forbidden")
   }
   cand$label <- factor(cand$label, levels = rev(cand$label))
   cand$is_top <- c(TRUE, rep(FALSE, nrow(cand) - 1))

@@ -120,3 +120,37 @@ Table2_slm	Table2_Benchmark.tsv SLMGAE row	0.790	0.790	output/tables/Table2_Benc
 s3_rows	Table S3 pairs	12	12	output/tables/TableS3_GoldStandard.tsv	match
 s3_tier_a	Table S3 Tier A == headline tier_a_pairs	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	output/tables/TableS3_GoldStandard.tsv	match
 s3_tier_b	Table S3 Tier B == headline tier_b_pairs	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	output/tables/TableS3_GoldStandard.tsv	match
+tcga_ngenes	TCGA paralog genes analysed (Methods)	32	32	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_n	TCGA patients with OS+expression (n=1,069)	1069	1069	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_events	TCGA OS events (151 deaths)	151	151	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_nsig	Significant genes at p<0.05 (only ARID1B)	1	1	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_arid1b_hr	ARID1B HR (text + Fig. 3c)	1.613	1.613	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_arid1b_lo	ARID1B 95% CI low	1.163	1.163	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_arid1b_hi	ARID1B 95% CI high	2.238	2.238	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_arid1b_p	ARID1B p-value	0.004	0.004	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_brca2_hr	BRCA2 HR (text)	1.245	1.245	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_brca2_p	BRCA2 p (text)	0.181	0.181	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_atr_hr	ATR HR (text)	0.980	0.980	output/tcga_survival_associations.csv (tcga_survival.py)	match
+tcga_atr_p	ATR p (text)	0.902	0.902	output/tcga_survival_associations.csv (tcga_survival.py)	match
+co_npairs	Co-occurrence pairs analysed	5	5	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_all_gt1	All key pairs OR > 1 (text claim)	OR > 1 for all	min OR = 1.623	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_or_min	OR range low (caption 1.6)	1.6	1.623	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_or_max	OR range high (caption 6.8)	6.8	6.836	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_nsig	Pairs with Fisher p<0.05 (four of five)	4	4	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_or_ARID1A	ARID1A/ARID1B OR (Fig. 3d)	5.72	5.722	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_p_ARID1A	ARID1A/ARID1B Fisher p (caption)	2e-12	2.00e-12	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_or_EP300	EP300/CREBBP OR (Fig. 3d)	6.11	6.111	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_p_EP300	EP300/CREBBP Fisher p (caption)	2.4e-11	2.39e-11	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_or_PIK3CA	PIK3CA/PIK3CB OR (Fig. 3d)	6.84	6.836	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_p_PIK3CA	PIK3CA/PIK3CB Fisher p (caption)	3.3e-06	3.32e-06	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_or_BRCA1	BRCA1/BRCA2 OR (Fig. 3d)	4.53	4.528	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_p_BRCA1	BRCA1/BRCA2 Fisher p (caption)	0.04	4.01e-02	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_or_SMARCA4	SMARCA4/SMARCA2 OR (Fig. 3d)	1.62	1.623	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+co_p_SMARCA4	SMARCA4/SMARCA2 Fisher p (caption)	0.37	3.72e-01	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+s9_r_all	k-mer vs NW Pearson r (all pairs)	0.88	0.882	output/kmer_nw_correlation.csv (R_figS9.R)	match
+s9_n_all	Validation pairs total	50	50	output/kmer_nw_correlation.csv (R_figS9.R)	match
+s9_p_all	Overall r p < 1e-16 (Methods claim)	p < 1e-16	p = 2.47e-17	output/kmer_nw_correlation.csv (R_figS9.R)	match
+s9_r_par	r within paralogs	0.91	0.906	output/kmer_nw_correlation.csv (R_figS9.R)	match
+s9_n_par	Paralog pairs	13	13	output/kmer_nw_correlation.csv (R_figS9.R)	match
+s9_r_non	r within non-paralogs	0.41	0.413	output/kmer_nw_correlation.csv (R_figS9.R)	match
+s9_n_non	Non-paralog pairs	37	37	output/kmer_nw_correlation.csv (R_figS9.R)	match

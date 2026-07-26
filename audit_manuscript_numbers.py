@@ -356,6 +356,78 @@ ROWS.append({"id": "s3_tier_b", "description": "Table S3 Tier B == headline tier
              "status": "match" if s3_b == sorted(hm["lineage_tier_ab"]["tier_b_pairs"]) else "MISMATCH"})
 
 # ═══════════════════════════════════════════════════════════════════
+# TCGA survival (Cox PH via cBioPortal) — Fig. 3c, Results, Methods
+# ═══════════════════════════════════════════════════════════════════
+tcga = pd.read_csv(OUT / "tcga_survival_associations.csv")
+TCGA = "output/tcga_survival_associations.csv (tcga_survival.py)"
+check_int("tcga_ngenes", "TCGA paralog genes analysed (Methods)", 32, len(tcga), TCGA)
+check_int("tcga_n", "TCGA patients with OS+expression (n=1,069)", 1069,
+          int(tcga["n_total"].max()), TCGA)
+check_int("tcga_events", "TCGA OS events (151 deaths)", 151,
+          int(tcga["n_events"].max()), TCGA)
+check_int("tcga_nsig", "Significant genes at p<0.05 (only ARID1B)", 1,
+          int((tcga["p_value"] < 0.05).sum()), TCGA)
+t_a = tcga[tcga.gene == "ARID1B"].iloc[0]
+check("tcga_arid1b_hr", "ARID1B HR (text + Fig. 3c)", "1.613", t_a["hr"], TCGA)
+check("tcga_arid1b_lo", "ARID1B 95% CI low", "1.163", t_a["ci_low"], TCGA)
+check("tcga_arid1b_hi", "ARID1B 95% CI high", "2.238", t_a["ci_high"], TCGA)
+check("tcga_arid1b_p", "ARID1B p-value", "0.004", t_a["p_value"], TCGA)
+t_b = tcga[tcga.gene == "BRCA2"].iloc[0]
+check("tcga_brca2_hr", "BRCA2 HR (text)", "1.245", t_b["hr"], TCGA)
+check("tcga_brca2_p", "BRCA2 p (text)", "0.181", t_b["p_value"], TCGA)
+t_t = tcga[tcga.gene == "ATR"].iloc[0]
+check("tcga_atr_hr", "ATR HR (text)", "0.980", t_t["hr"], TCGA)
+check("tcga_atr_p", "ATR p (text)", "0.902", t_t["p_value"], TCGA)
+
+# ═══════════════════════════════════════════════════════════════════
+# Mutational co-occurrence (Fisher exact) — Fig. 3d + caption
+# ═══════════════════════════════════════════════════════════════════
+co = pd.read_csv(OUT / "cooccurrence_analysis.csv")
+CO = "output/cooccurrence_analysis.csv (cooccurrence_analysis.py)"
+check_int("co_npairs", "Co-occurrence pairs analysed", 5, len(co), CO)
+ROWS.append({
+    "id": "co_all_gt1", "description": "All key pairs OR > 1 (text claim)",
+    "manuscript": "OR > 1 for all", "recomputed": f"min OR = {co.odds_ratio.min():.3f}",
+    "source": CO,
+    "status": "match" if bool((co.odds_ratio > 1).all()) else "MISMATCH"})
+check("co_or_min", "OR range low (caption 1.6)", "1.6", co.odds_ratio.min(), CO)
+check("co_or_max", "OR range high (caption 6.8)", "6.8", co.odds_ratio.max(), CO)
+check_int("co_nsig", "Pairs with Fisher p<0.05 (four of five)", 4,
+          int((co.p_value < 0.05).sum()), CO)
+for pair, or_ms, p_ms in [
+        ("ARID1A/ARID1B", "5.72", 2.0e-12), ("EP300/CREBBP", "6.11", 2.4e-11),
+        ("PIK3CA/PIK3CB", "6.84", 3.3e-6), ("BRCA1/BRCA2", "4.53", 0.040),
+        ("SMARCA4/SMARCA2", "1.62", 0.37)]:
+    row = co[co.pair == pair].iloc[0]
+    check(f"co_or_{pair.split('/')[0]}", f"{pair} OR (Fig. 3d)", or_ms,
+          row["odds_ratio"], CO)
+    c = float(row["p_value"])
+    ok = abs(c - p_ms) <= max(0.1 * p_ms, 5e-3)
+    ROWS.append({"id": f"co_p_{pair.split('/')[0]}",
+                 "description": f"{pair} Fisher p (caption)",
+                 "manuscript": p_ms, "recomputed": f"{c:.2e}", "source": CO,
+                 "status": "match" if ok else "MISMATCH"})
+
+# ═══════════════════════════════════════════════════════════════════
+# k-mer vs Needleman-Wunsch validation — Fig. S9 + Methods line ~313
+# ═══════════════════════════════════════════════════════════════════
+kn = pd.read_csv(OUT / "kmer_nw_correlation.csv")
+KN = "output/kmer_nw_correlation.csv (R_figS9.R)"
+k_all = kn[kn.group == "all"].iloc[0]
+k_par = kn[kn.group == "paralog"].iloc[0]
+k_non = kn[kn.group == "non_paralog"].iloc[0]
+check("s9_r_all", "k-mer vs NW Pearson r (all pairs)", "0.88", k_all["pearson_r"], KN)
+check_int("s9_n_all", "Validation pairs total", 50, int(k_all["n"]), KN)
+ROWS.append({
+    "id": "s9_p_all", "description": "Overall r p < 1e-16 (Methods claim)",
+    "manuscript": "p < 1e-16", "recomputed": f"p = {k_all['p_value']:.2e}", "source": KN,
+    "status": "match" if k_all["p_value"] < 1e-16 else "MISMATCH"})
+check("s9_r_par", "r within paralogs", "0.91", k_par["pearson_r"], KN)
+check_int("s9_n_par", "Paralog pairs", 13, int(k_par["n"]), KN)
+check("s9_r_non", "r within non-paralogs", "0.41", k_non["pearson_r"], KN)
+check_int("s9_n_non", "Non-paralog pairs", 37, int(k_non["n"]), KN)
+
+# ═══════════════════════════════════════════════════════════════════
 # Report
 # ═══════════════════════════════════════════════════════════════════
 df = pd.DataFrame(ROWS)

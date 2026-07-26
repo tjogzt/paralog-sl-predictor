@@ -165,6 +165,29 @@ if (nrow(results) >= 5) {
   t_stat <- r_val * sqrt((nrow(results) - 2) / (1 - r_val^2))
   p_val <- 2 * pt(abs(t_stat), nrow(results) - 2, lower.tail = FALSE)
 
+  # Subgroup correlations (paralog-only / non-paralog-only) — single source
+  # of truth for the three r values quoted in manuscript Methods; written
+  # to an artifact so audit_manuscript_numbers.py can verify them.
+  pr <- results[results$is_paralog, ]
+  nr <- results[!results$is_paralog, ]
+  cor_p <- function(r, n) {
+    if (n < 3 || is.na(r)) return(NA_real_)
+    t <- r * sqrt((n - 2) / (1 - r^2))
+    2 * pt(abs(t), n - 2, lower.tail = FALSE)
+  }
+  r_paralog <- if (nrow(pr) >= 3) cor(pr$kmer_jaccard, pr$nw_identity) else NA_real_
+  r_nonparalog <- if (nrow(nr) >= 3) cor(nr$kmer_jaccard, nr$nw_identity) else NA_real_
+  cor_artifact <- data.frame(
+    group = c("all", "paralog", "non_paralog"),
+    n = c(nrow(results), nrow(pr), nrow(nr)),
+    pearson_r = c(r_val, r_paralog, r_nonparalog),
+    p_value = c(p_val, cor_p(r_paralog, nrow(pr)), cor_p(r_nonparalog, nrow(nr))))
+  write.csv(cor_artifact,
+            "paralog_sl_predictor/output/kmer_nw_correlation.csv",
+            row.names = FALSE)
+  message(sprintf("  r: all=%.3f (n=%d), paralog=%.3f (n=%d), non-paralog=%.3f (n=%d)",
+                  r_val, nrow(results), r_paralog, nrow(pr), r_nonparalog, nrow(nr)))
+
   p <- ggplot(results, aes(nw_identity, kmer_jaccard, color = is_paralog)) +
     geom_point(size = 1.5, alpha = 0.6) +
     scale_color_manual(name = NULL, values = c(`TRUE` = RED, `FALSE` = BLUE),

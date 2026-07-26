@@ -43,18 +43,28 @@ save_panel <- function(p, name) {
 # PANEL A — MSI Stratification
 # ═══════════════════════════════════════════════════════════════
 panel_a <- function() {
-  # Values from output/msi_subgroup_summary_min3.csv (sensitivity frame,
-  # >=3 mutant/WT per group; official DepMap 26Q1 MSIsensor2 annotation,
-  # MSI-H = MSIscore > 20), msi_analysis.py. On the primary >=5 frame the
-  # endometrial subgroups are not evaluable and colorectal shows no
-  # difference (0.574 vs 0.595); see manuscript text.
-  df <- tibble(
-    cancer = factor(c("Colorectal","Colorectal","Endometrial","Endometrial"),
-                    levels = c("Colorectal","Endometrial")),
-    msi_status = factor(c("MSI-H","MSS","MSI-H","MSS"),
-                        levels = c("MSI-H","MSS")),
-    auroc = c(0.767, 0.712, 0.838, 0.556),
-    n     = c(14, 45, 17, 11))
+  # Single source of truth: output/msi_key_numbers_min3.json (sensitivity
+  # frame, >=3 mutant/WT per group; official DepMap 26Q1 MSIsensor2
+  # annotation, MSI-H = MSIscore > 20), written by msi_analysis.py.
+  # On the primary >=5 frame the endometrial subgroups are not evaluable
+  # and colorectal shows no difference; see manuscript text.
+  json_path <- "paralog_sl_predictor/output/msi_key_numbers_min3.json"
+  if (!file.exists(json_path))
+    stop("msi_key_numbers_min3.json not found — run msi_analysis.py first; ",
+         "simulated fallbacks are forbidden")
+  kj <- jsonlite::fromJSON(json_path)
+  sg <- kj$subgroups
+  pick <- function(key) {
+    # keys are e.g. "Colorectal_MSI_H" / "Colorectal_MSS"
+    status <- if (grepl("_MSI_H$", key)) "MSI-H" else "MSS"
+    cancer <- sub("_(MSI_H|MSS)$", "", key)
+    tibble(cancer = cancer, msi_status = status,
+           auroc = sg[[key]]$dd_auroc, n = sg[[key]]$n_lines)
+  }
+  df <- bind_rows(pick("Colorectal_MSI_H"), pick("Colorectal_MSS"),
+                  pick("Endometrial_MSI_H"), pick("Endometrial_MSS"))
+  df$cancer <- factor(df$cancer, levels = c("Colorectal","Endometrial"))
+  df$msi_status <- factor(df$msi_status, levels = c("MSI-H","MSS"))
 
   # For hatched bar, use a dummy value with patterned fill
   df$bar_val <- ifelse(is.na(df$auroc), 0.25, df$auroc)
@@ -74,17 +84,27 @@ panel_a <- function() {
 # PANEL B — Mutation Type ΔDD
 # ═══════════════════════════════════════════════════════════════
 panel_b <- function() {
-  # Values recomputed from output/muttype_{cancer}_results.csv (WT − MUT,
-  # manuscript Eq. 1; positive = stronger dependency in the mutant subgroup)
-  df <- bind_rows(
-    tibble(pair = "ARID1A->ARID1B\n(Ovarian)",    type = "Truncating", dd = 0.388),
-    tibble(pair = "ARID1A->ARID1B\n(Ovarian)",    type = "Missense",   dd = 0.020),
-    tibble(pair = "EP300->CREBBP\n(Colorectal)",   type = "Truncating", dd = 0.464),
-    tibble(pair = "EP300->CREBBP\n(Colorectal)",   type = "Missense",   dd = 0.150),
-    tibble(pair = "BRCA1->BRCA2\n(Ovarian)",       type = "Truncating", dd = 0.080),
-    tibble(pair = "BRCA1->BRCA2\n(Ovarian)",       type = "Missense",   dd = 0.000),
-    tibble(pair = "BRCA1->BRCA2\n(Breast)",        type = "Truncating", dd = -0.136),
-    tibble(pair = "BRCA1->BRCA2\n(Breast)",        type = "Missense",   dd = 0.000))
+  # Read directly from output/muttype_{cancer}_results.csv (WT − MUT,
+  # manuscript Eq. 1; positive = stronger dependency in the mutant
+  # subgroup) — never hardcoded literals.
+  specs <- tribble(
+    ~file,          ~cancer,       ~driver,   ~paralog,  ~label,
+    "ovarian",      "Ovarian",     "ARID1A",  "ARID1B",  "ARID1A->ARID1B\n(Ovarian)",
+    "colorectal",   "Colorectal",  "EP300",   "CREBBP",  "EP300->CREBBP\n(Colorectal)",
+    "ovarian",      "Ovarian",     "BRCA1",   "BRCA2",   "BRCA1->BRCA2\n(Ovarian)",
+    "breast",       "Breast",      "BRCA1",   "BRCA2",   "BRCA1->BRCA2\n(Breast)")
+  df <- purrr::pmap_dfr(specs, function(file, cancer, driver, paralog, label) {
+    path <- sprintf("paralog_sl_predictor/output/muttype_%s_results.csv", file)
+    if (!file.exists(path))
+      stop(path, " not found — run the mutation-type analysis first; ",
+           "simulated fallbacks are forbidden")
+    row <- read_csv(path, show_col_types = FALSE) %>%
+      filter(.data$cancer == .env$cancer, .data$driver == .env$driver,
+             .data$paralog == .env$paralog)
+    if (nrow(row) != 1) stop("expected exactly 1 row for ", label, " in ", path)
+    tibble(pair = label,
+           Truncating = row$dd_trunc, Missense = row$dd_miss)
+  }) %>% pivot_longer(c(Truncating, Missense), names_to = "type", values_to = "dd")
   df$pair <- factor(df$pair, levels = unique(df$pair))
   df$type <- factor(df$type, levels = c("Truncating","Missense"))
 
@@ -102,30 +122,40 @@ panel_b <- function() {
 # PANEL C — TCGA Survival Forest Plot
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
-  df <- tibble(
-    gene = c("BRCA2","ATR","ARID1B","CRKL","SMARCA2","CREBBP","PIK3CB","HRAS"),
-    hr   = c(1.116,1.112,1.084,1.084,1.045,1.040,0.981,0.971),
-    se   = c(0.054,0.054,0.054,0.054,0.054,0.054,0.054,0.054),
-    sig  = c("p=0.032","p=0.039","","","","","",""))
-  df$gene <- factor(df$gene, levels = rev(df$gene))
-  df$clr  <- ifelse(df$hr > 1 & df$sig != "", RED,
-                    ifelse(df$hr > 1, BLUE, GREEN))
-  df$ypos <- as.numeric(df$gene) + 0.15
+  # Single source of truth: output/tcga_survival_associations.csv,
+  # written by tcga_survival.py (Cox PH, median-split high vs low paralog
+  # expression, TCGA PanCan Atlas BRCA). Never hardcoded literals.
+  tcga_path <- "paralog_sl_predictor/output/tcga_survival_associations.csv"
+  if (!file.exists(tcga_path))
+    stop("tcga_survival_associations.csv not found — run tcga_survival.py ",
+         "first; simulated fallbacks are forbidden")
+  genes8 <- c("ARID1B","BRCA2","PIK3CB","CRKL","CREBBP","ATR","SMARCA2","HRAS")
+  df <- read_csv(tcga_path, show_col_types = FALSE) %>%
+    filter(gene %in% genes8) %>%
+    mutate(gene = factor(gene, levels = rev(genes8)),
+           sig = ifelse(p_value < 0.05,
+                        sprintf("p=%s", formatC(p_value, format = "f", digits = 3)), ""),
+           clr = case_when(hr > 1 & sig != "" ~ RED,
+                           hr > 1              ~ BLUE,
+                           TRUE                ~ GREEN),
+           ypos = as.numeric(gene) + 0.18)
 
   ggplot(df, aes(hr, gene)) +
     geom_vline(xintercept = 1, linewidth = 0.4, color = DARK, alpha = 0.5) +
-    # Gene labels drawn INSIDE the plot panel (left side): the composite
-    # figure's left edge clipped the widest y-axis label ("SMARCA2"), so the
-    # y-axis text column is removed entirely.
-    geom_text(aes(x = 0.79, label = gene), hjust = 0, size = 2.5,
+    # Gene labels drawn INSIDE the plot panel, above each errorbar (left
+    # side): the composite figure's left edge clipped the widest y-axis
+    # label ("SMARCA2"), so the y-axis text column is removed entirely;
+    # labels sit above the bars so whiskers never cross the text.
+    geom_text(aes(x = 0.50, y = ypos, label = gene), hjust = 0, size = 2.5,
               family = "Arial", color = DARK) +
     geom_point(aes(color = clr), size = 2) +
-    geom_errorbarh(aes(xmin = hr - 1.96*se, xmax = hr + 1.96*se, color = clr),
+    geom_errorbarh(aes(xmin = ci_low, xmax = ci_high, color = clr),
                    height = 0.15, linewidth = 0.8) +
     geom_text(aes(label = sig, color = clr, y = ypos),
               size = 2.5, fontface = "bold", hjust = 0.5, vjust = 0) +
     scale_color_identity() +
-    scale_x_continuous(limits = c(0.78, 1.26), breaks = seq(0.8, 1.2, 0.1)) +
+    scale_x_continuous(limits = c(0.48, 2.4), breaks = c(0.5, 1.0, 1.5, 2.0)) +
+    scale_y_discrete(expand = expansion(add = c(0.3, 0.7))) +
     labs(x = "Hazard Ratio\n(high vs low paralog expression)", y = NULL) +
     theme_sci +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
@@ -136,21 +166,33 @@ panel_c <- function() {
 # PANEL D — Mutational Co-occurrence
 # ═══════════════════════════════════════════════════════════════
 panel_d <- function() {
-  df <- tibble(
-    pair = c("ARID1A/ARID1B","PIK3CA/PIK3CB","BRCA1/BRCA2","EP300/CREBBP","SMARCA4/SMARCA2"),
-    or   = c(6.147, 5.157, 3.422, 4.548, 4.753),
-    clr  = c(RED, BLUE, ORANGE, "#0D7377", PURPLE))
-  df$pair <- factor(df$pair, levels = rev(df$pair))
+  # Single source of truth: output/cooccurrence_analysis.csv, written by
+  # cooccurrence_analysis.py (Fisher's exact test on DepMap 26Q1 driver-
+  # rule mutation status across the 1,208 dependency-profiled cell lines).
+  co_path <- "paralog_sl_predictor/output/cooccurrence_analysis.csv"
+  if (!file.exists(co_path))
+    stop("cooccurrence_analysis.csv not found — run cooccurrence_analysis.py ",
+         "first; simulated fallbacks are forbidden")
+  pair_colors <- c("ARID1A/ARID1B" = RED, "PIK3CA/PIK3CB" = BLUE,
+                   "BRCA1/BRCA2" = ORANGE, "EP300/CREBBP" = "#0D7377",
+                   "SMARCA4/SMARCA2" = PURPLE)
+  df <- read_csv(co_path, show_col_types = FALSE) %>%
+    arrange(desc(odds_ratio)) %>%
+    mutate(pair = factor(pair, levels = pair),
+           clr = pair_colors[as.character(pair)],
+           star = ifelse(p_value < 0.05, "*", ""))
 
-  ggplot(df, aes(or, pair, fill = clr)) +
+  ggplot(df, aes(odds_ratio, pair, fill = clr)) +
     geom_col(width = 0.55) +
-    geom_text(aes(label = sprintf("%.2f", or)), hjust = -0.1, size = 2.5, color = DARK) +
+    geom_text(aes(label = sprintf("%.2f%s", odds_ratio, star)),
+              hjust = -0.1, size = 2.5, color = DARK) +
     scale_fill_identity() +
     geom_vline(xintercept = 1, linewidth = 0.4, color = DARK, alpha = 0.5, linetype = "dashed") +
     labs(x = "Co-occurrence OR\n(>1 = co-occur)", y = NULL) +
     scale_x_continuous(expand = expansion(mult = c(0, 0.12))) +
-    annotate("text", x = Inf, y = -Inf, label = "All OR > 1\nSL at dependency level",
-             size = 2.5, color = DARK, hjust = 1.05, vjust = -0.5) +
+    annotate("text", x = Inf, y = Inf,
+             label = "All OR > 1\nSL at dependency level\n*Fisher p < 0.05",
+             size = 2.5, color = DARK, hjust = 1.05, vjust = 1.3) +
     theme_sci
 }
 

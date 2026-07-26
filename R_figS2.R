@@ -35,13 +35,8 @@ solid_path <- "paralog_sl_predictor/output/solid_tumor_summary.csv"
 if (file.exists(solid_path)) {
   df_raw <- read_csv(solid_path, show_col_types = FALSE) %>% filter(!is.na(dd_auroc))
 } else {
-  df_raw <- tibble(
-    cancer = c("Biliary Tract","Mesothelioma","Colorectal","Esophagogastric","SCLC",
-               "Pancreatic","HNSCC","Breast","Neuroblastoma","Bladder Urothelial",
-               "Hepatocellular","Ovarian","Cervical","Glioma","Endometrial",
-               "NSCLC","Melanoma"),
-    dd_auroc = c(.960,.917,.812,.805,.750,.750,.746,.734,.722,.698,
-                 .683,.674,.643,.600,.576,.572,.462))
+  stop("paralog_sl_predictor/output/solid_tumor_summary.csv not found — ",
+       "run the pipeline first; simulated fallbacks are forbidden")
 }
 
 df_raw <- df_raw %>% arrange(dd_auroc)
