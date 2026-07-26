@@ -16,7 +16,7 @@ cd paralog_sl_predictor && bash verify_all.sh
 - [ ] verify_all.sh 全绿
 - [ ] 三份 PDF 为最新编译（manuscript 29 页 / supplementary 17 页 / cover letter 3 页）
 - [ ] 作者名单与邮箱最终确认（见第 2 节【待补】）
-- [ ] 摘要版本最终选定（见第 3 节 【注意】当前 273 词超限，须用压缩版）
+- [已完成] 摘要版本已选定（第 3 节：压缩版 236 词已同步 manuscript.tex，≤250 达标）
 
 ---
 
@@ -36,7 +36,7 @@ Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across
 
 ## 3. 摘要（Abstract，结构化，系统上限 250 词）
 
-**【注意】文稿当前摘要为 273 词，超过系统 250 词硬限制。** 以下为 236 词（含小节标签 239 词）压缩建议稿，所有数字与正文一致、限定语全部保留；如采纳，请同步替换 manuscript.tex 摘要后重编 PDF（或仅在系统文本框使用压缩版，二者择一，建议前者保持一致）：
+**【已解决 2026-07-27】**：原摘要 273 词超限，以下 236 词压缩版（所有数字与正文一致、限定语全部保留）**已同步进 manuscript.tex 并重编 PDF**（tex 排版口径 241 词，系统粘贴用下方纯文本版为 236 词，均 ≤250）：
 
 **Background:** Paralog compensation is a specific mechanism of synthetic lethality (SL): when a tumor-suppressor driver gene is lost to mutation, its sequence-similar paralog can become conditionally essential. Systematic prioritization of paralog-SL candidates remains limited because existing computational methods are black boxes that cannot explain their predictions, hindering targeted validation.
 
@@ -160,7 +160,7 @@ Graphical abstract caption（较长，完整版见 `submission_texts.md`）。
 
 ## 待办汇总（投稿前必须关闭）
 
-1. 【注意】确定最终作者名单；补 Qingqing Mo 邮箱（第 5 节）
-2. 【注意】补两位作者 ORCID（第 5 节）
-3. 【注意】补 5 位推荐审稿人机构邮箱（第 6 节）
-4. 【注意】摘要超限：采纳第 3 节压缩版（建议同步替换 manuscript.tex 并重编 PDF，保持文稿与系统一致）
+1. 【待补】确定最终作者名单；补 Qingqing Mo 邮箱（第 5 节）
+2. 【待补】补两位作者 ORCID（第 5 节）
+3. 【待补】补 5 位推荐审稿人机构邮箱（第 6 节）
+4. ~~摘要超限~~ 【已解决】压缩版已同步 manuscript.tex（第 3 节）
