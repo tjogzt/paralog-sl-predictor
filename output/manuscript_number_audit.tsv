@@ -161,4 +161,6 @@ in4_min3_auroc	in4mer min3 AUROC (0.50)	0.50	0.498	output/in4mer_benchmark_summa
 in4_min3_p	in4mer min3 permutation p (0.51)	0.51	0.508	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
 in4_min5_npos	in4mer pairs evaluable at >=5 threshold	3	3	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
 in4_min5_auroc	in4mer min5 exploratory AUROC (0.68)	0.68	0.683	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_min3_nneg	Controls evaluable at >=3 threshold (Fig. S11)	326	326	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_p90	Control 90th pct of |DD| at >=3 (Fig. S11: 0.217)	0.217	0.217	output/in4mer_benchmark.csv	match
 in4_above_p90	in4mer pairs above control 90th pct (3: ARFGEF1/2, HDAC1/2, SLC25A28/37)	3 pairs	3 pairs (p90=0.217)	output/in4mer_benchmark.csv	match

@@ -112,6 +112,12 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \caption{\textbf{Structure-based druggability assessment.} Composite druggability score for 15 proteins (7 paralog targets in red, 8 driver genes in blue) based on ESMFold-predicted structures. Scores integrate structural confidence (pLDDT), hydrophobic content, lysine density (K, relevant for PROTAC conjugation), and predicted pocket count (P). Structures were limited to 400 residues per protein; ARID1A/ARID1B structures were not available from AlphaFold DB and are assessed by sequence-level features only (main text Table~2). FBXW2 (0.871) and KRAS/HRAS (0.858--0.859) show the highest scores due to well-folded compact domains.}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS11_in4mer_ExternalCheck.pdf}
+\caption{\textbf{External check against mutation-agnostic gold standards (in4mer).} a, Distribution of $|$DD$|$ ($\ge$3-mutant framework) for 326 evaluable unlabeled control paralog pairs (gray histogram; 400 pairs sampled, seed 42). Red ticks: the 10 evaluable pairs of the 13 cross-platform in4mer gold standards (Esmaeili Anvar et al., Nat Commun 2024). Dashed line: control 90th percentile (0.217); the three pairs above it (ARFGEF1/ARFGEF2, HDAC1/HDAC2, SLC25A28/SLC25A37) are those with the most recurrent natural mutations. b, AUROC point estimates with bootstrap 95\% CI for both evaluation frameworks. Only 3 of the 13 pairs meet the $\ge$5-mutant threshold (exploratory AUROC $=$ 0.68); the 10 pairs evaluable at $\ge$3 do not separate from unlabeled controls (AUROC $=$ 0.50, permutation $p = 0.51$), consistent with the mutation-agnostic, dual-knockout definition of these gold standards (main text, Limitations).}
+\end{figure}
+
 \clearpage
 \section{Supplementary Tables}
 

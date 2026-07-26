@@ -449,6 +449,10 @@ check("in4_min5_auroc", "in4mer min5 exploratory AUROC (0.68)", "0.68",
       in4s["min5"]["auroc"], IN4)
 neg3 = in4[in4.label == "unlabeled_control"]["dd_min3"].abs().dropna()
 p90 = float(neg3.quantile(0.9))
+check_int("in4_min3_nneg", "Controls evaluable at >=3 threshold (Fig. S11)", 326,
+          in4s["min3"]["n_neg"], IN4)
+check("in4_p90", "Control 90th pct of |DD| at >=3 (Fig. S11: 0.217)", "0.217",
+      p90, "output/in4mer_benchmark.csv")
 pos3 = in4[in4.label == "in4mer_gold"]["dd_min3"].abs().dropna()
 above = pos3[pos3 > p90]
 ok = len(above) == 3
