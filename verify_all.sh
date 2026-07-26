@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # verify_all.sh — one-command reproduction of every quantitative claim in the
 # manuscript (headline metrics, ML benchmark, regression controls, and the
-# 109-claim closed-loop number audit) plus the test suite. Each script ends
-# with an automatic claims check that compares its recomputed numbers against
-# the values written in manuscript.tex and exits non-zero on mismatch.
+# 165-claim closed-loop number audit covering manuscript + supplementary) plus
+# the test suite. Each script ends with an automatic claims check that
+# compares its recomputed numbers against the values written in the
+# manuscript and exits non-zero on mismatch.
 #
 # Usage:
 #   ./verify_all.sh            # fast: reuses cached data slices when present
