@@ -330,6 +330,15 @@ def main():
         }
     metrics["component_paired_bootstrap"] = paired
 
+    # Persist the paired delta distributions (long format) for the Fig. 1d
+    # inset histogram drawn by R_fig1.R — same draws as the CIs above.
+    deltas_out = pd.concat(
+        [pd.DataFrame({"component": f"{k}_minus_dd", "delta": vals})
+         for k, vals in boot_delta.items() if len(vals)],
+        ignore_index=True)
+    deltas_out.to_csv(ROOT / "output" / "component_paired_bootstrap_deltas.csv",
+                      index=False)
+
     # ── 3. Sequence-identity filter (needs output/paralog_identity.csv) ──
     if IDENTITY_CSV.exists():
         ident = pd.read_csv(IDENTITY_CSV)

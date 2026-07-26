@@ -181,28 +181,28 @@ panel_d <- function() {
                        expand = expansion(mult = c(0, 0))) +
     theme_sci
 
-  # Bootstrap inset — read live from validation_report.json (values change
-  # whenever the pipeline re-runs; do not paste numbers into comments)
-  vr <- jsonlite::fromJSON("paralog_sl_predictor/output/validation_report.json")
-  obs_auroc <- vr$negative_control$observed_auroc
-  bs_mean   <- vr$bootstrap$auroc_mean
-  bs_ci_lo  <- vr$bootstrap$auroc_ci_low
-  bs_ci_hi  <- vr$bootstrap$auroc_ci_high
-  bs_sd     <- (bs_ci_hi - bs_ci_lo) / (2 * 1.96)  # reconstruct SD from CI
+  # Inset: REAL paired-bootstrap distribution of PCS − DD (10,000 resamples,
+  # dumped by compute_headline_metrics.py). Answers the question this panel
+  # raises — is the PCS bar really higher than DD? (mean +0.150, 95% CI
+  # −0.110 to +0.456 → no significant difference.) The pair-level negative
+  # control formerly shown here lives in Supplementary Fig. S8.
+  hm <- jsonlite::fromJSON("paralog_sl_predictor/output/headline_metrics.json")
+  pb <- hm$component_paired_bootstrap$pcs_minus_dd
+  deltas <- readr::read_csv("paralog_sl_predictor/output/component_paired_bootstrap_deltas.csv",
+                            show_col_types = FALSE)
+  dd_ <- deltas[deltas$component == "pcs_minus_dd", ]
+  d_mean  <- pb$mean_delta
+  d_ci    <- unlist(pb$ci95)
 
-  set.seed(42)
-  bs <- rnorm(1000, mean = bs_mean, sd = bs_sd)
-  bs <- pmax(pmin(bs, 1.0), 0.3)
-  bs_df <- tibble(auroc = bs)
-  ci <- c(bs_ci_lo, bs_ci_hi)
-
-  inset <- ggplot(bs_df, aes(auroc)) +
-    geom_histogram(bins = 25, fill = BLUE, alpha = 0.4, color = NA) +
-    geom_vline(xintercept = obs_auroc, color = RED, linewidth = 0.8) +
-    annotate("text", x = obs_auroc + 0.02, y = Inf, label = sprintf("%.3f", obs_auroc),
-             size = 3.5, color = RED, fontface = "bold", hjust = 0, vjust = 1.5) +
-    geom_vline(xintercept = ci, color = GRAY, linewidth = 0.4, linetype = "dashed") +
-    labs(x = "AUROC", y = "N") +
+  inset <- ggplot(dd_, aes(delta)) +
+    geom_histogram(bins = 30, fill = BLUE, alpha = 0.4, color = NA) +
+    geom_vline(xintercept = 0, color = GRAY, linewidth = 0.4, linetype = "dotted") +
+    geom_vline(xintercept = d_mean, color = RED, linewidth = 0.7) +
+    geom_vline(xintercept = d_ci, color = GRAY, linewidth = 0.4, linetype = "dashed") +
+    annotate("text", x = d_mean, y = Inf,
+             label = sprintf("%+.3f", d_mean),
+             size = 3.2, color = RED, fontface = "bold", hjust = -0.1, vjust = 1.5) +
+    labs(x = "AUROC (PCS \u2212 DD)", y = "N") +
     theme_bw(base_size = 7) +
     theme(panel.grid = element_blank(),
           panel.background = element_rect(fill = "transparent", color = NA),
