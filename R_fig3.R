@@ -43,13 +43,15 @@ save_panel <- function(p, name) {
 # PANEL A — MSI Stratification
 # ═══════════════════════════════════════════════════════════════
 panel_a <- function() {
+  # Values from output/msi_subgroup_summary.csv (official DepMap 26Q1
+  # MSIsensor2 annotation; MSI-H = MSIscore > 20), msi_analysis.py
   df <- tibble(
     cancer = factor(c("Colorectal","Colorectal","Endometrial","Endometrial"),
                     levels = c("Colorectal","Endometrial")),
     msi_status = factor(c("MSI-H","MSS","MSI-H","MSS"),
                         levels = c("MSI-H","MSS")),
-    auroc = c(0.631, 0.804, 0.592, NA),
-    n     = c(17, 42, 20, 8))
+    auroc = c(0.947, 0.617, 0.723, 0.611),
+    n     = c(14, 45, 17, 11))
 
   # For hatched bar, use a dummy value with patterned fill
   df$bar_val <- ifelse(is.na(df$auroc), 0.25, df$auroc)

@@ -1,9 +1,18 @@
 """
 MSI/dMMR Subgroup Analysis for Paralog-SL
 ==========================================
-Classifies UCEC and CRC cell lines by MMR deficiency status
-(MLH1/MSH2/MSH6/PMS2 damaging mutations) and evaluates
+Classifies UCEC and CRC cell lines by microsatellite instability status
+using the official DepMap 26Q1 annotation (OmicsGlobalSignatures.csv,
+MSIScore computed with MSIsensor2 by the DepMap consortium; lines with
+MSIScore > 20 are labelled MSI-H, otherwise MSS), and evaluates
 paralog-SL signal separately for MSI-H vs MSS subgroups.
+
+The earlier mutation-based proxy (damaging MLH1/MSH2/MSH6/PMS2/POLE
+mutations) is retained ONLY as a sensitivity cross-check in the audit
+outputs (output/msi_classification_audit.csv). POLE-mutant lines are
+reported separately there: POLE-ultramutated tumours are typically
+microsatellite-stable, so the official MSIsensor2 annotation — unlike
+the proxy — does not pool them with dMMR/MSI-H lines.
 
 Rationale: Endometrial (UCEC ~30%) and colorectal (CRC ~15%) cancers
 have substantial MSI-H populations with distinct mutational landscapes.
@@ -51,10 +60,80 @@ MSI_DRIVERS = {
 }
 
 
+# ── Official MSI annotation (DepMap 26Q1) ──────────────────────
+SIGNATURES_FILE = DATA_DIR / "OmicsGlobalSignatures.csv"
+MSI_SCORE_THRESHOLD = 20.0   # MSIsensor2 MSIscore > 20 → MSI (DepMap convention)
+
+
+def load_official_msi(path: Path = SIGNATURES_FILE) -> pd.DataFrame:
+    """
+    Load the official DepMap 26Q1 MSI annotation.
+
+    OmicsGlobalSignatures.csv is profile-level; we keep the default
+    profile per model and binarise the MSIsensor2 MSIscore at > 20
+    (DepMap consortium convention: MSIscore > 20 = MSI, else MSS).
+
+    Returns DataFrame with columns: DepMap_ID, msi_score, msi_official
+    """
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Official MSI annotation not found: {path}. "
+            "Download OmicsGlobalSignatures.csv (DepMap Public 26Q1) into data/."
+        )
+    sig = pd.read_csv(path)
+    sig = sig[sig["IsDefaultEntryForModel"] == "Yes"].copy()
+    sig["msi_official"] = np.where(
+        sig["MSIScore"] > MSI_SCORE_THRESHOLD, "MSI_H", "MSS"
+    )
+    return sig[["ModelID", "MSIScore", "msi_official"]].rename(
+        columns={"ModelID": "DepMap_ID", "MSIScore": "msi_score"}
+    )
+
+
+def classify_official_msi(models_df, sig_df, mutations_df):
+    """
+    Classify cell lines by the official MSIsensor2 annotation.
+    The mutation proxy is used only for lines missing from the
+    signatures file (flagged source='proxy_fallback').
+
+    Returns DataFrame: DepMap_ID, msi_status, msi_score, msi_source
+    """
+    proxy = classify_mmr_status(models_df, mutations_df)
+    merged = models_df[["DepMap_ID"]].merge(sig_df, on="DepMap_ID", how="left")
+    merged = merged.merge(proxy, on="DepMap_ID", how="left")
+
+    has_official = merged["msi_official"].notna()
+    merged["msi_status"] = np.where(
+        has_official, merged["msi_official"], merged["mmr_status"]
+    )
+    merged["msi_source"] = np.where(
+        has_official, "MSIsensor2_26Q1", "proxy_fallback"
+    )
+    return merged[["DepMap_ID", "msi_status", "msi_score", "msi_source"]]
+
+
+def build_classification_audit(models_df, mutations_df, sig_df):
+    """
+    Per-line audit table: official MSI call, MMR-mutation proxy call,
+    POLE-mutation flag, and their concordance. POLE-mutant lines are
+    expected to be microsatellite-stable under the official annotation.
+    """
+    proxy = classify_mmr_status(models_df, mutations_df)
+    pole_ids = set(
+        mutations_df.loc[mutations_df["Gene"] == POLE_GENE, "DepMap_ID"]
+    )
+    audit = models_df[["DepMap_ID"]].merge(sig_df, on="DepMap_ID", how="left")
+    audit = audit.merge(proxy, on="DepMap_ID", how="left")
+    audit["pole_mutant"] = audit["DepMap_ID"].isin(pole_ids)
+    audit["concordant"] = audit["msi_official"] == audit["mmr_status"]
+    return audit
+
+
 def classify_mmr_status(models_df, mutations_df):
     """
-    Classify cell lines as MSI-H (dMMR) vs MSS (pMMR) based on
-    damaging mutations in MMR genes or POLE.
+    Mutation-based proxy for MMR deficiency (damaging mutations in
+    MLH1/MSH2/MSH6/PMS2 or POLE). Retained for sensitivity audit only —
+    not used for the primary subgroup classification.
     
     Returns DataFrame with columns: DepMap_ID, mmr_status
     """
@@ -109,7 +188,8 @@ def run_msi_analysis():
     """Main entry point."""
     print("=" * 65)
     print("  MSI/dMMR Subgroup Paralog-SL Analysis")
-    print("  MMR genes: MLH1, MSH2, MSH6, PMS2 (+ POLE)")
+    print("  Classification: official DepMap 26Q1 MSIsensor2 MSIscore")
+    print(f"  (OmicsGlobalSignatures.csv; MSI-H = score > {MSI_SCORE_THRESHOLD:g})")
     print("=" * 65)
     
     # ── Load data ──
@@ -118,6 +198,8 @@ def run_msi_analysis():
     models = load_models()
     mutations = load_mutations()
     paralogs = load_paralogs()
+    sig_df = load_official_msi()
+    print(f"  Official MSI annotation loaded for {len(sig_df)} default-entry models")
     
     # ── Known SL pairs set ──
     known_set = set()
@@ -127,6 +209,7 @@ def run_msi_analysis():
     
     all_results = {}
     summary_rows = []
+    audit_frames = []
     
     for cancer_name, disease_patterns in MSI_CANCERS.items():
         print(f"\n{'─' * 65}")
@@ -146,17 +229,35 @@ def run_msi_analysis():
             print(f"  Insufficient cell lines: {len(cell_ids)}")
             continue
         
-        # ── Classify MSI status ──
-        mmr_df = classify_mmr_status(cancer_models, mutations)
-        msi_ids = mmr_df[mmr_df["mmr_status"] == "MSI_H"]["DepMap_ID"].tolist()
-        mss_ids = mmr_df[mmr_df["mmr_status"] == "MSS"]["DepMap_ID"].tolist()
+        # ── Classify MSI status (official MSIsensor2 annotation) ──
+        msi_class = classify_official_msi(cancer_models, sig_df, mutations)
+        n_fallback = int((msi_class["msi_source"] == "proxy_fallback").sum())
+        msi_ids = msi_class.loc[msi_class["msi_status"] == "MSI_H", "DepMap_ID"].tolist()
+        mss_ids = msi_class.loc[msi_class["msi_status"] == "MSS", "DepMap_ID"].tolist()
         
         msi_valid = [c for c in msi_ids if c in dep.index and c in expr.index]
         mss_valid = [c for c in mss_ids if c in dep.index and c in expr.index]
         
         print(f"  Total lines: {len(cell_ids)}")
-        print(f"  MSI-H (dMMR): {len(msi_valid)} cells")
-        print(f"  MSS (pMMR):   {len(mss_valid)} cells")
+        print(f"  MSI-H (MSIsensor2 score > {MSI_SCORE_THRESHOLD:g}): {len(msi_valid)} cells")
+        print(f"  MSS (score <= {MSI_SCORE_THRESHOLD:g}):              {len(mss_valid)} cells")
+        if n_fallback:
+            print(f"  NOTE: {n_fallback} lines lacked official annotation and used the mutation proxy fallback")
+        
+        # ── Classification audit (official vs proxy, POLE separate) ──
+        audit = build_classification_audit(cancer_models, mutations, sig_df)
+        audit.insert(0, "cancer", cancer_name)
+        audit_frames.append(audit)
+        both = audit.dropna(subset=["msi_official"])
+        if len(both):
+            conc = both["concordant"].mean()
+            n_pole = int(both["pole_mutant"].sum())
+            n_pole_msi = int((both["pole_mutant"] & (both["msi_official"] == "MSI_H")).sum())
+            proxy_msi = both["mmr_status"] == "MSI_H"
+            flipped = int((proxy_msi & (both["msi_official"] == "MSS")).sum())
+            print(f"  Audit: proxy↔official concordance = {conc:.1%} "
+                  f"({flipped} proxy-MSI lines are officially MSS); "
+                  f"POLE-mutant lines: {n_pole}, of which officially MSI-H: {n_pole_msi}")
         
         # ── Mutation profile diagnostics ──
         drivers = MSI_DRIVERS.get(cancer_name, [])
@@ -223,6 +324,12 @@ def run_msi_analysis():
             out_path = OUTPUT_DIR / f"msi_{key.lower()}_results.csv"
             results_df.to_csv(out_path, index=False)
     
+    # ── Save classification audit (official vs proxy, POLE separate) ──
+    if audit_frames:
+        audit_all = pd.concat(audit_frames, ignore_index=True)
+        audit_all.to_csv(OUTPUT_DIR / "msi_classification_audit.csv", index=False)
+        print(f"  Classification audit saved ({len(audit_all)} lines)")
+
     # ── Summary ──
     print(f"\n{'=' * 65}")
     print(f"  MSI Subgroup Analysis Summary")
@@ -239,6 +346,27 @@ def run_msi_analysis():
             print(f"{r['cancer']:20s} {r['subgroup']:8s} "
                   f"{int(r['n_lines']):>6d} {int(r['n_pairs']):>6d} "
                   f"{int(r['n_known']):>6d} {astr:>8s}")
+        
+        # Machine-readable key numbers for manuscript traceability
+        import json
+        key_numbers = {
+            "classification": {
+                "source": "DepMap Public 26Q1 OmicsGlobalSignatures.csv",
+                "method": "MSIsensor2 MSIscore",
+                "threshold": f"MSI-H = MSIscore > {MSI_SCORE_THRESHOLD:g}",
+            },
+            "subgroups": {
+                f"{r['cancer']}_{r['subgroup']}": {
+                    "n_lines": int(r["n_lines"]),
+                    "n_pairs": int(r["n_pairs"]),
+                    "n_known": int(r["n_known"]),
+                    "dd_auroc": (None if np.isnan(r["dd_auroc"]) else round(float(r["dd_auroc"]), 4)),
+                }
+                for _, r in summary.iterrows()
+            },
+        }
+        with open(OUTPUT_DIR / "msi_key_numbers.json", "w") as fh:
+            json.dump(key_numbers, fh, indent=2)
         
         # ── Within-cancer comparison ──
         print(f"\n{'─' * 65}")

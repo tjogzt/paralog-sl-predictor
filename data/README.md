@@ -21,6 +21,7 @@ Large data files are excluded from this repository via `.gitignore`. Download th
 | `protein_features.csv` | UniProt-derived protein features |
 | `uniprot_sequences.rds` | Cached UniProt protein sequences |
 | `cptac_cache/*.json` | CPTAC protein abundance per cohort |
+| `OmicsGlobalSignatures.csv` | DepMap 26Q1 official genomic signatures incl. MSIsensor2 MSIscore (MSI annotation; MSI-H = score > 20) |
 
 ## Download Instructions
 

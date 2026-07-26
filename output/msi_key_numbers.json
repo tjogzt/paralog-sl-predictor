@@ -1,0 +1,33 @@
+{
+  "classification": {
+    "source": "DepMap Public 26Q1 OmicsGlobalSignatures.csv",
+    "method": "MSIsensor2 MSIscore",
+    "threshold": "MSI-H = MSIscore > 20"
+  },
+  "subgroups": {
+    "Endometrial_MSI_H": {
+      "n_lines": 17,
+      "n_pairs": 83,
+      "n_known": 5,
+      "dd_auroc": 0.7231
+    },
+    "Endometrial_MSS": {
+      "n_lines": 11,
+      "n_pairs": 21,
+      "n_known": 3,
+      "dd_auroc": 0.6111
+    },
+    "Colorectal_MSI_H": {
+      "n_lines": 14,
+      "n_pairs": 50,
+      "n_known": 5,
+      "dd_auroc": 0.9467
+    },
+    "Colorectal_MSS": {
+      "n_lines": 45,
+      "n_pairs": 51,
+      "n_known": 4,
+      "dd_auroc": 0.617
+    }
+  }
+}
