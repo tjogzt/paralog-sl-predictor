@@ -356,57 +356,149 @@ ROWS.append({"id": "s3_tier_b", "description": "Table S3 Tier B == headline tier
              "status": "match" if s3_b == sorted(hm["lineage_tier_ab"]["tier_b_pairs"]) else "MISMATCH"})
 
 # ═══════════════════════════════════════════════════════════════════
-# TCGA survival (Cox PH via cBioPortal) — Fig. 3c, Results, Methods
+# TCGA survival v2 (continuous Cox PH, multivariable age+stage) — Fig. 3c,
+# Results, Supplementary Table S9
 # ═══════════════════════════════════════════════════════════════════
-tcga = pd.read_csv(OUT / "tcga_survival_associations.csv")
-TCGA = "output/tcga_survival_associations.csv (tcga_survival.py)"
-check_int("tcga_ngenes", "TCGA paralog genes analysed (Methods)", 32, len(tcga), TCGA)
+sv = json.loads((OUT / "tcga_survival_v2.json").read_text())
+SV = "output/tcga_survival_v2.json (tcga_survival_v2.py)"
+pgene = {g["gene"]: g for g in sv["per_gene"]}
+check_int("tcga_ngenes", "TCGA paralog genes analysed (text + Table S9)", 32,
+          len(sv["per_gene"]), SV)
 check_int("tcga_n", "TCGA patients with OS+expression (n=1,069)", 1069,
-          int(tcga["n_total"].max()), TCGA)
+          sv["cohort"]["n_samples"], SV)
 check_int("tcga_events", "TCGA OS events (151 deaths)", 151,
-          int(tcga["n_events"].max()), TCGA)
-check_int("tcga_nsig", "Significant genes at p<0.05 (only ARID1B)", 1,
-          int((tcga["p_value"] < 0.05).sum()), TCGA)
-t_a = tcga[tcga.gene == "ARID1B"].iloc[0]
-check("tcga_arid1b_hr", "ARID1B HR (text + Fig. 3c)", "1.613", t_a["hr"], TCGA)
-check("tcga_arid1b_lo", "ARID1B 95% CI low", "1.163", t_a["ci_low"], TCGA)
-check("tcga_arid1b_hi", "ARID1B 95% CI high", "2.238", t_a["ci_high"], TCGA)
-check("tcga_arid1b_p", "ARID1B p-value", "0.004", t_a["p_value"], TCGA)
-t_b = tcga[tcga.gene == "BRCA2"].iloc[0]
-check("tcga_brca2_hr", "BRCA2 HR (text)", "1.245", t_b["hr"], TCGA)
-check("tcga_brca2_p", "BRCA2 p (text)", "0.181", t_b["p_value"], TCGA)
-t_t = tcga[tcga.gene == "ATR"].iloc[0]
-check("tcga_atr_hr", "ATR HR (text)", "0.980", t_t["hr"], TCGA)
-check("tcga_atr_p", "ATR p (text)", "0.902", t_t["p_value"], TCGA)
+          sv["cohort"]["n_events"], SV)
+hl = sv["arid1b_highlight"]
+mv = hl["multivar_age_stage"]
+check_int("tcga_mv_n", "Multivariable complete cases (n=1,050; Table S9 caption)", 1050,
+          mv["n"], SV)
+check_int("tcga_mv_events", "Multivariable events (143; Table S9 caption)", 143,
+          mv["n_events"], SV)
+check("tcga_arid1b_hr", "ARID1B univariable HR per SD (text)", "1.30",
+      hl["hr_continuous"], SV)
+check("tcga_arid1b_lo", "ARID1B univariable CI low (text)", "1.087", hl["ci"][0], SV)
+check("tcga_arid1b_hi", "ARID1B univariable CI high (text)", "1.552", hl["ci"][1], SV)
+check("tcga_arid1b_p", "ARID1B univariable p (text)", "0.004", hl["p"], SV)
+check("tcga_arid1b_hr_mv", "ARID1B multivariable HR (text + Fig. 3c)", "1.31",
+      mv["hr_multivar"], SV)
+check("tcga_arid1b_lo_mv", "ARID1B multivariable CI low (text)", "1.087",
+      mv["ci_multivar"][0], SV)
+check("tcga_arid1b_hi_mv", "ARID1B multivariable CI high (text)", "1.569",
+      mv["ci_multivar"][1], SV)
+check("tcga_arid1b_p_mv", "ARID1B multivariable p (text)", "0.004",
+      mv["p_multivar"], SV)
+check("tcga_arid1b_ph", "ARID1B Schoenfeld PH p (text)", "0.27", hl["ph_test_p"], SV)
+check("tcga_arid1b_q_uni", "ARID1B univariable BH q (text: smallest 0.129)", "0.129",
+      hl["q_fdr"], SV)
+check("tcga_arid1b_q_mv", "ARID1B multivariable BH q (text: 0.040)", "0.040",
+      mv["q_fdr_multivar"], SV)
+check("tcga_pik3ca_q_mv", "PIK3CA multivariable BH q (text: 0.035)", "0.035",
+      pgene["PIK3CA"]["multivar_age_stage"]["q_fdr_multivar"], SV)
+check("tcga_brca2_q_mv", "BRCA2 multivariable BH q (text: 0.040)", "0.040",
+      pgene["BRCA2"]["multivar_age_stage"]["q_fdr_multivar"], SV)
+check("tcga_rbl1_q_mv", "RBL1 multivariable BH q (text: 0.040)", "0.040",
+      pgene["RBL1"]["multivar_age_stage"]["q_fdr_multivar"], SV)
+check_int("tcga_nfdr_mv", "Genes passing FDR<0.05 in multivariable family (text: four — PIK3CA, ARID1B, BRCA2, RBL1)",
+          4, sum(1 for g in sv["per_gene"]
+                 if (g.get("multivar_age_stage") or {}).get("q_fdr_multivar", 1) < 0.05), SV)
+check_int("tcga_nfdr_uni", "Genes passing FDR<0.05 in univariable family (text: none)", 0,
+          sum(1 for g in sv["per_gene"] if g["q_fdr"] < 0.05), SV)
 
 # ═══════════════════════════════════════════════════════════════════
-# Mutational co-occurrence (Fisher exact) — Fig. 3d + caption
+# Mutational co-occurrence with TMB adjustment — Results, Fig. S12
 # ═══════════════════════════════════════════════════════════════════
-co = pd.read_csv(OUT / "cooccurrence_analysis.csv")
-CO = "output/cooccurrence_analysis.csv (cooccurrence_analysis.py)"
-check_int("co_npairs", "Co-occurrence pairs analysed", 5, len(co), CO)
+colin = json.loads((OUT / "cooccurrence_by_lineage.json").read_text())
+CO = "output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)"
+pan = {r["pair"]: r for r in colin["results"] if r["lineage"] == "PAN-CANCER"}
+check_int("co_npairs", "Co-occurrence pairs analysed pan-cancer", 5, len(pan), CO)
 ROWS.append({
-    "id": "co_all_gt1", "description": "All key pairs OR > 1 (text claim)",
-    "manuscript": "OR > 1 for all", "recomputed": f"min OR = {co.odds_ratio.min():.3f}",
+    "id": "co_all_gt1", "description": "All key pairs co-occur (unadjusted OR > 1; text claim)",
+    "manuscript": "OR > 1 for all",
+    "recomputed": f"min OR = {min(r['or'] for r in pan.values()):.3f}",
     "source": CO,
-    "status": "match" if bool((co.odds_ratio > 1).all()) else "MISMATCH"})
-check("co_or_min", "OR range low (caption 1.6)", "1.6", co.odds_ratio.min(), CO)
-check("co_or_max", "OR range high (caption 6.8)", "6.8", co.odds_ratio.max(), CO)
-check_int("co_nsig", "Pairs with Fisher p<0.05 (four of five)", 4,
-          int((co.p_value < 0.05).sum()), CO)
-for pair, or_ms, p_ms in [
-        ("ARID1A/ARID1B", "5.72", 2.0e-12), ("EP300/CREBBP", "6.11", 2.4e-11),
-        ("PIK3CA/PIK3CB", "6.84", 3.3e-6), ("BRCA1/BRCA2", "4.53", 0.040),
-        ("SMARCA4/SMARCA2", "1.62", 0.37)]:
-    row = co[co.pair == pair].iloc[0]
-    check(f"co_or_{pair.split('/')[0]}", f"{pair} OR (Fig. 3d)", or_ms,
-          row["odds_ratio"], CO)
-    c = float(row["p_value"])
-    ok = abs(c - p_ms) <= max(0.1 * p_ms, 5e-3)
-    ROWS.append({"id": f"co_p_{pair.split('/')[0]}",
-                 "description": f"{pair} Fisher p (caption)",
-                 "manuscript": p_ms, "recomputed": f"{c:.2e}", "source": CO,
-                 "status": "match" if ok else "MISMATCH"})
+    "status": "match" if all(r["or"] > 1 for r in pan.values()) else "MISMATCH"})
+for pair, or_ms in [("ARID1A/ARID1B", "5.72"), ("EP300/CREBBP", "6.11"),
+                    ("PIK3CA/PIK3CB", "6.84"), ("BRCA1/BRCA2", "4.53"),
+                    ("SMARCA4/SMARCA2", "1.62")]:
+    check(f"co_or_{pair.split('/')[0]}", f"{pair} unadjusted OR (Fig. S12a)", or_ms,
+          pan[pair]["or"], CO)
+check("co_arid_adj_or", "ARID1A/ARID1B TMB-adjusted OR (text + Fig. S12)", "2.38",
+      pan["ARID1A/ARID1B"]["tmb_adjusted_or"], CO)
+check("co_arid_adj_p", "ARID1A/ARID1B TMB-adjusted p (text)", "0.002",
+      pan["ARID1A/ARID1B"]["p_adj"], CO)
+check("co_ep300_adj_or", "EP300/CREBBP TMB-adjusted OR (text + Fig. S12)", "2.14",
+      pan["EP300/CREBBP"]["tmb_adjusted_or"], CO)
+check("co_ep300_adj_p", "EP300/CREBBP TMB-adjusted p (text)", "0.011",
+      pan["EP300/CREBBP"]["p_adj"], CO)
+check_int("co_nsig_adj", "Pairs significant after TMB adjustment (text: 2)", 2,
+          sum(1 for r in pan.values()
+              if r["p_adj"] is not None and r["p_adj"] < 0.05), CO)
+
+# ═══════════════════════════════════════════════════════════════════
+# CPTAC cohort counts + UCEC ARID1B protein effect sizes — Results, Fig. 2d
+# ═══════════════════════════════════════════════════════════════════
+cc = json.loads((OUT / "cptac_counts_verification.json").read_text())
+CC = "output/cptac_counts_verification.json (verify_cptac_counts.py)"
+check_int("cptac_eval", "CPTAC evaluable tests (text: 122 of 182)", 122,
+          cc["evaluable_tests"], CC)
+check_int("cptac_sig", "CPTAC significant at global BH q<0.05 (text: 42)", 42,
+          cc["significant_q05"], CC)
+uej = json.loads((OUT / "arid1b_ucec_effects.json").read_text())
+ue = uej["primary_test"]
+UE = "output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)"
+fam = uej["bh_families"]["family_all_evaluable_ucec_tests"]
+check_int("cptac_ucec_ntests", "UCEC mutation-conditioned test family (text: ten)", 10,
+          fam["n_tests"], UE)
+check_int("cptac_ucec_nmut", "UCEC ARID1A-mutant tumours (n=37)", 37, ue["n_mut"], UE)
+check_int("cptac_ucec_nwt", "UCEC wild-type tumours (n=58)", 58, ue["n_wt"], UE)
+check("cptac_ucec_log2diff", "ARID1B log2 difference (text: 0.063)", "0.063",
+      ue["log2_diff_mean_minus_mean"], UE)
+check("cptac_ucec_fc", "ARID1B fold change (text: approx 1.05)", "1.05",
+      ue["fold_change_2pow_log2diff"], UE, tol=1.0)
+check("cptac_ucec_boot_lo", "ARID1B bootstrap 95% CI low (text: -0.018)", "-0.018",
+      ue["boot_ci95_log2diff"][0], UE)
+check("cptac_ucec_boot_hi", "ARID1B bootstrap 95% CI high (text: +0.141)", "+0.141",
+      ue["boot_ci95_log2diff"][1], UE)
+check("cptac_ucec_rbs", "ARID1B rank-biserial r (text: 0.213)", "0.213",
+      ue["rank_biserial_r"], UE)
+check("cptac_ucec_p", "ARID1B Wilcoxon p (text: 0.082)", "0.082",
+      ue["wilcoxon_p_two_sided"], UE)
+check("cptac_ucec_q", "ARID1B BH q across ten UCEC tests (text: 0.27)", "0.27",
+      next(t for t in fam["tests"] if t["driver"] == "ARID1A")["q_bh_family_all"], UE)
+
+# ═══════════════════════════════════════════════════════════════════
+# MSI stratified bootstrap — Results
+# ═══════════════════════════════════════════════════════════════════
+mb = json.loads((OUT / "msi_bootstrap_test.json").read_text())
+MB = "output/msi_bootstrap_test.json (msi_bootstrap_test.py)"
+mbr = {r["cancer"]: r for r in mb["results"]}
+check("msi_boot_endo_delta", "Endometrial MSI-H vs MSS delta AUROC (text: +0.282)",
+      "+0.282", mbr["Endometrial"]["delta"], MB)
+check("msi_boot_endo_p", "Endometrial bootstrap p (text: 0.34)", "0.34",
+      mbr["Endometrial"]["p_empirical"], MB)
+check("msi_boot_crc_delta", "Colorectal MSI-H vs MSS delta AUROC (text: +0.055)",
+      "+0.055", mbr["Colorectal"]["delta"], MB)
+check("msi_boot_crc_p", "Colorectal bootstrap p (text: 0.83)", "0.83",
+      mbr["Colorectal"]["p_empirical"], MB)
+
+# ═══════════════════════════════════════════════════════════════════
+# PRISM driver-genotype drug sensitivity (d, delta AUC, q) — Results, Fig. 4a
+# ═══════════════════════════════════════════════════════════════════
+pr = json.loads((OUT / "prism_delta_auc.json").read_text())
+PR = "output/prism_delta_auc.json (prism_delta_auc.py)"
+pra = {a["drug"]: a for a in pr["associations"]}
+for drug, d_ms, da_ms, q_ms in [
+        ("AZD8330", "-0.62", "-0.37", "0.0007"),
+        ("TRAMETINIB", "-0.57", "-0.24", "0.0006"),
+        ("EVEROLIMUS", "-0.61", "-0.32", "0.0009"),
+        ("IPATASERTIB", "-0.99", "-0.14", "0.0001"),
+        ("PANOBINOSTAT", "-1.45", "-0.34", "0.010")]:
+    a = pra[drug]
+    check(f"prism_d_{drug.lower()}", f"{drug} Cohen's d (text)", d_ms,
+          a["cohens_d"], PR)
+    check(f"prism_dauc_{drug.lower()}", f"{drug} delta AUC (text)", da_ms,
+          a["delta_auc"], PR)
+    check(f"prism_q_{drug.lower()}", f"{drug} BH q (text)", q_ms, a["q"], PR)
 
 # ═══════════════════════════════════════════════════════════════════
 # k-mer vs Needleman-Wunsch validation — Fig. S9 + Methods line ~313

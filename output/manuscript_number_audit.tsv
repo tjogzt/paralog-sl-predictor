@@ -120,33 +120,70 @@ Table2_slm	Table2_Benchmark.tsv SLMGAE row	0.790	0.790	output/tables/Table2_Benc
 s3_rows	Table S3 pairs	12	12	output/tables/TableS3_GoldStandard.tsv	match
 s3_tier_a	Table S3 Tier A == headline tier_a_pairs	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	output/tables/TableS3_GoldStandard.tsv	match
 s3_tier_b	Table S3 Tier B == headline tier_b_pairs	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	output/tables/TableS3_GoldStandard.tsv	match
-tcga_ngenes	TCGA paralog genes analysed (Methods)	32	32	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_n	TCGA patients with OS+expression (n=1,069)	1069	1069	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_events	TCGA OS events (151 deaths)	151	151	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_nsig	Significant genes at p<0.05 (only ARID1B)	1	1	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_arid1b_hr	ARID1B HR (text + Fig. 3c)	1.613	1.613	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_arid1b_lo	ARID1B 95% CI low	1.163	1.163	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_arid1b_hi	ARID1B 95% CI high	2.238	2.238	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_arid1b_p	ARID1B p-value	0.004	0.004	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_brca2_hr	BRCA2 HR (text)	1.245	1.245	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_brca2_p	BRCA2 p (text)	0.181	0.181	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_atr_hr	ATR HR (text)	0.980	0.980	output/tcga_survival_associations.csv (tcga_survival.py)	match
-tcga_atr_p	ATR p (text)	0.902	0.902	output/tcga_survival_associations.csv (tcga_survival.py)	match
-co_npairs	Co-occurrence pairs analysed	5	5	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_all_gt1	All key pairs OR > 1 (text claim)	OR > 1 for all	min OR = 1.623	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_or_min	OR range low (caption 1.6)	1.6	1.623	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_or_max	OR range high (caption 6.8)	6.8	6.836	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_nsig	Pairs with Fisher p<0.05 (four of five)	4	4	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_or_ARID1A	ARID1A/ARID1B OR (Fig. 3d)	5.72	5.722	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_p_ARID1A	ARID1A/ARID1B Fisher p (caption)	2e-12	2.00e-12	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_or_EP300	EP300/CREBBP OR (Fig. 3d)	6.11	6.111	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_p_EP300	EP300/CREBBP Fisher p (caption)	2.4e-11	2.39e-11	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_or_PIK3CA	PIK3CA/PIK3CB OR (Fig. 3d)	6.84	6.836	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_p_PIK3CA	PIK3CA/PIK3CB Fisher p (caption)	3.3e-06	3.32e-06	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_or_BRCA1	BRCA1/BRCA2 OR (Fig. 3d)	4.53	4.528	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_p_BRCA1	BRCA1/BRCA2 Fisher p (caption)	0.04	4.01e-02	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_or_SMARCA4	SMARCA4/SMARCA2 OR (Fig. 3d)	1.62	1.623	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
-co_p_SMARCA4	SMARCA4/SMARCA2 Fisher p (caption)	0.37	3.72e-01	output/cooccurrence_analysis.csv (cooccurrence_analysis.py)	match
+tcga_ngenes	TCGA paralog genes analysed (text + Table S9)	32	32	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_n	TCGA patients with OS+expression (n=1,069)	1069	1069	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_events	TCGA OS events (151 deaths)	151	151	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_mv_n	Multivariable complete cases (n=1,050; Table S9 caption)	1050	1050	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_mv_events	Multivariable events (143; Table S9 caption)	143	143	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_hr	ARID1B univariable HR per SD (text)	1.30	1.299	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_lo	ARID1B univariable CI low (text)	1.087	1.087	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_hi	ARID1B univariable CI high (text)	1.552	1.552	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_p	ARID1B univariable p (text)	0.004	0.004	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_hr_mv	ARID1B multivariable HR (text + Fig. 3c)	1.31	1.306	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_lo_mv	ARID1B multivariable CI low (text)	1.087	1.087	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_hi_mv	ARID1B multivariable CI high (text)	1.569	1.569	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_p_mv	ARID1B multivariable p (text)	0.004	0.004	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_ph	ARID1B Schoenfeld PH p (text)	0.27	0.271	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_q_uni	ARID1B univariable BH q (text: smallest 0.129)	0.129	0.129	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_arid1b_q_mv	ARID1B multivariable BH q (text: 0.040)	0.040	0.040	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_pik3ca_q_mv	PIK3CA multivariable BH q (text: 0.035)	0.035	0.035	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_brca2_q_mv	BRCA2 multivariable BH q (text: 0.040)	0.040	0.040	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_rbl1_q_mv	RBL1 multivariable BH q (text: 0.040)	0.040	0.040	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_nfdr_mv	Genes passing FDR<0.05 in multivariable family (text: four — PIK3CA, ARID1B, BRCA2, RBL1)	4	4	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_nfdr_uni	Genes passing FDR<0.05 in univariable family (text: none)	0	0	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+co_npairs	Co-occurrence pairs analysed pan-cancer	5	5	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_all_gt1	All key pairs co-occur (unadjusted OR > 1; text claim)	OR > 1 for all	min OR = 1.623	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_ARID1A	ARID1A/ARID1B unadjusted OR (Fig. S12a)	5.72	5.722	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_EP300	EP300/CREBBP unadjusted OR (Fig. S12a)	6.11	6.111	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_PIK3CA	PIK3CA/PIK3CB unadjusted OR (Fig. S12a)	6.84	6.836	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_BRCA1	BRCA1/BRCA2 unadjusted OR (Fig. S12a)	4.53	4.528	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_SMARCA4	SMARCA4/SMARCA2 unadjusted OR (Fig. S12a)	1.62	1.623	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_arid_adj_or	ARID1A/ARID1B TMB-adjusted OR (text + Fig. S12)	2.38	2.379	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_arid_adj_p	ARID1A/ARID1B TMB-adjusted p (text)	0.002	0.002	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_ep300_adj_or	EP300/CREBBP TMB-adjusted OR (text + Fig. S12)	2.14	2.143	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_ep300_adj_p	EP300/CREBBP TMB-adjusted p (text)	0.011	0.011	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_nsig_adj	Pairs significant after TMB adjustment (text: 2)	2	2	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+cptac_eval	CPTAC evaluable tests (text: 122 of 182)	122	122	output/cptac_counts_verification.json (verify_cptac_counts.py)	match
+cptac_sig	CPTAC significant at global BH q<0.05 (text: 42)	42	42	output/cptac_counts_verification.json (verify_cptac_counts.py)	match
+cptac_ucec_ntests	UCEC mutation-conditioned test family (text: ten)	10	10	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_nmut	UCEC ARID1A-mutant tumours (n=37)	37	37	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_nwt	UCEC wild-type tumours (n=58)	58	58	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_log2diff	ARID1B log2 difference (text: 0.063)	0.063	0.063	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_fc	ARID1B fold change (text: approx 1.05)	1.05	1.045	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_boot_lo	ARID1B bootstrap 95% CI low (text: -0.018)	-0.018	-0.018	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_boot_hi	ARID1B bootstrap 95% CI high (text: +0.141)	+0.141	0.141	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_rbs	ARID1B rank-biserial r (text: 0.213)	0.213	0.213	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_p	ARID1B Wilcoxon p (text: 0.082)	0.082	0.082	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+cptac_ucec_q	ARID1B BH q across ten UCEC tests (text: 0.27)	0.27	0.273	output/arid1b_ucec_effects.json (arid1b_ucec_effects.py)	match
+msi_boot_endo_delta	Endometrial MSI-H vs MSS delta AUROC (text: +0.282)	+0.282	0.282	output/msi_bootstrap_test.json (msi_bootstrap_test.py)	match
+msi_boot_endo_p	Endometrial bootstrap p (text: 0.34)	0.34	0.341	output/msi_bootstrap_test.json (msi_bootstrap_test.py)	match
+msi_boot_crc_delta	Colorectal MSI-H vs MSS delta AUROC (text: +0.055)	+0.055	0.055	output/msi_bootstrap_test.json (msi_bootstrap_test.py)	match
+msi_boot_crc_p	Colorectal bootstrap p (text: 0.83)	0.83	0.835	output/msi_bootstrap_test.json (msi_bootstrap_test.py)	match
+prism_d_azd8330	AZD8330 Cohen's d (text)	-0.62	-0.622	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_dauc_azd8330	AZD8330 delta AUC (text)	-0.37	-0.368	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_q_azd8330	AZD8330 BH q (text)	0.0007	7.31e-04	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_d_trametinib	TRAMETINIB Cohen's d (text)	-0.57	-0.575	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_dauc_trametinib	TRAMETINIB delta AUC (text)	-0.24	-0.244	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_q_trametinib	TRAMETINIB BH q (text)	0.0006	5.54e-04	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_d_everolimus	EVEROLIMUS Cohen's d (text)	-0.61	-0.611	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_dauc_everolimus	EVEROLIMUS delta AUC (text)	-0.32	-0.322	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_q_everolimus	EVEROLIMUS BH q (text)	0.0009	9.26e-04	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_d_ipatasertib	IPATASERTIB Cohen's d (text)	-0.99	-0.994	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_dauc_ipatasertib	IPATASERTIB delta AUC (text)	-0.14	-0.144	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_q_ipatasertib	IPATASERTIB BH q (text)	0.0001	1.39e-04	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_d_panobinostat	PANOBINOSTAT Cohen's d (text)	-1.45	-1.453	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_dauc_panobinostat	PANOBINOSTAT delta AUC (text)	-0.34	-0.339	output/prism_delta_auc.json (prism_delta_auc.py)	match
+prism_q_panobinostat	PANOBINOSTAT BH q (text)	0.010	0.010	output/prism_delta_auc.json (prism_delta_auc.py)	match
 s9_r_all	k-mer vs NW Pearson r (all pairs)	0.88	0.882	output/kmer_nw_correlation.csv (R_figS9.R)	match
 s9_n_all	Validation pairs total	50	50	output/kmer_nw_correlation.csv (R_figS9.R)	match
 s9_p_all	Overall r p < 1e-16 (Methods claim)	p < 1e-16	p = 2.47e-17	output/kmer_nw_correlation.csv (R_figS9.R)	match

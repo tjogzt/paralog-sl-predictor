@@ -1,0 +1,1677 @@
+{
+  "method": {
+    "universe": "1,208 DepMap 26Q1 lines with dependency data",
+    "mutation_rules": "TSG: LikelyLoF; oncogene: Hotspot (build_mutation_matrix, apply_driver_rules=True)",
+    "tmb": "per-line nonsilent mutation record count, log1p-transformed",
+    "adjusted_model": "Logit(paralog_mut ~ driver_mut + log1p(TMB)) per pair x lineage; adjusted OR = exp(driver coefficient)",
+    "evaluability": ">= 30 lines and >= 3 mutant lines per gene within lineage"
+  },
+  "results": [
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "PAN-CANCER",
+      "n_lines": 1208,
+      "n_driver_mut": 124,
+      "n_paralog_mut": 112,
+      "or": 5.721532567049809,
+      "ci": [
+        3.6461366430884543,
+        8.978252358661644
+      ],
+      "p": 1.9980001628526236e-12,
+      "n_both": 37,
+      "n_driver_only": 87,
+      "n_paralog_only": 75,
+      "n_neither": 1009,
+      "tmb_adjusted_or": 2.3786970574584885,
+      "ci_adj": [
+        1.3827885586506832,
+        4.09187627115089
+      ],
+      "p_adj": 0.0017417889527537166,
+      "tmb_coef_p": 8.497918605049458e-13,
+      "adj_note": null
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Bladder/Urinary Tract",
+      "n_lines": 34,
+      "n_driver_mut": 8,
+      "n_paralog_mut": 3,
+      "or": 1.7142857142857142,
+      "ci": [
+        0.13467754079071625,
+        21.82082842432374
+      ],
+      "p": 1.0,
+      "n_both": 1,
+      "n_driver_only": 7,
+      "n_paralog_only": 2,
+      "n_neither": 24,
+      "tmb_adjusted_or": 1.738815357394815,
+      "ci_adj": [
+        0.13287573096463373,
+        22.754184117465286
+      ],
+      "p_adj": 0.673283912733936,
+      "tmb_coef_p": 0.42237047565829444,
+      "adj_note": null
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Bowel",
+      "n_lines": 63,
+      "n_driver_mut": 12,
+      "n_paralog_mut": 12,
+      "or": 2.6875,
+      "ci": [
+        0.6510411009105649,
+        11.094009640709606
+      ],
+      "p": 0.21895862294239474,
+      "n_both": 4,
+      "n_driver_only": 8,
+      "n_paralog_only": 8,
+      "n_neither": 43,
+      "tmb_adjusted_or": 0.6665083898164856,
+      "ci_adj": [
+        0.11593990380474377,
+        3.8315835973428514
+      ],
+      "p_adj": 0.6493598614245374,
+      "tmb_coef_p": 0.006564936645900702,
+      "adj_note": null
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Breast",
+      "n_lines": 53,
+      "n_driver_mut": 4,
+      "n_paralog_mut": 3,
+      "or": 7.833333333333333,
+      "ci": [
+        0.5429057634139552,
+        113.02350287323148
+      ],
+      "p": 0.21352343549901817,
+      "n_both": 1,
+      "n_driver_only": 3,
+      "n_paralog_only": 2,
+      "n_neither": 47,
+      "tmb_adjusted_or": 10.346660060219342,
+      "ci_adj": [
+        0.4580459879341646,
+        233.71752448822903
+      ],
+      "p_adj": 0.14180427701178375,
+      "tmb_coef_p": 0.08762297198666437,
+      "adj_note": null
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Esophagus/Stomach",
+      "n_lines": 69,
+      "n_driver_mut": 11,
+      "n_paralog_mut": 7,
+      "or": 10.476190476190476,
+      "ci": [
+        1.931072710504191,
+        56.83398988366878
+      ],
+      "p": 0.01017084066192743,
+      "n_both": 4,
+      "n_driver_only": 7,
+      "n_paralog_only": 3,
+      "n_neither": 55,
+      "tmb_adjusted_or": 5.255862631815194,
+      "ci_adj": [
+        0.7028720856759233,
+        39.30173436599974
+      ],
+      "p_adj": 0.10598211260454114,
+      "tmb_coef_p": 0.1761106465743173,
+      "adj_note": null
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Lung",
+      "n_lines": 126,
+      "n_driver_mut": 8,
+      "n_paralog_mut": 13,
+      "or": 3.242424242424242,
+      "ci": [
+        0.5826723538057897,
+        18.04327062918212
+      ],
+      "p": 0.19279342118595033,
+      "n_both": 2,
+      "n_driver_only": 6,
+      "n_paralog_only": 11,
+      "n_neither": 107,
+      "tmb_adjusted_or": 1.1654069608088997,
+      "ci_adj": [
+        0.16724829444166991,
+        8.120700954445415
+      ],
+      "p_adj": 0.8771830596421932,
+      "tmb_coef_p": 0.0023961305479544507,
+      "adj_note": null
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Lymphoid",
+      "n_lines": 96,
+      "n_driver_mut": 8,
+      "n_paralog_mut": 7,
+      "or": 0.0,
+      "ci": [
+        0.033501752792252176,
+        12.196278090676113
+      ],
+      "p": 1.0,
+      "n_both": 0,
+      "n_driver_only": 8,
+      "n_paralog_only": 7,
+      "n_neither": 81,
+      "tmb_adjusted_or": null,
+      "ci_adj": null,
+      "p_adj": null,
+      "tmb_coef_p": null,
+      "adj_note": "not_converged"
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Ovary/Fallopian Tube",
+      "n_lines": 59,
+      "n_driver_mut": 15,
+      "n_paralog_mut": 7,
+      "or": 4.96969696969697,
+      "ci": [
+        0.965709307366769,
+        25.574867905083973
+      ],
+      "p": 0.06198325469360427,
+      "n_both": 4,
+      "n_driver_only": 11,
+      "n_paralog_only": 3,
+      "n_neither": 41,
+      "tmb_adjusted_or": 6.09031444107365,
+      "ci_adj": [
+        0.7618802187342696,
+        48.684726390156165
+      ],
+      "p_adj": 0.08846333801683248,
+      "tmb_coef_p": 0.759377890110741,
+      "adj_note": null
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Skin",
+      "n_lines": 75,
+      "n_driver_mut": 3,
+      "n_paralog_mut": 12,
+      "or": 0.0,
+      "ci": [
+        0.03356871324855268,
+        14.24163821377238
+      ],
+      "p": 1.0,
+      "n_both": 0,
+      "n_driver_only": 3,
+      "n_paralog_only": 12,
+      "n_neither": 60,
+      "tmb_adjusted_or": null,
+      "ci_adj": null,
+      "p_adj": null,
+      "tmb_coef_p": null,
+      "adj_note": "not_converged"
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "driver": "ARID1A",
+      "paralog": "ARID1B",
+      "lineage": "Uterus",
+      "n_lines": 34,
+      "n_driver_mut": 22,
+      "n_paralog_mut": 16,
+      "or": 23.571428571428573,
+      "ci": [
+        2.521665100281968,
+        220.33546200716017
+      ],
+      "p": 0.0011091228579258757,
+      "n_both": 15,
+      "n_driver_only": 7,
+      "n_paralog_only": 1,
+      "n_neither": 11,
+      "tmb_adjusted_or": 10.54984128681734,
+      "ci_adj": [
+        0.709395396993839,
+        156.8929706179111
+      ],
+      "p_adj": 0.08713494215681887,
+      "tmb_coef_p": 0.32900727083820913,
+      "adj_note": null
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "driver": "PIK3CA",
+      "paralog": "PIK3CB",
+      "lineage": "PAN-CANCER",
+      "n_lines": 1208,
+      "n_driver_mut": 120,
+      "n_paralog_mut": 32,
+      "or": 6.835710772257747,
+      "ci": [
+        3.2845364369121337,
+        14.226342943508234
+      ],
+      "p": 3.3162651493699095e-06,
+      "n_both": 13,
+      "n_driver_only": 107,
+      "n_paralog_only": 19,
+      "n_neither": 1069,
+      "tmb_adjusted_or": 1.2762690133529568,
+      "ci_adj": [
+        0.5012142501962991,
+        3.249832968250585
+      ],
+      "p_adj": 0.6089677259578936,
+      "tmb_coef_p": 4.87860698491072e-14,
+      "adj_note": null
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "driver": "PIK3CA",
+      "paralog": "PIK3CB",
+      "lineage": "Bowel",
+      "n_lines": 63,
+      "n_driver_mut": 17,
+      "n_paralog_mut": 8,
+      "or": 3.230769230769231,
+      "ci": [
+        0.7072183674332178,
+        14.759047987354279
+      ],
+      "p": 0.19545458687176903,
+      "n_both": 4,
+      "n_driver_only": 13,
+      "n_paralog_only": 4,
+      "n_neither": 42,
+      "tmb_adjusted_or": 0.10184122984756772,
+      "ci_adj": [
+        0.0026679784964180413,
+        3.8874511585418734
+      ],
+      "p_adj": 0.21895103472922983,
+      "tmb_coef_p": 0.018312884705648118,
+      "adj_note": null
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "driver": "PIK3CA",
+      "paralog": "PIK3CB",
+      "lineage": "Ovary/Fallopian Tube",
+      "n_lines": 59,
+      "n_driver_mut": 13,
+      "n_paralog_mut": 3,
+      "or": 8.181818181818182,
+      "ci": [
+        0.6787760088867368,
+        98.62185446141896
+      ],
+      "p": 0.11916699990771788,
+      "n_both": 2,
+      "n_driver_only": 11,
+      "n_paralog_only": 1,
+      "n_neither": 45,
+      "tmb_adjusted_or": 0.5220843207887289,
+      "ci_adj": [
+        0.015573345720956998,
+        17.502471395509385
+      ],
+      "p_adj": 0.7168384452841349,
+      "tmb_coef_p": 0.04790807310050465,
+      "adj_note": null
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "driver": "PIK3CA",
+      "paralog": "PIK3CB",
+      "lineage": "Uterus",
+      "n_lines": 34,
+      "n_driver_mut": 17,
+      "n_paralog_mut": 7,
+      "or": 8.727272727272727,
+      "ci": [
+        0.9180712678217607,
+        82.96228400319077
+      ],
+      "p": 0.08544847810698755,
+      "n_both": 6,
+      "n_driver_only": 11,
+      "n_paralog_only": 1,
+      "n_neither": 16,
+      "tmb_adjusted_or": 1.9777567306362192,
+      "ci_adj": [
+        0.14087806394960542,
+        27.76529983387681
+      ],
+      "p_adj": 0.6128871806194709,
+      "tmb_coef_p": 0.032393593463905336,
+      "adj_note": null
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "driver": "BRCA1",
+      "paralog": "BRCA2",
+      "lineage": "PAN-CANCER",
+      "n_lines": 1208,
+      "n_driver_mut": 23,
+      "n_paralog_mut": 41,
+      "or": 4.527631578947369,
+      "ci": [
+        1.289674086941831,
+        15.895060560060738
+      ],
+      "p": 0.04010270576938006,
+      "n_both": 3,
+      "n_driver_only": 20,
+      "n_paralog_only": 38,
+      "n_neither": 1147,
+      "tmb_adjusted_or": 1.567977056015087,
+      "ci_adj": [
+        0.3378498437839791,
+        7.277055453551534
+      ],
+      "p_adj": 0.5657361261885674,
+      "tmb_coef_p": 1.0279542604648894e-18,
+      "adj_note": null
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "driver": "BRCA1",
+      "paralog": "BRCA2",
+      "lineage": "Bowel",
+      "n_lines": 63,
+      "n_driver_mut": 3,
+      "n_paralog_mut": 11,
+      "or": 2.5,
+      "ci": [
+        0.2063086372919393,
+        30.294417538883113
+      ],
+      "p": 0.4434791367631135,
+      "n_both": 1,
+      "n_driver_only": 2,
+      "n_paralog_only": 10,
+      "n_neither": 50,
+      "tmb_adjusted_or": 0.7953623208846204,
+      "ci_adj": [
+        0.04317993613869673,
+        14.650351020691975
+      ],
+      "p_adj": 0.8775854386617592,
+      "tmb_coef_p": 0.0002967348074370979,
+      "adj_note": null
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "driver": "BRCA1",
+      "paralog": "BRCA2",
+      "lineage": "Ovary/Fallopian Tube",
+      "n_lines": 59,
+      "n_driver_mut": 5,
+      "n_paralog_mut": 5,
+      "or": 0.0,
+      "ci": [
+        0.03968235151370206,
+        16.869501480328328
+      ],
+      "p": 1.0,
+      "n_both": 0,
+      "n_driver_only": 5,
+      "n_paralog_only": 5,
+      "n_neither": 49,
+      "tmb_adjusted_or": null,
+      "ci_adj": null,
+      "p_adj": null,
+      "tmb_coef_p": null,
+      "adj_note": "not_converged"
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "PAN-CANCER",
+      "n_lines": 1208,
+      "n_driver_mut": 83,
+      "n_paralog_mut": 131,
+      "or": 6.110576923076923,
+      "ci": [
+        3.7440225920019707,
+        9.973003478292203
+      ],
+      "p": 2.3927667266254397e-11,
+      "n_both": 31,
+      "n_driver_only": 52,
+      "n_paralog_only": 100,
+      "n_neither": 1025,
+      "tmb_adjusted_or": 2.143305368091224,
+      "ci_adj": [
+        1.1892672618878413,
+        3.8626791875162962
+      ],
+      "p_adj": 0.011187126652134269,
+      "tmb_coef_p": 1.0196075944908848e-21,
+      "adj_note": null
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "Bowel",
+      "n_lines": 63,
+      "n_driver_mut": 12,
+      "n_paralog_mut": 11,
+      "or": 32.0,
+      "ci": [
+        6.001847135056942,
+        170.6141421061509
+      ],
+      "p": 1.7201072739682184e-05,
+      "n_both": 8,
+      "n_driver_only": 4,
+      "n_paralog_only": 3,
+      "n_neither": 48,
+      "tmb_adjusted_or": 2.282535711237457,
+      "ci_adj": [
+        0.2389684163695637,
+        21.80191571850687
+      ],
+      "p_adj": 0.47351060188986505,
+      "tmb_coef_p": 0.008608896854119601,
+      "adj_note": null
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "CNS/Brain",
+      "n_lines": 91,
+      "n_driver_mut": 4,
+      "n_paralog_mut": 6,
+      "or": 5.466666666666667,
+      "ci": [
+        0.4780743884078264,
+        62.51003017327755
+      ],
+      "p": 0.24241114690552887,
+      "n_both": 1,
+      "n_driver_only": 3,
+      "n_paralog_only": 5,
+      "n_neither": 82,
+      "tmb_adjusted_or": 2.3842379478913327,
+      "ci_adj": [
+        0.12325016636595629,
+        46.1223766245175
+      ],
+      "p_adj": 0.5653796074046128,
+      "tmb_coef_p": 0.06544226273935194,
+      "adj_note": null
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "Esophagus/Stomach",
+      "n_lines": 69,
+      "n_driver_mut": 7,
+      "n_paralog_mut": 7,
+      "or": 4.56,
+      "ci": [
+        0.6975841222365113,
+        29.808017896585767
+      ],
+      "p": 0.14531454528281457,
+      "n_both": 2,
+      "n_driver_only": 5,
+      "n_paralog_only": 5,
+      "n_neither": 57,
+      "tmb_adjusted_or": 4.764199789965243,
+      "ci_adj": [
+        0.5688769000555924,
+        39.89896520053246
+      ],
+      "p_adj": 0.14993450023066476,
+      "tmb_coef_p": 0.9307987379002906,
+      "adj_note": null
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "Lung",
+      "n_lines": 126,
+      "n_driver_mut": 7,
+      "n_paralog_mut": 18,
+      "or": 0.0,
+      "ci": [
+        0.020018718225567084,
+        6.682975098543164
+      ],
+      "p": 0.5920471186625322,
+      "n_both": 0,
+      "n_driver_only": 7,
+      "n_paralog_only": 18,
+      "n_neither": 101,
+      "tmb_adjusted_or": null,
+      "ci_adj": null,
+      "p_adj": null,
+      "tmb_coef_p": null,
+      "adj_note": "not_converged"
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "Lymphoid",
+      "n_lines": 96,
+      "n_driver_mut": 8,
+      "n_paralog_mut": 17,
+      "or": 5.769230769230769,
+      "ci": [
+        1.2798041823150614,
+        26.00712212741089
+      ],
+      "p": 0.030957412720536624,
+      "n_both": 4,
+      "n_driver_only": 4,
+      "n_paralog_only": 13,
+      "n_neither": 75,
+      "tmb_adjusted_or": 2.614561914319533,
+      "ci_adj": [
+        0.47197899577207514,
+        14.483555550237627
+      ],
+      "p_adj": 0.27116922582557934,
+      "tmb_coef_p": 0.0008168817695206241,
+      "adj_note": null
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "Ovary/Fallopian Tube",
+      "n_lines": 59,
+      "n_driver_mut": 6,
+      "n_paralog_mut": 10,
+      "or": 6.571428571428571,
+      "ci": [
+        1.1004599741881245,
+        39.241475821278236
+      ],
+      "p": 0.05482770738546061,
+      "n_both": 3,
+      "n_driver_only": 3,
+      "n_paralog_only": 7,
+      "n_neither": 46,
+      "tmb_adjusted_or": 6.972300218035307,
+      "ci_adj": [
+        1.0379188038627603,
+        46.836968508032804
+      ],
+      "p_adj": 0.04568441028137854,
+      "tmb_coef_p": 0.03506399202268416,
+      "adj_note": null
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "Skin",
+      "n_lines": 75,
+      "n_driver_mut": 5,
+      "n_paralog_mut": 9,
+      "or": 0.0,
+      "ci": [
+        0.030052917277701728,
+        11.524736770354732
+      ],
+      "p": 1.0,
+      "n_both": 0,
+      "n_driver_only": 5,
+      "n_paralog_only": 9,
+      "n_neither": 61,
+      "tmb_adjusted_or": null,
+      "ci_adj": null,
+      "p_adj": null,
+      "tmb_coef_p": null,
+      "adj_note": "separation"
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "lineage": "Uterus",
+      "n_lines": 34,
+      "n_driver_mut": 10,
+      "n_paralog_mut": 10,
+      "or": 3.8,
+      "ci": [
+        0.7800501930124148,
+        18.51162928918111
+      ],
+      "p": 0.1156064975832037,
+      "n_both": 5,
+      "n_driver_only": 5,
+      "n_paralog_only": 5,
+      "n_neither": 19,
+      "tmb_adjusted_or": 0.8262131953497489,
+      "ci_adj": [
+        0.11017176102255993,
+        6.196036423800653
+      ],
+      "p_adj": 0.8526729687516849,
+      "tmb_coef_p": 0.013461725986792092,
+      "adj_note": null
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "driver": "SMARCA4",
+      "paralog": "SMARCA2",
+      "lineage": "PAN-CANCER",
+      "n_lines": 1208,
+      "n_driver_mut": 59,
+      "n_paralog_mut": 67,
+      "or": 1.6233572281959379,
+      "ci": [
+        0.6270083190611626,
+        4.202956500293157
+      ],
+      "p": 0.3720503124747483,
+      "n_both": 5,
+      "n_driver_only": 54,
+      "n_paralog_only": 62,
+      "n_neither": 1087,
+      "tmb_adjusted_or": 0.6343747427296603,
+      "ci_adj": [
+        0.22006699750586164,
+        1.8286763520850227
+      ],
+      "p_adj": 0.39947384877086023,
+      "tmb_coef_p": 1.2946677609367213e-23,
+      "adj_note": null
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "driver": "SMARCA4",
+      "paralog": "SMARCA2",
+      "lineage": "Lung",
+      "n_lines": 126,
+      "n_driver_mut": 25,
+      "n_paralog_mut": 5,
+      "or": 0.0,
+      "ci": [
+        0.018410184852832925,
+        6.428812304869027
+      ],
+      "p": 0.5820489008697597,
+      "n_both": 0,
+      "n_driver_only": 25,
+      "n_paralog_only": 5,
+      "n_neither": 96,
+      "tmb_adjusted_or": null,
+      "ci_adj": null,
+      "p_adj": null,
+      "tmb_coef_p": null,
+      "adj_note": "fit_error: LinAlgError"
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "driver": "SMARCA4",
+      "paralog": "SMARCA2",
+      "lineage": "Lymphoid",
+      "n_lines": 96,
+      "n_driver_mut": 3,
+      "n_paralog_mut": 4,
+      "or": 0.0,
+      "ci": [
+        0.12661519035119645,
+        63.75865556508451
+      ],
+      "p": 1.0,
+      "n_both": 0,
+      "n_driver_only": 3,
+      "n_paralog_only": 4,
+      "n_neither": 89,
+      "tmb_adjusted_or": null,
+      "ci_adj": null,
+      "p_adj": null,
+      "tmb_coef_p": null,
+      "adj_note": "separation"
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "driver": "SMARCA4",
+      "paralog": "SMARCA2",
+      "lineage": "Ovary/Fallopian Tube",
+      "n_lines": 59,
+      "n_driver_mut": 8,
+      "n_paralog_mut": 5,
+      "or": 1.6785714285714286,
+      "ci": [
+        0.16319049625334078,
+        17.265723835058473
+      ],
+      "p": 0.5307872784879153,
+      "n_both": 1,
+      "n_driver_only": 7,
+      "n_paralog_only": 4,
+      "n_neither": 47,
+      "tmb_adjusted_or": 1.2118390388347495,
+      "ci_adj": [
+        0.07232837701097028,
+        20.303979112115144
+      ],
+      "p_adj": 0.8937140510893615,
+      "tmb_coef_p": 0.0041702850497732135,
+      "adj_note": null
+    }
+  ],
+  "skipped_lineages": [
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Adrenal Gland",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Ampulla of Vater",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Biliary Tract",
+      "n": 34,
+      "n_driver_mut": 4,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Bone",
+      "n": 58,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "CNS/Brain",
+      "n": 91,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 9
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Cervix",
+      "n": 18,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 3
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Eye",
+      "n": 15,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Fibroblast",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Head and Neck",
+      "n": 77,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 5
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Kidney",
+      "n": 35,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Liver",
+      "n": 25,
+      "n_driver_mut": 3,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Myeloid",
+      "n": 45,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Other",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Pancreas",
+      "n": 48,
+      "n_driver_mut": 11,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Peripheral Nervous System",
+      "n": 47,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Pleura",
+      "n": 21,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Prostate",
+      "n": 10,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Soft Tissue",
+      "n": 49,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 3
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Testis",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Thyroid",
+      "n": 11,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "ARID1A/ARID1B",
+      "lineage": "Vulva/Vagina",
+      "n": 2,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Adrenal Gland",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Ampulla of Vater",
+      "n": 5,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Biliary Tract",
+      "n": 34,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Bladder/Urinary Tract",
+      "n": 34,
+      "n_driver_mut": 10,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Bone",
+      "n": 58,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Breast",
+      "n": 53,
+      "n_driver_mut": 18,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "CNS/Brain",
+      "n": 91,
+      "n_driver_mut": 4,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Cervix",
+      "n": 18,
+      "n_driver_mut": 3,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Esophagus/Stomach",
+      "n": 69,
+      "n_driver_mut": 9,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Eye",
+      "n": 15,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Fibroblast",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Head and Neck",
+      "n": 77,
+      "n_driver_mut": 8,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Kidney",
+      "n": 35,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Liver",
+      "n": 25,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Lung",
+      "n": 126,
+      "n_driver_mut": 8,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Lymphoid",
+      "n": 96,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Myeloid",
+      "n": 45,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Other",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Pancreas",
+      "n": 48,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Peripheral Nervous System",
+      "n": 47,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Pleura",
+      "n": 21,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Prostate",
+      "n": 10,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Skin",
+      "n": 75,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Soft Tissue",
+      "n": 49,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Testis",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Thyroid",
+      "n": 11,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "PIK3CA/PIK3CB",
+      "lineage": "Vulva/Vagina",
+      "n": 2,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Adrenal Gland",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Ampulla of Vater",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Biliary Tract",
+      "n": 34,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Bladder/Urinary Tract",
+      "n": 34,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Bone",
+      "n": 58,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Breast",
+      "n": 53,
+      "n_driver_mut": 5,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "CNS/Brain",
+      "n": 91,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Cervix",
+      "n": 18,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Esophagus/Stomach",
+      "n": 69,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Eye",
+      "n": 15,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Fibroblast",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Head and Neck",
+      "n": 77,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Kidney",
+      "n": 35,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Liver",
+      "n": 25,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Lung",
+      "n": 126,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Lymphoid",
+      "n": 96,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Myeloid",
+      "n": 45,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Other",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Pancreas",
+      "n": 48,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Peripheral Nervous System",
+      "n": 47,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Pleura",
+      "n": 21,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Prostate",
+      "n": 10,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Skin",
+      "n": 75,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Soft Tissue",
+      "n": 49,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Testis",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Thyroid",
+      "n": 11,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Uterus",
+      "n": 34,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 5
+    },
+    {
+      "pair": "BRCA1/BRCA2",
+      "lineage": "Vulva/Vagina",
+      "n": 2,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Adrenal Gland",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Ampulla of Vater",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Biliary Tract",
+      "n": 34,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Bladder/Urinary Tract",
+      "n": 34,
+      "n_driver_mut": 5,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Bone",
+      "n": 58,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Breast",
+      "n": 53,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 3
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Cervix",
+      "n": 18,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 3
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Eye",
+      "n": 15,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Fibroblast",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Head and Neck",
+      "n": 77,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 11
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Kidney",
+      "n": 35,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Liver",
+      "n": 25,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Myeloid",
+      "n": 45,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 7
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Other",
+      "n": 1,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Pancreas",
+      "n": 48,
+      "n_driver_mut": 4,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Peripheral Nervous System",
+      "n": 47,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Pleura",
+      "n": 21,
+      "n_driver_mut": 3,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Prostate",
+      "n": 10,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 3
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Soft Tissue",
+      "n": 49,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 3
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Testis",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Thyroid",
+      "n": 11,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "EP300/CREBBP",
+      "lineage": "Vulva/Vagina",
+      "n": 2,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Adrenal Gland",
+      "n": 1,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Ampulla of Vater",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Biliary Tract",
+      "n": 34,
+      "n_driver_mut": 3,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Bladder/Urinary Tract",
+      "n": 34,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 3
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Bone",
+      "n": 58,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Bowel",
+      "n": 63,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 12
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Breast",
+      "n": 53,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "CNS/Brain",
+      "n": 91,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 4
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Cervix",
+      "n": 18,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Esophagus/Stomach",
+      "n": 69,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 5
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Eye",
+      "n": 15,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Fibroblast",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Head and Neck",
+      "n": 77,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 4
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Kidney",
+      "n": 35,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Liver",
+      "n": 25,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Myeloid",
+      "n": 45,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Other",
+      "n": 1,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Pancreas",
+      "n": 48,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Peripheral Nervous System",
+      "n": 47,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Pleura",
+      "n": 21,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Prostate",
+      "n": 10,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 2
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Skin",
+      "n": 75,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 4
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Soft Tissue",
+      "n": 49,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Testis",
+      "n": 5,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Thyroid",
+      "n": 11,
+      "n_driver_mut": 1,
+      "n_paralog_mut": 1
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Uterus",
+      "n": 34,
+      "n_driver_mut": 2,
+      "n_paralog_mut": 7
+    },
+    {
+      "pair": "SMARCA4/SMARCA2",
+      "lineage": "Vulva/Vagina",
+      "n": 2,
+      "n_driver_mut": 0,
+      "n_paralog_mut": 0
+    }
+  ]
+}

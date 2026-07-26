@@ -76,7 +76,7 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{output/figures/FigS5_PRISM_Selectivity.pdf}
-\caption{\textbf{PRISM drug selectivity heatmap.} Heatmap of drug sensitivity differential ($\Delta$AUC = mean AUC in driver-mutant minus mean AUC in wild-type cell lines) for the top compound--paralog pair associations from the PRISM Repurposing screen (1,482 compounds, 727 cell lines). Negative $\Delta$AUC indicates selective sensitivity in driver-mutant cells. Associations shown met discovery-stage criteria (BH $q<0.25$, $\Delta$AUC$<0$, enrichment$>0.1$). Known drug--target biology is recovered: MEK inhibitors with KRAS-mutant lines, mTOR/AKT inhibitors with PTEN-mutant lines, HDAC inhibitors with EP300-mutant lines.}
+\caption{\textbf{PRISM drug selectivity heatmap.} Heatmap of drug sensitivity differential ($\Delta$AUC = mean AUC in driver-mutant minus mean AUC in wild-type cell lines) for the top driver-genotype--drug sensitivity associations from the PRISM Repurposing screen (1,482 compounds, 727 cell lines). Negative $\Delta$AUC indicates selective sensitivity in driver-mutant cells. Associations shown met discovery-stage criteria (BH $q<0.25$, $\Delta$AUC$<0$, enrichment$>0.1$). Known drug--target biology is recovered: MEK inhibitors with KRAS-mutant lines, mTOR/AKT inhibitors with PTEN-mutant lines, HDAC inhibitors with EP300-mutant lines. Drugs shown are not necessarily direct binders of the paralog protein.}
 \end{figure}
 
 % S6
@@ -116,6 +116,12 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS11_in4mer_ExternalCheck.pdf}
 \caption{\textbf{External check against mutation-agnostic gold standards (in4mer).} a, Distribution of $|$DD$|$ ($\ge$3-mutant framework) for 326 evaluable unlabeled control paralog pairs (gray histogram; 400 pairs sampled, seed 42). Red ticks: the 10 evaluable pairs of the 13 cross-platform in4mer gold standards (Esmaeili Anvar et al., Nat Commun 2024). Dashed line: control 90th percentile (0.217); the three pairs above it (ARFGEF1/ARFGEF2, HDAC1/HDAC2, SLC25A28/SLC25A37) are those with the most recurrent natural mutations. b, AUROC point estimates with bootstrap 95\% CI for both evaluation frameworks. Only 3 of the 13 pairs meet the $\ge$5-mutant threshold (exploratory AUROC $=$ 0.68); the 10 pairs evaluable at $\ge$3 do not separate from unlabeled controls (AUROC $=$ 0.50, permutation $p = 0.51$), consistent with the mutation-agnostic, dual-knockout definition of these gold standards (main text, Limitations).}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS12_Cooccurrence_TMB.pdf}
+\caption{\textbf{Mutational co-occurrence of paralog pairs, with and without tumour mutational burden (TMB) adjustment.} a, Pan-cancer co-occurrence odds ratios across 1{,}208 DepMap 26Q1 cell lines for the five testable pairs, unadjusted (Fisher's exact test, open circles) vs.\ TMB-adjusted (filled circles; logistic regression of paralog mutation status on driver mutation status and $\log_e(1+\mathrm{TMB})$ per line). After TMB adjustment only ARID1A/ARID1B (adjusted OR~$=$~2.38, $p=0.002$) and EP300/CREBBP (adjusted OR~$=$~2.14, $p=0.011$) remain significant ($^*$adjusted $p<0.05$). b, Per-lineage TMB-adjusted odds ratios. ``--'': not evaluable ($<30$ lines or $<3$ mutant lines per gene within the lineage); ``n.e.'': not estimable (complete separation). Mutation status follows the gene-class-specific driver rules (Table~S7). Source: \texttt{output/cooccurrence\_by\_lineage.json} (\texttt{cooccurrence\_by\_lineage.py}).}
 \end{figure}
 
 \clearpage
@@ -349,3 +355,49 @@ CCNE1 and MAPK1 are amplification-driven oncogenes with no qualifying hotspot mu
 \end{table}
 
 \end{document}
+\subsection{Table S9: TCGA BRCA overall-survival associations for the 32 paralog genes}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lrlllllll}
+\toprule
+ & & \multicolumn{3}{c}{\textbf{Univariable}} & \multicolumn{3}{c}{\textbf{Multivariable (age + AJCC stage)}} & \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+\textbf{Gene} & \textbf{$n$} & \textbf{HR (95\% CI)} & \textbf{$p$} & \textbf{$q$} & \textbf{HR (95\% CI)} & \textbf{$p$} & \textbf{$q$} & \textbf{PH $p$} \\
+\midrule
+\textit{PIK3CA} & 1069 & 1.22 (1.03--1.46) & 0.024 & 0.383 & 1.34 (1.12--1.59) & 0.001 & 0.035 & 0.239 \\
+\textit{RBL1} & 1069 & 1.13 (0.96--1.34) & 0.135 & 0.513 & 1.30 (1.09--1.56) & 0.003 & 0.040 & 0.359 \\
+\textit{ARID1B} & 1069 & 1.30 (1.09--1.55) & 0.004 & 0.129 & 1.31 (1.09--1.57) & 0.004 & 0.040 & 0.271 \\
+\textit{BRCA2} & 1069 & 1.10 (0.93--1.29) & 0.257 & 0.513 & 1.27 (1.08--1.50) & 0.005 & 0.040 & 0.695 \\
+\textit{STK11} & 1069 & 0.90 (0.77--1.05) & 0.167 & 0.513 & 0.85 (0.72--0.99) & 0.038 & 0.210 & 0.151 \\
+\textit{RAF1} & 1069 & 1.10 (0.94--1.28) & 0.253 & 0.513 & 1.19 (1.01--1.40) & 0.039 & 0.210 & 0.924 \\
+\textit{PIK3CB} & 1069 & 1.12 (0.96--1.30) & 0.144 & 0.513 & 1.16 (0.99--1.36) & 0.071 & 0.323 & 0.793 \\
+\textit{RASA2} & 1069 & 1.03 (0.86--1.24) & 0.741 & 0.891 & 1.19 (0.97--1.44) & 0.089 & 0.328 & 0.047 \\
+\textit{BRCA1} & 1069 & 1.16 (0.99--1.36) & 0.066 & 0.513 & 1.15 (0.97--1.36) & 0.100 & 0.328 & 0.353 \\
+\textit{KRAS} & 1069 & 1.15 (0.97--1.35) & 0.113 & 0.513 & 1.16 (0.97--1.38) & 0.103 & 0.328 & 0.750 \\
+\textit{SMARCA4} & 1069 & 1.05 (0.90--1.24) & 0.531 & 0.823 & 1.13 (0.97--1.33) & 0.122 & 0.349 & 0.061 \\
+\textit{TNS2} & 1069 & 0.96 (0.82--1.11) & 0.562 & 0.823 & 0.89 (0.77--1.04) & 0.131 & 0.349 & 0.156 \\
+\textit{PPP2R1B} & 1069 & 1.01 (0.85--1.21) & 0.876 & 0.916 & 1.12 (0.93--1.34) & 0.237 & 0.583 & 0.570 \\
+\textit{ATR} & 1069 & 0.99 (0.84--1.17) & 0.892 & 0.916 & 1.09 (0.92--1.29) & 0.321 & 0.620 & 0.633 \\
+\textit{FBXW2} & 1069 & 1.10 (0.93--1.30) & 0.254 & 0.513 & 1.09 (0.92--1.30) & 0.331 & 0.620 & 0.011 \\
+\textit{FBXW7} & 1069 & 1.01 (0.86--1.19) & 0.908 & 0.916 & 1.08 (0.92--1.27) & 0.337 & 0.620 & 0.066 \\
+\textit{HRAS} & 1069 & 0.90 (0.76--1.06) & 0.200 & 0.513 & 0.92 (0.78--1.09) & 0.338 & 0.620 & 0.040 \\
+\textit{PPP2R1A} & 1069 & 1.09 (0.94--1.27) & 0.254 & 0.513 & 1.08 (0.92--1.27) & 0.360 & 0.620 & 0.483 \\
+\textit{ATM} & 1069 & 0.99 (0.84--1.17) & 0.916 & 0.916 & 1.08 (0.91--1.28) & 0.368 & 0.620 & 0.071 \\
+\textit{BRAF} & 1069 & 0.90 (0.76--1.06) & 0.199 & 0.513 & 0.93 (0.78--1.10) & 0.404 & 0.632 & 0.391 \\
+\textit{CREBBP} & 1069 & 0.96 (0.83--1.11) & 0.566 & 0.823 & 0.94 (0.81--1.09) & 0.415 & 0.632 & $5.5\times 10^{-4}$ \\
+\textit{RB1} & 1069 & 1.10 (0.93--1.30) & 0.276 & 0.520 & 1.06 (0.89--1.26) & 0.500 & 0.727 & 0.365 \\
+\textit{KMT2D} & 1069 & 1.05 (0.88--1.25) & 0.592 & 0.823 & 1.05 (0.88--1.25) & 0.576 & 0.772 & 0.135 \\
+\textit{PTEN} & 1069 & 0.97 (0.83--1.14) & 0.730 & 0.891 & 1.05 (0.88--1.25) & 0.586 & 0.772 & 0.024 \\
+\textit{SMARCA2} & 1069 & 0.90 (0.76--1.06) & 0.205 & 0.513 & 0.96 (0.81--1.13) & 0.603 & 0.772 & 0.174 \\
+\textit{PIK3R1} & 1069 & 0.88 (0.75--1.05) & 0.149 & 0.513 & 0.96 (0.81--1.14) & 0.671 & 0.809 & 0.282 \\
+\textit{ARID1A} & 1069 & 1.03 (0.88--1.20) & 0.752 & 0.891 & 1.03 (0.88--1.22) & 0.701 & 0.809 & 0.002 \\
+\textit{NF1} & 1069 & 1.07 (0.90--1.28) & 0.457 & 0.812 & 1.03 (0.86--1.24) & 0.732 & 0.809 & 0.014 \\
+\textit{SIK1} & 1069 & 0.87 (0.74--1.02) & 0.089 & 0.513 & 0.97 (0.83--1.14) & 0.740 & 0.809 & 0.604 \\
+\textit{CRKL} & 1069 & 0.95 (0.79--1.13) & 0.549 & 0.823 & 1.03 (0.86--1.23) & 0.759 & 0.809 & 0.048 \\
+\textit{KMT2C} & 1069 & 1.01 (0.85--1.20) & 0.873 & 0.916 & 1.02 (0.85--1.22) & 0.833 & 0.860 & 0.022 \\
+\textit{EP300} & 1069 & 1.03 (0.86--1.23) & 0.751 & 0.891 & 1.01 (0.85--1.21) & 0.881 & 0.881 & 0.007 \\
+\bottomrule
+\end{tabular}
+\caption{Cox proportional-hazards associations between paralog gene expression (continuous, log$_2$-transformed, z-scored; HR per $+1$ SD) and overall survival in the TCGA PanCan Atlas BRCA cohort ($n=1{,}069$, 151 events). Multivariable models adjust for age and AJCC stage (ordinal I--IV; complete cases $n=1{,}050$, 143 events). $q$: Benjamini--Hochberg FDR across the 32-gene family within each model class; four genes pass FDR$<0.05$ in the multivariable family (\textit{PIK3CA}, \textit{RBL1}, \textit{ARID1B}, \textit{BRCA2}) and none in the univariable family. PH $p$: Schoenfeld-type residual--time correlation test of the proportional-hazards assumption (approximation without variance scaling); genes with PH $p<0.05$ should be interpreted with caution. Sorted by multivariable $p$. Source: \texttt{output/tcga\_survival\_v2.json} (\texttt{tcga\_survival\_v2.py}).}
+\end{table}

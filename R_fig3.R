@@ -1,5 +1,6 @@
 # Fig3 — Clinical Stratification (R)
-# Purpose: 4 individual 90×90mm panels → cowplot → 180×180mm composite
+# Purpose: panels a+b (90×90mm) on top row, panel c (180×90mm) full width below
+#          → 180×180mm composite
 # Usage:   Rscript R_fig3.R
 library(ggplot2)
 library(cowplot)
@@ -33,9 +34,9 @@ theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
   plot.background  = element_rect(fill = "white", color = NA),
   panel.background = element_rect(fill = "white", color = NA))
 
-save_panel <- function(p, name) {
+save_panel <- function(p, name, w = PANEL_W, h = PANEL_H) {
   ggsave(file.path(OUT_DIR, paste0("Fig3_panel_", name, ".pdf")), p,
-         width = PANEL_W, height = PANEL_H, units = "mm", device = cairo_pdf)
+         width = w, height = h, units = "mm", device = cairo_pdf)
   message(sprintf("  panel %s ✓", name))
 }
 
@@ -116,98 +117,84 @@ panel_b <- function() {
     theme_sci + theme(legend.position = c(0.98, 0.98), legend.justification = c(1, 1))
 }
 
-# (panel b — legend upper right)
-
 # ═══════════════════════════════════════════════════════════════
-# PANEL C — TCGA Survival Forest Plot
+# PANEL C — TCGA Survival Forest Plot (multivariable v2, full width)
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
-  # Single source of truth: output/tcga_survival_associations.csv,
-  # written by tcga_survival.py (Cox PH, median-split high vs low paralog
-  # expression, TCGA PanCan Atlas BRCA). Never hardcoded literals.
-  tcga_path <- "paralog_sl_predictor/output/tcga_survival_associations.csv"
-  if (!file.exists(tcga_path))
-    stop("tcga_survival_associations.csv not found — run tcga_survival.py ",
-         "first; simulated fallbacks are forbidden")
-  genes8 <- c("ARID1B","BRCA2","PIK3CB","CRKL","CREBBP","ATR","SMARCA2","HRAS")
-  df <- read_csv(tcga_path, show_col_types = FALSE) %>%
-    filter(gene %in% genes8) %>%
-    mutate(gene = factor(gene, levels = rev(genes8)),
-           sig = ifelse(p_value < 0.05,
-                        sprintf("p=%s", formatC(p_value, format = "f", digits = 3)), ""),
-           clr = case_when(hr > 1 & sig != "" ~ RED,
-                           hr > 1              ~ BLUE,
-                           TRUE                ~ GREEN),
-           ypos = as.numeric(gene) + 0.18)
+  # Single source of truth: output/tcga_survival_v2.json, written by
+  # tcga_survival_v2.py (Cox PH on continuous z-scored log2 expression;
+  # multivariable model adjusting for age + AJCC stage; BH FDR across the
+  # 32-gene family). Never hardcoded literals.
+  v2_path <- "paralog_sl_predictor/output/tcga_survival_v2.json"
+  if (!file.exists(v2_path))
+    stop("tcga_survival_v2.json not found — run tcga_survival_v2.py first; ",
+         "simulated fallbacks are forbidden")
+  v2 <- jsonlite::fromJSON(v2_path)
+  # The four FDR-significant genes (BH q<0.05 in the multivariable family)
+  # plus the compensating paralogs of the lead candidate pairs and ARID1A
+  # for direct contrast (see manuscript text).
+  genes8 <- c("PIK3CA","ARID1B","RBL1","BRCA2","PIK3CB","ARID1A","SMARCA2","CREBBP")
+  pg <- v2$per_gene
+  df <- tibble(
+    gene = pg$gene,
+    hr   = pg$multivar_age_stage$hr_multivar,
+    lo   = vapply(pg$multivar_age_stage$ci_multivar, `[`, numeric(1), 1),
+    hi   = vapply(pg$multivar_age_stage$ci_multivar, `[`, numeric(1), 2),
+    p    = pg$multivar_age_stage$p_multivar,
+    q    = pg$multivar_age_stage$q_fdr_multivar
+  ) %>% filter(.data$gene %in% genes8) %>%
+    arrange(desc(.data$hr)) %>%
+    mutate(gene = factor(gene, levels = rev(gene)),   # highest HR on top
+           fdr = .data$q < 0.05,
+           clr = ifelse(fdr, RED, GRAY),
+           lab = paste0(gene, ifelse(fdr, "*", "")),
+           txt = sprintf("%.2f (%.2f\u2013%.2f)", hr, lo, hi),
+           ypos = as.numeric(gene))
+
+  ci_max <- max(df$hi); ci_min <- min(df$lo)
+  x_left  <- max(0.4, floor(ci_min * 10) / 10 - 0.1)
+  x_ann   <- ci_max * 1.12          # left edge of the HR (CI) text column
+  x_right <- x_ann * 1.5            # axis right limit
 
   ggplot(df, aes(hr, gene)) +
     geom_vline(xintercept = 1, linewidth = 0.4, color = DARK, alpha = 0.5) +
-    # Gene labels drawn INSIDE the plot panel, above each errorbar (left
-    # side): the composite figure's left edge clipped the widest y-axis
-    # label ("SMARCA2"), so the y-axis text column is removed entirely;
-    # labels sit above the bars so whiskers never cross the text.
-    geom_text(aes(x = 0.50, y = ypos, label = gene), hjust = 0, size = 2.5,
-              family = "Arial", color = DARK) +
+    geom_errorbarh(aes(xmin = lo, xmax = hi, color = clr),
+                   height = 0.18, linewidth = 0.8) +
     geom_point(aes(color = clr), size = 2) +
-    geom_errorbarh(aes(xmin = ci_low, xmax = ci_high, color = clr),
-                   height = 0.15, linewidth = 0.8) +
-    geom_text(aes(label = sig, color = clr, y = ypos),
-              size = 2.5, fontface = "bold", hjust = 0.5, vjust = 0) +
+    geom_text(aes(y = gene, label = txt), x = x_ann, hjust = 0,
+              size = 2.5, family = "Arial", color = DARK) +
+    annotate("text", x = x_ann, y = nrow(df) + 0.9, label = "HR (95% CI)",
+             hjust = 0, size = 2.5, fontface = "bold", family = "Arial",
+             color = DARK) +
+    annotate("text", x = x_left, y = 0.2, hjust = 0, vjust = 0,
+             label = "*FDR q < 0.05 (BH, 32-gene family)",
+             size = 2.5, family = "Arial", color = GRAY) +
     scale_color_identity() +
-    scale_x_continuous(limits = c(0.48, 2.4), breaks = c(0.5, 1.0, 1.5, 2.0)) +
-    scale_y_discrete(expand = expansion(add = c(0.3, 0.7))) +
-    labs(x = "Hazard Ratio\n(high vs low paralog expression)", y = NULL) +
+    scale_y_discrete(labels = setNames(df$lab, df$gene),
+                     expand = expansion(add = c(0.8, 1.6))) +
+    scale_x_continuous(limits = c(x_left, x_right),
+                       breaks = pretty(c(x_left, ci_max), n = 4)) +
+    labs(x = "Multivariable hazard ratio per SD\n(Cox PH, adjusted for age + AJCC stage)",
+         y = NULL) +
     theme_sci +
-    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-          axis.line.y = element_blank())
-}
-
-# ═══════════════════════════════════════════════════════════════
-# PANEL D — Mutational Co-occurrence
-# ═══════════════════════════════════════════════════════════════
-panel_d <- function() {
-  # Single source of truth: output/cooccurrence_analysis.csv, written by
-  # cooccurrence_analysis.py (Fisher's exact test on DepMap 26Q1 driver-
-  # rule mutation status across the 1,208 dependency-profiled cell lines).
-  co_path <- "paralog_sl_predictor/output/cooccurrence_analysis.csv"
-  if (!file.exists(co_path))
-    stop("cooccurrence_analysis.csv not found — run cooccurrence_analysis.py ",
-         "first; simulated fallbacks are forbidden")
-  pair_colors <- c("ARID1A/ARID1B" = RED, "PIK3CA/PIK3CB" = BLUE,
-                   "BRCA1/BRCA2" = ORANGE, "EP300/CREBBP" = "#0D7377",
-                   "SMARCA4/SMARCA2" = PURPLE)
-  df <- read_csv(co_path, show_col_types = FALSE) %>%
-    arrange(desc(odds_ratio)) %>%
-    mutate(pair = factor(pair, levels = pair),
-           clr = pair_colors[as.character(pair)],
-           star = ifelse(p_value < 0.05, "*", ""))
-
-  ggplot(df, aes(odds_ratio, pair, fill = clr)) +
-    geom_col(width = 0.55) +
-    geom_text(aes(label = sprintf("%.2f%s", odds_ratio, star)),
-              hjust = -0.1, size = 2.5, color = DARK) +
-    scale_fill_identity() +
-    geom_vline(xintercept = 1, linewidth = 0.4, color = DARK, alpha = 0.5, linetype = "dashed") +
-    labs(x = "Co-occurrence OR\n(>1 = co-occur)", y = NULL) +
-    scale_x_continuous(expand = expansion(mult = c(0, 0.12))) +
-    annotate("text", x = Inf, y = Inf,
-             label = "All OR > 1\nSL at dependency level\n*Fisher p < 0.05",
-             size = 2.5, color = DARK, hjust = 1.05, vjust = 1.3) +
-    theme_sci
+    theme(axis.text.y = element_text(size = TICK_FS, face = "italic"))
 }
 
 # ═══════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════
 message("=== Fig3 Panel Generation (R) ===")
-pa <- panel_a(); pb <- panel_b(); pc <- panel_c(); pd <- panel_d()
+pa <- panel_a(); pb <- panel_b(); pc <- panel_c()
 
-save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c"); save_panel(pd, "d")
+save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c", w = PANEL_W * 2)
 
-# plot_grid (not ggdraw/draw_plot) with a wider left column: draw_plot clipped
-# panel c's widest y-label ("SMARCA2") at the figure's left edge
-p <- cowplot::plot_grid(pa, pb, pc, pd, ncol = 2, rel_widths = c(0.53, 0.47),
-                        labels = c("a","b","c","d"),
+# 3-panel composite: a+b top row, c full width below
+top_row <- cowplot::plot_grid(pa, pb, ncol = 2, rel_widths = c(0.53, 0.47),
+                              labels = c("a","b"),
+                              label_size = 9, label_fontface = "bold",
+                              label_fontfamily = "Arial")
+p <- cowplot::plot_grid(top_row, pc, ncol = 1,
+                        labels = c("", "c"),
                         label_size = 9, label_fontface = "bold",
                         label_fontfamily = "Arial")
 

@@ -1,6 +1,6 @@
 # Genome Biology 投稿系统填写清单
 
-> 版本锚点：paralog-sl-predictor @ `d671ea9`（manuscript.pdf 29 页 / supplementary.pdf 17 页 / cover_letter.pdf 3 页）
+> 版本锚点：paralog-sl-predictor @ `d671ea9`（manuscript.pdf 30 页 / supplementary.pdf 18 页 / cover_letter.pdf 3 页）
 > 配套文件：highlights 与图形摘要说明文字见 `submission_texts.md`（已含字符数核对）
 > 使用前请完成第 0 节的提交前核对；【待补】为待补项。
 
@@ -10,11 +10,11 @@
 
 ```bash
 cd paralog_sl_predictor && bash verify_all.sh
-# 期望输出：165/165 claims match; 31 passed; ALL CHECKS PASSED
+# 期望输出：202/202 claims match; 31 passed; ALL CHECKS PASSED
 ```
 
 - [ ] verify_all.sh 全绿
-- [ ] 三份 PDF 为最新编译（manuscript 29 页 / supplementary 17 页 / cover letter 3 页）
+- [ ] 三份 PDF 为最新编译（manuscript 30 页 / supplementary 18 页 / cover letter 3 页）
 - [ ] 作者名单与邮箱最终确认（见第 2 节【待补】）
 - [已完成] 摘要版本已选定（第 3 节：压缩版 236 词已同步 manuscript.tex，≤250 达标）
 
@@ -92,9 +92,9 @@ Huazhong University of Science and Technology, Wuhan, China
 
 | 系统文件类型 | 文件 | 说明 |
 |---|---|---|
-| Manuscript (PDF) | `manuscript.pdf` | 29 页，双倍行距+行号 |
+| Manuscript (PDF) | `manuscript.pdf` | 30 页，双倍行距+行号 |
 | Manuscript source | 打包 zip：`manuscript.tex` + `manuscript.bbl` + `output/figures/Fig1–4 .pdf` | GB 要求可编辑 LaTeX 源 |
-| Supplementary | `supplementary.pdf` + 源打包（`supplementary.tex` + `output/figures/FigS1–S11 .pdf`，无独立 bbl） | 17 页 |
+| Supplementary | `supplementary.pdf` + 源打包（`supplementary.tex` + `output/figures/FigS1–S12 .pdf`，无独立 bbl） | 18 页 |
 | Cover letter | `cover_letter.pdf`（或将其纯文本粘贴到系统 cover letter 框） | 3 页 |
 | Graphical abstract | `GraphicalAbstract.png` | 位于 `output/figures/`；caption 见 `submission_texts.md` |
 | Highlights | 在系统文本框逐条录入（见第 10 节） | 每条 ≤85 字符 |
@@ -133,7 +133,7 @@ paralogSL R package v1.1.0 at https://github.com/tjogzt/paralogSL
 (https://doi.org/10.5281/zenodo.21502113);
 complete analysis pipeline at https://github.com/tjogzt/paralog-sl-predictor
 (https://doi.org/10.5281/zenodo.21502030).
-A single entry point (verify_all.sh) recomputes all 165 audited numeric claims
+A single entry point (verify_all.sh) recomputes all 202 audited numeric claims
 in under one minute.
 ```
 

@@ -1,0 +1,159 @@
+{
+  "primary_test": {
+    "cohort": "UCEC CPTAC (ucec_cptac_2020)",
+    "comparison": "ARID1B protein abundance, ARID1A-mutant vs wild-type",
+    "protein_source": "data/cptac_cache/UCEC_protein_data.json (cBioPortal ucec_cptac_2020_protein_quantification)",
+    "mutation_source": "cBioPortal API ucec_cptac_2020_mutations, any mutation record per sample",
+    "n_mut": 37,
+    "n_wt": 58,
+    "mean_mut": -0.05112702702702703,
+    "mean_wt": -0.11445361362068965,
+    "median_mut": -0.039,
+    "median_wt": -0.128,
+    "mean_ratio": 0.4467052232747054,
+    "median_ratio": 0.3046875,
+    "log2_diff_mean_minus_mean": 0.06332658659366261,
+    "fold_change_2pow_log2diff": 1.044872266521447,
+    "pct_higher_from_fold_change": 4.4872266521446935,
+    "linear_mean_ratio_2pow": 1.0410214423212052,
+    "linear_median_ratio_2pow": 1.0636324173804739,
+    "pct_vs_abs_mean_wt_on_log2_scale": 55.32947767252946,
+    "manuscript_55pct_origin": "(mean_mut - mean_wt)/|mean_wt| on log2-scale values = 55.3%; not a fold change. Bona fide fold change = 2^0.0633 = 1.045 (+4.5%)",
+    "wilcoxon_U_mut": 1301.5,
+    "wilcoxon_U_wt": 844.5,
+    "wilcoxon_p_two_sided": 0.08183342280922762,
+    "rank_biserial_r": 0.21295433364398886,
+    "rank_biserial_note": "r_rb = 1 - 2*U_wt/(n_mut*n_wt) = 2*U_mut/(n_mut*n_wt) - 1; positive = higher in ARID1A-mutant",
+    "boot_B": 10000,
+    "boot_seed": 42,
+    "boot_ci95_log2diff": [
+      -0.018021273378378427,
+      0.1412872123521668
+    ],
+    "manuscript_claim": {
+      "n_mut": 37,
+      "n_wt": 58,
+      "pct_higher": 55,
+      "p": 0.082
+    }
+  },
+  "rds_crosscheck": {
+    "n_mut": 37,
+    "n_wt": 58,
+    "p": 0.0818,
+    "values_match_api_recompute": true
+  },
+  "bh_families": {
+    "family_all_evaluable_ucec_tests": {
+      "n_tests": 10,
+      "tests": [
+        {
+          "driver": "ARID1A",
+          "paralog": "ARID1B",
+          "n_mut": 37,
+          "n_wt": 58,
+          "p": 0.08183342280922762,
+          "is_known_sl": true,
+          "q_bh_family_all": 0.27277807603075876,
+          "q_bh_family_known_pairs": 0.24550026842768286
+        },
+        {
+          "driver": "PIK3CA",
+          "paralog": "PIK3CB",
+          "n_mut": 39,
+          "n_wt": 56,
+          "p": 0.7911699475980827,
+          "is_known_sl": true,
+          "q_bh_family_all": 0.8422451954055244,
+          "q_bh_family_known_pairs": 0.8422451954055244
+        },
+        {
+          "driver": "FBXW7",
+          "paralog": "FBXW2",
+          "n_mut": 15,
+          "n_wt": 80,
+          "p": 0.8422451954055244,
+          "is_known_sl": true,
+          "q_bh_family_all": 0.8422451954055244,
+          "q_bh_family_known_pairs": 0.8422451954055244
+        },
+        {
+          "driver": "KRAS",
+          "paralog": "HRAS",
+          "n_mut": 26,
+          "n_wt": 58,
+          "p": 0.7642164989953187,
+          "is_known_sl": false,
+          "q_bh_family_all": 0.8422451954055244,
+          "q_bh_family_known_pairs": NaN
+        },
+        {
+          "driver": "KRAS",
+          "paralog": "NRAS",
+          "n_mut": 28,
+          "n_wt": 67,
+          "p": 0.47255508374298494,
+          "is_known_sl": false,
+          "q_bh_family_all": 0.6789530446892281,
+          "q_bh_family_known_pairs": NaN
+        },
+        {
+          "driver": "PIK3R1",
+          "paralog": "CRKL",
+          "n_mut": 31,
+          "n_wt": 64,
+          "p": 0.012131485909992258,
+          "is_known_sl": false,
+          "q_bh_family_all": 0.12131485909992258,
+          "q_bh_family_known_pairs": NaN
+        },
+        {
+          "driver": "PIK3R1",
+          "paralog": "CRK",
+          "n_mut": 31,
+          "n_wt": 64,
+          "p": 0.2716159993397591,
+          "is_known_sl": false,
+          "q_bh_family_all": 0.6789530446892281,
+          "q_bh_family_known_pairs": NaN
+        },
+        {
+          "driver": "PTEN",
+          "paralog": "TNS2",
+          "n_mut": 66,
+          "n_wt": 29,
+          "p": 0.3740272784699793,
+          "is_known_sl": false,
+          "q_bh_family_all": 0.6789530446892281,
+          "q_bh_family_known_pairs": NaN
+        },
+        {
+          "driver": "PTEN",
+          "paralog": "TNS1",
+          "n_mut": 66,
+          "n_wt": 29,
+          "p": 0.04461660632147307,
+          "is_known_sl": false,
+          "q_bh_family_all": 0.22308303160736534,
+          "q_bh_family_known_pairs": NaN
+        },
+        {
+          "driver": "KMT2D",
+          "paralog": "KMT2C",
+          "n_mut": 14,
+          "n_wt": 81,
+          "p": 0.4752671312824597,
+          "is_known_sl": false,
+          "q_bh_family_all": 0.6789530446892281,
+          "q_bh_family_known_pairs": NaN
+        }
+      ],
+      "arid1a_arid1b_q": 0.27277807603075876
+    },
+    "family_known_sl_pairs": {
+      "n_tests": 3,
+      "arid1a_arid1b_q": 0.24550026842768286
+    },
+    "note": "Families computed live: Wilcoxon tests of paralog protein by driver mutation status for all 26 CPTAC pairs in UCEC with paralog protein quantified and >= 10 samples per group."
+  }
+}

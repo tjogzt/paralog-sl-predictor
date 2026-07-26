@@ -1,0 +1,113 @@
+{
+  "source": "output/prism_full_results.csv (prism_analysis.py; delta_auc = mean log2AUC MUT - mean log2AUC WT)",
+  "note": "Drug selectivity is conditioned on driver genotype only; the paralog column identifies the pair row in the product. n_mut/n_wt differ across drugs because PRISM compound coverage differs per cell line.",
+  "associations": [
+    {
+      "drug": "AZD8330",
+      "driver": "KRAS",
+      "paralog": "HRAS",
+      "context": "PanCancer",
+      "identical_rows_same_driver_genotype": [
+        "KRAS->HRAS",
+        "KRAS->NRAS"
+      ],
+      "cohens_d": -0.622471,
+      "delta_auc": -0.367568,
+      "q": 0.000730603461929,
+      "p_value": 2.37738246758486e-06,
+      "n_mut": 84,
+      "n_wt": 314,
+      "mean_log2auc_mut": -1.262764477242857,
+      "mean_log2auc_wt": -0.8951965173729302,
+      "manuscript_d": -0.62,
+      "manuscript_q": 0.0007,
+      "d_matches_manuscript": true,
+      "q_matches_manuscript_rounded": true
+    },
+    {
+      "drug": "TRAMETINIB",
+      "driver": "KRAS",
+      "paralog": "HRAS",
+      "context": "PanCancer",
+      "identical_rows_same_driver_genotype": [
+        "KRAS->HRAS",
+        "KRAS->NRAS"
+      ],
+      "cohens_d": -0.574929,
+      "delta_auc": -0.243569,
+      "q": 0.000554359621287,
+      "p_value": 3.740618227308226e-07,
+      "n_mut": 107,
+      "n_wt": 463,
+      "mean_log2auc_mut": -0.8832661365476635,
+      "mean_log2auc_wt": -0.6396968349282937,
+      "manuscript_d": -0.57,
+      "manuscript_q": 0.0006,
+      "d_matches_manuscript": true,
+      "q_matches_manuscript_rounded": true
+    },
+    {
+      "drug": "EVEROLIMUS",
+      "driver": "PTEN",
+      "paralog": "TNS2",
+      "context": "PanCancer",
+      "identical_rows_same_driver_genotype": [
+        "PTEN->TNS2"
+      ],
+      "cohens_d": -0.611272,
+      "delta_auc": -0.32233,
+      "q": 0.000925559418784,
+      "p_value": 6.869874228491722e-06,
+      "n_mut": 73,
+      "n_wt": 498,
+      "mean_log2auc_mut": -1.2321807803082194,
+      "mean_log2auc_wt": -0.909850691536948,
+      "manuscript_d": -0.61,
+      "manuscript_q": 0.0009,
+      "d_matches_manuscript": true,
+      "q_matches_manuscript_rounded": true
+    },
+    {
+      "drug": "IPATASERTIB",
+      "driver": "PTEN",
+      "paralog": "TNS2",
+      "context": "PanCancer",
+      "identical_rows_same_driver_genotype": [
+        "PTEN->TNS2"
+      ],
+      "cohens_d": -0.993615,
+      "delta_auc": -0.143741,
+      "q": 0.0001387936072711,
+      "p_value": 9.36529063908028e-08,
+      "n_mut": 54,
+      "n_wt": 330,
+      "mean_log2auc_mut": -0.2577125817648148,
+      "mean_log2auc_wt": -0.1139719171024242,
+      "manuscript_d": -0.99,
+      "manuscript_q": 0.0001,
+      "d_matches_manuscript": true,
+      "q_matches_manuscript_rounded": true
+    },
+    {
+      "drug": "PANOBINOSTAT",
+      "driver": "EP300",
+      "paralog": "CREBBP",
+      "context": "Ovarian",
+      "identical_rows_same_driver_genotype": [
+        "EP300->CREBBP"
+      ],
+      "cohens_d": -1.45336,
+      "delta_auc": -0.339,
+      "q": 0.0098151250068862,
+      "p_value": 1.917435291498049e-05,
+      "n_mut": 5,
+      "n_wt": 28,
+      "mean_log2auc_mut": -1.47422383112,
+      "mean_log2auc_wt": -1.1352235685392855,
+      "manuscript_d": -1.45,
+      "manuscript_q": 0.01,
+      "d_matches_manuscript": true,
+      "q_matches_manuscript_rounded": false
+    }
+  ]
+}

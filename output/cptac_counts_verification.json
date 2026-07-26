@@ -1,0 +1,39 @@
+{
+  "evaluable_tests": 122,
+  "significant_q05": 42,
+  "per_cohort_evaluable": {
+    "BRCA": 13,
+    "COAD": 14,
+    "LUAD": 14,
+    "GBM": 20,
+    "PDAC": 19,
+    "UCEC": 20,
+    "LUSC": 22
+  },
+  "n_pairs_tested_per_cohort": 26,
+  "min_paired_samples_threshold": 10,
+  "raw_p_lt_0.05": 51,
+  "manuscript_claims": {
+    "evaluable_tests": 122,
+    "significant_q05": 42
+  },
+  "matches_manuscript": true,
+  "ovarian_pdc_in_outputs": false,
+  "ovarian_pdc_file_check": {
+    "file_present": true,
+    "n_sample_columns": 232,
+    "file": "data/FD_GLBL_MI_FFPEbridge_Abund_20201002.tsv",
+    "referenced_by": "R_package/vignettes/paralogSL.Rmd example only (plot_protein_correlation)",
+    "note": "No cptac_ov/ovarian correlation product exists in output/; ovarian PDC000360 proteome does not enter the 7-cohort main analysis."
+  },
+  "extra_cohort_files": {
+    "LSCC": "0 evaluable tests; NOT part of the 7-cohort main analysis (empty stub, all missing_data)",
+    "CCRCC": "0 evaluable tests; NOT part of the 7-cohort main analysis (empty stub, all missing_data)",
+    "HNSCC": "0 evaluable tests; NOT part of the 7-cohort main analysis (empty stub, all missing_data)"
+  },
+  "notes": [
+    "Evaluable = status 'ok' in cptac_<cohort>_correlations.csv (Pearson r on >=10 paired samples, as in download_proteomics.py).",
+    "Global BH: scipy false_discovery_control over all 122 p-values across 7 cohorts.",
+    "LUSC is the lung squamous cohort used in the main analysis; the on-disk LSCC file is an empty stub (all missing_data), as are CCRCC and HNSCC."
+  ]
+}
