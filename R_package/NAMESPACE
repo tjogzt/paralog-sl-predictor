@@ -22,5 +22,5 @@ importFrom(ggplot2, ggplot, aes, geom_bar, geom_point, geom_smooth,
            scale_fill_manual, annotate, geom_segment)
 importFrom(data.table, fread)
 importFrom(pROC, roc)
-importFrom(stats, cor.test, p.adjust, rnorm, t.test)
-importFrom(utils, data)
+importFrom(stats, cor.test, p.adjust, rnorm, t.test, var)
+importFrom(utils, data, globalVariables)

@@ -3,9 +3,16 @@
 #' A lightweight R package for de novo synthetic lethality discovery through
 #' paralog compensation analysis using DepMap CRISPR dependency data.
 #'
-#' @docType package
-#' @name paralogSL
-NULL
+#' @keywords internal
+"_PACKAGE"
+
+# Shipped dataset referenced inside get_benchmark_table(); LazyData makes it
+# visible at runtime. Remaining names are ggplot2 NSE column references in
+# plot functions. Both silence R CMD check "no visible binding" notes.
+utils::globalVariables(c("benchmark_methods", "CV3_AUROC", "Interpretability",
+                         "Method", "cancer", "classification", "dd_auroc",
+                         "group", "label", "mean_TI", "mechanism", "score",
+                         "x", "y"))
 
 #' Load DepMap CRISPR dependency data
 #'
@@ -250,11 +257,20 @@ filter_cancer_cell_lines <- function(models_df, cancer_types) {
 #' where dependency shifts strongly in either direction.
 #'
 #' @param results_df Results from run_paralog_analysis()
-#' @param known_pairs data.frame with columns gene_A, gene_B
+#' @param known_pairs data.frame with columns gene_A, gene_B; optionally a
+#'   `tier` column (evidence tiers A/B/C/Comparator, see `known_sl_pairs`)
+#' @param tiers character vector of evidence tiers treated as gold-standard
+#'   positives when `known_pairs` carries a `tier` column. Defaults to the
+#'   manuscript's primary external benchmark (Tier A + Tier B: direct
+#'   dual-perturbation or genotype-conditional genetic evidence). Set to
+#'   `NULL` to use every row of `known_pairs` (the pre-v1.1.0 behavior).
 #' @return The AUROC value
 #' @importFrom pROC roc
 #' @export
-compute_auroc <- function(results_df, known_pairs) {
+compute_auroc <- function(results_df, known_pairs, tiers = c("A", "B")) {
+  if (!is.null(tiers) && "tier" %in% names(known_pairs)) {
+    known_pairs <- known_pairs[known_pairs$tier %in% tiers, ]
+  }
   is_known <- (paste(results_df$driver_gene, results_df$paralog_gene) %in%
                paste(known_pairs$gene_A, known_pairs$gene_B)) |
               (paste(results_df$paralog_gene, results_df$driver_gene) %in%
@@ -268,24 +284,19 @@ compute_auroc <- function(results_df, known_pairs) {
 
 #' Benchmark DD against published method performance
 #'
-#' Returns the pre-computed CV3 AUROC values from Feng et al. (2024)
-#' for comparison with DD performance. This-study values (0.794 on the
-#' lineage-level gyn3 frame; 1.000 for DD + ID >= 0.3) were re-verified
-#' on 2026-07-25 against compute_headline_metrics.py in the
-#' paralog_sl_predictor pipeline.
+#' Returns the shipped `benchmark_methods` dataset: CV3 AUROC values for 8
+#' published SL prediction methods from Feng et al. (2024), plus this-study
+#' DD rows (full lineage-level frame, AUROC 0.676; DD + ID >= 0.3
+#' high-identity subset, AUROC 1.000, anecdotal). Published values are
+#' contextual reference points from a general SL gene-pair universe, not a
+#' head-to-head benchmark. The dataset is regenerated from the canonical
+#' Table2_Benchmark.tsv artifact of the paralog-sl-predictor pipeline.
 #'
-#' @return A data.frame with Method, CV3_AUROC, and Reference columns
+#' @return A data.frame with Method, CV3_AUROC, Reference, and
+#'   Interpretability columns
 #' @export
 get_benchmark_table <- function() {
-  data.frame(
-    Method = c("SLMGAE", "NSF4SL", "GCATSL", "GRSMF", "PiLSL", "KG4SL",
-               "SLGNN", "PTGNN", "DD (this study)", "DD + ID >= 0.3"),
-    CV3_AUROC = c(0.790, 0.683, 0.678, 0.656, 0.626, 0.563, 0.530,
-                  0.529, 0.794, 1.000),
-    Reference = c(rep("Feng et al. 2024 (SD1)", 8), "This study", "This study"),
-    Interpretability = c(rep("Low", 8), "High", "High"),
-    stringsAsFactors = FALSE
-  )
+  benchmark_methods
 }
 
 #' Plot benchmark comparison
@@ -343,6 +354,11 @@ ggplot2::annotate("text", x = min(df$x) + 0.6 * diff(range(df$x)),
 #'
 #' Classifies cell lines as MSI-H (dMMR) or MSS (pMMR) based on
 #' damaging mutations in MMR genes (MLH1, MSH2, MSH6, PMS2) and POLE.
+#' This is the manuscript's "MMR/POLE mutation proxy" definition: POLE
+#' ultramutation is pooled with dMMR here for simplicity, whereas the
+#' companion Python pipeline additionally reports POLE-mutant lines as a
+#' separate stratum. Prefer curated DepMap/CCLE MSI annotations when
+#' available.
 #'
 #' @param mutations_df Mutation data.frame with columns DepMap_ID, Gene
 #' @param cell_lines Character vector of cell line IDs
@@ -360,7 +376,11 @@ classify_msi_status <- function(mutations_df, cell_lines) {
 #' Compute Therapeutic Window metrics
 #'
 #' Therapeutic Index (TI) = |DD| / max(|mean_G|, pan_essential_fraction, 0.01).
-#' Classifies paralogs into in vitro selectivity tiers.
+#' Classifies paralogs into in vitro selectivity tiers. In the manuscript this
+#' in vitro dependency selectivity score is reported as the dependency window
+#' score (DWS); the function retains the `TI` field name for backward
+#' compatibility (identical formula to the Python pipeline's
+#' `therapeutic_index`).
 #'
 #' @param dependency Chronos gene-effect matrix
 #' @param driver_gene Driver gene name

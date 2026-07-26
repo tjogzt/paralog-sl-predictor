@@ -1,6 +1,18 @@
 library(data.table)
 
-# --- gyn_drivers ---
+# Regenerate all built-in datasets from the canonical artifacts of the
+# companion analysis repository (paralog-sl-predictor). Fails loudly when a
+# source file is missing — a silent fallback here was the root cause of the
+# v1.0.x stale-data drift.
+CANON <- "../paralog_sl_predictor/output"
+need <- function(...) {
+  p <- file.path(...)
+  if (!file.exists(p)) stop("canonical artifact not found: ", p,
+                            " (run the paralog-sl-predictor pipeline first)")
+  p
+}
+
+# --- gyn_drivers (example driver panels; not manuscript claims) ---
 gyn_drivers <- list(
   Ovarian     = c("TP53", "BRCA1", "BRCA2", "ARID1A", "CCNE1",
                   "NF1", "RB1", "PTEN", "PIK3CA", "KRAS"),
@@ -14,87 +26,44 @@ gyn_drivers <- list(
                   "GATA3", "CDH1", "RB1", "NF1", "MAP3K1")
 )
 
-# --- known_sl_pairs ---
+# --- known_sl_pairs: evidence-tiered gold standard (supplementary Table S3) ---
+s3 <- as.data.frame(fread(need(CANON, "tables", "TableS3_GoldStandard.tsv")))
 known_sl_pairs <- data.frame(
-  gene_A = c("SMARCA4", "ARID1A", "BRCA1", "EP300", "PIK3CA",
-             "AKT1", "STK11", "FBXW7", "PPP2R1A", "CCNE1",
-             "CDK4", "MAP2K1"),
-  gene_B = c("SMARCA2", "ARID1B", "BRCA2", "CREBBP", "PIK3CB",
-             "AKT2", "SIK1", "FBXW2", "PPP2R1B", "CCNE2",
-             "CDK6", "MAP2K2"),
-  evidence = rep("literature", 12),
+  gene_A    = s3$Driver,
+  gene_B    = s3$Paralog,
+  tier      = s3$Tier,
+  direct_sl = s3$Direct_SL,
+  inclusion = s3$Inclusion,
+  key_ref   = s3$Key_Ref,
   stringsAsFactors = FALSE
 )
 
-# --- benchmark_methods ---
+# --- benchmark_methods: published CV3 references + this-study rows ---
+bench <- as.data.frame(fread(need(CANON, "tables", "Table2_Benchmark.tsv")))
 benchmark_methods <- data.frame(
-  Method = c("SLMGAE", "NSF4SL", "GCATSL", "GRSMF", "PiLSL", "KG4SL",
-             "SLGNN", "PTGNN", "DD (this study)", "DD + ID >= 0.3"),
-  CV3_AUROC = c(0.790, 0.683, 0.678, 0.656, 0.626, 0.563, 0.530,
-                0.529, 0.794, 1.000),
-  Reference = c(rep("Feng et al. 2024 (SD1)", 8), "This study", "This study"),
-  Interpretability = c(rep("Low", 8), "High", "High"),
+  Method           = bench$Method,
+  CV3_AUROC        = as.numeric(bench$CV3_AUROC),
+  Reference        = bench$Source,
+  Interpretability = bench$Interpretability,
   stringsAsFactors = FALSE
 )
 
-# --- cross_cancer_summary ---
-csv_path <- "../output/cross_cancer_summary.csv"
-if (file.exists(csv_path)) {
-  cross_cancer_summary <- as.data.frame(fread(csv_path))
-} else {
-  cross_cancer_summary <- data.frame(
-    cancer     = c("Breast", "Ovarian", "Endometrial", "Cervical", "Lung"),
-    n_lines    = c(50L, 55L, 28L, 16L, 95L),
-    n_pairs    = c(11L, 43L, 68L, 7L, 77L),
-    n_known    = c(5L, 4L, 4L, 3L, 5L),
-    dd_auroc   = c(0.889, 0.846, 0.797, 0.667, 0.353),
-    stringsAsFactors = FALSE
-  )
-}
+# --- solid_tumor_summary: primary (min >= 5 per group) pan-cancer frame ---
+solid_tumor_summary <- as.data.frame(fread(need(CANON, "solid_tumor_summary.csv")))
 
-# --- solid_tumor_summary ---
-csv_path2 <- "../output/solid_tumor_summary.csv"
-if (file.exists(csv_path2)) {
-  solid_tumor_summary <- as.data.frame(fread(csv_path2))
-} else {
-  solid_tumor_summary <- data.frame(
-    cancer   = c("Ovarian", "Endometrial", "Cervical", "Breast", "Lung",
-                 "Colorectal", "Esophagogastric", "Biliary Tract",
-                 "HNSCC", "NSCLC", "Pancreatic", "Melanoma",
-                 "Hepatocellular", "Glioma", "Bladder Urothelial",
-                 "Renal Cell", "SCLC", "Mesothelioma", "Neuroblastoma",
-                 "Osteosarcoma", "Ewing Sarcoma", "Other Sarcoma",
-                 "Rhabdomyosarcoma", "Thyroid"),
-    n_lines  = c(55L, 28L, 16L, 50L, 95L, 59L, 62L, 39L,
-                 26L, 112L, 43L, 46L, 46L, 37L, 63L,
-                 11L, 123L, 9L, 10L, 14L, 5L, 9L,
-                 3L, 3L),
-    stringsAsFactors = FALSE
-  )
-}
+# --- cross_cancer_summary: sensitivity (min >= 3 per group) frame ---
+cross_cancer_summary <- as.data.frame(fread(need(CANON, "solid_tumor_summary_min3.csv")))
 
-# --- therapeutic_window_summary ---
-csv_path3 <- "../output/therapeutic_window_summary.csv"
-if (file.exists(csv_path3)) {
-  therapeutic_window_summary <- as.data.frame(fread(csv_path3))
-} else {
-  therapeutic_window_summary <- data.frame(
-    context        = c("Ovarian", "Endometrial", "Breast", "Colorectal"),
-    n_lines        = c(55L, 28L, 50L, 59L),
-    n_pairs        = c(18L, 20L, 13L, 20L),
-    n_known        = c(9L, 9L, 6L, 10L),
-    n_selective    = c(5L, 6L, 5L, 4L),
-    n_good_window  = c(7L, 10L, 7L, 13L),
-    stringsAsFactors = FALSE
-  )
-}
+# --- therapeutic_window_summary: 21-pair DWS classification (Table S6) ---
+therapeutic_window_summary <- as.data.frame(
+  fread(need(CANON, "therapeutic_window_paralog_classification.csv")))
 
 # Save all datasets
 save_one <- function(obj, name) {
   assign(name, obj)
   save(list = name, file = file.path("data", paste0(name, ".rda")),
        compress = "gzip")
-  cat(sprintf("Saved %s.rda\n", name))
+  cat(sprintf("Saved %s.rda (%d rows)\n", name, NROW(obj)))
 }
 
 save_one(gyn_drivers, "gyn_drivers")
@@ -104,4 +73,4 @@ save_one(cross_cancer_summary, "cross_cancer_summary")
 save_one(solid_tumor_summary, "solid_tumor_summary")
 save_one(therapeutic_window_summary, "therapeutic_window_summary")
 
-cat("All datasets generated.\n")
+cat("All datasets generated from", CANON, "\n")

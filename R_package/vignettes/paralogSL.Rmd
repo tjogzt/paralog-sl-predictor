@@ -23,9 +23,10 @@ Dependency (DD) scores from DepMap CRISPR dependency data and identifies
 paralog-SL candidates using HGNC gene family annotations.
 
 Key features:
-- **DD computation**: One-line subtraction outperforms deep learning
+- **DD computation**: One-line subtraction; interpretable by construction
 - **Cross-cancer**: Built-in driver gene sets for 5 cancer types
-- **Benchmark**: Pre-loaded comparison against 8 published methods
+- **Benchmark**: Pre-loaded contextual comparison against 8 published methods
+  (not a head-to-head benchmark — see `?benchmark_methods`)
 - **Visualization**: Publication-quality plots with Chinese-style palette
 
 ## Quick Start
@@ -172,11 +173,25 @@ cat("DD (truncating):", dd_trunc$DD, "\nDD (missense):", dd_miss$DD, "\n")
 This vignette reproduces the core findings from the manuscript:
 
 > *Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-> Candidates Across Solid Tumor Types* (Zhu, Genome Biology, 2026)
+> Candidates Across Solid Tumor Types* (Mo & Zhu, Genome Biology, 2026)
 
-- DD AUROC = 0.794 (vs best published CV3: 0.720)
-- DD + 30% identity filter → AUROC = 1.000
-- CPTAC protein co-variation: r = 0.50-0.60 (p < 0.001)
+Current headline evaluation (paralog-sl-predictor v1.1.0 artifacts):
+
+- DD AUROC = 0.676 on the full lineage-level frame (110 driver--paralog--lineage
+  entries, 8 positives); 7 of 8 evaluable lineages reach AUROC >= 0.7
+- DD AUROC = 1.000 on the Tier A + Tier B external benchmark (2 of 5 pairs
+  lineage-evaluable; evidence-tiered gold standard, `?known_sl_pairs`)
+- Pair-level aggregate: DD alone 0.566; interpretable composite score 0.831
+  (AUPRC 0.356, 4.3x baseline prevalence)
+- DD + 30% k-mer identity filter -> AUROC = 1.000 on a 3-pair high-identity
+  subset (2 positives; anecdotal)
+- Published CV3 references (e.g. SLMGAE 0.790, Feng et al. 2024) are
+  contextual values from a general SL universe, NOT a head-to-head benchmark
+- CPTAC protein co-variation supports compensation at the protein level
+
+`compute_auroc()` defaults to the Tier A + Tier B primary benchmark
+(`tiers = c("A", "B")`); pass `tiers = NULL` to reproduce the pre-v1.1.0
+all-pairs behavior.
 
 See the manuscript and Python pipeline at
 \url{https://github.com/tjogzt/paralog-sl-predictor} for full details.

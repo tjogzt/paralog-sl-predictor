@@ -1,5 +1,36 @@
 # paralogSL News
 
+## v1.1.0 (2026-07-26)
+
+### Manuscript-alignment release (paralog-sl-predictor v1.1.0 framework)
+
+- All built-in datasets regenerated from the canonical artifacts of the
+  companion analysis repository; `data-raw/make_data.R` now points at
+  `../paralog_sl_predictor/output/` and fails loudly instead of silently
+  falling back to stale hard-coded values (root cause of earlier drift)
+- `known_sl_pairs` is now evidence-tiered (Tier A/B/C + comparators with
+  `direct_sl`, `inclusion`, `key_ref`), matching supplementary Table S3
+- `compute_auroc()` gains a `tiers` argument and defaults to the manuscript's
+  primary external benchmark (Tier A + B); `tiers = NULL` restores the
+  pre-v1.1.0 all-pairs behavior
+- `get_benchmark_table()` now returns the shipped `benchmark_methods`
+  dataset instead of hard-coded values; this-study rows updated to the
+  current frames (DD 0.676 full lineage-level frame; DD + ID >= 0.3
+  1.000 on a 3-pair high-identity subset, anecdotal). Published CV3
+  values are documented as contextual references, not a head-to-head
+  benchmark (supersedes the 0.736/0.794 figures quoted in earlier NEWS)
+- `solid_tumor_summary` / `cross_cancer_summary` now carry the primary
+  (min>=5; 19 lineages) and sensitivity (min>=3; 23 lineages) pan-cancer
+  frames with `dd_auroc` columns
+- `therapeutic_window_summary` replaced by the 21-pair DWS classification
+  (manuscript Table S6); TI terminology documented as DWS (dependency
+  window score), formula unchanged and identical to the Python pipeline
+- `classify_msi_status()` documented as the MMR/POLE mutation proxy
+- README quick-start example re-verified against DepMap 26Q1 raw data
+  (DD = 0.187, p = 1.8e-10, Cohen's d = 0.69, n_mut = 164, n_wt = 1044)
+- Vignette reproducibility section rewritten to the current headline
+  evaluation; citation author list corrected (Mo & Zhu)
+
 ## v1.0.1 (2026-07-25)
 
 ### Documentation & test corrections

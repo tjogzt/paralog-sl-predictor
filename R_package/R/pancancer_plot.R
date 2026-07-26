@@ -15,13 +15,15 @@ plot_pancancer_summary <- function(summary_df, min_pairs = 5) {
   df <- summary_df[summary_df$n_pairs >= min_pairs, , drop = FALSE]
   if (nrow(df) == 0) stop("No cancer types with at least ", min_pairs, " pairs")
 
-  # Add mechanism labels if not present
+  # Add mechanism labels if not present (manuscript classification:
+  # oncogene-driven = {Melanoma, NSCLC, Pancreatic}; TSG-driven = the other
+  # evaluable lineages incl. SCLC; anything else = "Mixed")
   if (!"mechanism" %in% colnames(df)) {
     tsg_driven <- c("Ovarian", "Endometrial", "Cervical", "Breast",
                     "Colorectal", "Esophagogastric", "Biliary Tract",
                     "HNSCC", "Bladder Urothelial", "Hepatocellular",
-                    "Glioma", "Renal Cell", "Mesothelioma")
-    onc_driven <- c("Lung", "Pancreatic", "Melanoma", "SCLC")
+                    "Glioma", "Renal Cell", "Mesothelioma", "SCLC")
+    onc_driven <- c("Melanoma", "NSCLC", "Pancreatic")
     df$mechanism <- ifelse(df$cancer %in% tsg_driven, "TSG",
                     ifelse(df$cancer %in% onc_driven, "Oncogene", "Mixed"))
   }
@@ -60,15 +62,25 @@ plot_pancancer_summary <- function(summary_df, min_pairs = 5) {
 
 #' Plot therapeutic window summary
 #'
-#' Visualizes the therapeutic index (TI) and selectivity for paralog-SL
-#' candidates ranked by preclinical prioritization score.
+#' Visualizes the dependency window score (DWS; reported as therapeutic
+#' index, TI, in earlier versions) and selectivity for paralog-SL candidates
+#' ranked by preclinical prioritization score.
 #'
-#' @param tw_df A data.frame with columns: driver_paralog, mean_TI,
-#'   selectivity, classification.
+#' @param tw_df A data.frame with columns: driver_gene (or driver),
+#'   paralog_gene (or paralog), mean_TI (or mean_ti), classification -- e.g.
+#'   the shipped `therapeutic_window_summary` dataset.
 #' @return A ggplot2 object.
 #' @export
 plot_therapeutic_window <- function(tw_df) {
   if (nrow(tw_df) == 0) stop("Empty therapeutic window data.frame")
+
+  # Accept both the canonical artifact schema (driver/paralog/mean_ti) and
+  # the legacy package schema (driver_gene/paralog_gene/mean_TI)
+  n <- names(tw_df)
+  if (!"mean_TI" %in% n && "mean_ti" %in% n) tw_df$mean_TI <- tw_df$mean_ti
+  if (!"driver_gene" %in% n && "driver" %in% n) tw_df$driver_gene <- tw_df$driver
+  if (!"paralog_gene" %in% n && "paralog" %in% n) tw_df$paralog_gene <- tw_df$paralog
+  if (is.null(tw_df$mean_TI)) stop("tw_df must contain a mean_TI (or mean_ti) column")
 
   tw_df <- tw_df[order(tw_df$mean_TI), , drop = FALSE]
   tw_df$label <- paste(tw_df$driver_gene, tw_df$paralog_gene, sep = "\u2192")
@@ -88,10 +100,10 @@ plot_therapeutic_window <- function(tw_df) {
     ggplot2::scale_fill_manual(values = tier_cols, name = "Safety Tier") +
     ggplot2::labs(
       x = "",
-      y = "Mean Therapeutic Index (TI)",
+      y = "Mean dependency window score (DWS/TI)",
       title = "Therapeutic Window for Paralog-SL Candidates",
-      subtitle = "TI > 1 indicates selective essentiality in mutant context",
-      caption = "TI = |DD| / max(|mean gene-effect|, pan-essential fraction)"
+      subtitle = "DWS > 1 indicates selective essentiality in mutant context",
+      caption = "DWS = |DD| / max(|mean gene-effect|, pan-essential fraction)"
     )
   return(p)
 }
