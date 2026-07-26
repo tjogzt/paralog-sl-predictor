@@ -1,0 +1,25 @@
+{
+  "n_in4mer_total": 13,
+  "n_controls_sampled": 400,
+  "seed": 42,
+  "min5": {
+    "n_pos": 3,
+    "n_neg": 188,
+    "auroc": 0.6826241134751773,
+    "bootstrap_ci_low": 0.03697368421052635,
+    "bootstrap_ci_high": 1.0,
+    "permutation_p": 0.15208479152084792,
+    "median_dd_pos": 0.4073814641598519,
+    "median_dd_neg": 0.07292885851626688
+  },
+  "min3": {
+    "n_pos": 10,
+    "n_neg": 326,
+    "auroc": 0.49754601226993866,
+    "bootstrap_ci_low": 0.2528751020912078,
+    "bootstrap_ci_high": 0.7528090328117004,
+    "permutation_p": 0.5082491750824918,
+    "median_dd_pos": 0.10206525993717465,
+    "median_dd_neg": 0.10465929135260246
+  }
+}

@@ -428,6 +428,38 @@ check("s9_r_non", "r within non-paralogs", "0.41", k_non["pearson_r"], KN)
 check_int("s9_n_non", "Non-paralog pairs", 37, int(k_non["n"]), KN)
 
 # ═══════════════════════════════════════════════════════════════════
+# in4mer mutation-agnostic gold-standard check — Discussion limitation
+# ═══════════════════════════════════════════════════════════════════
+in4s = json.loads((OUT / "in4mer_benchmark_summary.json").read_text())
+in4 = pd.read_csv(OUT / "in4mer_benchmark.csv")
+IN4 = "output/in4mer_benchmark_summary.json (in4mer_benchmark.py)"
+check_int("in4_npairs", "in4mer gold-standard pairs (Nat Commun 2024)", 13,
+          in4s["n_in4mer_total"], IN4)
+check_int("in4_controls", "Unlabeled control pairs sampled (seed 42)", 400,
+          in4s["n_controls_sampled"], IN4)
+check_int("in4_min3_npos", "in4mer pairs evaluable at >=3 threshold", 10,
+          in4s["min3"]["n_pos"], IN4)
+check("in4_min3_auroc", "in4mer min3 AUROC (0.50)", "0.50",
+      in4s["min3"]["auroc"], IN4)
+check("in4_min3_p", "in4mer min3 permutation p (0.51)", "0.51",
+      in4s["min3"]["permutation_p"], IN4)
+check_int("in4_min5_npos", "in4mer pairs evaluable at >=5 threshold", 3,
+          in4s["min5"]["n_pos"], IN4)
+check("in4_min5_auroc", "in4mer min5 exploratory AUROC (0.68)", "0.68",
+      in4s["min5"]["auroc"], IN4)
+neg3 = in4[in4.label == "unlabeled_control"]["dd_min3"].abs().dropna()
+p90 = float(neg3.quantile(0.9))
+pos3 = in4[in4.label == "in4mer_gold"]["dd_min3"].abs().dropna()
+above = pos3[pos3 > p90]
+ok = len(above) == 3
+ROWS.append({
+    "id": "in4_above_p90",
+    "description": "in4mer pairs above control 90th pct (3: ARFGEF1/2, HDAC1/2, SLC25A28/37)",
+    "manuscript": "3 pairs", "recomputed": f"{len(above)} pairs (p90={p90:.3f})",
+    "source": "output/in4mer_benchmark.csv",
+    "status": "match" if ok else "MISMATCH"})
+
+# ═══════════════════════════════════════════════════════════════════
 # Report
 # ═══════════════════════════════════════════════════════════════════
 df = pd.DataFrame(ROWS)

@@ -154,3 +154,11 @@ s9_r_par	r within paralogs	0.91	0.906	output/kmer_nw_correlation.csv (R_figS9.R)
 s9_n_par	Paralog pairs	13	13	output/kmer_nw_correlation.csv (R_figS9.R)	match
 s9_r_non	r within non-paralogs	0.41	0.413	output/kmer_nw_correlation.csv (R_figS9.R)	match
 s9_n_non	Non-paralog pairs	37	37	output/kmer_nw_correlation.csv (R_figS9.R)	match
+in4_npairs	in4mer gold-standard pairs (Nat Commun 2024)	13	13	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_controls	Unlabeled control pairs sampled (seed 42)	400	400	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_min3_npos	in4mer pairs evaluable at >=3 threshold	10	10	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_min3_auroc	in4mer min3 AUROC (0.50)	0.50	0.498	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_min3_p	in4mer min3 permutation p (0.51)	0.51	0.508	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_min5_npos	in4mer pairs evaluable at >=5 threshold	3	3	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_min5_auroc	in4mer min5 exploratory AUROC (0.68)	0.68	0.683	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_above_p90	in4mer pairs above control 90th pct (3: ARFGEF1/2, HDAC1/2, SLC25A28/37)	3 pairs	3 pairs (p90=0.217)	output/in4mer_benchmark.csv	match
