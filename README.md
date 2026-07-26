@@ -129,7 +129,13 @@ All analyses use `set.seed(42)` (R) or `random_state=42` (Python) for reproducib
 
 Every quantitative claim in `manuscript.tex` is recomputed from raw DepMap
 data by three audit scripts, each ending with an automatic claims check that
-exits non-zero on mismatch. One command runs all of them plus the test suite:
+exits non-zero on mismatch. A fourth script,
+`audit_manuscript_numbers.py`, closes the loop on the numbers those three do
+not own (lineage-level AUROCs, TSG/ONC contrast, MSI stratification,
+mutation-type analysis, direction audit, therapeutic-window module, Table S2
+spot values): it recomputes 109 manuscript claims from the artifacts under
+`output/` and writes `output/manuscript_number_audit.tsv` (109/109 match).
+One command runs all of them plus the test suite:
 
 ```bash
 ./verify_all.sh              # fast: reuses cached data slices (~30 s)
@@ -141,6 +147,7 @@ VERIFY_FULL=1 ./verify_all.sh  # full: rebuilds all caches from raw CSVs
 | `compute_headline_metrics.py` | DD values, TI, AUROC, pair counts, q-values | `output/headline_metrics.json` (16/16 match) |
 | `ml_benchmark.py` | LOO-CV AUROC of LR/RF/SVM vs DD-only baseline | `output/ml_benchmark.json` |
 | `regression_controls.py` | CNV/expression/TP53-adjusted regressions, CNV R² | `output/regression_controls.json` (10/10 match) |
+| `audit_manuscript_numbers.py` | All remaining manuscript numbers (lineages, MSI, mutation type, direction, therapeutic window) | `output/manuscript_number_audit.tsv` (109/109 match) |
 
 `regression_controls.py` also writes `output/cnv_independence.csv` and
 `output/cnv_scatter_sample.csv`, the exact inputs of `R_figS4.R` (Fig. S4).

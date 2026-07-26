@@ -1,0 +1,110 @@
+id	description	manuscript	recomputed	source	status
+full_auroc	Full-set AUROC (110 entries, 8 positives)	0.676	0.676	output/headline_metrics.json	match
+full_n	Full-set entries	110	110	output/headline_metrics.json	match
+full_pos	Full-set positives	8	8	output/headline_metrics.json	match
+full_auprc	Full-set AUPRC	0.386	0.386	output/headline_metrics.json	match
+leave_out_auroc	Leave-out (DepMap-era removed) AUROC	0.725	0.725	output/headline_metrics.json	match
+pre_depmap_auroc	Pre-DepMap evidence AUROC	0.774	0.775	output/headline_metrics.json	match
+tier_ab_auroc	Tier A∪B primary benchmark AUROC	1.000	1.000	output/headline_metrics.json	match
+tier_ab_pos	Tier A∪B evaluable positives	2	2	output/headline_metrics.json	match
+direction_strict	Direction-strict AUROC	0.676	0.676	output/headline_metrics.json	match
+llo_lo	Leave-one-lineage-out lower bound	0.656	0.656	output/headline_metrics.json	match
+llo_hi	Leave-one-lineage-out upper bound	0.704	0.704	output/headline_metrics.json	match
+comp_dd	Component: DD	0.676	0.676	output/headline_metrics.json	match
+comp_pcs	Component: PCS	0.825	0.825	output/headline_metrics.json	match
+comp_dexpr	Component: ΔExpression	0.547	0.547	output/headline_metrics.json	match
+comp_nec	Component: necessity	0.642	0.642	output/headline_metrics.json	match
+pb_pcs_dd	Paired bootstrap PCS−DD	+0.150	0.150	output/headline_metrics.json	match
+pb_pcs_dd_lo	Paired bootstrap CI lower	-0.110	-0.110	output/headline_metrics.json	match
+pb_pcs_dd_hi	Paired bootstrap CI upper	+0.456	0.456	output/headline_metrics.json	match
+pp_auroc	Per-pair AUROC (72 pairs, 6 positives)	0.500	0.500	output/validation_report.json	match
+pp_n	Per-pair universe	72	72	output/validation_report.json	match
+pp_null	Permutation null mean	0.501	0.501	output/validation_report.json	match
+pp_p	Permutation empirical p	0.503	0.503	output/validation_report.json	match
+pp_bs_lo	Per-pair bootstrap CI lower	0.185	0.185	output/validation_report.json	match
+pp_bs_hi	Per-pair bootstrap CI upper	0.813	0.813	output/validation_report.json	match
+pp_mean_dd	Per-pair mean |DD| AUROC	0.566	0.566	output/headline_metrics.json	match
+pp_comp	Composite AUROC	0.831	0.831	output/headline_metrics.json	match
+pp_comp_auprc	Composite AUPRC	0.356	0.356	output/headline_metrics.json	match
+pp_baseline	Baseline prevalence	0.083	0.083	output/headline_metrics.json	match
+pp_enrich	AUPRC enrichment ×baseline	4.3	4.278	output/headline_metrics.json	match
+ml_svmrbf	SVM-RBF AUROC	0.843	0.843	output/ml_benchmark.json	match
+ml_rf	Random forest AUROC	0.722	0.722	output/ml_benchmark.json	match
+ml_svmlin	SVM-Linear AUROC	0.114	0.114	output/ml_benchmark.json	match
+ml_lr	Logistic regression AUROC	0.136	0.136	output/ml_benchmark.json	match
+ml_dd	DD alone AUROC	0.566	0.566	output/ml_benchmark.json	match
+ml_comp	Composite alone AUROC	0.831	0.831	output/ml_benchmark.json	match
+ml_lr_feat_p	All LR feature p-values > 0.23	>0.23	min p = 0.239	output/ml_benchmark.json	match
+lin_neval	Evaluable lineages (primary ≥5 frame)	8	8	output/solid_tumor_summary.csv	match
+lin_n07	Lineages with AUROC ≥ 0.7	7	7	output/solid_tumor_summary.csv	match
+lin_Esopha	Esophagogastric AUROC (primary frame)	0.965	0.965	output/solid_tumor_summary.csv	match
+lin_SCLC	SCLC AUROC (primary frame)	0.906	0.906	output/solid_tumor_summary.csv	match
+lin_Bladde	Bladder Urothelial AUROC (primary frame)	0.844	0.844	output/solid_tumor_summary.csv	match
+lin_Colore	Colorectal AUROC (primary frame)	0.828	0.828	output/solid_tumor_summary.csv	match
+lin_Endome	Endometrial AUROC (primary frame)	0.818	0.818	output/solid_tumor_summary.csv	match
+lin_Breast	Breast AUROC (primary frame)	0.750	0.750	output/solid_tumor_summary.csv	match
+lin_NSCLC	NSCLC AUROC (primary frame)	0.741	0.741	output/solid_tumor_summary.csv	match
+lin_Ovaria	Ovarian AUROC (primary frame)	0.661	0.661	output/solid_tumor_summary.csv	match
+lin3_neval	Evaluable lineages (sensitivity ≥3 frame)	12	12	output/solid_tumor_summary_min3.csv	match
+lin3_n07	Sensitivity lineages with AUROC ≥ 0.7	9	9	output/solid_tumor_summary_min3.csv	match
+lin3_Biliar	Biliary Tract AUROC (sensitivity frame)	0.990	0.990	output/solid_tumor_summary_min3.csv	match
+lin3_Pancre	Pancreatic AUROC (sensitivity frame)	0.949	0.949	output/solid_tumor_summary_min3.csv	match
+lin3_Melano	Melanoma AUROC (sensitivity frame)	0.617	0.617	output/solid_tumor_summary_min3.csv	match
+lin3_Cervic	Cervical AUROC (sensitivity frame)	0.500	0.500	output/solid_tumor_summary_min3.csv	match
+tsg_mean	TSG-driven mean AUROC (n=9)	0.814	0.814	output/solid_tumor_summary_min3.csv	match
+onc_mean	Oncogene-driven mean AUROC (n=3)	0.768	0.768	output/solid_tumor_summary_min3.csv	match
+tsg_perm_p	TSG vs ONC permutation p (exact, 220 combos)	0.645	0.645	output/solid_tumor_summary_min3.csv	match
+tsg_mw_p	TSG vs ONC exact Mann-Whitney p	0.600	0.600	output/solid_tumor_summary_min3.csv	match
+msi_endo_h	Endometrial MSI-H AUROC (sensitivity)	0.838	0.838	output/msi_key_numbers_min3.json	match
+msi_endo_s	Endometrial MSS AUROC (sensitivity)	0.556	0.556	output/msi_key_numbers_min3.json	match
+msi_col_h	Colorectal MSI-H AUROC (sensitivity)	0.767	0.767	output/msi_key_numbers_min3.json	match
+msi_col_s	Colorectal MSS AUROC (sensitivity)	0.712	0.712	output/msi_key_numbers_min3.json	match
+msi_n17	Endometrial MSI-H cell lines	17	17	output/msi_key_numbers_min3.json	match
+msi_n11	Endometrial MSS cell lines	11	11	output/msi_key_numbers_min3.json	match
+msi_n14	Colorectal MSI-H cell lines	14	14	output/msi_key_numbers_min3.json	match
+msi_n45	Colorectal MSS cell lines	45	45	output/msi_key_numbers_min3.json	match
+msi5_endo	Endometrial MSI subgroups not evaluable (primary frame)	not evaluable	not evaluable	output/msi_key_numbers_min5.json	match
+msi5_col_h	Colorectal MSI-H AUROC (primary)	0.574	0.574	output/msi_key_numbers_min5.json	match
+msi5_col_s	Colorectal MSS AUROC (primary)	0.595	0.595	output/msi_key_numbers_min5.json	match
+mt_arid_t	ARID1A→ARID1B Ovarian truncating DD	0.388	0.388	output/muttype_all_results.csv	match
+mt_arid_m	ARID1A→ARID1B Ovarian missense DD	0.020	0.020	output/muttype_all_results.csv	match
+mt_ep_t	EP300→CREBBP Colorectal truncating DD	0.464	0.464	output/muttype_all_results.csv	match
+mt_ep_m	EP300→CREBBP Colorectal missense DD	0.150	0.150	output/muttype_all_results.csv	match
+mt_br_all	Breast all-DD AUROC (muttype frame)	0.735	0.735	output/muttype_all_results.csv	match
+mt_br_t	Breast truncating-only AUROC	0.726	0.726	output/muttype_all_results.csv	match
+mt_br_m	Breast missense-only AUROC	0.391	0.391	output/muttype_all_results.csv	match
+mt_miss_mean	Pan-pair mean |DD missense|	0.042	0.042	output/muttype_all_results.csv	match
+mt_trunc_mean	Pan-pair mean |DD truncating|	0.026	0.026	output/muttype_all_results.csv	match
+mt_paired_p	Paired t-test p	3e-4	2.95e-04	output/muttype_all_results.csv	match
+mt_panelb_mean	Fig S6b mean(|trunc|−|miss|)	-0.015	-0.015	output/muttype_all_results.csv	match
+dir_abs	Full frame |DD| AUROC	0.676	0.676	output/direction_audit.json	match
+dir_signed	Full frame signed-DD AUROC	0.629	0.629	output/direction_audit.json	match
+dir_neg	Positive entries with DD<0	3	3	output/direction_audit.json	match
+dir_tier	Tier A∪B frame signed = absolute	1.000	1.000	output/direction_audit.json	match
+dws_arid	ARID1A→ARID1B mean DWS	2.82	2.819	output/therapeutic_window_paralog_classification.csv	match
+dws_arid_sel	ARID1A→ARID1B mean selectivity	+0.28	0.277	output/therapeutic_window_paralog_classification.csv	match
+dws_arid_dd	ARID1A→ARID1B mean |DD|	0.270	0.270	output/therapeutic_window_paralog_classification.csv	match
+dws_smarca	SMARCA4→SMARCA2 mean DWS	4.87	4.874	output/therapeutic_window_paralog_classification.csv	match
+dws_smarca_sel	SMARCA4→SMARCA2 selectivity	+0.18	0.181	output/therapeutic_window_paralog_classification.csv	match
+dws_nf1	NF1→RASA2 mean DWS	5.42	5.421	output/therapeutic_window_paralog_classification.csv	match
+dws_nf1_sel	NF1→RASA2 selectivity	0.005	0.005	output/therapeutic_window_paralog_classification.csv	match
+dws_nf1_pan	NF1→RASA2 pan-essential denominator (%)	0.1	0.134	output/therapeutic_window_paralog_classification.csv	match
+dws_pan_brca_lo	BRCA1/2 pan-essential fraction lower	0.53	0.532	output/therapeutic_window_paralog_classification.csv	match
+dws_pan_brca_hi	BRCA1/2 pan-essential fraction upper	0.55	0.545	output/therapeutic_window_paralog_classification.csv	match
+dws_pan_crkl	PIK3R1→CRKL pan-essential fraction	0.73	0.726	output/therapeutic_window_paralog_classification.csv	match
+dws_npairs	Evaluated pairs (Table S6)	21	21	output/therapeutic_window_paralog_classification.csv	match
+dws_n_gt1	Pairs with DWS > 1.0 in ≥2 contexts	9	9	output/therapeutic_window_all_results.csv	match
+dws_tier_hs	HIGH_SELECTIVITY pairs	2	2	output/therapeutic_window_paralog_classification.csv	match
+dws_tier_mod	MODERATE pairs	5	5	output/therapeutic_window_paralog_classification.csv	match
+dws_tier_low	LOW_SELECTIVITY pairs	11	11	output/therapeutic_window_paralog_classification.csv	match
+dws_tier_pan	PAN_ESSENTIAL pairs	3	3	output/therapeutic_window_paralog_classification.csv	match
+comp_top1	Composite rank 1 score (NF1→RASA2)	0.695	0.695	output/alphafold_structural_analysis.csv	match
+comp_top2	Composite rank 2 score (ARID1A→ARID1B)	0.631	0.631	output/alphafold_structural_analysis.csv	match
+ts2_rows	Table S2 associations	110	110	output/tables/TableS2_FullResults.tsv	match
+ts2_cols	Table S2 columns	17	17	output/tables/TableS2_FullResults.tsv	match
+ts2_arid_dd	ARID1A→ARID1B Ovarian DD (Table S2)	0.386	0.386	output/tables/TableS2_FullResults.tsv	match
+ts2_arid_g	ARID1A→ARID1B Ovarian Hedges' g	1.39	1.392	output/tables/TableS2_FullResults.tsv	match
+ts2_arid_q	ARID1A→ARID1B Ovarian q-value	0.39	0.386	output/tables/TableS2_FullResults.tsv	match
+ts2_arid_q2	ARID1A→ARID1B Endometrial q-value	0.88	0.879	output/tables/TableS2_FullResults.tsv	match
+reg_lin_p	ARID1A lineage-adjusted p	2.2e-13	2.24e-13	output/regression_controls.json	match
+reg_tp53_lin_p	TP53+CNV+lineage adjusted p	7.0e-13	7.03e-14	output/regression_controls.json	match
