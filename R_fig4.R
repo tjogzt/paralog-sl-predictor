@@ -108,7 +108,8 @@ panel_b <- function() {
               data = filter(tw, mean_ti > 2 | class_label %in% c("HIGH","PAN")),
               aes(label = paste0(driver, "->", paralog)),
               size = 2.5, show.legend = FALSE, max.overlaps = 20,
-              min.segment.length = 0, box.padding = 0.3) +
+              box.padding = 0.5, point.padding = 0.8, force = 2,
+              min.segment.length = 0.2, segment.size = 0.3, seed = 42) +
     geom_hline(yintercept = 0, linewidth = 0.3, color = GRAY, alpha = 0.4) +
     geom_vline(xintercept = 1, linewidth = 0.3, color = GRAY, alpha = 0.3, linetype = "dashed") +
     scale_color_manual(values = c(HIGH = RED, MODERATE = ORANGE, LOW = BLUE, PAN = GRAY),
@@ -170,21 +171,34 @@ panel_d <- function() {
          "pipeline first; simulated fallbacks are forbidden")
   }
   cand$label <- factor(cand$label, levels = rev(cand$label))
-  cand$is_top <- c(TRUE, rep(FALSE, nrow(cand) - 1))
-  cand$txt_col <- ifelse(cand$is_top, RED, BLUE)
+  # Highlight matches the text narrative: ARID1A->ARID1B is the leading
+  # SELECTIVE candidate; NF1->RASA2 ranks first on score only through a
+  # near-zero pan-essential denominator (selectivity ~ 0)
+  cand$cat <- "Others"
+  cand$cat[cand$driver == "NF1"    & cand$paralog == "RASA2"]  <- "Rank 1 (non-selective)"
+  cand$cat[cand$driver == "ARID1A" & cand$paralog == "ARID1B"] <- "Leading selective candidate"
+  cand$cat <- factor(cand$cat, levels = c("Leading selective candidate",
+                                          "Rank 1 (non-selective)", "Others"))
+  cat_colors <- c("Leading selective candidate" = RED,
+                  "Rank 1 (non-selective)" = ORANGE, "Others" = BLUE)
+  cand$txt_col <- cat_colors[as.character(cand$cat)]
 
-  ggplot(cand, aes(score, label, fill = is_top)) +
+  ggplot(cand, aes(score, label, fill = cat)) +
     geom_col(width = 0.55) +
     geom_text(aes(label = sprintf("%.3f", score), color = txt_col),
               hjust = -0.1, size = 2.5, fontface = "bold", show.legend = FALSE) +
+    # direct in-bar category labels instead of a legend: a 3-entry legend
+    # overlapped the bottom bars and their value labels in this 90mm panel
+    geom_text(data = cand %>% filter(cat != "Others"),
+              aes(x = score - 0.02, label = as.character(cat)),
+              hjust = 1, size = 2.5, color = "white", fontface = "bold",
+              family = "Arial", show.legend = FALSE) +
     scale_color_identity() +
-    scale_fill_manual(values = c(`TRUE` = RED, `FALSE` = BLUE),
-                      labels = c(`TRUE` = "Top candidate", `FALSE` = "Others")) +
+    scale_fill_manual(values = cat_colors, guide = "none") +
     geom_vline(xintercept = 0.5, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.3) +
     scale_x_continuous(expand = expansion(mult = c(0, 0.12))) +
     labs(x = "Targetability Score", y = NULL) +
-    theme_sci +
-    theme(legend.position = c(0.98, 0.02), legend.justification = c(1, 0))
+    theme_sci
 }
 
 # ═══════════════════════════════════════════════════════════════
