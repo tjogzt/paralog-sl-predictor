@@ -20,7 +20,7 @@ import numpy as np
 from scipy import stats
 from pathlib import Path
 
-from config import DATA_DIR, OUTPUT_DIR, KNOWN_PARALOG_SL, GYN_CANCER_TYPES
+from config import DATA_DIR, OUTPUT_DIR, KNOWN_PARALOG_SL, GYN_CANCER_TYPES, MIN_MUT_SAMPLES, MIN_WT_SAMPLES
 from data_loader import (
     load_dependency, load_expression, load_models,
     load_mutations, load_paralogs, build_mutation_matrix,
@@ -81,14 +81,14 @@ def compute_therapeutic_window(dep, driver, paralog, mut_ids, wt_ids, all_ids):
     mut_ids_valid = [c for c in mut_ids if c in dep.index]
     wt_ids_valid = [c for c in wt_ids if c in dep.index]
     
-    if len(mut_ids_valid) < 3 or len(wt_ids_valid) < 3:
+    if len(mut_ids_valid) < MIN_MUT_SAMPLES or len(wt_ids_valid) < MIN_WT_SAMPLES:
         return None
     
     mut_vals = dep.loc[mut_ids_valid, paralog].dropna()
     wt_vals = dep.loc[wt_ids_valid, paralog].dropna()
     all_vals = dep.loc[dep.index.isin(all_ids), paralog].dropna()
     
-    if len(mut_vals) < 3 or len(wt_vals) < 3:
+    if len(mut_vals) < MIN_MUT_SAMPLES or len(wt_vals) < MIN_WT_SAMPLES:
         return None
     
     # Basic DD (manuscript Eq. 1: WT − MUT; positive = compensation in
@@ -183,6 +183,13 @@ def run_therapeutic_window_analysis():
     mutations = load_mutations()
     paralogs_df = load_paralogs()
     
+    # Driver-mutant sets under the same gene-class-specific rules as the main
+    # pipeline (TSG: LikelyLoF; oncogene: Hotspot) — unifies the TW/DD frame
+    # with Table S2 (round-4 review).
+    drivers = sorted({d for d, _ in DRIVER_PARALOG_PAIRS})
+    mut_matrix = build_mutation_matrix(mutations, dep.index.tolist(), drivers)
+    mut_sets = {g: set(mut_matrix.index[mut_matrix[g] == 1]) for g in mut_matrix.columns}
+    
     # ── Known SL pairs ──
     known_set = set()
     for a, b in KNOWN_PARALOG_SL:
@@ -219,12 +226,12 @@ def run_therapeutic_window_analysis():
             if driver not in dep.columns or paralog not in dep.columns:
                 continue
             
-            # Get mutation status
-            mut_filtered = mutations[mutations["Gene"] == driver]
-            mut_ids = [c for c in mut_filtered["DepMap_ID"].unique() if c in valid_ids]
-            wt_ids = [c for c in valid_ids if c not in mut_ids]
+            # Mutation status from the driver-rule matrix (same as main pipeline)
+            driver_mut_set = mut_sets.get(driver, set())
+            mut_ids = [c for c in valid_ids if c in driver_mut_set]
+            wt_ids = [c for c in valid_ids if c not in driver_mut_set]
             
-            if len(mut_ids) < 3:
+            if len(mut_ids) < MIN_MUT_SAMPLES:
                 continue
             
             tw = compute_therapeutic_window(dep, driver, paralog, mut_ids, wt_ids, valid_ids)
