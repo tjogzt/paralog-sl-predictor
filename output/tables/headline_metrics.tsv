@@ -1,30 +1,30 @@
 metric	value	provenance
-dd_auroc_lineage_full	0.7944	recomputed:TableS2
-dd_auroc_lineage_primary	0.8370	recomputed:TableS2
-dd_auroc_lineage_leave_out_depmap_era	0.8339	recomputed:TableS2
-dd_auroc_lineage_pre_depmap_only	0.8999	recomputed:TableS2
-dd_auroc_lineage_full_direction_strict	0.7667	recomputed:TableS2
+dd_auroc_lineage_full	0.6822	recomputed:TableS2
+dd_auroc_lineage_primary	0.7089	recomputed:TableS2
+dd_auroc_lineage_leave_out_depmap_era	0.7278	recomputed:TableS2
+dd_auroc_lineage_pre_depmap_only	0.7741	recomputed:TableS2
+dd_auroc_lineage_full_direction_strict	0.6822	recomputed:TableS2
 dd_auroc_lineage_tier_a	1.0000	recomputed:TableS2
-dd_auroc_lineage_tier_a_with_comparators	0.8006	recomputed:TableS2
-component_dd	0.7944	recomputed:TableS2
-component_pcs	0.7201	recomputed:TableS2
-component_delta_expression	0.3483	recomputed:TableS2
-component_necessity	0.5973	recomputed:TableS2
+dd_auroc_lineage_tier_a_with_comparators	0.6374	recomputed:TableS2
+component_dd	0.6822	recomputed:TableS2
+component_pcs	0.7767	recomputed:TableS2
+component_delta_expression	0.5639	recomputed:TableS2
+component_necessity	0.6469	recomputed:TableS2
 dd_auroc_id_filter_0.3	1.0000	recomputed:TableS2+paralog_identity
-dd_auroc_id_filter_0.2	0.7778	recomputed:TableS2+paralog_identity
-per_pair_auroc	0.6685	artifact:validation_report.json
-per_pair_null_mean	0.5002	artifact:validation_report.json
-per_pair_empirical_p	0.0603	artifact:validation_report.json
-dd_auroc_per_pair_mean	0.7355	recomputed:TableS2(per-pair mean)
-component_pcs_per_pair_mean	0.7156	recomputed:TableS2(per-pair mean)
-component_delta_expression_per_pair_mean	0.3641	recomputed:TableS2(per-pair mean)
-component_necessity_per_pair_mean	0.5924	recomputed:TableS2(per-pair mean)
-dd_auroc_per_pair_max	0.6685	recomputed:TableS2(per-pair max)
-auprc_dd_per_pair_max	0.4100	recomputed:TableS2(per-pair max)
-composite_auroc_per_pair_mean	0.7301	recomputed:TableS2(per-pair mean)
-auprc_composite_per_pair	0.2721	recomputed:TableS2(per-pair mean)
-llo_auroc_min	0.7626	recomputed:TableS2(LLO)
-llo_auroc_max	0.8206	recomputed:TableS2(LLO)
+dd_auroc_id_filter_0.2	0.5833	recomputed:TableS2+paralog_identity
+per_pair_auroc	0.4928	artifact:validation_report.json
+per_pair_null_mean	0.5015	artifact:validation_report.json
+per_pair_empirical_p	0.5302	artifact:validation_report.json
+dd_auroc_per_pair_mean	0.5507	recomputed:TableS2(per-pair mean)
+component_pcs_per_pair_mean	0.8080	recomputed:TableS2(per-pair mean)
+component_delta_expression_per_pair_mean	0.6232	recomputed:TableS2(per-pair mean)
+component_necessity_per_pair_mean	0.6618	recomputed:TableS2(per-pair mean)
+dd_auroc_per_pair_max	0.4928	recomputed:TableS2(per-pair max)
+auprc_dd_per_pair_max	0.2633	recomputed:TableS2(per-pair max)
+composite_auroc_per_pair_mean	0.8406	recomputed:TableS2(per-pair mean)
+auprc_composite_per_pair	0.3634	recomputed:TableS2(per-pair mean)
+llo_auroc_min	0.6744	recomputed:TableS2(LLO)
+llo_auroc_max	0.7018	recomputed:TableS2(LLO)
 published_SLMGAE	0.7900	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
 published_NSF4SL	0.6830	literature:Feng2024_SuppData1_CV3_NSMRand_1to1
 published_GCATSL	0.6780	literature:Feng2024_SuppData1_CV3_NSMRand_1to1

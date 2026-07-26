@@ -55,7 +55,7 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS2_CrossCancer_AUROC.pdf}
-\caption{\textbf{Cross-cancer DD AUROC.} DD AUROC for each of the 17 evaluable solid tumor types, grouped by signal strength. a, Strong signal (AUROC~$\ge$~0.7; 9 lineages including Biliary Tract 0.960, Mesothelioma 0.917, Colorectal 0.812). b, Moderate signal (AUROC 0.5--0.7; 7 lineages). c, Weak signal (AUROC~$<$~0.5; Melanoma 0.462). Dashed line indicates random classifier (0.5). Bar labels show the number of tested paralog pairs per lineage. Cancer types with $<$2 known positive pairs were excluded from AUROC evaluation (see Table~S1 for the 6 non-evaluable types).}
+\caption{\textbf{Cross-cancer DD AUROC.} DD AUROC for each of the 14 evaluable solid tumor types, grouped by signal strength. a, Strong signal (AUROC~$\ge$~0.7; 10 lineages including Biliary Tract 0.990, Esophagogastric 0.969, Pancreatic 0.949). b, Moderate signal (AUROC 0.5--0.7; Endometrial 0.690, Ovarian 0.651). c, Weak signal (AUROC~$<$~0.5; Melanoma 0.481, Cervical 0.476). Dashed line indicates random classifier (0.5). Bar labels show the number of tested paralog pairs per lineage. Cancer types with $<$2 known positive pairs were excluded from AUROC evaluation (see Table~S1 for the 9 non-evaluable types).}
 \end{figure}
 
 % S3
@@ -83,21 +83,21 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS6_MutationType.pdf}
-\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.016$), indicating that truncating~$>$~missense is pair-specific rather than universal. c, $\Delta$DD for known gold-standard SL pairs showing that ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal) drive the trend. d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.726) vs.\ overall DD performance. Panel d is computed on the mutation-type analysis frame (48 Breast pairs); the resulting ``All'' AUC (0.735) therefore differs slightly from the cross-cancer frame value (0.734; Fig.~1a).}
+\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.005$), indicating that truncating~$>$~missense is pair-specific rather than universal. c, $\Delta$DD for known gold-standard SL pairs showing that ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal) drive the trend. d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.726) vs.\ missense-only (0.391) and overall DD performance. Panel d is computed on the mutation-type analysis frame (48 Breast pairs); the resulting ``All'' AUC (0.735) therefore differs from the cross-cancer frame value (0.852; Fig.~1a), which uses a different pair universe.}
 \end{figure}
 
 % S7
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS7_TherapeuticWindow.pdf}
-\caption{\textbf{Therapeutic window analysis.} a, All 24 paralog pairs ranked by mean dependency window score (DWS) across 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer). ARID1A$\rightarrow$ARID1B ranks first (DWS~$=$~4.13). b, In vitro selectivity tier classification: HIGH\_SELECTIVITY (selectivity~$>$~0.15 and DWS~$>$~1.0), MODERATE, LOW\_SELECTIVITY, and PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$). c, DWS values broken down by individual cancer context showing cross-lineage consistency for top candidates. d, Selectivity vs.\ DWS scatter plot; ARID1A$\rightarrow$ARID1B is the only pair in the upper-right quadrant (high DWS and high selectivity).}
+\caption{\textbf{Therapeutic window analysis.} a, All 24 paralog pairs ranked by mean dependency window score (DWS) across 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer). ARID1A$\rightarrow$ARID1B ranks first (DWS~$=$~3.65). b, In vitro selectivity tier classification: HIGH\_SELECTIVITY (selectivity~$>$~0.15 and DWS~$>$~1.0), MODERATE, LOW\_SELECTIVITY, and PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$). c, DWS values broken down by individual cancer context showing cross-lineage consistency for top candidates. d, Selectivity vs.\ DWS scatter plot; ARID1A$\rightarrow$ARID1B is the only pair in the upper-right quadrant (high DWS and high selectivity).}
 \end{figure}
 
 % S8
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth,keepaspectratio]{output/figures/FigS8_Bootstrap_NegCtrl.pdf}
-\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 77 pairs, 8 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.431--0.892). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.060$). The observed per-pair AUROC (0.668) exceeds the null mean (0.500) but does not reach conventional significance, reflecting limited power with only 8 positive pairs. The cancer-type-specific AUROC (0.794, reported in the benchmark comparison) is higher because it evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
+\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 75 pairs, 6 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.165--0.829). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.530$). The observed per-pair AUROC (0.493) does not exceed the null mean (0.501): with only 6 positive pairs the aggregated per-pair evaluation has no detectable signal, and the lineage-level evaluation (0.682, reported in the benchmark comparison) serves as the primary framework because it evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
 \end{figure}
 
 \begin{figure}[H]
@@ -124,38 +124,38 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \toprule
 \textbf{Label} & \textbf{Full name} & \textbf{Cell Lines} & \textbf{Pairs} & \textbf{Known+} & \textbf{DD AUROC} \\
 \midrule
-Biliary Tract & Biliary tract cancer & 39 & 86 & 3 & 0.960 \\
-Mesothelioma & Pleural mesothelioma & 21 & 8 & 2 & 0.917 \\
-Colorectal & Colorectal adenocarcinoma & 59 & 118 & 8 & 0.812 \\
-Esophagogastric & \shortstack[l]{Esophagogastric adenocarcinoma /\\esophageal SCC} & 62 & 85 & 8 & 0.805 \\
-SCLC & Small cell lung cancer & 121 & 122 & 9 & 0.750 \\
-Pancreatic & Pancreatic adenocarcinoma & 44 & 42 & 2 & 0.750 \\
-HNSCC & Head and neck squamous cell carcinoma & 60 & 25 & 6 & 0.746 \\
-Breast & Invasive breast carcinoma & 50 & 53 & 6 & 0.734 \\
-Neuroblastoma & Neuroblastoma & 33 & 9 & 3 & 0.722 \\
+Biliary Tract & Biliary tract cancer & 39 & 50 & 2 & 0.990 \\
+Esophagogastric & \shortstack[l]{Esophagogastric adenocarcinoma /\\esophageal SCC} & 62 & 69 & 4 & 0.969 \\
+Pancreatic & Pancreatic adenocarcinoma & 44 & 41 & 2 & 0.949 \\
+Glioma & Diffuse glioma & 66 & 28 & 2 & 0.885 \\
+Bladder Urothelial & Bladder urothelial carcinoma & 30 & 20 & 3 & 0.882 \\
+Breast & Invasive breast carcinoma & 50 & 48 & 4 & 0.852 \\
+HNSCC & Head and neck squamous cell carcinoma & 60 & 18 & 2 & 0.812 \\
+SCLC & Small cell lung cancer & 121 & 107 & 6 & 0.779 \\
+NSCLC & Non-small cell lung cancer & 95 & 104 & 6 & 0.738 \\
+Colorectal & Colorectal adenocarcinoma & 59 & 76 & 8 & 0.726 \\
 \midrule
-Bladder Urothelial & Bladder urothelial carcinoma & 30 & 62 & 4 & 0.698 \\
-Hepatocellular & Hepatocellular carcinoma & 24 & 45 & 3 & 0.683 \\
-Ovarian & Ovarian epithelial carcinoma & 55 & 105 & 9 & 0.674 \\
-Cervical & Cervical carcinoma & 16 & 11 & 4 & 0.643 \\
-Glioma & Diffuse glioma & 66 & 36 & 6 & 0.600 \\
-Endometrial & Endometrial carcinoma & 31 & 127 & 9 & 0.576 \\
-NSCLC & Non-small cell lung cancer & 95 & 111 & 9 & 0.572 \\
-Melanoma & Melanoma & 78 & 45 & 7 & 0.462 \\
+Endometrial & Endometrial carcinoma & 31 & 77 & 6 & 0.690 \\
+Ovarian & Ovarian epithelial carcinoma & 55 & 65 & 8 & 0.651 \\
+Melanoma & Melanoma & 78 & 31 & 4 & 0.481 \\
+Cervical & Cervical carcinoma & 16 & 10 & 3 & 0.476 \\
 \midrule
-Renal Cell & Renal cell carcinoma & 26 & 10 & 0 & --- \\
-Osteosarcoma & Osteosarcoma & 19 & 13 & 0 & --- \\
-Ewing Sarcoma & Ewing sarcoma & 18 & 4 & 0 & --- \\
-Other Sarcoma & Other soft-tissue sarcoma & 33 & 8 & 1 & --- \\
+Mesothelioma & Pleural mesothelioma & 21 & 5 & 1 & --- \\
+Hepatocellular & Hepatocellular carcinoma & 24 & 7 & 1 & --- \\
+Renal Cell & Renal cell carcinoma & 26 & 9 & 0 & --- \\
+Neuroblastoma & Neuroblastoma & 33 & 6 & 1 & --- \\
+Osteosarcoma & Osteosarcoma & 19 & 12 & 0 & --- \\
+Ewing Sarcoma & Ewing sarcoma & 18 & 2 & 0 & --- \\
 Rhabdomyosarcoma & Rhabdomyosarcoma & 12 & 2 & 0 & --- \\
+Other Sarcoma & Other soft-tissue sarcoma & 33 & 6 & 1 & --- \\
 Thyroid & Thyroid carcinoma & 10 & 2 & 1 & --- \\
 \bottomrule
 \end{tabular}
-\caption{Cell line counts and DD AUROC across all 23 analyzed solid tumor types. Top: AUROC~$>$~0.7 (9 types). Middle: AUROC~$\le$~0.7 (8 types). Bottom: insufficient known positives for AUROC (6 types). Known+: number of gold-standard positive pairs evaluable in each lineage. ``---'': AUROC not computable ($<$2 known positives). Full name: standardized cancer-type name corresponding to each short label; SCC, squamous cell carcinoma.}
+\caption{Cell line counts and DD AUROC across all 23 analyzed solid tumor types. Top: AUROC~$>$~0.7 (10 types). Middle: AUROC~$\le$~0.7 (4 types). Bottom: insufficient known positives for AUROC (9 types). Known+: number of gold-standard positive pairs evaluable in each lineage. ``---'': AUROC not computable ($<$2 known positives). Full name: standardized cancer-type name corresponding to each short label; SCC, squamous cell carcinoma.}
 \end{table}
 
 \subsection{Table S2: Complete paralog-SL pair analysis results}
-The full analysis results are provided as a tab-separated file: \texttt{TableS2\_FullResults.tsv} (118 rows $\times$ 13 columns, representing all driver$\times$paralog$\times$cancer-type combinations passing the minimum sample-size filter).
+The full analysis results are provided as a tab-separated file: \texttt{TableS2\_FullResults.tsv} (116 rows $\times$ 13 columns, representing all driver$\times$paralog$\times$cancer-type combinations passing the minimum sample-size filter).
 
 \textbf{Data dictionary:}
 \begin{itemize}\setlength\itemsep{0pt}
@@ -214,27 +214,24 @@ C & PPP2R1A & PPP2R1B & Seq.\ paralog & DepMap analysis & DepMap & No \\
 \toprule
 \textbf{Cancer Type} & \textbf{Cell Lines} & \textbf{Pairs} & \textbf{DD AUROC} \\
 \midrule
-Biliary Tract      & 39 & 86  & 0.960 \\
-Mesothelioma       & 21 & 8   & 0.917 \\
-Colorectal         & 59 & 118 & 0.812 \\
-Esophagogastric    & 62 & 85  & 0.805 \\
-SCLC               & 121 & 122 & 0.750 \\
-Pancreatic         & 44 & 42  & 0.750 \\
-HNSCC              & 60 & 25  & 0.746 \\
-Breast             & 50 & 53  & 0.734 \\
-Neuroblastoma      & 33 & 9   & 0.722 \\
+Biliary Tract        & 39 & 50 & 0.990 \\
+Esophagogastric      & 62 & 69 & 0.969 \\
+Pancreatic           & 44 & 41 & 0.949 \\
+Glioma               & 66 & 28 & 0.885 \\
+Bladder Urothelial   & 30 & 20 & 0.882 \\
+Breast               & 50 & 48 & 0.852 \\
+HNSCC                & 60 & 18 & 0.812 \\
+SCLC                 & 121 & 107 & 0.779 \\
+NSCLC                & 95 & 104 & 0.738 \\
+Colorectal           & 59 & 76 & 0.726 \\
 \midrule
-Bladder Urothelial & 30 & 62  & 0.698 \\
-Hepatocellular     & 24 & 45  & 0.683 \\
-Ovarian            & 55 & 105 & 0.674 \\
-Cervical           & 16 & 11  & 0.643 \\
-Glioma             & 66 & 36  & 0.600 \\
-Endometrial        & 31 & 127 & 0.576 \\
-NSCLC              & 95 & 111 & 0.572 \\
-Melanoma           & 78 & 45  & 0.462 \\
+Endometrial          & 31 & 77 & 0.690 \\
+Ovarian              & 55 & 65 & 0.651 \\
+Melanoma             & 78 & 31 & 0.481 \\
+Cervical             & 16 & 10 & 0.476 \\
 \bottomrule
 \end{tabular}
-\caption{DD AUROC across all 17 evaluable solid tumor types (sorted by AUROC). Horizontal line separates AUROC~$>$~0.7 (top) from AUROC~$\le$~0.7 (bottom). Full lineage names are given in Table~S1.}
+\caption{DD AUROC across all 14 evaluable solid tumor types (sorted by AUROC). Horizontal line separates AUROC~$>$~0.7 (top, 10 lineages) from AUROC~$\le$~0.7 (bottom). Full lineage names are given in Table~S1.}
 \end{table}
 
 \subsection{Table S5: 40-gene driver panel}
@@ -268,35 +265,87 @@ with $\ge$3 mutant cell lines in at least one DepMap lineage.}
 \footnotesize
 \begin{tabular}{llrrrll}
 \toprule
-\textbf{Driver} & \textbf{Paralog} & \textbf{|DD|} & \textbf{DWS} & \textbf{Select.} & \textbf{Class} & \textbf{Type} \\
+\textbf{Driver} & \textbf{Paralog} & \textbf{$|$DD$|$} & \textbf{DWS} & \textbf{Select.} & \textbf{Class} & \textbf{Type} \\
 \midrule
-ARID1A & ARID1B & 0.267 & 4.130 & 0.237 & HS & Seq \\
-NF1 & RASA2 & 0.066 & 3.313 & 0.003 & MOD & Seq \\
-RB1 & RBL1 & 0.134 & 2.829 & 0.006 & MOD & Seq \\
-KMT2D & KMT2C & 0.087 & 2.155 & 0.097 & MOD & Seq \\
-ATR & ATM & 0.040 & 2.009 & 0.027 & MOD & Seq \\
-AKT1 & AKT2 & 0.141 & 1.948 & 0.049 & MOD & Seq \\
-PPP2R1A & PPP2R1B & 0.068 & 1.458 & 0.000 & LS & Seq \\
-PIK3CA & PIK3CB & 0.138 & 1.261 & $-$0.051 & LS & Seq \\
-FBXW7 & FBXW2 & 0.032 & 1.226 & 0.000 & LS & Seq \\
-SMARCA4 & SMARCA2 & 0.053 & 1.159 & 0.032 & MOD & Seq \\
-EP300 & CREBBP & 0.200 & 1.148 & 0.115 & MOD & Seq \\
-BRAF & RAF1 & 0.129 & 0.947 & $-$0.049 & LS & Seq \\
-TP53 & TP63 & 0.039 & 0.946 & 0.022 & MOD & Seq \\
-STK11 & SIK1 & 0.031 & 0.912 & $-$0.010 & LS & Part \\
-CDH1 & CDH2 & 0.049 & 0.542 & $-$0.032 & LS & Seq \\
-MAP2K1 & MAP2K2 & 0.062 & 0.370 & $-$0.017 & LS & Seq \\
-KRAS & NRAS & 0.068 & 0.344 & $-$0.053 & LS & Seq \\
-BRCA1 & BRCA2 & 0.125 & 0.289 & 0.045 & PE & Func \\
-PIK3R1 & CRKL & 0.231 & 0.245 & $-$0.148 & PE & Seq \\
-CDK4 & CDK6 & 0.107 & 0.212 & $-$0.161 & LS & Seq \\
-PTEN & TNS2 & 0.041 & 0.170 & $-$0.011 & LS & Seq \\
-BRCA2 & BRCA1 & 0.087 & 0.164 & $-$0.039 & PE & Func \\
-KRAS & HRAS & 0.029 & 0.144 & $-$0.046 & LS & Seq \\
-CCNE1 & CCNE2 & 0.006 & 0.081 & $-$0.022 & LS & Seq \\
+ARID1A & ARID1B & 0.250 & 3.647 & 0.228 & HS & Seq \\
+NF1 & RASA2 & 0.062 & 3.260 & 0.002 & MOD & Seq \\
+KMT2D & KMT2C & 0.112 & 2.558 & 0.131 & MOD & Seq \\
+ATR & ATM & 0.049 & 2.182 & 0.031 & MOD & Seq \\
+RB1 & RBL1 & 0.112 & 2.059 & 0.003 & MOD & Seq \\
+AKT1 & AKT2 & 0.119 & 1.657 & 0.036 & MOD & Seq \\
+PPP2R1A & PPP2R1B & 0.068 & 1.454 & 0.000 & LS & Seq \\
+SMARCA4 & SMARCA2 & 0.057 & 1.268 & 0.039 & MOD & Seq \\
+PIK3CA & PIK3CB & 0.137 & 1.245 & $-$0.052 & LS & Seq \\
+EP300 & CREBBP & 0.187 & 1.185 & 0.120 & MOD & Seq \\
+FBXW7 & FBXW2 & 0.030 & 1.032 & 0.000 & LS & Seq \\
+STK11 & SIK1 & 0.037 & 1.018 & $-$0.010 & LS & Part \\
+BRAF & RAF1 & 0.105 & 0.824 & $-$0.038 & LS & Seq \\
+CDH1 & CDH2 & 0.057 & 0.722 & $-$0.030 & LS & Seq \\
+TP53 & TP63 & 0.031 & 0.690 & 0.036 & MOD & Seq \\
+MAP2K1 & MAP2K2 & 0.067 & 0.401 & $-$0.017 & LS & Seq \\
+KRAS & NRAS & 0.071 & 0.358 & $-$0.055 & LS & Seq \\
+BRCA1 & BRCA2 & 0.125 & 0.290 & 0.046 & PE & Func \\
+BRCA2 & BRCA1 & 0.094 & 0.177 & $-$0.039 & PE & Func \\
+PTEN & TNS2 & 0.041 & 0.172 & $-$0.012 & LS & Seq \\
+CDK4 & CDK6 & 0.079 & 0.157 & $-$0.121 & LS & Seq \\
+KRAS & HRAS & 0.028 & 0.139 & $-$0.045 & LS & Seq \\
+PIK3R1 & CRKL & 0.100 & 0.111 & $-$0.112 & PE & Seq \\
+CCNE1 & CCNE2 & 0.004 & 0.060 & $-$0.022 & LS & Seq \\
 \bottomrule
 \end{tabular}
-\caption{All 24 analyzed paralog pairs ranked by mean dependency window score (DWS). |DD|: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog.}
+\caption{All 24 analyzed paralog pairs ranked by mean dependency window score (DWS). $|$DD$|$: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog.}
+\end{table}
+
+
+\subsection{Table S7: Gene-class-specific driver-mutation rules and variant classification}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lllrrr}
+\toprule
+\textbf{Gene} & \textbf{Class} & \textbf{Rule} & \textbf{Old} & \textbf{New} & \textbf{\% ret.} \\
+\midrule
+ALK & ONC & Hotspot & 118 & 12 & 10.2 \\
+APC & TSG & LikelyLoF & 217 & 108 & 49.8 \\
+ARID1A & TSG & LikelyLoF & 240 & 173 & 72.1 \\
+ATM & TSG & LikelyLoF & 165 & 59 & 35.8 \\
+ATR & TSG & LikelyLoF & 125 & 37 & 29.6 \\
+BRAF & ONC & Hotspot & 212 & 162 & 76.4 \\
+BRCA1 & TSG & LikelyLoF & 101 & 34 & 33.7 \\
+BRCA2 & TSG & LikelyLoF & 159 & 68 & 42.8 \\
+CCNE1 & ONC & Hotspot & 22 & 0 & 0.0 \\
+CDH1 & TSG & LikelyLoF & 87 & 34 & 39.1 \\
+CDK4 & ONC & Hotspot & 27 & 8 & 29.6 \\
+CTNNB1 & ONC & Hotspot & 85 & 45 & 52.9 \\
+EGFR & ONC & Hotspot & 110 & 19 & 17.3 \\
+EP300 & TSG & LikelyLoF & 206 & 107 & 51.9 \\
+ERBB2 & ONC & Hotspot & 70 & 20 & 28.6 \\
+FBXW7 & TSG & LikelyLoF & 116 & 81 & 69.8 \\
+GATA3 & TSG & LikelyLoF & 52 & 16 & 30.8 \\
+KEAP1 & TSG & LikelyLoF & 99 & 31 & 31.3 \\
+KMT2D & TSG & LikelyLoF & 356 & 185 & 52.0 \\
+KRAS & ONC & Hotspot & 254 & 233 & 91.7 \\
+MAP2K1 & ONC & Hotspot & 36 & 14 & 38.9 \\
+MAP3K1 & TSG & LikelyLoF & 74 & 14 & 18.9 \\
+MAPK1 & ONC & Hotspot & 13 & 0 & 0.0 \\
+MET & ONC & Hotspot & 66 & 1 & 1.5 \\
+NF1 & TSG & LikelyLoF & 215 & 122 & 56.7 \\
+PIK3CA & ONC & Hotspot & 182 & 153 & 84.1 \\
+PIK3R1 & TSG & LikelyLoF & 79 & 46 & 58.2 \\
+PPP2R1A & TSG & LikelyLoF & 53 & 13 & 24.5 \\
+PTEN & TSG & LikelyLoF & 199 & 176 & 88.4 \\
+RB1 & TSG & LikelyLoF & 185 & 150 & 81.1 \\
+SMAD4 & TSG & LikelyLoF & 119 & 80 & 67.2 \\
+STK11 & TSG & LikelyLoF & 97 & 66 & 68.0 \\
+TP53 & TSG & LikelyLoF & 1171 & 1140 & 97.4 \\
+\bottomrule
+\end{tabular}
+\caption{Driver-mutation definitions by gene class (DepMap 26Q1, default-entry profiles).
+TSG: mutant requires \texttt{LikelyLoF}; ONC: mutant requires \texttt{Hotspot}.
+Old: cell lines carrying any non-silent variant (pre-revision permissive definition);
+New: cell lines qualifying under the class-specific rule; \% ret.: 100 $\times$ New/Old.
+The top VariantInfo terms per gene are at \texttt{output/driver\_mutation\_rules.csv}.
+CCNE1 and MAPK1 are amplification-driven oncogenes with no qualifying hotspot mutations.}
 \end{table}
 
 \end{document}

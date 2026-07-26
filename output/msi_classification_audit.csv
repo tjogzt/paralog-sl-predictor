@@ -5,7 +5,7 @@ Endometrial,ACH-000293,1.19,MSS,MSS,False,True
 Endometrial,ACH-000302,2.57,MSS,MSS,False,True
 Endometrial,ACH-000397,2.56,MSS,MSS,False,True
 Endometrial,ACH-000407,2.79,MSS,MSS,False,True
-Endometrial,ACH-000435,3.01,MSS,MSI_H,False,False
+Endometrial,ACH-000435,3.01,MSS,MSS,False,True
 Endometrial,ACH-000831,3.47,MSS,MSS,False,True
 Endometrial,ACH-000864,63.68,MSI_H,MSI_H,True,True
 Endometrial,ACH-000879,71.23,MSI_H,MSI_H,False,True
@@ -80,7 +80,7 @@ Colorectal,ACH-000950,88.59,MSI_H,MSS,False,False
 Colorectal,ACH-000955,88.91,MSI_H,MSI_H,True,True
 Colorectal,ACH-000957,88.39,MSI_H,MSI_H,False,True
 Colorectal,ACH-000958,84.58,MSI_H,MSI_H,False,True
-Colorectal,ACH-000959,90.42,MSI_H,MSI_H,True,True
+Colorectal,ACH-000959,90.42,MSI_H,MSI_H,False,True
 Colorectal,ACH-000963,91.78,MSI_H,MSI_H,True,True
 Colorectal,ACH-000967,90.86,MSI_H,MSI_H,False,True
 Colorectal,ACH-000969,89.35,MSI_H,MSI_H,True,True

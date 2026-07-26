@@ -1,0 +1,332 @@
+{
+  "frames": [
+    {
+      "frame": "pair_level_primary_gyn3",
+      "n_pairs": 116,
+      "n_pos": 9,
+      "auroc_abs": 0.6822,
+      "auroc_signed": 0.5784,
+      "auroc_negated": 0.4216,
+      "n_pos_dd_negative": 4,
+      "pos_dd_negative_pairs": [
+        "BRCA2->BRCA1 (DD=-0.002)",
+        "PIK3CA->PIK3CB (DD=-0.119)",
+        "PIK3CA->PIK3CB (DD=-0.113)",
+        "PIK3CA->PIK3CB (DD=-0.076)"
+      ],
+      "n_reverse_in_top_abs_quartile": 2
+    },
+    {
+      "frame": "pair_level_primary_gyn3_TIER_A",
+      "n_pairs": 109,
+      "n_pos": 2,
+      "auroc_abs": 1.0,
+      "auroc_signed": 1.0,
+      "auroc_negated": 0.0,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": [],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Biliary_Tract",
+      "n_pairs": 50,
+      "n_pos": 2,
+      "auroc_abs": 0.9896,
+      "auroc_signed": 0.9896,
+      "auroc_negated": 0.0104,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": [],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Bladder_Urothelial",
+      "n_pairs": 20,
+      "n_pos": 3,
+      "auroc_abs": 0.8824,
+      "auroc_signed": 0.6863,
+      "auroc_negated": 0.3137,
+      "n_pos_dd_negative": 1,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.078)"
+      ],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Breast",
+      "n_pairs": 48,
+      "n_pos": 4,
+      "auroc_abs": 0.8523,
+      "auroc_signed": 0.4659,
+      "auroc_negated": 0.5341,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.258)",
+        "BRCA1->BRCA2 (DD=-0.136)"
+      ],
+      "n_reverse_in_top_abs_quartile": 2
+    },
+    {
+      "frame": "lineage:Cervical",
+      "n_pairs": 10,
+      "n_pos": 3,
+      "auroc_abs": 0.4762,
+      "auroc_signed": 0.6667,
+      "auroc_negated": 0.3333,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.076)",
+        "SMARCA4->SMARCA2 (DD=-0.048)"
+      ],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Colorectal",
+      "n_pairs": 76,
+      "n_pos": 8,
+      "auroc_abs": 0.7261,
+      "auroc_signed": 0.7114,
+      "auroc_negated": 0.2886,
+      "n_pos_dd_negative": 3,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.144)",
+        "BRCA1->BRCA2 (DD=-0.026)",
+        "SMARCA4->SMARCA2 (DD=-0.014)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "lineage:Endometrial",
+      "n_pairs": 77,
+      "n_pos": 6,
+      "auroc_abs": 0.6901,
+      "auroc_signed": 0.5141,
+      "auroc_negated": 0.4859,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.149)",
+        "BRCA2->BRCA1 (DD=-0.227)"
+      ],
+      "n_reverse_in_top_abs_quartile": 2
+    },
+    {
+      "frame": "lineage:Esophagogastric",
+      "n_pairs": 69,
+      "n_pos": 4,
+      "auroc_abs": 0.9692,
+      "auroc_signed": 0.7538,
+      "auroc_negated": 0.2462,
+      "n_pos_dd_negative": 1,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.107)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "lineage:Glioma",
+      "n_pairs": 28,
+      "n_pos": 2,
+      "auroc_abs": 0.8846,
+      "auroc_signed": 0.5769,
+      "auroc_negated": 0.4231,
+      "n_pos_dd_negative": 1,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.136)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "lineage:HNSCC",
+      "n_pairs": 18,
+      "n_pos": 2,
+      "auroc_abs": 0.8125,
+      "auroc_signed": 0.0625,
+      "auroc_negated": 0.9375,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.164)",
+        "SMARCA4->SMARCA2 (DD=-0.075)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "lineage:Hepatocellular",
+      "n_pairs": 7,
+      "n_pos": 1,
+      "auroc_abs": 1.0,
+      "auroc_signed": 1.0,
+      "auroc_negated": 0.0,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": [],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Melanoma",
+      "n_pairs": 31,
+      "n_pos": 4,
+      "auroc_abs": 0.4815,
+      "auroc_signed": 0.7593,
+      "auroc_negated": 0.2407,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "SMARCA4->SMARCA2 (DD=-0.019)",
+        "FBXW7->FBXW2 (DD=-0.002)"
+      ],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Mesothelioma",
+      "n_pairs": 5,
+      "n_pos": 1,
+      "auroc_abs": 1.0,
+      "auroc_signed": 1.0,
+      "auroc_negated": 0.0,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": [],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:NSCLC",
+      "n_pairs": 104,
+      "n_pos": 6,
+      "auroc_abs": 0.7381,
+      "auroc_signed": 0.7024,
+      "auroc_negated": 0.2976,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.056)",
+        "STK11->SIK1 (DD=-0.012)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "lineage:Neuroblastoma",
+      "n_pairs": 6,
+      "n_pos": 1,
+      "auroc_abs": 0.8,
+      "auroc_signed": 1.0,
+      "auroc_negated": 0.0,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": [],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Other_Sarcoma",
+      "n_pairs": 6,
+      "n_pos": 1,
+      "auroc_abs": 1.0,
+      "auroc_signed": 1.0,
+      "auroc_negated": 0.0,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": [],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:Ovarian",
+      "n_pairs": 65,
+      "n_pos": 8,
+      "auroc_abs": 0.6513,
+      "auroc_signed": 0.5417,
+      "auroc_negated": 0.4583,
+      "n_pos_dd_negative": 4,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.113)",
+        "BRCA2->BRCA1 (DD=-0.002)",
+        "EP300->CREBBP (DD=-0.062)",
+        "STK11->SIK1 (DD=-0.128)"
+      ],
+      "n_reverse_in_top_abs_quartile": 2
+    },
+    {
+      "frame": "lineage:Pancreatic",
+      "n_pairs": 41,
+      "n_pos": 2,
+      "auroc_abs": 0.9487,
+      "auroc_signed": 0.9615,
+      "auroc_negated": 0.0385,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": [],
+      "n_reverse_in_top_abs_quartile": 0
+    },
+    {
+      "frame": "lineage:SCLC",
+      "n_pairs": 107,
+      "n_pos": 6,
+      "auroc_abs": 0.7789,
+      "auroc_signed": 0.6106,
+      "auroc_negated": 0.3894,
+      "n_pos_dd_negative": 3,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.077)",
+        "FBXW7->FBXW2 (DD=-0.010)",
+        "STK11->SIK1 (DD=-0.034)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "lineage:Thyroid",
+      "n_pairs": 2,
+      "n_pos": 1,
+      "auroc_abs": 1.0,
+      "auroc_signed": 1.0,
+      "auroc_negated": 0.0,
+      "n_pos_dd_negative": 0,
+      "pos_dd_negative_pairs": []
+    },
+    {
+      "frame": "msi:msi_colorectal_msi_h_results",
+      "n_pairs": 47,
+      "n_pos": 4,
+      "auroc_abs": 0.7674,
+      "auroc_signed": 0.5581,
+      "auroc_negated": 0.4419,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.343)",
+        "BRCA2->BRCA1 (DD=-0.051)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "msi:msi_colorectal_mss_results",
+      "n_pairs": 47,
+      "n_pos": 3,
+      "auroc_abs": 0.7121,
+      "auroc_signed": 0.5455,
+      "auroc_negated": 0.4545,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.175)",
+        "FBXW7->FBXW2 (DD=-0.022)"
+      ],
+      "n_reverse_in_top_abs_quartile": 1
+    },
+    {
+      "frame": "msi:msi_endometrial_msi_h_results",
+      "n_pairs": 81,
+      "n_pos": 3,
+      "auroc_abs": 0.8376,
+      "auroc_signed": 0.3034,
+      "auroc_negated": 0.6966,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.140)",
+        "BRCA2->BRCA1 (DD=-0.253)"
+      ],
+      "n_reverse_in_top_abs_quartile": 2
+    },
+    {
+      "frame": "msi:msi_endometrial_mss_results",
+      "n_pairs": 9,
+      "n_pos": 3,
+      "auroc_abs": 0.5556,
+      "auroc_signed": 0.5,
+      "auroc_negated": 0.5,
+      "n_pos_dd_negative": 2,
+      "pos_dd_negative_pairs": [
+        "PIK3CA->PIK3CB (DD=-0.084)",
+        "FBXW7->FBXW2 (DD=-0.020)"
+      ],
+      "n_reverse_in_top_abs_quartile": 0
+    }
+  ]
+}

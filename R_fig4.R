@@ -183,7 +183,7 @@ panel_d <- function() {
       label = c("ARID1A>ARID1B","NF1>RASA2","KMT2D>KMT2C","PPP2R1A>PPP2R1B",
                 "EP300>CREBBP","PIK3CA>PIK3CB","FBXW7>FBXW2","TP53>TP63",
                 "STK11>SIK1","KRAS>HRAS"),
-      score = c(.817,.615,.561,.525,.513,.495,.424,.423,.394,.390))
+      score = c(.815,.652,.638,.543,.533,.509,.418,.417,.409,.392))
   }
   cand$label <- factor(cand$label, levels = rev(cand$label))
   cand$is_top <- c(TRUE, rep(FALSE, nrow(cand) - 1))

@@ -101,25 +101,28 @@ PUBLISHED_BENCHMARKS = {
 }
 
 # Values stated in the manuscript, for the automated claims check.
-# Updated 2026-07-25 to the recomputed values after the DD-sign/BH fixes and
-# the manuscript text alignment (see manuscript.tex git history).
+# Updated 2026-07-26 to the recomputed values after the C7 class-specific
+# driver-mutation rules (TSG: LikelyLoF; ONC: Hotspot; default-entry
+# profiles only). See output/driver_mutation_rules.csv for the variant
+# classification table and output/direction_audit.json for the |DD|
+# direction audit (C6).
 MANUSCRIPT_CLAIMS = {
-    "dd_auroc_lineage_full": 0.794,
-    "dd_auroc_lineage_leave_out_depmap_era": 0.833,
-    "dd_auroc_lineage_pre_depmap_only": 0.900,
-    "dd_auroc_lineage_full_direction_strict": 0.767,
-    "dd_auroc_id_filter_0.2": 0.778,
+    "dd_auroc_lineage_full": 0.682,
+    "dd_auroc_lineage_leave_out_depmap_era": 0.728,
+    "dd_auroc_lineage_pre_depmap_only": 0.774,
+    "dd_auroc_lineage_full_direction_strict": 0.682,
+    "dd_auroc_id_filter_0.2": 0.583,
     "dd_auroc_id_filter_0.3": 1.000,
-    "component_dd": 0.794,
-    "component_pcs": 0.720,
-    "component_delta_expression": 0.348,
-    "component_necessity": 0.597,
-    "per_pair_auroc": 0.668,
-    "dd_auroc_per_pair_mean": 0.736,
-    "composite_auroc_per_pair_mean": 0.730,
-    "auprc_composite_per_pair": 0.271,
-    "llo_auroc_min": 0.763,
-    "llo_auroc_max": 0.821,
+    "component_dd": 0.682,
+    "component_pcs": 0.777,
+    "component_delta_expression": 0.564,
+    "component_necessity": 0.647,
+    "per_pair_auroc": 0.493,
+    "dd_auroc_per_pair_mean": 0.551,
+    "composite_auroc_per_pair_mean": 0.841,
+    "auprc_composite_per_pair": 0.363,
+    "llo_auroc_min": 0.674,
+    "llo_auroc_max": 0.702,
 }
 TOL = 0.005  # claims match if |computed - claimed| <= TOL
 

@@ -50,6 +50,8 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
+from data_loader import load_mutations, build_mutation_matrix  # noqa: E402
 DATA = ROOT / "data"
 CACHE = ROOT / "output" / "cache"
 CNV_CSV_OUT = ROOT / "output" / "cnv_independence.csv"
@@ -75,24 +77,25 @@ FUNCTIONAL_ANALOGS = {("BRCA1", "BRCA2"), ("STK11", "SIK1")}
 DRIVERS = sorted({a for a, _ in GOLD_PAIRS} | {"TP53"})
 PARALOGS = sorted({b for _, b in GOLD_PAIRS})
 
-# Damaging-mutation filter identical to data_loader.load_mutations
-DAMAGING = ["Nonsense_Mutation", "Frame_Shift_Del", "Frame_Shift_Ins",
-            "Splice_Site", "Translation_Start_Site", "stop_gained",
-            "frameshift_variant", "splice_donor_variant",
-            "splice_acceptor_variant", "Missense_Mutation", "missense_variant",
-            "In_Frame_Del", "In_Frame_Ins"]
+# NOTE: the private DAMAGING list was removed in the class-specific-rules
+# batch (C7); mutation filtering now goes through data_loader.load_mutations
+# + build_mutation_matrix (default-entry + TSG:LikelyLoF / ONC:Hotspot rules).
 
+# Values stated in the manuscript, updated 2026-07-26 after the C7
+# class-specific driver-mutation rules (TP53 LikelyLoF includes DN missense;
+# ARID1A restricted to LikelyLoF). p-value claims match within one order of
+# magnitude (see check loop below).
 CLAIMS = {
     "cnv_r2_max": 0.10,            # "all R^2 < 0.10" (upper-bound check)
-    "cnv_mean_abs_ddd": 0.002,     # "mean |DeltaDD| = 0.002" (approximate)
-    "arid1b_cnv_adj_p": 4.5e-28,
-    "arid1b_expr_adj_p": 9.3e-28,
-    "ep300_crebbp_cnv_adj_p": 1.3e-11,
-    "expr_mean_abs_ddd": 0.01,     # "mean |DeltaDD| < 0.01" (upper-bound check)
-    "tp53_comut_n": 96,
-    "tp53_mut_total": 159,
+    "cnv_mean_abs_ddd": 0.005,     # mean |DeltaDD| after CNV adjustment
+    "arid1b_cnv_adj_p": 6.5e-42,
+    "arid1b_expr_adj_p": 4.1e-41,
+    "ep300_crebbp_cnv_adj_p": 1.4e-13,
+    "expr_mean_abs_ddd": 0.014,    # mean |DeltaDD| after expression adjustment
+    "tp53_comut_n": 76,
+    "tp53_mut_total": 121,
     "tp53_abs_ddd": 0.002,
-    "tp53_adj_p": 4.7e-28,
+    "tp53_adj_p": 5.8e-42,
 }
 
 
@@ -121,26 +124,22 @@ def stage_dep_mut():
     dep = read_slice(DATA / "CRISPRGeneEffect.csv", PARALOGS + DRIVERS)
     dep.to_pickle(CACHE / "dep_slice.pkl")
 
-    mut = pd.read_csv(DATA / "OmicsSomaticMutations.csv",
-                      usecols=["ModelID", "HugoSymbol", "VariantInfo"],
-                      low_memory=False)
-    mut = mut[mut["VariantInfo"].isin(DAMAGING) | mut["VariantInfo"].isna()]
-    mut = mut[mut["HugoSymbol"].isin(DRIVERS)]
-    mut_pairs = mut[["ModelID", "HugoSymbol"]].drop_duplicates()
+    # Shared mutation pipeline (data_loader): default-entry filter +
+    # class-specific driver rules (TSG: LikelyLoF; oncogene: Hotspot)
+    mut = load_mutations(DATA / "OmicsSomaticMutations.csv")
+    mut = mut[mut["Gene"].isin(DRIVERS)]
     lines = sorted(dep.index.tolist())
-    mat = pd.DataFrame(0, index=lines, columns=DRIVERS)
-    for _, r in mut_pairs.iterrows():
-        if r["ModelID"] in mat.index and r["HugoSymbol"] in mat.columns:
-            mat.loc[r["ModelID"], r["HugoSymbol"]] = 1
+    mat = build_mutation_matrix(mut, lines, DRIVERS)
     mat.to_pickle(CACHE / "mut_matrix.pkl")
 
     # Mutation-file frame (no dependency filter): co-mutation counts used to
-    # check the manuscript's "107/169 ARID1A-mutant lines" claim
+    # check the manuscript's ARID1A/TP53 co-mutation claim
+    mut_pairs = mut[["DepMap_ID", "Gene"]].drop_duplicates()
     broad = {}
     for d in ("ARID1A", "TP53"):
-        broad[f"{d}_mut_lines_mutfile"] = int(mut_pairs.loc[mut_pairs["HugoSymbol"] == d, "ModelID"].nunique())
-    a_lines = set(mut_pairs.loc[mut_pairs["HugoSymbol"] == "ARID1A", "ModelID"])
-    t_lines = set(mut_pairs.loc[mut_pairs["HugoSymbol"] == "TP53", "ModelID"])
+        broad[f"{d}_mut_lines_mutfile"] = int(mut_pairs.loc[mut_pairs["Gene"] == d, "DepMap_ID"].nunique())
+    a_lines = set(mut_pairs.loc[mut_pairs["Gene"] == "ARID1A", "DepMap_ID"])
+    t_lines = set(mut_pairs.loc[mut_pairs["Gene"] == "TP53", "DepMap_ID"])
     broad["tp53_comut_in_arid1a_mutfile"] = int(len(a_lines & t_lines))
     (CACHE / "mutfile_counts.json").write_text(json.dumps(broad, indent=1))
 
@@ -197,6 +196,12 @@ def ols(y, X):
     return fit.params, fit.pvalues, int(fit.nobs)
 
 
+def _f(x):
+    """JSON-safe float: NaN/inf -> None."""
+    x = float(x)
+    return x if np.isfinite(x) else None
+
+
 def stage_analyze():
     dep = pd.read_pickle(CACHE / "dep_slice.pkl")
     mut = pd.read_pickle(CACHE / "mut_matrix.pkl")
@@ -220,34 +225,47 @@ def stage_analyze():
         m = mut[d]
         y = dep[p]
         base_ok = y.notna()
+        n_mut_ok = int(m[base_ok].sum())
+        n_wt_ok = int((1 - m[base_ok]).sum())
+        if n_mut_ok < 3 or n_wt_ok < 3:
+            # driver has (near-)no qualifying mutant lines on this frame
+            # (e.g. amplification-driven CCNE1 under the Hotspot rule):
+            # OLS is not identifiable — record and skip.
+            results["pairs"][f"{d}->{p}"] = {
+                "skipped": f"insufficient MUT/WT lines (n_mut={n_mut_ok}, n_wt={n_wt_ok})"}
+            print(f"  {d:9s}->{p:9s} skipped: n_mut={n_mut_ok}, n_wt={n_wt_ok}")
+            continue
         # base model
         (cb, pb, nb) = ols(y[base_ok], m[base_ok].values.reshape(-1, 1))
-        entry = {"dd_base": float(-cb[1]), "p_base": float(pb[1]), "n_base": nb,
-                 "n_mut": int(m[base_ok].sum()), "n_wt": int((1 - m[base_ok]).sum())}
+        entry = {"dd_base": _f(-cb[1]), "p_base": _f(pb[1]), "n_base": nb,
+                 "n_mut": n_mut_ok, "n_wt": n_wt_ok}
         # CNV-adjusted
         if p in cnv.columns:
             dfj = pd.concat([y, m, cnv[p].rename("cnv")], axis=1).dropna()
             if len(dfj) >= 10 and dfj["cnv"].std() > 0:
                 (ca, pa, na) = ols(dfj[p], dfj[[d, "cnv"]].values)
-                entry["dd_cnv_adj"] = float(-ca[1])
-                entry["p_cnv_adj"] = float(pa[1])
+                entry["dd_cnv_adj"] = _f(-ca[1])
+                entry["p_cnv_adj"] = _f(pa[1])
                 entry["n_cnv"] = na
-                entry["abs_ddd_cnv"] = abs(entry["dd_cnv_adj"] - entry["dd_base"])
-                ddd_cnv.append(entry["abs_ddd_cnv"])
+                if entry["dd_cnv_adj"] is not None and entry["dd_base"] is not None:
+                    entry["abs_ddd_cnv"] = abs(entry["dd_cnv_adj"] - entry["dd_base"])
+                    ddd_cnv.append(entry["abs_ddd_cnv"])
         # expression-adjusted
         if p in expr.columns:
             dfj = pd.concat([y, m, expr[p].rename("ex")], axis=1).dropna()
             if len(dfj) >= 10 and dfj["ex"].std() > 0:
                 (ce, pe, ne) = ols(dfj[p], dfj[[d, "ex"]].values)
-                entry["dd_expr_adj"] = float(-ce[1])
-                entry["p_expr_adj"] = float(pe[1])
+                entry["dd_expr_adj"] = _f(-ce[1])
+                entry["p_expr_adj"] = _f(pe[1])
                 entry["n_expr"] = ne
-                entry["abs_ddd_expr"] = abs(entry["dd_expr_adj"] - entry["dd_base"])
-                ddd_expr.append(entry["abs_ddd_expr"])
+                if entry["dd_expr_adj"] is not None and entry["dd_base"] is not None:
+                    entry["abs_ddd_expr"] = abs(entry["dd_expr_adj"] - entry["dd_base"])
+                    ddd_expr.append(entry["abs_ddd_expr"])
         results["pairs"][f"{d}->{p}"] = entry
-        print(f"  {d:9s}->{p:9s} base p={entry['p_base']:.2e} "
-              f"cnv p={entry.get('p_cnv_adj', float('nan')):.2e} "
-              f"expr p={entry.get('p_expr_adj', float('nan')):.2e}")
+        _fmt = lambda v: f"{v:.2e}" if v is not None else "   NA   "
+        print(f"  {d:9s}->{p:9s} base p={_fmt(entry['p_base'])} "
+              f"cnv p={_fmt(entry.get('p_cnv_adj'))} "
+              f"expr p={_fmt(entry.get('p_expr_adj'))}")
 
     # ── TP53 co-mutation control for ARID1A->ARID1B ──
     tp = {}

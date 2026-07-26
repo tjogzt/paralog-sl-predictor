@@ -48,22 +48,29 @@ TABLES2 = ROOT / "output" / "tables" / "TableS2_FullResults.tsv"
 JSON_OUT = ROOT / "output" / "ml_benchmark.json"
 TSV_OUT = ROOT / "output" / "tables" / "ml_benchmark.tsv"
 
-FEATURES = ["dd_abs", "pcs", "dexpr_abs", "necessity", "composite", "mut_freq"]
+# composite is a deterministic function of (dd_abs, pcs, dexpr_abs,
+# necessity); including it makes the linear design matrix collinear and
+# destabilizes LR / linear-SVM fits. It is therefore evaluated only as a
+# single-feature baseline (composite_alone), never as a classifier input.
+FEATURES = ["dd_abs", "pcs", "dexpr_abs", "necessity", "mut_freq"]
 SEED = 42
 
 # Values stated in the manuscript, for the automated claims check.
-# Updated 2026-07-25 to the reproducible leave-one-pair-out results written
-# by this script; the pre-revision manuscript numbers (LR 0.810, RF 0.774,
-# beta = 2.64, p = 0.009) traced to resubstitution (training-set) evaluation.
+# Updated 2026-07-26 to the leave-one-pair-out results after the C7
+# class-specific driver-mutation rules shrank the evaluable positive set
+# to 6 aggregated pairs; composite removed from classifier features
+# (deterministic function of the other features -> collinearity) and kept
+# as single-feature baseline only. With n_pos = 6, linear-classifier LOO
+# AUROCs are unstable and are reported with an explicit small-n caveat.
 CLAIMS = {
-    "LR": 0.632,
-    "RF": 0.629,
-    "SVM_RBF_low": 0.563,
-    "SVM_Linear_high": 0.699,
-    "dd_alone": 0.736,
-    "composite_alone": 0.730,
-    "lr_beta_dd": 2.12,
-    "lr_p_dd": 0.312,
+    "LR": 0.138,
+    "RF": 0.617,
+    "SVM_RBF_low": 0.744,
+    "SVM_Linear_high": 0.217,
+    "dd_alone": 0.551,
+    "composite_alone": 0.841,
+    "lr_beta_dd": 0.40,
+    "lr_p_dd": 0.253,
 }
 TOL = 0.005
 TOL_COEF = 0.02

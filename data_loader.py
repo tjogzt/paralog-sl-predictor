@@ -22,7 +22,7 @@ from typing import Optional, Dict, List, Tuple
 from config import (
     DEPMAP_FILES, ENSEMBL_PARALOG_FILE, SYNLETHDB_FILE,
     GYN_CANCER_TYPES, DRIVER_GENES, KNOWN_PARALOG_SL,
-    MIN_MUT_SAMPLES, MIN_WT_SAMPLES,
+    MIN_MUT_SAMPLES, MIN_WT_SAMPLES, driver_mutation_rule,
 )
 
 
@@ -85,12 +85,25 @@ def load_models(path: Optional[Path] = None) -> pd.DataFrame:
 def load_mutations(path: Optional[Path] = None) -> pd.DataFrame:
     """
     Load somatic mutation annotations.
-    Filters to damaging mutations only (nonsense, frameshift, splice-site).
+    Filters to default-entry profiles and non-silent variants
+    (nonsense, frameshift, splice-site, missense, in-frame indel).
+
+    Returns columns: DepMap_ID, Gene, VariantInfo, Hotspot, LikelyLoF.
+    The Hotspot/LikelyLoF flags drive the gene-class-specific driver
+    mutation rules in build_mutation_matrix (TSG: LikelyLoF;
+    oncogene: Hotspot).
     """
     path = path or DEPMAP_FILES["mutations"]
     if not path.exists():
         raise FileNotFoundError(f"Mutations file not found: {path}")
     df = pd.read_csv(path, low_memory=False)
+
+    # Use only the default omics profile per model (26Q1 file is
+    # profile-level; without this filter a model's secondary profiles
+    # could contribute extra variant calls)
+    if "IsDefaultEntryForModel" in df.columns:
+        df = df[df["IsDefaultEntryForModel"] == "Yes"]
+
     # Identify the column that holds mutation consequence
     variant_col = None
     for c in ["VariantInfo", "VariantClassification", "Variant_Classification"]:
@@ -104,30 +117,58 @@ def load_mutations(path: Optional[Path] = None) -> pd.DataFrame:
                      "frameshift_variant", "splice_donor_variant",
                      "splice_acceptor_variant",
                      "Missense_Mutation", "missense_variant",
-                     "In_Frame_Del", "In_Frame_Ins"]
-        df = df[df[variant_col].isin(damaging) | df[variant_col].isna()]
+                     "In_Frame_Del", "In_Frame_Ins",
+                     "inframe_deletion", "inframe_insertion"]
+        # keep rows whose VariantInfo CONTAINS a non-silent consequence
+        # (26Q1 uses compound terms such as
+        # "missense_variant&splice_region_variant")
+        pat = "|".join(damaging)
+        df = df[df[variant_col].str.contains(pat, na=False) | df[variant_col].isna()]
 
     # Identify gene and model columns
     gene_col = next((c for c in ["HugoSymbol", "Hugo_Symbol", "Gene"] if c in df.columns), None)
     model_col = next((c for c in ["ModelID", "DepMap_ID"] if c in df.columns), None)
 
     if gene_col and model_col:
-        return df[[model_col, gene_col]].rename(columns={model_col: "DepMap_ID",
-                                                          gene_col: "Gene"})
+        keep = {model_col: "DepMap_ID", gene_col: "Gene"}
+        out = df.rename(columns=keep)
+        extra = [c for c in ["VariantInfo", "Hotspot", "LikelyLoF"] if c in out.columns]
+        return out[["DepMap_ID", "Gene"] + extra]
     return df
 
 
 def build_mutation_matrix(mutations_df: pd.DataFrame,
                            cell_lines: List[str],
-                           genes: List[str]) -> pd.DataFrame:
+                           genes: List[str],
+                           apply_driver_rules: bool = True) -> pd.DataFrame:
     """
     Build binary mutation matrix.
-    Rows = cell lines, Columns = genes, Values = 1 (damaging mut) or 0 (WT).
+    Rows = cell lines, Columns = genes, Values = 1 (driver mut) or 0 (WT).
+
+    Driver definition is gene-class specific (apply_driver_rules=True,
+    the default): tumor suppressors require LikelyLoF variants, oncogenes
+    require Hotspot variants, and genes without an assigned class keep the
+    permissive non-silent filter applied in load_mutations. Amplification-
+    driven oncogenes with no qualifying hotspot mutations yield an all-WT
+    column; this is intentional (mutation rules do not capture CNV-driven
+    activation).
     """
     sub = mutations_df[
         mutations_df["DepMap_ID"].isin(cell_lines) &
         mutations_df["Gene"].isin(genes)
-    ]
+    ].copy()
+
+    if apply_driver_rules and not sub.empty:
+        has_flags = {"Hotspot", "LikelyLoF"}.issubset(sub.columns)
+        if has_flags:
+            keep = pd.Series(True, index=sub.index)
+            for cls, flag in (("TSG", "LikelyLoF"), ("ONC", "Hotspot")):
+                cls_genes = [g for g in genes if driver_mutation_rule(g) == cls]
+                if cls_genes:
+                    mask = sub["Gene"].isin(cls_genes)
+                    keep &= (~mask) | (sub[flag] == True)
+            sub = sub[keep]
+
     if sub.empty:
         return pd.DataFrame(0, index=cell_lines, columns=genes)
     matrix = sub.pivot_table(

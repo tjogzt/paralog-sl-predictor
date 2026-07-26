@@ -99,7 +99,8 @@ panel_b <- function() {
     scale_color_manual(values = c("TSG-driven" = BLUE, "Oncogene-driven" = RED)) +
     labs(x = NULL, y = "DD AUROC") +
     annotate("text", x = 1.5, y = 1.02,
-             label = sprintf("perm. p = %.3f\n(n=14 vs n=3)", perm_p),
+             label = sprintf("perm. p = %.3f\n(n=%d vs n=%d)", perm_p,
+                             sum(df$group == "TSG-driven"), n_onc),
              size = 2.5, hjust = 0.5) +
     geom_hline(yintercept = 0.5, linewidth = 0.3, color = GRAY, alpha = 0.3, linetype = "dashed") +
     theme_sci + theme(legend.position = "none")

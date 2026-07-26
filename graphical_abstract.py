@@ -69,7 +69,7 @@ fig.text(0.625, 0.669, "KRAS→HRAS  PIK3R1→CRKL", ha="center", fontsize=7.2, 
 
 box(76.5, T, 20, H, YELLOW, "#fef6e0")
 fig.text(0.87, 0.79, "vs Published", ha="center", fontsize=10.1, fontweight="bold", color=NAVY)
-fig.text(0.87, 0.745, "DD: 0.794", ha="center", fontsize=9, fontweight="bold", color=RED)
+fig.text(0.87, 0.745, "DD: 0.682", ha="center", fontsize=9, fontweight="bold", color=RED)
 fig.text(0.87, 0.707, "SLMGAE: 0.790", ha="center", fontsize=7.6, color="#34495e")
 fig.text(0.87, 0.669, "+ID>30%: 1.000", ha="center", fontsize=7.6, color=GREEN)
 
@@ -81,9 +81,9 @@ fig.text(0.5, 0.545, "Five-Layer Orthogonal Evidence",
          ha="center", fontsize=10.8, fontweight="bold", color=NAVY)
 
 layers = [
-    ("1", "Genomic", BLUE, ["23 lineages", "AUROC > 0.7", "in 9 of 17 lineages"]),
+    ("1", "Genomic", BLUE, ["23 lineages", "AUROC > 0.7", "in 10 of 14 lineages"]),
     ("2", "Proteomic", GREEN, ["7 CPTAC cohorts", "EP300-CREBBP", "5/7 significant"]),
-    ("3", "Pharmacologic", RED, ["1,482 PRISM drugs", "553 selective hits", "MEK/mTOR/HDAC"]),
+    ("3", "Pharmacologic", RED, ["1,482 PRISM drugs", "633 selective hits", "MEK/mTOR/HDAC"]),
     ("4", "Clinical Strat.", YELLOW, ["MSI: MSS > MSI-H", "MutType: trunc > miss", "DWS: safety tiers"]),
     ("5", "Structural", PURPLE, ["Sequence features", "Domain architecture", "PROTAC suitability"]),
 ]

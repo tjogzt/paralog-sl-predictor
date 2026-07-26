@@ -73,6 +73,40 @@ DRIVER_GENES = {
                      "GATA3", "CDH1", "RB1", "NF1", "MAP3K1"],
 }
 
+# ── Driver mutation rules by gene class ───────────────────────
+# A driver gene is "mutant" in a cell line only when the variant
+# matches the gene's oncogenic mechanism:
+#   TSG (tumor suppressor): LikelyLoF == True in the DepMap 26Q1
+#       mutation annotation (DepMap-curated likely loss-of-function;
+#       includes dominant-negative TP53 missense, excludes passengers)
+#   ONC (oncogene): Hotspot == True in the same file (COSMIC/TCGA
+#       recurrent oncogenic hotspots; excludes LoF events and
+#       non-hotspot passengers)
+# Gene classes follow the DepMap 26Q1 OncogeneHighImpact /
+# TumorSuppressorHighImpact majority vote, with one documented
+# override: GATA3 -> TSG (20/20 flag tie; frameshift-dominated
+# loss-of-function spectrum in breast cancer, PMC PMID: 26928228).
+GENE_DRIVER_CLASS = {
+    # oncogenes (Hotspot rule)
+    "KRAS": "ONC", "BRAF": "ONC", "PIK3CA": "ONC", "CTNNB1": "ONC",
+    "ERBB2": "ONC", "MET": "ONC", "ALK": "ONC", "EGFR": "ONC",
+    "MAPK1": "ONC", "CCNE1": "ONC", "CDK4": "ONC", "MAP2K1": "ONC",
+    "AKT1": "ONC",
+    # tumor suppressors (LikelyLoF rule)
+    "TP53": "TSG", "BRCA1": "TSG", "BRCA2": "TSG", "ARID1A": "TSG",
+    "NF1": "TSG", "RB1": "TSG", "PTEN": "TSG", "PIK3R1": "TSG",
+    "FBXW7": "TSG", "KMT2D": "TSG", "EP300": "TSG", "STK11": "TSG",
+    "KEAP1": "TSG", "GATA3": "TSG", "CDH1": "TSG", "MAP3K1": "TSG",
+    "PPP2R1A": "TSG", "APC": "TSG", "SMAD4": "TSG", "ATM": "TSG",
+    "ATR": "TSG", "SMARCA4": "TSG",
+}
+
+
+def driver_mutation_rule(gene: str) -> str:
+    """Return 'TSG' or 'ONC' for a driver gene, else 'ANY'
+    (gene absent from the class map -> no rule-based restriction)."""
+    return GENE_DRIVER_CLASS.get(gene, "ANY")
+
 # ── Known paralog-SL pairs (gold-standard positive set) ───────
 # Sourced from: literature + SynLethDB + Doc2 case studies
 KNOWN_PARALOG_SL = {

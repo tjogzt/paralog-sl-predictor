@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-26T04:30:10+00:00",
+  "generated_at": "2026-07-26T06:33:17+00:00",
   "generated_by": "ml_benchmark.py",
   "source": "output/tables/TableS2_FullResults.tsv",
   "universe": {
-    "n_pairs": 77,
-    "n_positives": 8,
+    "n_pairs": 75,
+    "n_positives": 6,
     "aggregation": "mean across gyn3 lineages per pair"
   },
   "features": [
@@ -12,106 +12,101 @@
     "pcs",
     "dexpr_abs",
     "necessity",
-    "composite",
     "mut_freq"
   ],
   "cv": "leave-one-pair-out (77 folds), AUROC on out-of-fold scores",
   "seed": 42,
   "classifiers": {
     "LR": {
-      "auroc": 0.6322463768115942
+      "auroc": 0.13768115942028986
     },
     "RF": {
-      "auroc": 0.6286231884057971
+      "auroc": 0.6171497584541062
     },
     "SVM_RBF": {
-      "auroc": 0.5634057971014492
+      "auroc": 0.7439613526570048
     },
     "SVM_Linear": {
-      "auroc": 0.6992753623188406
+      "auroc": 0.21739130434782608
     }
   },
   "single_feature": {
-    "dd_alone": 0.7355072463768116,
-    "composite_alone": 0.730072463768116
+    "dd_alone": 0.5507246376811594,
+    "composite_alone": 0.8405797101449275
   },
   "lr_coefficients": {
     "const": {
-      "beta": -2.9229539777538305,
-      "p_value": 3.7131269126820283e-05
+      "beta": -2.6741822811003413,
+      "p_value": 7.553529022825014e-08
     },
     "dd_abs": {
-      "beta": 2.1211361789958474,
-      "p_value": 0.3116351164073179
+      "beta": 0.40227624998383343,
+      "p_value": 0.253220451400312
     },
     "pcs": {
-      "beta": 2.509552306373024,
-      "p_value": 0.6477108766015637
+      "beta": 0.20482197136062702,
+      "p_value": 0.6618520383890711
     },
     "dexpr_abs": {
-      "beta": -1.074191464566514,
-      "p_value": 0.3268871794583611
+      "beta": 0.4223444443874977,
+      "p_value": 0.22641766471916203
     },
     "necessity": {
-      "beta": 0.3703190290233004,
-      "p_value": 0.5793991218061492
-    },
-    "composite": {
-      "beta": -3.343606999139475,
-      "p_value": 0.6062547327547654
+      "beta": -0.06360679712696428,
+      "p_value": 0.916018523667796
     },
     "mut_freq": {
-      "beta": 0.8260151897599447,
-      "p_value": 0.6127467750171119
+      "beta": 0.13945701318787376,
+      "p_value": 0.730854728545542
     }
   },
   "manuscript_claims_check": [
     {
       "metric": "LR",
-      "claimed": 0.632,
-      "computed": 0.6322,
+      "claimed": 0.138,
+      "computed": 0.1377,
       "status": "match"
     },
     {
       "metric": "RF",
-      "claimed": 0.629,
-      "computed": 0.6286,
+      "claimed": 0.617,
+      "computed": 0.6171,
       "status": "match"
     },
     {
       "metric": "SVM_RBF_low",
-      "claimed": 0.563,
-      "computed": 0.5634,
+      "claimed": 0.744,
+      "computed": 0.744,
       "status": "match"
     },
     {
       "metric": "SVM_Linear_high",
-      "claimed": 0.699,
-      "computed": 0.6993,
+      "claimed": 0.217,
+      "computed": 0.2174,
       "status": "match"
     },
     {
       "metric": "dd_alone",
-      "claimed": 0.736,
-      "computed": 0.7355,
+      "claimed": 0.551,
+      "computed": 0.5507,
       "status": "match"
     },
     {
       "metric": "composite_alone",
-      "claimed": 0.73,
-      "computed": 0.7301,
+      "claimed": 0.841,
+      "computed": 0.8406,
       "status": "match"
     },
     {
       "metric": "lr_beta_dd",
-      "claimed": 2.12,
-      "computed": 2.1211,
+      "claimed": 0.4,
+      "computed": 0.4023,
       "status": "match"
     },
     {
       "metric": "lr_p_dd",
-      "claimed": 0.312,
-      "computed": 0.3116,
+      "claimed": 0.253,
+      "computed": 0.2532,
       "status": "match"
     }
   ]
