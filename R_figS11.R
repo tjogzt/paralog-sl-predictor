@@ -81,12 +81,12 @@ pb <- ggplot(fb, aes(y = framework)) +
   geom_errorbar(aes(xmin = lo, xmax = hi), orientation = "y",
                 width = 0.15, color = BLUE, linewidth = 0.5) +
   geom_point(aes(x = auroc), color = BLUE, size = 1.8) +
-  geom_text(aes(x = 1.04, label = sprintf("AUROC = %.2f\np = %.2f", auroc, p)),
+  geom_text(aes(x = 1.03, label = sprintf("AUROC = %.2f\np = %.2f", auroc, p)),
             size = 2.3, color = DARK, hjust = 0, vjust = 0.5, lineheight = 0.9,
             family = "Arial") +
   annotate("text", x = 0.5, y = 2.4, label = "chance (0.50)", size = 2.3,
            color = DARK, hjust = -0.05, family = "Arial") +
-  scale_x_continuous(limits = c(0, 1.45), breaks = seq(0, 1, 0.25)) +
+  scale_x_continuous(limits = c(0, 1.65), breaks = seq(0, 1, 0.25)) +
   labs(x = "AUROC (bootstrap 95% CI)", y = NULL) +
   theme_sci + theme(axis.text.y = element_text(size = TICK_FS))
 
