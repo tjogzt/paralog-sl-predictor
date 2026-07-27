@@ -18,7 +18,7 @@
 #' @return A list with priority_score, tier, and rationale
 #' @export
 #' @examples
-#' # Manuscript Table S6 values for the leading candidate ARID1A->ARID1B
+#' # Manuscript Table S5 values for the leading candidate ARID1A->ARID1B
 #' predict_trial_response("ARID1A", "ARID1B", dd = 0.270, ti = 2.82,
 #'                        msi_status = "MSS", mutation_type = "truncating")
 predict_trial_response <- function(driver, paralog, dd, ti = NA,

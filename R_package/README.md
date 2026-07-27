@@ -69,7 +69,7 @@ DepMap gene-effect matrix
 - `gyn_drivers`: Driver gene sets for five cancer types
 - `solid_tumor_summary`: Per-lineage DD AUROC, primary min>=5 frame (19 lineages)
 - `cross_cancer_summary`: Per-lineage DD AUROC, sensitivity min>=3 frame (23 lineages)
-- `therapeutic_window_summary`: 21-pair DWS classification (manuscript Table S6)
+- `therapeutic_window_summary`: 21-pair DWS classification (manuscript Table S5)
 - `benchmark_methods`: Published CV3 contextual references + this-study values (not a head-to-head benchmark)
 
 ## Citation

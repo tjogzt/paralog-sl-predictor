@@ -284,7 +284,7 @@ check("dws_pan_brca_hi", "BRCA1/2 pan-essential fraction upper", "0.55",
       max(trow("BRCA1", "BRCA2").mean_pan_essential, trow("BRCA2", "BRCA1").mean_pan_essential), TW)
 check("dws_pan_crkl", "PIK3R1→CRKL pan-essential fraction", "0.73",
       trow("PIK3R1", "CRKL").mean_pan_essential, TW)
-check_int("dws_npairs", "Evaluated pairs (Table S6)", 21, len(twc), TW)
+check_int("dws_npairs", "Evaluated pairs (Table S5)", 21, len(twc), TW)
 ti_gt1 = twa.groupby(["driver", "paralog"]).apply(
     lambda g: (g.therapeutic_index > 1).sum(), include_groups=False)
 check_int("dws_n_gt1", "Pairs with DWS > 1.0 in ≥2 contexts", 9, (ti_gt1 >= 2).sum(),
@@ -297,48 +297,55 @@ check_int("dws_tier_pan", "PAN_ESSENTIAL pairs", 3, tiers.get("PAN_ESSENTIAL", 0
 
 AL = "output/alphafold_structural_analysis.csv"
 a0 = alpha.sort_values("clinical_targetability", ascending=False).iloc[0]
-check("comp_top1", "Composite rank 1 score (NF1→RASA2; Table S10)", "0.695", a0.clinical_targetability, AL)
+check("comp_top1", "Composite rank 1 score (NF1→RASA2; Table S9)", "0.695", a0.clinical_targetability, AL)
 a1 = alpha.sort_values("clinical_targetability", ascending=False).iloc[1]
-check("comp_top2", "Composite rank 2 score (ARID1A→ARID1B; Table S10)", "0.631", a1.clinical_targetability, AL)
+check("comp_top2", "Composite rank 2 score (ARID1A→ARID1B; Table S9)", "0.631", a1.clinical_targetability, AL)
+check_int("struct_npairs", "Scored structural pairs (text: 13)", 13, len(alpha), AL)
+check_int("struct_domain_perfect", "Perfect domain conservation (text: 5 of 13)",
+          5, int((alpha["domain_similarity"] == 1.0).sum()), AL)
+check_int("struct_domain_nonzero", "Non-zero domain overlap (Fig. S13 caption: 10)",
+          10, int((alpha["domain_similarity"] > 0).sum()), AL)
+check("struct_domain_pct", "Perfect domain conservation share (text: 38%)",
+      "0.38", (alpha["domain_similarity"] == 1.0).mean(), AL, tol=0.5)
 
 # ═══════════════════════════════════════════════════════════════════
-# 8b. DWS robustness: sensitivity variants (Table S11) and bootstrap
-#     confidence intervals (Table S6 CI columns)
+# 8b. DWS robustness: sensitivity variants (Table S10) and bootstrap
+#     confidence intervals (Table S5 CI columns)
 # ═══════════════════════════════════════════════════════════════════
 DWSR = "output/dws_robustness.json"
 dwsr = json.loads((OUT / "dws_robustness.json").read_text())
 sens = {s["variant"]: s for s in dwsr["sensitivity"]}
 boot = {(b["driver"], b["paralog"]): b for b in dwsr["bootstrap"]}
 
-check("dws_sens_rho_mu", "Table S11: rho, denominator |mu| only", "0.990",
+check("dws_sens_rho_mu", "Table S10: rho, denominator |mu| only", "0.990",
       sens["denominator |mu| only"]["spearman_rho_vs_base"], DWSR)
-check("dws_sens_rho_f", "Table S11: rho, denominator f only", "0.893",
+check("dws_sens_rho_f", "Table S10: rho, denominator f only", "0.893",
       sens["denominator f only"]["spearman_rho_vs_base"], DWSR)
-check("dws_sens_rho_mean", "Table S11: rho, denominator mean(|mu|, f)", "0.988",
+check("dws_sens_rho_mean", "Table S10: rho, denominator mean(|mu|, f)", "0.988",
       sens["denominator mean(|mu|, f)"]["spearman_rho_vs_base"], DWSR)
-check("dws_sens_rho_f0001", "Table S11: rho, floor 0.001", "1.000",
+check("dws_sens_rho_f0001", "Table S10: rho, floor 0.001", "1.000",
       sens["floor 0.001"]["spearman_rho_vs_base"], DWSR)
-check("dws_sens_rho_f005", "Table S11: rho, floor 0.05", "0.974",
+check("dws_sens_rho_f005", "Table S10: rho, floor 0.05", "0.974",
       sens["floor 0.05"]["spearman_rho_vs_base"], DWSR)
-check_int("dws_sens_top5_mu", "Table S11: top-5 overlap, |mu| only", 4,
+check_int("dws_sens_top5_mu", "Table S10: top-5 overlap, |mu| only", 4,
           sens["denominator |mu| only"]["top5_overlap_with_base"], DWSR)
-check_int("dws_sens_top5_f", "Table S11: top-5 overlap, f only", 4,
+check_int("dws_sens_top5_f", "Table S10: top-5 overlap, f only", 4,
           sens["denominator f only"]["top5_overlap_with_base"], DWSR)
-check_int("dws_sens_top5_mean", "Table S11: top-5 overlap, mean(|mu|, f)", 4,
+check_int("dws_sens_top5_mean", "Table S10: top-5 overlap, mean(|mu|, f)", 4,
           sens["denominator mean(|mu|, f)"]["top5_overlap_with_base"], DWSR)
-check_int("dws_sens_top5_f0001", "Table S11: top-5 overlap, floor 0.001", 5,
+check_int("dws_sens_top5_f0001", "Table S10: top-5 overlap, floor 0.001", 5,
           sens["floor 0.001"]["top5_overlap_with_base"], DWSR)
-check_int("dws_sens_top5_f005", "Table S11: top-5 overlap, floor 0.05", 5,
+check_int("dws_sens_top5_f005", "Table S10: top-5 overlap, floor 0.05", 5,
           sens["floor 0.05"]["top5_overlap_with_base"], DWSR)
-check_int("dws_hs_n_010", "Table S11: HS pairs at threshold 0.10", 3,
+check_int("dws_hs_n_010", "Table S10: HS pairs at threshold 0.10", 3,
           sens["HIGH_SELECTIVITY selectivity threshold 0.1"]["n_high_selectivity"], DWSR)
-check_int("dws_hs_n_015", "Table S11: HS pairs at threshold 0.15", 2,
+check_int("dws_hs_n_015", "Table S10: HS pairs at threshold 0.15", 2,
           sens["HIGH_SELECTIVITY selectivity threshold 0.15"]["n_high_selectivity"], DWSR)
-check_int("dws_hs_n_020", "Table S11: HS pairs at threshold 0.20", 1,
+check_int("dws_hs_n_020", "Table S10: HS pairs at threshold 0.20", 1,
           sens["HIGH_SELECTIVITY selectivity threshold 0.2"]["n_high_selectivity"], DWSR)
-check_int("dws_hs_flip_010", "Table S11: flips at threshold 0.10", 1,
+check_int("dws_hs_flip_010", "Table S10: flips at threshold 0.10", 1,
           sens["HIGH_SELECTIVITY selectivity threshold 0.1"]["classification_flips_vs_thr_0.15"], DWSR)
-check_int("dws_hs_flip_020", "Table S11: flips at threshold 0.20", 1,
+check_int("dws_hs_flip_020", "Table S10: flips at threshold 0.20", 1,
           sens["HIGH_SELECTIVITY selectivity threshold 0.2"]["classification_flips_vs_thr_0.15"], DWSR)
 
 for drv, par, dlo, dhi, slo, shi in [
@@ -349,10 +356,10 @@ for drv, par, dlo, dhi, slo, shi in [
 ]:
     b = boot[(drv, par)]
     tag = f"{drv}→{par}"
-    check(f"dws_boot_dws_lo_{drv}", f"Table S6: {tag} DWS CI lower", dlo, b["dws_ci95"][0], DWSR)
-    check(f"dws_boot_dws_hi_{drv}", f"Table S6: {tag} DWS CI upper", dhi, b["dws_ci95"][1], DWSR)
-    check(f"dws_boot_sel_lo_{drv}", f"Table S6: {tag} selectivity CI lower", slo, b["selectivity_ci95"][0], DWSR)
-    check(f"dws_boot_sel_hi_{drv}", f"Table S6: {tag} selectivity CI upper", shi, b["selectivity_ci95"][1], DWSR)
+    check(f"dws_boot_dws_lo_{drv}", f"Table S5: {tag} DWS CI lower", dlo, b["dws_ci95"][0], DWSR)
+    check(f"dws_boot_dws_hi_{drv}", f"Table S5: {tag} DWS CI upper", dhi, b["dws_ci95"][1], DWSR)
+    check(f"dws_boot_sel_lo_{drv}", f"Table S5: {tag} selectivity CI lower", slo, b["selectivity_ci95"][0], DWSR)
+    check(f"dws_boot_sel_hi_{drv}", f"Table S5: {tag} selectivity CI upper", shi, b["selectivity_ci95"][1], DWSR)
 
 # ═══════════════════════════════════════════════════════════════════
 # 9. Table S2 spot values
@@ -410,12 +417,12 @@ ROWS.append({"id": "s3_tier_b", "description": "Table S3 Tier B == headline tier
 
 # ═══════════════════════════════════════════════════════════════════
 # TCGA survival v2 (continuous Cox PH, multivariable age+stage) — Fig. 3c,
-# Results, Supplementary Table S9
+# Results, Supplementary Table S8
 # ═══════════════════════════════════════════════════════════════════
 sv = json.loads((OUT / "tcga_survival_v2.json").read_text())
 SV = "output/tcga_survival_v2.json (tcga_survival_v2.py)"
 pgene = {g["gene"]: g for g in sv["per_gene"]}
-check_int("tcga_ngenes", "TCGA paralog genes analysed (text + Table S9)", 32,
+check_int("tcga_ngenes", "TCGA paralog genes analysed (text + Table S8)", 32,
           len(sv["per_gene"]), SV)
 check_int("tcga_n", "TCGA patients with OS+expression (n=1,069)", 1069,
           sv["cohort"]["n_samples"], SV)
@@ -423,9 +430,9 @@ check_int("tcga_events", "TCGA OS events (151 deaths)", 151,
           sv["cohort"]["n_events"], SV)
 hl = sv["arid1b_highlight"]
 mv = hl["multivar_age_stage"]
-check_int("tcga_mv_n", "Multivariable complete cases (n=1,050; Table S9 caption)", 1050,
+check_int("tcga_mv_n", "Multivariable complete cases (n=1,050; Table S8 caption)", 1050,
           mv["n"], SV)
-check_int("tcga_mv_events", "Multivariable events (143; Table S9 caption)", 143,
+check_int("tcga_mv_events", "Multivariable events (143; Table S8 caption)", 143,
           mv["n_events"], SV)
 check("tcga_arid1b_hr", "ARID1B univariable HR per SD (text)", "1.30",
       hl["hr_continuous"], SV)

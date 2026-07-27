@@ -54,7 +54,7 @@ solid_tumor_summary <- as.data.frame(fread(need(CANON, "solid_tumor_summary.csv"
 # --- cross_cancer_summary: sensitivity (min >= 3 per group) frame ---
 cross_cancer_summary <- as.data.frame(fread(need(CANON, "solid_tumor_summary_min3.csv")))
 
-# --- therapeutic_window_summary: 21-pair DWS classification (Table S6) ---
+# --- therapeutic_window_summary: 21-pair DWS classification (Table S5) ---
 therapeutic_window_summary <- as.data.frame(
   fread(need(CANON, "therapeutic_window_paralog_classification.csv")))
 

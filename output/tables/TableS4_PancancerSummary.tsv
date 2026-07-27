@@ -1,9 +1,0 @@
-Cancer Type	Cell Lines	SL Pairs	Known SL	DD AUROC
-Esophagogastric	62	50	3	0.965
-SCLC	121	99	5	0.906
-Bladder Urothelial	30	18	2	0.844
-Colorectal	59	62	5	0.828
-Endometrial	31	62	5	0.818
-Breast	50	12	2	0.750
-NSCLC	95	96	5	0.741
-Ovarian	55	50	7	0.661

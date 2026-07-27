@@ -11,7 +11,7 @@ files instead of using hard-coded literals:
 
     output/headline_metrics.json        full detail + claims check
     output/tables/headline_metrics.tsv  flat metric/value/provenance table (for R)
-    output/tables/TableS8_EffectSizes.tsv  per-entry DD/Cohen's d/Hedges' g
+    output/tables/TableS7_EffectSizes.tsv  per-entry DD/Cohen's d/Hedges' g
 
 Inputs (all small artifacts; no DepMap re-download, no sklearn required —
 AUROC is computed with the rank-based Mann-Whitney formula, identical to
@@ -67,7 +67,7 @@ VALIDATION_REPORT = ROOT / "output" / "validation_report.json"
 IDENTITY_CSV = ROOT / "output" / "paralog_identity.csv"
 JSON_OUT = ROOT / "output" / "headline_metrics.json"
 TSV_OUT = ROOT / "output" / "tables" / "headline_metrics.tsv"
-EFFECTS_OUT = ROOT / "output" / "tables" / "TableS8_EffectSizes.tsv"
+EFFECTS_OUT = ROOT / "output" / "tables" / "TableS7_EffectSizes.tsv"
 
 N_BOOT = 10_000
 BOOT_SEED = 42

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-27T01:19:01+00:00",
+  "generated_at": "2026-07-27T03:58:52+00:00",
   "generated_by": "compute_headline_metrics.py",
   "source_files": [
     "output/tables/TableS2_FullResults.tsv",
@@ -295,7 +295,7 @@
     },
     "provenance": "Literature constants (Feng et al. 2024, Suppl. Data 1, CV3 NSMRand 1:1); not recomputed"
   },
-  "effect_sizes_table": "output/tables/TableS8_EffectSizes.tsv",
+  "effect_sizes_table": "output/tables/TableS7_EffectSizes.tsv",
   "manuscript_claims_check": [
     {
       "metric": "dd_auroc_lineage_full",

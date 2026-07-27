@@ -92,45 +92,49 @@ dws_nf1_pan	NF1→RASA2 pan-essential denominator (%)	0.1	0.134	output/therapeut
 dws_pan_brca_lo	BRCA1/2 pan-essential fraction lower	0.53	0.532	output/therapeutic_window_paralog_classification.csv	match
 dws_pan_brca_hi	BRCA1/2 pan-essential fraction upper	0.55	0.545	output/therapeutic_window_paralog_classification.csv	match
 dws_pan_crkl	PIK3R1→CRKL pan-essential fraction	0.73	0.726	output/therapeutic_window_paralog_classification.csv	match
-dws_npairs	Evaluated pairs (Table S6)	21	21	output/therapeutic_window_paralog_classification.csv	match
+dws_npairs	Evaluated pairs (Table S5)	21	21	output/therapeutic_window_paralog_classification.csv	match
 dws_n_gt1	Pairs with DWS > 1.0 in ≥2 contexts	9	9	output/therapeutic_window_all_results.csv	match
 dws_tier_hs	HIGH_SELECTIVITY pairs	2	2	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_mod	MODERATE pairs	5	5	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_low	LOW_SELECTIVITY pairs	11	11	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_pan	PAN_ESSENTIAL pairs	3	3	output/therapeutic_window_paralog_classification.csv	match
-comp_top1	Composite rank 1 score (NF1→RASA2; Table S10)	0.695	0.695	output/alphafold_structural_analysis.csv	match
-comp_top2	Composite rank 2 score (ARID1A→ARID1B; Table S10)	0.631	0.631	output/alphafold_structural_analysis.csv	match
-dws_sens_rho_mu	Table S11: rho, denominator |mu| only	0.990	0.990	output/dws_robustness.json	match
-dws_sens_rho_f	Table S11: rho, denominator f only	0.893	0.893	output/dws_robustness.json	match
-dws_sens_rho_mean	Table S11: rho, denominator mean(|mu|, f)	0.988	0.988	output/dws_robustness.json	match
-dws_sens_rho_f0001	Table S11: rho, floor 0.001	1.000	1.000	output/dws_robustness.json	match
-dws_sens_rho_f005	Table S11: rho, floor 0.05	0.974	0.974	output/dws_robustness.json	match
-dws_sens_top5_mu	Table S11: top-5 overlap, |mu| only	4	4	output/dws_robustness.json	match
-dws_sens_top5_f	Table S11: top-5 overlap, f only	4	4	output/dws_robustness.json	match
-dws_sens_top5_mean	Table S11: top-5 overlap, mean(|mu|, f)	4	4	output/dws_robustness.json	match
-dws_sens_top5_f0001	Table S11: top-5 overlap, floor 0.001	5	5	output/dws_robustness.json	match
-dws_sens_top5_f005	Table S11: top-5 overlap, floor 0.05	5	5	output/dws_robustness.json	match
-dws_hs_n_010	Table S11: HS pairs at threshold 0.10	3	3	output/dws_robustness.json	match
-dws_hs_n_015	Table S11: HS pairs at threshold 0.15	2	2	output/dws_robustness.json	match
-dws_hs_n_020	Table S11: HS pairs at threshold 0.20	1	1	output/dws_robustness.json	match
-dws_hs_flip_010	Table S11: flips at threshold 0.10	1	1	output/dws_robustness.json	match
-dws_hs_flip_020	Table S11: flips at threshold 0.20	1	1	output/dws_robustness.json	match
-dws_boot_dws_lo_ARID1A	Table S6: ARID1A→ARID1B DWS CI lower	1.76	1.755	output/dws_robustness.json	match
-dws_boot_dws_hi_ARID1A	Table S6: ARID1A→ARID1B DWS CI upper	5.89	5.889	output/dws_robustness.json	match
-dws_boot_sel_lo_ARID1A	Table S6: ARID1A→ARID1B selectivity CI lower	0.19	0.191	output/dws_robustness.json	match
-dws_boot_sel_hi_ARID1A	Table S6: ARID1A→ARID1B selectivity CI upper	0.37	0.366	output/dws_robustness.json	match
-dws_boot_dws_lo_SMARCA4	Table S6: SMARCA4→SMARCA2 DWS CI lower	3.28	3.284	output/dws_robustness.json	match
-dws_boot_dws_hi_SMARCA4	Table S6: SMARCA4→SMARCA2 DWS CI upper	7.78	7.779	output/dws_robustness.json	match
-dws_boot_sel_lo_SMARCA4	Table S6: SMARCA4→SMARCA2 selectivity CI lower	0.07	0.070	output/dws_robustness.json	match
-dws_boot_sel_hi_SMARCA4	Table S6: SMARCA4→SMARCA2 selectivity CI upper	0.32	0.323	output/dws_robustness.json	match
-dws_boot_dws_lo_NF1	Table S6: NF1→RASA2 DWS CI lower	1.22	1.218	output/dws_robustness.json	match
-dws_boot_dws_hi_NF1	Table S6: NF1→RASA2 DWS CI upper	13.83	13.832	output/dws_robustness.json	match
-dws_boot_sel_lo_NF1	Table S6: NF1→RASA2 selectivity CI lower	0.00	-0.001	output/dws_robustness.json	match
-dws_boot_sel_hi_NF1	Table S6: NF1→RASA2 selectivity CI upper	0.02	0.016	output/dws_robustness.json	match
-dws_boot_dws_lo_EP300	Table S6: EP300→CREBBP DWS CI lower	1.13	1.125	output/dws_robustness.json	match
-dws_boot_dws_hi_EP300	Table S6: EP300→CREBBP DWS CI upper	4.55	4.548	output/dws_robustness.json	match
-dws_boot_sel_lo_EP300	Table S6: EP300→CREBBP selectivity CI lower	0.00	0.004	output/dws_robustness.json	match
-dws_boot_sel_hi_EP300	Table S6: EP300→CREBBP selectivity CI upper	0.21	0.212	output/dws_robustness.json	match
+comp_top1	Composite rank 1 score (NF1→RASA2; Table S9)	0.695	0.695	output/alphafold_structural_analysis.csv	match
+comp_top2	Composite rank 2 score (ARID1A→ARID1B; Table S9)	0.631	0.631	output/alphafold_structural_analysis.csv	match
+struct_npairs	Scored structural pairs (text: 13)	13	13	output/alphafold_structural_analysis.csv	match
+struct_domain_perfect	Perfect domain conservation (text: 5 of 13)	5	5	output/alphafold_structural_analysis.csv	match
+struct_domain_nonzero	Non-zero domain overlap (Fig. S13 caption: 10)	10	10	output/alphafold_structural_analysis.csv	match
+struct_domain_pct	Perfect domain conservation share (text: 38%)	0.38	0.385	output/alphafold_structural_analysis.csv	match
+dws_sens_rho_mu	Table S10: rho, denominator |mu| only	0.990	0.990	output/dws_robustness.json	match
+dws_sens_rho_f	Table S10: rho, denominator f only	0.893	0.893	output/dws_robustness.json	match
+dws_sens_rho_mean	Table S10: rho, denominator mean(|mu|, f)	0.988	0.988	output/dws_robustness.json	match
+dws_sens_rho_f0001	Table S10: rho, floor 0.001	1.000	1.000	output/dws_robustness.json	match
+dws_sens_rho_f005	Table S10: rho, floor 0.05	0.974	0.974	output/dws_robustness.json	match
+dws_sens_top5_mu	Table S10: top-5 overlap, |mu| only	4	4	output/dws_robustness.json	match
+dws_sens_top5_f	Table S10: top-5 overlap, f only	4	4	output/dws_robustness.json	match
+dws_sens_top5_mean	Table S10: top-5 overlap, mean(|mu|, f)	4	4	output/dws_robustness.json	match
+dws_sens_top5_f0001	Table S10: top-5 overlap, floor 0.001	5	5	output/dws_robustness.json	match
+dws_sens_top5_f005	Table S10: top-5 overlap, floor 0.05	5	5	output/dws_robustness.json	match
+dws_hs_n_010	Table S10: HS pairs at threshold 0.10	3	3	output/dws_robustness.json	match
+dws_hs_n_015	Table S10: HS pairs at threshold 0.15	2	2	output/dws_robustness.json	match
+dws_hs_n_020	Table S10: HS pairs at threshold 0.20	1	1	output/dws_robustness.json	match
+dws_hs_flip_010	Table S10: flips at threshold 0.10	1	1	output/dws_robustness.json	match
+dws_hs_flip_020	Table S10: flips at threshold 0.20	1	1	output/dws_robustness.json	match
+dws_boot_dws_lo_ARID1A	Table S5: ARID1A→ARID1B DWS CI lower	1.76	1.755	output/dws_robustness.json	match
+dws_boot_dws_hi_ARID1A	Table S5: ARID1A→ARID1B DWS CI upper	5.89	5.889	output/dws_robustness.json	match
+dws_boot_sel_lo_ARID1A	Table S5: ARID1A→ARID1B selectivity CI lower	0.19	0.191	output/dws_robustness.json	match
+dws_boot_sel_hi_ARID1A	Table S5: ARID1A→ARID1B selectivity CI upper	0.37	0.366	output/dws_robustness.json	match
+dws_boot_dws_lo_SMARCA4	Table S5: SMARCA4→SMARCA2 DWS CI lower	3.28	3.284	output/dws_robustness.json	match
+dws_boot_dws_hi_SMARCA4	Table S5: SMARCA4→SMARCA2 DWS CI upper	7.78	7.779	output/dws_robustness.json	match
+dws_boot_sel_lo_SMARCA4	Table S5: SMARCA4→SMARCA2 selectivity CI lower	0.07	0.070	output/dws_robustness.json	match
+dws_boot_sel_hi_SMARCA4	Table S5: SMARCA4→SMARCA2 selectivity CI upper	0.32	0.323	output/dws_robustness.json	match
+dws_boot_dws_lo_NF1	Table S5: NF1→RASA2 DWS CI lower	1.22	1.218	output/dws_robustness.json	match
+dws_boot_dws_hi_NF1	Table S5: NF1→RASA2 DWS CI upper	13.83	13.832	output/dws_robustness.json	match
+dws_boot_sel_lo_NF1	Table S5: NF1→RASA2 selectivity CI lower	0.00	-0.001	output/dws_robustness.json	match
+dws_boot_sel_hi_NF1	Table S5: NF1→RASA2 selectivity CI upper	0.02	0.016	output/dws_robustness.json	match
+dws_boot_dws_lo_EP300	Table S5: EP300→CREBBP DWS CI lower	1.13	1.125	output/dws_robustness.json	match
+dws_boot_dws_hi_EP300	Table S5: EP300→CREBBP DWS CI upper	4.55	4.548	output/dws_robustness.json	match
+dws_boot_sel_lo_EP300	Table S5: EP300→CREBBP selectivity CI lower	0.00	0.004	output/dws_robustness.json	match
+dws_boot_sel_hi_EP300	Table S5: EP300→CREBBP selectivity CI upper	0.21	0.212	output/dws_robustness.json	match
 ts2_rows	Table S2 associations	110	110	output/tables/TableS2_FullResults.tsv	match
 ts2_cols	Table S2 columns	17	17	output/tables/TableS2_FullResults.tsv	match
 ts2_arid_dd	ARID1A→ARID1B Ovarian DD (Table S2)	0.386	0.386	output/tables/TableS2_FullResults.tsv	match
@@ -151,11 +155,11 @@ Table2_slm	Table2_Benchmark.tsv SLMGAE row	0.790	0.790	output/tables/Table2_Benc
 s3_rows	Table S3 pairs	12	12	output/tables/TableS3_GoldStandard.tsv	match
 s3_tier_a	Table S3 Tier A == headline tier_a_pairs	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	['AKT1->AKT2', 'CDK4->CDK6', 'MAP2K1->MAP2K2']	output/tables/TableS3_GoldStandard.tsv	match
 s3_tier_b	Table S3 Tier B == headline tier_b_pairs	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	['ARID1A->ARID1B', 'SMARCA4->SMARCA2']	output/tables/TableS3_GoldStandard.tsv	match
-tcga_ngenes	TCGA paralog genes analysed (text + Table S9)	32	32	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_ngenes	TCGA paralog genes analysed (text + Table S8)	32	32	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 tcga_n	TCGA patients with OS+expression (n=1,069)	1069	1069	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 tcga_events	TCGA OS events (151 deaths)	151	151	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
-tcga_mv_n	Multivariable complete cases (n=1,050; Table S9 caption)	1050	1050	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
-tcga_mv_events	Multivariable events (143; Table S9 caption)	143	143	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_mv_n	Multivariable complete cases (n=1,050; Table S8 caption)	1050	1050	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
+tcga_mv_events	Multivariable events (143; Table S8 caption)	143	143	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 tcga_arid1b_hr	ARID1B univariable HR per SD (text)	1.30	1.299	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 tcga_arid1b_lo	ARID1B univariable CI low (text)	1.087	1.087	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 tcga_arid1b_hi	ARID1B univariable CI high (text)	1.552	1.552	output/tcga_survival_v2.json (tcga_survival_v2.py)	match

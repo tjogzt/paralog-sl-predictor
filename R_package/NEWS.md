@@ -23,7 +23,7 @@
   (min>=5; 19 lineages) and sensitivity (min>=3; 23 lineages) pan-cancer
   frames with `dd_auroc` columns
 - `therapeutic_window_summary` replaced by the 21-pair DWS classification
-  (manuscript Table S6); TI terminology documented as DWS (dependency
+  (manuscript Table S5); TI terminology documented as DWS (dependency
   window score), formula unchanged and identical to the Python pipeline
 - `classify_msi_status()` documented as the MMR/POLE mutation proxy
 - README quick-start example re-verified against DepMap 26Q1 raw data

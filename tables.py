@@ -22,12 +22,6 @@ print(f"  TableS2_FullResults.tsv: {len(_ts2)} rows")
 summary = pd.read_csv(OUT.parent / "solid_tumor_summary.csv")
 summary = summary.dropna(subset=["dd_auroc"]).sort_values("dd_auroc", ascending=False)
 
-# ── Table S4 (NEW): Pan-cancer DD AUROC table ──
-t = summary[["cancer","n_lines","n_pairs","n_known","dd_auroc"]].copy()
-t.columns = ["Cancer Type","Cell Lines","SL Pairs","Known SL","DD AUROC"]
-t["DD AUROC"] = t["DD AUROC"].apply(lambda x: f"{x:.3f}")
-t.to_csv(OUT / "TableS4_PancancerSummary.tsv", sep="\t", index=False)
-
 # ── Table 1 (updated): Top de novo candidates ──
 all_candidates = []
 for _, r in summary.iterrows():
@@ -114,9 +108,9 @@ _s3_rows = [
      "CCNE1<->CCNE2 redundancy", "Yes (mouse)", "Yes", "No (redundancy)",
      "Secondary", "Geng 2003"),
     ("C", "FBXW7", "FBXW2", "DepMap computational analysis", "700+ cell lines",
-     "FBXW7->FBXW2", "No", "No", "No (computational)", "Secondary", "DepMap"),
+     "FBXW7->FBXW2", "No", "No", "No (computational)", "Secondary", "DepMap 26Q1 release"),
     ("C", "PPP2R1A", "PPP2R1B", "DepMap computational analysis", "700+ cell lines",
-     "PPP2R1A->PPP2R1B", "No", "No", "No (computational)", "Secondary", "DepMap"),
+     "PPP2R1A->PPP2R1B", "No", "No", "No (computational)", "Secondary", "DepMap 26Q1 release"),
     ("Comparator", "BRCA1", "BRCA2", "PARP inhibition / genetic screen (functional analogs)",
      "BRCA-mutant cancer lines", "BRCA1/2->PARP axis", "No", "Yes",
      "Functional analog", "Comparator", "Bryant 2005"),
@@ -140,4 +134,3 @@ print(f"  Table1_Benchmark.tsv: {len(bench)} rows")
 print(f"  Table2_Benchmark.tsv: {len(bench)} rows")
 print(f"  TableS1_CellLineCounts.tsv: {len(cl_counts)} rows")
 print(f"  TableS3_GoldStandard.tsv: {len(s3)} rows")
-print(f"  TableS4_PancancerSummary.tsv: {len(t)} rows")
