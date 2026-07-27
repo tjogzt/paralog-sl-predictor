@@ -1,5 +1,5 @@
 % =============================================================================
-%  Paralog Compensation Predicts Synthetic Lethality Across 27 Solid Tumor Types
+%  Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types
 %  Target: Genome Biology (BMC)
 %  Usage: pdflatex → bibtex → pdflatex ×2  OR  upload .tex+.bib to BMC SNAPP
 % =============================================================================
@@ -20,7 +20,7 @@
 \linenumbers   % Genome Biology requires line numbers for peer review
 
 % --- Title page ---
-\title{\textbf{Delta Dependency Prioritizes Paralog-Based Synthetic Lethality\\Candidates Across Solid Tumor Types}}
+\title{\textbf{Delta Dependency Prioritizes Candidate Paralog\\Dependencies Across Solid Tumor Types}}
 
 \author{}
 \date{}
@@ -29,7 +29,7 @@
 
 % --- Custom title block with wrapped affiliations ---
 \begin{center}
-{\LARGE\bfseries Delta Dependency Prioritizes Paralog-Based\\[0.3em] Synthetic Lethality Candidates Across Solid Tumor Types\par}
+{\LARGE\bfseries Delta Dependency Prioritizes Candidate\\[0.3em] Paralog Dependencies Across Solid Tumor Types\par}
 \vspace{1.5em}
 
 {\large Qingqing Mo$^{1,2}$, Tao Zhu$^{1,2,\ast}$\par}
@@ -286,7 +286,7 @@ DD was computed as defined in Equation~\ref{eq:dd}, using Welch's $t$-test (uneq
 
 \textbf{Contextual comparison with published methods.}
 
-DD was compared against eight published SL prediction methods evaluated in the CV3 setting by Feng et al.\ \cite{Feng2024}. Published AUROCs are from the CV3 evaluation reported in Supplementary Data 1 of that study (NSMRand negative sampling, 1:1 positive:negative ratio, complete dataset); DD was evaluated on the paralog-SL prediction task using the 12 gold-standard paralog-SL pairs as the positive set. AUROC was computed with the rank-based Mann--Whitney statistic (identical to scikit-learn 1.3.0 \cite{Pedregosa2011}); AUPRC is reported as average precision. Bootstrap 95\% CIs used 10,000 resamples of evaluation entries (or pairs, for per-pair frames) with replacement; paired bootstrap resamples were used for head-to-head comparison of $|$DD$|$ against component scores on identical resamples. For the DD~+~identity-proxy subset (3 pairs), bootstrap CI was computed separately to account for the reduced sample size. Negative controls: 100 permutations of shuffled known-SL labels.
+DD was compared against eight published SL prediction methods evaluated in the CV3 setting by Feng et al.\ \cite{Feng2024}. Published AUROCs are from the CV3 evaluation reported in Supplementary Data 1 of that study (NSMRand negative sampling, 1:1 positive:negative ratio, complete dataset); DD was evaluated on the paralog-SL prediction task using the 12 gold-standard paralog-SL pairs as the positive set. AUROC was computed with the rank-based Mann--Whitney statistic (identical to the scikit-learn implementation \cite{Pedregosa2011}); AUPRC is reported as average precision. Bootstrap 95\% CIs used 10,000 resamples of evaluation entries (or pairs, for per-pair frames) with replacement; paired bootstrap resamples were used for head-to-head comparison of $|$DD$|$ against component scores on identical resamples. For the DD~+~identity-proxy subset (3 pairs), bootstrap CI was computed separately to account for the reduced sample size. Negative controls: 100 permutations of shuffled known-SL labels.
 
 \textbf{External mutation-agnostic gold-standard check.} The 13 cross-platform paralog gold standards from the in4mer digenic-knockout meta-analysis \cite{EsmaeiliAnvar2024} were evaluated separately from the driver-conditioned benchmark because they are defined by double-knockout phenotype rather than by natural driver alterations. For each pair, both orientations (either member as the conditioning gene) were scored by the maximum $|$DD$|$ across lineages, with mutation status defined by the pipeline's gene-class rules (genes outside the 40-driver panel retain the permissive non-silent filter). Controls were 400 unlabeled paralog pairs sampled (seed 42) from the same Ensembl/HGNC pair universe, excluding the known-SL set and the in4mer pairs, and were scored identically. AUROC used the Mann--Whitney statistic with 1{,}000 bootstrap resamples (95\% CI) and 10{,}000 label permutations (seed 42).
 
@@ -324,7 +324,7 @@ Sequence-based features (length, molecular weight, pI, GRAVY hydrophobicity, dis
 
 \subsection*{Statistical analyses}
 
-AUROC via scikit-learn 1.3.0 \cite{Pedregosa2011}. Bootstrap CI: 2.5th and 97.5th percentiles from 1,000 iterations. Negative controls: 10,000 label permutations. Analyses in Python 3.10 with numpy 1.24 \cite{Harris2020}, scipy 1.11 \cite{Virtanen2020}, pandas 2.0, and statsmodels 0.14. The companion R package \texttt{paralogSL} provides DD computation, PCS analysis, benchmark comparison, and CPTAC correlation visualization under the MIT license.
+AUROC via scikit-learn \cite{Pedregosa2011}. Bootstrap CI: 2.5th and 97.5th percentiles from 1,000 iterations. Negative controls: 10,000 label permutations. Analyses in Python 3 with numpy \cite{Harris2020}, scipy \cite{Virtanen2020}, pandas, statsmodels, and scikit-learn \cite{Pedregosa2011}; exact dependency versions are pinned in the repository Dockerfile; the complete audit suite passes under the current managed runtime (Python 3.12, scikit-learn 1.9.0, numpy 2.4.4, scipy 1.18.0, pandas 3.0.2, statsmodels 0.14.6). The companion R package \texttt{paralogSL} provides DD computation, PCS analysis, benchmark comparison, and CPTAC correlation visualization under the MIT license.
 
 \subsection*{Power analysis and test set stratification}
 
@@ -378,18 +378,18 @@ Not applicable.
 All data are publicly available: DepMap 26Q1 from the DepMap Portal \cite{DepMap2026}; CPTAC proteomics from cBioPortal \cite{Cerami2012,Gao2013} and the Proteomic Data Commons \cite{PDC}; TCGA PanCan from UCSC Xena \cite{Goldman2020}; PRISM from the DepMap PRISM portal \cite{Corsello2020}. HGNC gene families from the HGNC repository \cite{HGNC}. Processed datasets with cell line-level DD values and all supplementary tables are archived at Zenodo (DOI: to be assigned upon acceptance) and the GitHub repository below, enabling direct integration with clinical genomic pipelines.
 
 \subsection*{Code availability}
-All analysis code is available under the MIT license at \url{https://github.com/tjogzt/paralogSL} (DOI: \href{https://doi.org/10.5281/zenodo.21502113}{10.5281/zenodo.21502113}). The complete analysis pipeline (DOI: \href{https://doi.org/10.5281/zenodo.21502030}{10.5281/zenodo.21502030}) is available at \url{https://github.com/tjogzt/paralog-sl-predictor}. The \texttt{paralogSL} R package (v1.1.0, 19 exported functions) provides DD computation, benchmark comparison, dependency-window scoring, CPTAC visualization, and candidate-prioritization utilities (\texttt{visualize\_dependency\_shift} and related helpers). Random seeds (\texttt{set.seed(42)} in R, \texttt{random\_state=42} in Python) are fixed throughout.
+All analysis code is available under the MIT license at \url{https://github.com/tjogzt/paralogSL} (DOI: \href{https://doi.org/10.5281/zenodo.21502113}{10.5281/zenodo.21502113}). The complete analysis pipeline (DOI: \href{https://doi.org/10.5281/zenodo.21502030}{10.5281/zenodo.21502030}) is available at \url{https://github.com/tjogzt/paralog-sl-predictor}. The \texttt{paralogSL} R package (v1.1.1, 20 exported functions) provides DD computation, benchmark comparison, dependency-window scoring, CPTAC visualization, and candidate-prioritization utilities (\texttt{visualize\_dependency\_shift} and related helpers). Random seeds (\texttt{set.seed(42)} in R, \texttt{random\_state=42} in Python) are fixed throughout.
 
 \noindent\textbf{Workflow:} DepMap gene-effect matrix $\rightarrow$ \texttt{build\_mutation\_matrix()} $\rightarrow$ \texttt{compute\_dd()} per driver$\times$paralog$\times$lineage $\rightarrow$ \texttt{compute\_auroc()} against gold standard $\rightarrow$ \texttt{compute\_therapeutic\_window()} (historical function name retained in the package; computes the DWS) for translational ranking $\rightarrow$ visualization via \texttt{plot\_pancancer\_summary()} and \texttt{plot\_therapeutic\_window()}.
 
 \noindent\textbf{Quick start (3 lines):}
 \begin{verbatim}
-install.packages("paralogSL")  # or devtools::install_github("taozhu/paralogSL")
+remotes::install_github("tjogzt/paralogSL")  # source: github.com/tjogzt/paralogSL
 library(paralogSL)
 result <- run_paralog_analysis(dep_matrix, mut_matrix, driver="ARID1A", paralog="ARID1B")
 \end{verbatim}
 
-\noindent The package includes built-in datasets (\texttt{known\_sl\_pairs}, \texttt{gyn\_drivers}, \texttt{solid\_tumor\_summary}), a vignette with worked examples, and 19 exported functions. A frozen release with all processed data tables is archived at Zenodo (\url{https://doi.org/10.5281/zenodo.21502030}). The complete Python analysis pipeline (\texttt{main.py}, \texttt{pcs.py}, \texttt{pancancer.py}) is included in the same repository for full reproducibility. In addition, four audit scripts (\texttt{compute\_headline\_metrics.py}, \texttt{ml\_benchmark.py}, \texttt{regression\_controls.py}, and \texttt{audit\_manuscript\_numbers.py}) recompute every quantitative claim in this manuscript directly from raw DepMap data and derived artifacts — headline metrics, classifier benchmarks, covariate-adjusted regressions, and all remaining numbers (lineage-level AUROCs, mechanism contrasts, MSI and mutation-type stratifications, direction audit, therapeutic-window module, and machine-readable table mirrors), 237 claims in total — each ending with an automated claim-by-claim comparison against the reported values; a single entry point (\texttt{verify\_all.sh}) runs all four audits plus the test suite in under one minute.
+\noindent The package includes built-in datasets (\texttt{known\_sl\_pairs}, \texttt{gyn\_drivers}, \texttt{solid\_tumor\_summary}), a vignette with worked examples, and 20 exported functions. A frozen release with all processed data tables is archived at Zenodo (\url{https://doi.org/10.5281/zenodo.21502030}). The complete Python analysis pipeline (\texttt{main.py}, \texttt{pcs.py}, \texttt{pancancer.py}) is included in the same repository for full reproducibility. In addition, four audit scripts (\texttt{compute\_headline\_metrics.py}, \texttt{ml\_benchmark.py}, \texttt{regression\_controls.py}, and \texttt{audit\_manuscript\_numbers.py}) recompute every quantitative claim in this manuscript directly from raw DepMap data and derived artifacts — headline metrics, classifier benchmarks, covariate-adjusted regressions, and all remaining numbers (lineage-level AUROCs, mechanism contrasts, MSI and mutation-type stratifications, direction audit, therapeutic-window module, and machine-readable table mirrors), 237 claims in total — each ending with an automated claim-by-claim comparison against the reported values; a single entry point (\texttt{verify\_all.sh}) runs all four audits plus the test suite in $\sim$30~s on an Apple M4 Max (128~GB RAM).
 
 \subsection*{Competing interests}
 The authors declare no competing interests.

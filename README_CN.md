@@ -101,7 +101,7 @@ result <- compute_dd(dep_matrix, driver_gene = "ARID1A",
                      paralog_gene = "ARID1B",
                      mut_lines = mut_ids, wt_lines = wt_ids)
 
-# result$DD = 0.182, result$p_value = 1.4e-26
+# result$DD = 0.386（Ovarian 框架；14 个突变系 vs 41 个野生型系，Welch p = 0.0014）
 ```
 
 ### Docker 环境
@@ -161,19 +161,19 @@ DepMap 基因效应矩阵
 ## 引用
 
 ```
-Mo Q, Zhu T. Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-Candidates Across Solid Tumor Types. Genome Biology (2026).
-DOI: 10.5281/zenodo.21502031
+Mo Q, Zhu T. Delta Dependency Prioritizes Candidate Paralog Dependencies
+Across Solid Tumor Types. Manuscript under review at Genome Biology (2026).
+Code archive DOI: 10.5281/zenodo.21502030 (concept DOI; resolves to the latest release)
 ```
 
 ```bibtex
-@article{Zhu2026,
-  title   = {Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-             Candidates Across Solid Tumor Types},
-  author  = {Zhu, Tao},
-  journal = {Genome Biology},
-  year    = {2026},
-  doi     = {10.5281/zenodo.21502031},
+@misc{Zhu2026,
+  title  = {Delta Dependency Prioritizes Candidate Paralog Dependencies
+            Across Solid Tumor Types},
+  author = {Mo, Qingqing and Zhu, Tao},
+  year   = {2026},
+  note   = {Manuscript under review at Genome Biology},
+  doi    = {10.5281/zenodo.21502030},
 }
 ```
 

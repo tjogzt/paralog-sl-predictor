@@ -74,17 +74,18 @@ DepMap gene-effect matrix
 
 ## Citation
 
-Mo Q, Zhu T. Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-Candidates Across Solid Tumor Types. *Genome Biology* (2026).
+Mo Q, Zhu T. Delta Dependency Prioritizes Candidate Paralog Dependencies
+Across Solid Tumor Types. Manuscript under review at *Genome Biology* (2026).
+Archived code: doi:10.5281/zenodo.21502030 (always resolves to the latest version).
 
 ```bibtex
-@article{Mo2026,
-  title   = {Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-             Candidates Across Solid Tumor Types},
-  author  = {Mo, Qingqing and Zhu, Tao},
-  journal = {Genome Biology},
-  year    = {2026},
-  doi     = {10.5281/zenodo.21502031},
+@misc{Mo2026,
+  title  = {Delta Dependency Prioritizes Candidate Paralog Dependencies
+            Across Solid Tumor Types},
+  author = {Mo, Qingqing and Zhu, Tao},
+  year   = {2026},
+  note   = {Manuscript under review at Genome Biology},
+  doi    = {10.5281/zenodo.21502030},
 }
 ```
 

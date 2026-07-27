@@ -31,7 +31,7 @@ cd paralog_sl_predictor && bash verify_all.sh
 ## 2. 标题（Title）
 
 ```
-Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types
+Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types
 ```
 
 ## 3. 摘要（Abstract，结构化，系统上限 250 词）

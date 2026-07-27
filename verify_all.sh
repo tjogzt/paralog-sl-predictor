@@ -45,6 +45,17 @@ echo "==> [5/5] Test suite (pytest)"
 "$PY" -m pytest tests/ -q
 
 echo
+echo "==> Session information"
+"$PY" -c "import sys, platform, numpy, scipy, pandas, sklearn, statsmodels; \
+print('python    :', sys.version.split()[0]); \
+print('platform  :', platform.platform()); \
+print('numpy     :', numpy.__version__); \
+print('scipy     :', scipy.__version__); \
+print('pandas    :', pandas.__version__); \
+print('sklearn   :', sklearn.__version__); \
+print('statsmodels:', statsmodels.__version__)"
+
+echo
 echo "ALL CHECKS PASSED — see output/headline_metrics.json,"
 echo "output/ml_benchmark.json, output/regression_controls.json and"
 echo "output/manuscript_number_audit.tsv for the per-claim comparison tables."

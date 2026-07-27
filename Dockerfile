@@ -17,5 +17,5 @@ RUN install2.r --error --skipinstalled \
 WORKDIR /workspace
 COPY . /workspace/paralog_sl_predictor/
 WORKDIR /workspace/paralog_sl_predictor
-RUN R -e 'install.packages("R_package/", repos = NULL, type = "source")' || true
+RUN R -e 'install.packages("R_package/", repos = NULL, type = "source")'
 CMD ["R", "--no-save"]

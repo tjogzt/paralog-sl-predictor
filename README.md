@@ -1,4 +1,4 @@
-# Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types
+# Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21502030.svg)](https://doi.org/10.5281/zenodo.21502030)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -56,7 +56,7 @@ paralog_sl_predictor/
 │   ├── tables/                # TSV data tables (S1-S6)
 │   └── *.csv                  # Intermediate results
 │
-└── R_package/                 # paralogSL R package (v1.0.2)
+└── R_package/                 # paralogSL R package (v1.1.1)
     ├── DESCRIPTION
     ├── R/
     ├── man/
@@ -159,14 +159,14 @@ shared pipeline utilities.
 - **DepMap 26Q1**: https://depmap.org/portal/download/
 - **CPTAC**: via cBioPortal API (cached in `data/cptac_cache/`)
 - **PRISM**: https://depmap.org/portal/download/
-- **Processed tables**: `output/tables/TableS1-S6`
+- **Processed tables**: `output/tables/TableS1-S10`
 
 ## Citation
 
 ```
-Mo Q, Zhu T. Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
-Candidates Across Solid Tumor Types. Genome Biology (2026).
-DOI: 10.5281/zenodo.21502031
+Mo Q, Zhu T. Delta Dependency Prioritizes Candidate Paralog Dependencies
+Across Solid Tumor Types. Manuscript under review at Genome Biology (2026).
+Code archive DOI: 10.5281/zenodo.21502030 (concept DOI; resolves to the latest release)
 ```
 
 ## License
