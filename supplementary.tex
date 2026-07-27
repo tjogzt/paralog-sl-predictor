@@ -109,7 +109,7 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.65\textwidth,keepaspectratio]{output/figures/FigS10_Druggability.pdf}
-\caption{\textbf{Structure-based druggability assessment.} Composite druggability score for 15 proteins (7 paralog targets in red, 8 driver genes in blue) based on ESMFold-predicted structures. Scores integrate structural confidence (pLDDT), hydrophobic content, lysine density (K, relevant for PROTAC conjugation), and predicted pocket count (P). Structures were limited to 400 residues per protein; ARID1A/ARID1B structures were not available from AlphaFold DB and are assessed by sequence-level features only (main text Table~2). FBXW2 (0.871) and KRAS/HRAS (0.858--0.859) show the highest scores due to well-folded compact domains.}
+\caption{\textbf{Structure-based druggability assessment.} Composite druggability score for 15 proteins (7 paralog targets in red, 8 driver genes in blue) based on ESMFold-predicted structures. Scores integrate structural confidence (pLDDT), hydrophobic content, lysine density (K, relevant for PROTAC conjugation), and predicted pocket count (P). Structures were limited to 400 residues per protein; ARID1A/ARID1B structures were not available from AlphaFold DB and are assessed by sequence-level features only (Supplementary Table~S10). FBXW2 (0.871) and KRAS/HRAS (0.858--0.859) show the highest scores due to well-folded compact domains.}
 \end{figure}
 
 \begin{figure}[H]
@@ -122,6 +122,12 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS12_Cooccurrence_TMB.pdf}
 \caption{\textbf{Mutational co-occurrence of paralog pairs, with and without tumour mutational burden (TMB) adjustment.} a, Pan-cancer co-occurrence odds ratios across 1{,}208 DepMap 26Q1 cell lines for the five testable pairs, unadjusted (Fisher's exact test, open circles) vs.\ TMB-adjusted (filled circles; logistic regression of paralog mutation status on driver mutation status and $\log_e(1+\mathrm{TMB})$ per line). After TMB adjustment only ARID1A/ARID1B (adjusted OR~$=$~2.38, $p=0.002$) and EP300/CREBBP (adjusted OR~$=$~2.14, $p=0.011$) remain significant ($^*$adjusted $p<0.05$). b, Per-lineage TMB-adjusted odds ratios. ``--'': not evaluable ($<30$ lines or $<3$ mutant lines per gene within the lineage); ``n.e.'': not estimable (complete separation). Mutation status follows the gene-class-specific driver rules (Table~S7). Source: \texttt{output/cooccurrence\_by\_lineage.json} (\texttt{cooccurrence\_by\_lineage.py}).}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS13_Structure_Targetability.pdf}
+\caption{\textbf{Exploratory sequence- and structure-derived targetability descriptors.} a, Feature-space structural similarity (Structural) and UniProt domain-architecture conservation (Domain) for the eight pairs with non-zero domain overlap out of 11 key paralog pairs; six of the 11 (55\%) show perfect domain conservation. The structural similarity is a heuristic, $\max(0,\,1 - \overline{|\Delta\text{feature}|})$ over sequence-level features, not a three-dimensional alignment metric (Methods). b, Composite prioritization score (max-normalized DWS 0.40, rescaled selectivity 0.30, targetability 0.30; weights fixed a priori in \texttt{alphafold\_analysis.py}). NF1$\rightarrow$RASA2 ranks first (0.695) only through a near-zero pan-essential denominator that inflates its raw DWS (selectivity~$\approx$~0); ARID1A$\rightarrow$ARID1B (0.631) is the leading selective candidate. These descriptors are exploratory proxies and were not calibrated against drug-development data (main text, Methods and Limitations). Source: \texttt{output/alphafold\_structural\_analysis.csv} (\texttt{R\_figS13.R}).}
 \end{figure}
 
 \clearpage
@@ -271,35 +277,35 @@ with $\ge$5 mutant cell lines in at least one DepMap lineage.}
 \subsection{Table S6: All 21 paralog pairs ranked by dependency window score}
 \begin{table}[H]
 \centering
-\footnotesize
-\begin{tabular}{llrrrll}
+\scriptsize
+\begin{tabular}{llrrrllcc}
 \toprule
-\textbf{Driver} & \textbf{Paralog} & \textbf{$|$DD$|$} & \textbf{DWS} & \textbf{Select.} & \textbf{Class} & \textbf{Type} \\
+\textbf{Driver} & \textbf{Paralog} & \textbf{$|$DD$|$} & \textbf{DWS} & \textbf{Select.} & \textbf{Class} & \textbf{Type} & \textbf{DWS 95\% CI} & \textbf{Select.\ 95\% CI} \\
 \midrule
-NF1 & RASA2 & 0.101 & 5.421 & 0.005 & MOD & Seq \\
-SMARCA4 & SMARCA2 & 0.186 & 4.873 & 0.181 & HS & Seq \\
-RB1 & RBL1 & 0.164 & 3.439 & 0.007 & MOD & Seq \\
-ARID1A & ARID1B & 0.270 & 2.819 & 0.277 & HS & Seq \\
-EP300 & CREBBP & 0.279 & 1.815 & 0.108 & MOD & Seq \\
-KMT2D & KMT2C & 0.064 & 1.771 & 0.056 & MOD & Seq \\
-ATR & ATM & 0.070 & 1.656 & $-$0.027 & LS & Seq \\
-PIK3CA & PIK3CB & 0.152 & 1.356 & $-$0.065 & LS & Seq \\
-BRAF & RAF1 & 0.245 & 1.174 & $-$0.178 & LS & Seq \\
-PPP2R1A & PPP2R1B & 0.074 & 0.925 & 0.000 & LS & Seq \\
-TP53 & TP63 & 0.035 & 0.813 & 0.037 & MOD & Seq \\
-FBXW7 & FBXW2 & 0.025 & 0.720 & 0.000 & LS & Seq \\
-CDH1 & CDH2 & 0.098 & 0.687 & $-$0.086 & LS & Seq \\
-KRAS & NRAS & 0.083 & 0.420 & $-$0.060 & LS & Seq \\
-STK11 & SIK1 & 0.017 & 0.392 & $-$0.011 & LS & Part \\
-KRAS & HRAS & 0.043 & 0.206 & $-$0.040 & LS & Seq \\
-BRCA2 & BRCA1 & 0.111 & 0.193 & $-$0.047 & PE & Func \\
-PTEN & TNS2 & 0.042 & 0.174 & $-$0.006 & LS & Seq \\
-PIK3R1 & CRKL & 0.152 & 0.167 & $-$0.161 & PE & Seq \\
-BRCA1 & BRCA2 & 0.079 & 0.144 & $-$0.080 & PE & Func \\
-MAP2K1 & MAP2K2 & 0.001 & 0.003 & $-$0.034 & LS & Seq \\
+NF1 & RASA2 & 0.101 & 5.421 & 0.005 & MOD & Seq & 1.22--13.83 & 0.00--0.02 \\
+SMARCA4 & SMARCA2 & 0.186 & 4.873 & 0.181 & HS & Seq & 3.28--7.78 & 0.07--0.32 \\
+RB1 & RBL1 & 0.164 & 3.439 & 0.007 & MOD & Seq & 1.95--10.92 & 0.00--0.02 \\
+ARID1A & ARID1B & 0.270 & 2.819 & 0.277 & HS & Seq & 1.76--5.89 & 0.19--0.37 \\
+EP300 & CREBBP & 0.279 & 1.815 & 0.108 & MOD & Seq & 1.13--4.55 & 0.00--0.21 \\
+KMT2D & KMT2C & 0.064 & 1.771 & 0.056 & MOD & Seq & 0.94--5.00 & 0.02--0.11 \\
+ATR & ATM & 0.070 & 1.656 & $-$0.027 & LS & Seq & 0.31--4.79 & $-$0.07--0.00 \\
+PIK3CA & PIK3CB & 0.152 & 1.356 & $-$0.065 & LS & Seq & 0.89--2.63 & $-$0.11--$-$0.01 \\
+BRAF & RAF1 & 0.245 & 1.174 & $-$0.178 & LS & Seq & 0.85--1.70 & $-$0.24--$-$0.12 \\
+PPP2R1A & PPP2R1B & 0.074 & 0.925 & 0.000 & LS & Seq & 0.09--2.22 & 0.00--0.00 \\
+TP53 & TP63 & 0.035 & 0.813 & 0.037 & MOD & Seq & 0.42--3.04 & 0.01--0.07 \\
+FBXW7 & FBXW2 & 0.025 & 0.720 & 0.000 & LS & Seq & 0.41--2.98 & 0.00--0.00 \\
+CDH1 & CDH2 & 0.098 & 0.687 & $-$0.086 & LS & Seq & 0.44--0.97 & $-$0.10--$-$0.07 \\
+KRAS & NRAS & 0.083 & 0.420 & $-$0.060 & LS & Seq & 0.26--0.83 & $-$0.11--$-$0.01 \\
+STK11 & SIK1 & 0.017 & 0.392 & $-$0.011 & LS & Part & 0.03--1.27 & $-$0.02--$-$0.01 \\
+KRAS & HRAS & 0.043 & 0.206 & $-$0.040 & LS & Seq & 0.11--0.43 & $-$0.08--$-$0.01 \\
+BRCA2 & BRCA1 & 0.111 & 0.193 & $-$0.047 & PE & Func & 0.13--0.45 & $-$0.23--0.14 \\
+PTEN & TNS2 & 0.042 & 0.174 & $-$0.006 & LS & Seq & 0.11--0.39 & $-$0.07--0.07 \\
+PIK3R1 & CRKL & 0.152 & 0.167 & $-$0.161 & PE & Seq & 0.08--0.71 & $-$0.36--0.05 \\
+BRCA1 & BRCA2 & 0.079 & 0.144 & $-$0.080 & PE & Func & 0.05--0.40 & $-$0.30--0.14 \\
+MAP2K1 & MAP2K2 & 0.001 & 0.003 & $-$0.034 & LS & Seq & 0.01--0.51 & $-$0.04--$-$0.02 \\
 \bottomrule
 \end{tabular}
-\caption{All 21 analyzed paralog pairs ranked by mean dependency window score (DWS) on the $\geq$5-mutant frame. $|$DD$|$: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog. Three pairs evaluable under the previous frame (AKT1$\rightarrow$AKT2, CCNE1$\rightarrow$CCNE2, CDK4$\rightarrow$CDK6) no longer meet the $\geq$5-mutant threshold in any context and are not listed.}
+\caption{All 21 analyzed paralog pairs ranked by mean dependency window score (DWS) on the $\geq$5-mutant frame. $|$DD$|$: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog. DWS 95\% CI and Select.\ 95\% CI: bootstrap 95\% percentile intervals from 1{,}000 stratified resamples of cell lines within each cancer context (seed 42; \texttt{dws\_robustness.py}); the DWS and Select.\ columns report the observed point estimates, not bootstrap means. Three pairs evaluable under the previous frame (AKT1$\rightarrow$AKT2, CCNE1$\rightarrow$CCNE2, CDK4$\rightarrow$CDK6) no longer meet the $\geq$5-mutant threshold in any context and are not listed.}
 \end{table}
 
 
@@ -354,7 +360,7 @@ The top VariantInfo terms per gene are at \texttt{output/driver\_mutation\_rules
 CCNE1 and MAPK1 are amplification-driven oncogenes with no qualifying hotspot mutations.}
 \end{table}
 
-\end{document}
+\stepcounter{table} % Table S8 is a machine-readable TSV (no LaTeX float), manually increment counter
 \subsection{Table S9: TCGA BRCA overall-survival associations for the 32 paralog genes}
 \begin{table}[H]
 \centering
@@ -401,3 +407,55 @@ CCNE1 and MAPK1 are amplification-driven oncogenes with no qualifying hotspot mu
 \end{tabular}
 \caption{Cox proportional-hazards associations between paralog gene expression (continuous, log$_2$-transformed, z-scored; HR per $+1$ SD) and overall survival in the TCGA PanCan Atlas BRCA cohort ($n=1{,}069$, 151 events). Multivariable models adjust for age and AJCC stage (ordinal I--IV; complete cases $n=1{,}050$, 143 events). $q$: Benjamini--Hochberg FDR across the 32-gene family within each model class; four genes pass FDR$<0.05$ in the multivariable family (\textit{PIK3CA}, \textit{RBL1}, \textit{ARID1B}, \textit{BRCA2}) and none in the univariable family. PH $p$: Schoenfeld-type residual--time correlation test of the proportional-hazards assumption (approximation without variance scaling); genes with PH $p<0.05$ should be interpreted with caution. Sorted by multivariable $p$. Source: \texttt{output/tcga\_survival\_v2.json} (\texttt{tcga\_survival\_v2.py}).}
 \end{table}
+
+
+\subsection{Table S10: Top paralog-SL candidates ranked by composite prioritization score}
+\begin{table}[H]
+\centering
+\caption{Top paralog-SL candidates ranked by the exploratory composite prioritization score (moved from the main text when the structural analysis was demoted to exploratory descriptor status). DWS: mean dependency window score across up to 5 cancer contexts on the $\geq$5-mutant frame. Class: HS~$=$~HIGH\_SELECTIVITY, MOD~$=$~MODERATE, LS~$=$~LOW\_SELECTIVITY, PE~$=$~PAN\_ESSENTIAL. Struct: feature-space structural similarity (heuristic, not a 3D alignment metric; Methods). Target.: composite prioritization score (max-normalized DWS 0.40, rescaled selectivity 0.30, targetability 0.30; weights fixed a priori in \texttt{alphafold\_analysis.py}). Known SL pairs marked with $\star$. \textit{NF1$\rightarrow$RASA2's top composite score is driven by a near-zero pan-essential denominator (0.1\% of cell lines) that inflates its DWS; with selectivity~$\approx$~0 it is not a selective candidate, and ARID1A$\rightarrow$ARID1B remains the leading selective candidate. These descriptors were not calibrated against drug-development data; all candidates are computationally nominated and require experimental validation.}}
+\label{tab:candidates}
+\begin{tabular}{llrlrrc}
+\toprule
+\textbf{Driver} & \textbf{Paralog} & \textbf{DWS} & \textbf{Class} & \textbf{Known} & \textbf{Struct} & \textbf{Target.} \\
+\midrule
+NF1      & RASA2    & 5.42 & MOD &         & 0.658 & 0.695 \\
+ARID1A   & ARID1B   & 2.82 & HS  & $\star$ & 0.952 & 0.631 \\
+EP300    & CREBBP   & 1.82 & MOD & $\star$ & 0.976 & 0.535 \\
+KMT2D    & KMT2C    & 1.77 & MOD &         & 0.829 & 0.477 \\
+PIK3CA   & PIK3CB   & 1.36 & LS  & $\star$ & 0.847 & 0.471 \\
+PPP2R1A  & PPP2R1B  & 0.93 & LS  & $\star$ & 0.921 & 0.452 \\
+TP53     & TP63     & 0.81 & MOD &         & 0.803 & 0.393 \\
+KRAS     & HRAS     & 0.21 & LS  &         & 0.885 & 0.392 \\
+FBXW7    & FBXW2    & 0.72 & LS  & $\star$ & 0.666 & 0.358 \\
+STK11    & SIK1     & 0.39 & LS  & $\star$ & 0.710 & 0.334 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Table S11: Sensitivity of dependency-window score rankings and selectivity classification}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcc}
+\toprule
+\textbf{Denominator variant} & \textbf{Spearman $\rho$ vs.\ base} & \textbf{Top-5 overlap} \\
+\midrule
+Base: $\max(|\mu|, f, 0.01)$ (production) & 1.000 & 5 \\
+$|\mu|$ only & 0.990 & 4 \\
+$f$ (pan-essential fraction) only & 0.893 & 4 \\
+mean$(|\mu|, f)$ & 0.988 & 4 \\
+Floor 0.001 & 1.000 & 5 \\
+Floor 0.05 & 0.974 & 5 \\
+\midrule
+\textbf{HIGH\_SELECTIVITY selectivity threshold} & \textbf{HS pairs} & \textbf{Flips vs.\ 0.15} \\
+\midrule
+Selectivity $>$ 0.10 & 3 & 1 \\
+Selectivity $>$ 0.15 (base) & 2 & 0 \\
+Selectivity $>$ 0.20 & 1 & 1 \\
+\bottomrule
+\end{tabular}
+\caption{Sensitivity of DWS-based rankings to the denominator definition (upper block) and of the HIGH\_SELECTIVITY classification to the selectivity threshold (lower block), for the 21 evaluated paralog pairs. Spearman $\rho$: rank correlation of the DWS ranking against the production definition; top-5 overlap: number of shared pairs in the top five of both rankings. At threshold 0.10, EP300$\rightarrow$CREBBP additionally enters HIGH\_SELECTIVITY; at 0.20, SMARCA4$\rightarrow$SMARCA2 drops out; ARID1A$\rightarrow$ARID1B remains HIGH\_SELECTIVITY at all three thresholds. Source: \texttt{output/dws\_robustness.json} (\texttt{dws\_robustness.py}; 1{,}000 stratified bootstrap resamples, seed 42).}
+\end{table}
+
+\end{document}

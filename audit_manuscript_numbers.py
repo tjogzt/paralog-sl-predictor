@@ -297,9 +297,62 @@ check_int("dws_tier_pan", "PAN_ESSENTIAL pairs", 3, tiers.get("PAN_ESSENTIAL", 0
 
 AL = "output/alphafold_structural_analysis.csv"
 a0 = alpha.sort_values("clinical_targetability", ascending=False).iloc[0]
-check("comp_top1", "Composite rank 1 score (NF1→RASA2)", "0.695", a0.clinical_targetability, AL)
+check("comp_top1", "Composite rank 1 score (NF1→RASA2; Table S10)", "0.695", a0.clinical_targetability, AL)
 a1 = alpha.sort_values("clinical_targetability", ascending=False).iloc[1]
-check("comp_top2", "Composite rank 2 score (ARID1A→ARID1B)", "0.631", a1.clinical_targetability, AL)
+check("comp_top2", "Composite rank 2 score (ARID1A→ARID1B; Table S10)", "0.631", a1.clinical_targetability, AL)
+
+# ═══════════════════════════════════════════════════════════════════
+# 8b. DWS robustness: sensitivity variants (Table S11) and bootstrap
+#     confidence intervals (Table S6 CI columns)
+# ═══════════════════════════════════════════════════════════════════
+DWSR = "output/dws_robustness.json"
+dwsr = json.loads((OUT / "dws_robustness.json").read_text())
+sens = {s["variant"]: s for s in dwsr["sensitivity"]}
+boot = {(b["driver"], b["paralog"]): b for b in dwsr["bootstrap"]}
+
+check("dws_sens_rho_mu", "Table S11: rho, denominator |mu| only", "0.990",
+      sens["denominator |mu| only"]["spearman_rho_vs_base"], DWSR)
+check("dws_sens_rho_f", "Table S11: rho, denominator f only", "0.893",
+      sens["denominator f only"]["spearman_rho_vs_base"], DWSR)
+check("dws_sens_rho_mean", "Table S11: rho, denominator mean(|mu|, f)", "0.988",
+      sens["denominator mean(|mu|, f)"]["spearman_rho_vs_base"], DWSR)
+check("dws_sens_rho_f0001", "Table S11: rho, floor 0.001", "1.000",
+      sens["floor 0.001"]["spearman_rho_vs_base"], DWSR)
+check("dws_sens_rho_f005", "Table S11: rho, floor 0.05", "0.974",
+      sens["floor 0.05"]["spearman_rho_vs_base"], DWSR)
+check_int("dws_sens_top5_mu", "Table S11: top-5 overlap, |mu| only", 4,
+          sens["denominator |mu| only"]["top5_overlap_with_base"], DWSR)
+check_int("dws_sens_top5_f", "Table S11: top-5 overlap, f only", 4,
+          sens["denominator f only"]["top5_overlap_with_base"], DWSR)
+check_int("dws_sens_top5_mean", "Table S11: top-5 overlap, mean(|mu|, f)", 4,
+          sens["denominator mean(|mu|, f)"]["top5_overlap_with_base"], DWSR)
+check_int("dws_sens_top5_f0001", "Table S11: top-5 overlap, floor 0.001", 5,
+          sens["floor 0.001"]["top5_overlap_with_base"], DWSR)
+check_int("dws_sens_top5_f005", "Table S11: top-5 overlap, floor 0.05", 5,
+          sens["floor 0.05"]["top5_overlap_with_base"], DWSR)
+check_int("dws_hs_n_010", "Table S11: HS pairs at threshold 0.10", 3,
+          sens["HIGH_SELECTIVITY selectivity threshold 0.1"]["n_high_selectivity"], DWSR)
+check_int("dws_hs_n_015", "Table S11: HS pairs at threshold 0.15", 2,
+          sens["HIGH_SELECTIVITY selectivity threshold 0.15"]["n_high_selectivity"], DWSR)
+check_int("dws_hs_n_020", "Table S11: HS pairs at threshold 0.20", 1,
+          sens["HIGH_SELECTIVITY selectivity threshold 0.2"]["n_high_selectivity"], DWSR)
+check_int("dws_hs_flip_010", "Table S11: flips at threshold 0.10", 1,
+          sens["HIGH_SELECTIVITY selectivity threshold 0.1"]["classification_flips_vs_thr_0.15"], DWSR)
+check_int("dws_hs_flip_020", "Table S11: flips at threshold 0.20", 1,
+          sens["HIGH_SELECTIVITY selectivity threshold 0.2"]["classification_flips_vs_thr_0.15"], DWSR)
+
+for drv, par, dlo, dhi, slo, shi in [
+    ("ARID1A",  "ARID1B",  "1.76", "5.89",  "0.19", "0.37"),
+    ("SMARCA4", "SMARCA2", "3.28", "7.78",  "0.07", "0.32"),
+    ("NF1",     "RASA2",   "1.22", "13.83", "0.00", "0.02"),
+    ("EP300",   "CREBBP",  "1.13", "4.55",  "0.00", "0.21"),
+]:
+    b = boot[(drv, par)]
+    tag = f"{drv}→{par}"
+    check(f"dws_boot_dws_lo_{drv}", f"Table S6: {tag} DWS CI lower", dlo, b["dws_ci95"][0], DWSR)
+    check(f"dws_boot_dws_hi_{drv}", f"Table S6: {tag} DWS CI upper", dhi, b["dws_ci95"][1], DWSR)
+    check(f"dws_boot_sel_lo_{drv}", f"Table S6: {tag} selectivity CI lower", slo, b["selectivity_ci95"][0], DWSR)
+    check(f"dws_boot_sel_hi_{drv}", f"Table S6: {tag} selectivity CI upper", shi, b["selectivity_ci95"][1], DWSR)
 
 # ═══════════════════════════════════════════════════════════════════
 # 9. Table S2 spot values

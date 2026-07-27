@@ -98,8 +98,39 @@ dws_tier_hs	HIGH_SELECTIVITY pairs	2	2	output/therapeutic_window_paralog_classif
 dws_tier_mod	MODERATE pairs	5	5	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_low	LOW_SELECTIVITY pairs	11	11	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_pan	PAN_ESSENTIAL pairs	3	3	output/therapeutic_window_paralog_classification.csv	match
-comp_top1	Composite rank 1 score (NF1→RASA2)	0.695	0.695	output/alphafold_structural_analysis.csv	match
-comp_top2	Composite rank 2 score (ARID1A→ARID1B)	0.631	0.631	output/alphafold_structural_analysis.csv	match
+comp_top1	Composite rank 1 score (NF1→RASA2; Table S10)	0.695	0.695	output/alphafold_structural_analysis.csv	match
+comp_top2	Composite rank 2 score (ARID1A→ARID1B; Table S10)	0.631	0.631	output/alphafold_structural_analysis.csv	match
+dws_sens_rho_mu	Table S11: rho, denominator |mu| only	0.990	0.990	output/dws_robustness.json	match
+dws_sens_rho_f	Table S11: rho, denominator f only	0.893	0.893	output/dws_robustness.json	match
+dws_sens_rho_mean	Table S11: rho, denominator mean(|mu|, f)	0.988	0.988	output/dws_robustness.json	match
+dws_sens_rho_f0001	Table S11: rho, floor 0.001	1.000	1.000	output/dws_robustness.json	match
+dws_sens_rho_f005	Table S11: rho, floor 0.05	0.974	0.974	output/dws_robustness.json	match
+dws_sens_top5_mu	Table S11: top-5 overlap, |mu| only	4	4	output/dws_robustness.json	match
+dws_sens_top5_f	Table S11: top-5 overlap, f only	4	4	output/dws_robustness.json	match
+dws_sens_top5_mean	Table S11: top-5 overlap, mean(|mu|, f)	4	4	output/dws_robustness.json	match
+dws_sens_top5_f0001	Table S11: top-5 overlap, floor 0.001	5	5	output/dws_robustness.json	match
+dws_sens_top5_f005	Table S11: top-5 overlap, floor 0.05	5	5	output/dws_robustness.json	match
+dws_hs_n_010	Table S11: HS pairs at threshold 0.10	3	3	output/dws_robustness.json	match
+dws_hs_n_015	Table S11: HS pairs at threshold 0.15	2	2	output/dws_robustness.json	match
+dws_hs_n_020	Table S11: HS pairs at threshold 0.20	1	1	output/dws_robustness.json	match
+dws_hs_flip_010	Table S11: flips at threshold 0.10	1	1	output/dws_robustness.json	match
+dws_hs_flip_020	Table S11: flips at threshold 0.20	1	1	output/dws_robustness.json	match
+dws_boot_dws_lo_ARID1A	Table S6: ARID1A→ARID1B DWS CI lower	1.76	1.755	output/dws_robustness.json	match
+dws_boot_dws_hi_ARID1A	Table S6: ARID1A→ARID1B DWS CI upper	5.89	5.889	output/dws_robustness.json	match
+dws_boot_sel_lo_ARID1A	Table S6: ARID1A→ARID1B selectivity CI lower	0.19	0.191	output/dws_robustness.json	match
+dws_boot_sel_hi_ARID1A	Table S6: ARID1A→ARID1B selectivity CI upper	0.37	0.366	output/dws_robustness.json	match
+dws_boot_dws_lo_SMARCA4	Table S6: SMARCA4→SMARCA2 DWS CI lower	3.28	3.284	output/dws_robustness.json	match
+dws_boot_dws_hi_SMARCA4	Table S6: SMARCA4→SMARCA2 DWS CI upper	7.78	7.779	output/dws_robustness.json	match
+dws_boot_sel_lo_SMARCA4	Table S6: SMARCA4→SMARCA2 selectivity CI lower	0.07	0.070	output/dws_robustness.json	match
+dws_boot_sel_hi_SMARCA4	Table S6: SMARCA4→SMARCA2 selectivity CI upper	0.32	0.323	output/dws_robustness.json	match
+dws_boot_dws_lo_NF1	Table S6: NF1→RASA2 DWS CI lower	1.22	1.218	output/dws_robustness.json	match
+dws_boot_dws_hi_NF1	Table S6: NF1→RASA2 DWS CI upper	13.83	13.832	output/dws_robustness.json	match
+dws_boot_sel_lo_NF1	Table S6: NF1→RASA2 selectivity CI lower	0.00	-0.001	output/dws_robustness.json	match
+dws_boot_sel_hi_NF1	Table S6: NF1→RASA2 selectivity CI upper	0.02	0.016	output/dws_robustness.json	match
+dws_boot_dws_lo_EP300	Table S6: EP300→CREBBP DWS CI lower	1.13	1.125	output/dws_robustness.json	match
+dws_boot_dws_hi_EP300	Table S6: EP300→CREBBP DWS CI upper	4.55	4.548	output/dws_robustness.json	match
+dws_boot_sel_lo_EP300	Table S6: EP300→CREBBP selectivity CI lower	0.00	0.004	output/dws_robustness.json	match
+dws_boot_sel_hi_EP300	Table S6: EP300→CREBBP selectivity CI upper	0.21	0.212	output/dws_robustness.json	match
 ts2_rows	Table S2 associations	110	110	output/tables/TableS2_FullResults.tsv	match
 ts2_cols	Table S2 columns	17	17	output/tables/TableS2_FullResults.tsv	match
 ts2_arid_dd	ARID1A→ARID1B Ovarian DD (Table S2)	0.386	0.386	output/tables/TableS2_FullResults.tsv	match

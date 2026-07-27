@@ -10,7 +10,7 @@
 
 ```bash
 cd paralog_sl_predictor && bash verify_all.sh
-# 期望输出：202/202 claims match; 31 passed; ALL CHECKS PASSED
+# 期望输出：233/233 claims match; 31 passed; ALL CHECKS PASSED
 ```
 
 - [ ] verify_all.sh 全绿
@@ -133,7 +133,7 @@ paralogSL R package v1.1.0 at https://github.com/tjogzt/paralogSL
 (https://doi.org/10.5281/zenodo.21502113);
 complete analysis pipeline at https://github.com/tjogzt/paralog-sl-predictor
 (https://doi.org/10.5281/zenodo.21502030).
-A single entry point (verify_all.sh) recomputes all 202 audited numeric claims
+A single entry point (verify_all.sh) recomputes all 233 audited numeric claims
 in under one minute.
 ```
 

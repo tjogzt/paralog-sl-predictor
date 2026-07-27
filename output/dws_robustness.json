@@ -1,0 +1,427 @@
+{
+ "method": {
+  "sensitivity": "deterministic recomputation of DWS variants from output/therapeutic_window_all_results.csv; rankings = mean DWS across contexts per pair; comparison by Spearman rho and top-5 overlap",
+  "bootstrap": "1000 stratified resamples (mut/WT/all groups) per pair x context, seed 42; per-iteration means averaged across a pair's evaluable contexts; percentile 95% CI",
+  "essential_threshold": -0.5,
+  "floor": 0.01
+ },
+ "sensitivity": [
+  {
+   "variant": "base (max of |mu|, f, 0.01)",
+   "spearman_rho_vs_base": 1.0,
+   "top5_overlap_with_base": 5,
+   "top5": [
+    "NF1->RASA2",
+    "SMARCA4->SMARCA2",
+    "RB1->RBL1",
+    "ARID1A->ARID1B",
+    "EP300->CREBBP"
+   ],
+   "max_abs_diff_vs_production_column": 2.1316282072803006e-14
+  },
+  {
+   "variant": "denominator |mu| only",
+   "spearman_rho_vs_base": 0.9896,
+   "top5_overlap_with_base": 4,
+   "top5": [
+    "SMARCA4->SMARCA2",
+    "NF1->RASA2",
+    "RB1->RBL1",
+    "ARID1A->ARID1B",
+    "KMT2D->KMT2C"
+   ]
+  },
+  {
+   "variant": "denominator f only",
+   "spearman_rho_vs_base": 0.8935,
+   "top5_overlap_with_base": 4,
+   "top5": [
+    "RB1->RBL1",
+    "NF1->RASA2",
+    "PPP2R1A->PPP2R1B",
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B"
+   ]
+  },
+  {
+   "variant": "denominator mean(|mu|, f)",
+   "spearman_rho_vs_base": 0.9883,
+   "top5_overlap_with_base": 4,
+   "top5": [
+    "NF1->RASA2",
+    "RB1->RBL1",
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "KMT2D->KMT2C"
+   ]
+  },
+  {
+   "variant": "floor 0.001",
+   "spearman_rho_vs_base": 1.0,
+   "top5_overlap_with_base": 5,
+   "top5": [
+    "NF1->RASA2",
+    "SMARCA4->SMARCA2",
+    "RB1->RBL1",
+    "ARID1A->ARID1B",
+    "EP300->CREBBP"
+   ]
+  },
+  {
+   "variant": "floor 0.05",
+   "spearman_rho_vs_base": 0.974,
+   "top5_overlap_with_base": 5,
+   "top5": [
+    "SMARCA4->SMARCA2",
+    "RB1->RBL1",
+    "ARID1A->ARID1B",
+    "NF1->RASA2",
+    "EP300->CREBBP"
+   ]
+  },
+  {
+   "variant": "HIGH_SELECTIVITY selectivity threshold 0.1",
+   "n_high_selectivity": 3,
+   "high_selectivity_pairs": [
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "EP300->CREBBP"
+   ],
+   "classification_flips_vs_thr_0.15": 1
+  },
+  {
+   "variant": "HIGH_SELECTIVITY selectivity threshold 0.15",
+   "n_high_selectivity": 2,
+   "high_selectivity_pairs": [
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B"
+   ],
+   "classification_flips_vs_thr_0.15": 0
+  },
+  {
+   "variant": "HIGH_SELECTIVITY selectivity threshold 0.2",
+   "n_high_selectivity": 1,
+   "high_selectivity_pairs": [
+    "ARID1A->ARID1B"
+   ],
+   "classification_flips_vs_thr_0.15": 1
+  }
+ ],
+ "bootstrap": [
+  {
+   "driver": "ARID1A",
+   "paralog": "ARID1B",
+   "n_contexts": 4,
+   "mean_dws": 3.064729679557241,
+   "dws_ci95": [
+    1.7552220087520443,
+    5.889262631189185
+   ],
+   "mean_selectivity": 0.27629119525831636,
+   "selectivity_ci95": [
+    0.19117129747393996,
+    0.3658335867155534
+   ]
+  },
+  {
+   "driver": "ATR",
+   "paralog": "ATM",
+   "n_contexts": 2,
+   "mean_dws": 1.9043053250604176,
+   "dws_ci95": [
+    0.30583322737893937,
+    4.792515660999605
+   ],
+   "mean_selectivity": -0.025306692631746286,
+   "selectivity_ci95": [
+    -0.07115889039027104,
+    -0.002742230347349177
+   ]
+  },
+  {
+   "driver": "BRAF",
+   "paralog": "RAF1",
+   "n_contexts": 2,
+   "mean_dws": 1.2031042299149444,
+   "dws_ci95": [
+    0.8478564109954599,
+    1.6984314362476658
+   ],
+   "mean_selectivity": -0.17699909007130218,
+   "selectivity_ci95": [
+    -0.2416410252142662,
+    -0.11572121509583118
+   ]
+  },
+  {
+   "driver": "BRCA1",
+   "paralog": "BRCA2",
+   "n_contexts": 3,
+   "mean_dws": 0.1936880777187771,
+   "dws_ci95": [
+    0.05025905919913418,
+    0.39631229609557844
+   ],
+   "mean_selectivity": -0.0761252589268677,
+   "selectivity_ci95": [
+    -0.3038916711293311,
+    0.14193894459525175
+   ]
+  },
+  {
+   "driver": "BRCA2",
+   "paralog": "BRCA1",
+   "n_contexts": 4,
+   "mean_dws": 0.26562580029242283,
+   "dws_ci95": [
+    0.1331475584652435,
+    0.45092574608661523
+   ],
+   "mean_selectivity": -0.04717906593743298,
+   "selectivity_ci95": [
+    -0.22728407095334338,
+    0.1352747160281948
+   ]
+  },
+  {
+   "driver": "CDH1",
+   "paralog": "CDH2",
+   "n_contexts": 1,
+   "mean_dws": 0.6921838226525847,
+   "dws_ci95": [
+    0.43935256024155145,
+    0.9748970685179984
+   ],
+   "mean_selectivity": -0.08555332725615314,
+   "selectivity_ci95": [
+    -0.10211941659070191,
+    -0.07019143117593436
+   ]
+  },
+  {
+   "driver": "EP300",
+   "paralog": "CREBBP",
+   "n_contexts": 4,
+   "mean_dws": 2.0668784069290025,
+   "dws_ci95": [
+    1.125493968126666,
+    4.5483691864079905
+   ],
+   "mean_selectivity": 0.10450442810526937,
+   "selectivity_ci95": [
+    0.0035500635921904508,
+    0.2116645560476201
+   ]
+  },
+  {
+   "driver": "FBXW7",
+   "paralog": "FBXW2",
+   "n_contexts": 4,
+   "mean_dws": 1.2346014878868146,
+   "dws_ci95": [
+    0.41431362706435726,
+    2.9792301070743705
+   ],
+   "mean_selectivity": -0.00024129001883239172,
+   "selectivity_ci95": [
+    -0.0007062146892655367,
+    0.0
+   ]
+  },
+  {
+   "driver": "KMT2D",
+   "paralog": "KMT2C",
+   "n_contexts": 4,
+   "mean_dws": 2.290280514415464,
+   "dws_ci95": [
+    0.9378401609947413,
+    5.002422772619903
+   ],
+   "mean_selectivity": 0.055173685883849084,
+   "selectivity_ci95": [
+    0.015084958315670485,
+    0.10728098064151474
+   ]
+  },
+  {
+   "driver": "KRAS",
+   "paralog": "HRAS",
+   "n_contexts": 4,
+   "mean_dws": 0.24813011765003473,
+   "dws_ci95": [
+    0.1061837416386095,
+    0.4332125611817329
+   ],
+   "mean_selectivity": -0.040486382722472763,
+   "selectivity_ci95": [
+    -0.07981796226405662,
+    -0.006393560150202537
+   ]
+  },
+  {
+   "driver": "KRAS",
+   "paralog": "NRAS",
+   "n_contexts": 4,
+   "mean_dws": 0.48820194306085657,
+   "dws_ci95": [
+    0.25974543154648516,
+    0.8282993758273406
+   ],
+   "mean_selectivity": -0.058945271634510917,
+   "selectivity_ci95": [
+    -0.10888779818084551,
+    -0.011159089106612702
+   ]
+  },
+  {
+   "driver": "MAP2K1",
+   "paralog": "MAP2K2",
+   "n_contexts": 1,
+   "mean_dws": 0.18713935205138846,
+   "dws_ci95": [
+    0.006926878054348301,
+    0.5141769147656222
+   ],
+   "mean_selectivity": -0.03418411552346571,
+   "selectivity_ci95": [
+    -0.04424638989169675,
+    -0.023465703971119134
+   ]
+  },
+  {
+   "driver": "NF1",
+   "paralog": "RASA2",
+   "n_contexts": 4,
+   "mean_dws": 5.431026275831953,
+   "dws_ci95": [
+    1.217708137328267,
+    13.832408048415004
+   ],
+   "mean_selectivity": 0.005786960871498444,
+   "selectivity_ci95": [
+    -0.001445086705202312,
+    0.015543945457240254
+   ]
+  },
+  {
+   "driver": "PIK3CA",
+   "paralog": "PIK3CB",
+   "n_contexts": 5,
+   "mean_dws": 1.4826732115629795,
+   "dws_ci95": [
+    0.8864428366177033,
+    2.628591454789932
+   ],
+   "mean_selectivity": -0.0627014701613126,
+   "selectivity_ci95": [
+    -0.11222127201680336,
+    -0.014601963552905006
+   ]
+  },
+  {
+   "driver": "PIK3R1",
+   "paralog": "CRKL",
+   "n_contexts": 3,
+   "mean_dws": 0.31859386040163507,
+   "dws_ci95": [
+    0.07992586586639792,
+    0.7094724675042917
+   ],
+   "mean_selectivity": -0.16042604051565382,
+   "selectivity_ci95": [
+    -0.3572769446636849,
+    0.05311211961764451
+   ]
+  },
+  {
+   "driver": "PPP2R1A",
+   "paralog": "PPP2R1B",
+   "n_contexts": 1,
+   "mean_dws": 0.9667515652828006,
+   "dws_ci95": [
+    0.0903509817301543,
+    2.2227868461375597
+   ],
+   "mean_selectivity": 0.0,
+   "selectivity_ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "driver": "PTEN",
+   "paralog": "TNS2",
+   "n_contexts": 5,
+   "mean_dws": 0.23848770975657294,
+   "dws_ci95": [
+    0.11171144069566644,
+    0.39199147310693205
+   ],
+   "mean_selectivity": -0.004597675566424292,
+   "selectivity_ci95": [
+    -0.06778599428856565,
+    0.0675913640315803
+   ]
+  },
+  {
+   "driver": "RB1",
+   "paralog": "RBL1",
+   "n_contexts": 2,
+   "mean_dws": 4.062227663005024,
+   "dws_ci95": [
+    1.9536539999105158,
+    10.92033436315897
+   ],
+   "mean_selectivity": 0.006726027397260274,
+   "selectivity_ci95": [
+    0.0,
+    0.02054794520547945
+   ]
+  },
+  {
+   "driver": "SMARCA4",
+   "paralog": "SMARCA2",
+   "n_contexts": 2,
+   "mean_dws": 5.313407154966537,
+   "dws_ci95": [
+    3.2843320461561913,
+    7.7789311989622005
+   ],
+   "mean_selectivity": 0.1830710523424794,
+   "selectivity_ci95": [
+    0.06971177416641962,
+    0.3226037474143322
+   ]
+  },
+  {
+   "driver": "STK11",
+   "paralog": "SIK1",
+   "n_contexts": 1,
+   "mean_dws": 0.4760279905816394,
+   "dws_ci95": [
+    0.0276659813236277,
+    1.267522587291771
+   ],
+   "mean_selectivity": -0.01134267040149393,
+   "selectivity_ci95": [
+    -0.018674136321195144,
+    -0.0056022408963585435
+   ]
+  },
+  {
+   "driver": "TP53",
+   "paralog": "TP63",
+   "n_contexts": 5,
+   "mean_dws": 1.279827802823716,
+   "dws_ci95": [
+    0.41881976311072555,
+    3.0427517038797807
+   ],
+   "mean_selectivity": 0.03725946761128941,
+   "selectivity_ci95": [
+    0.014265324501170264,
+    0.06751097843042674
+   ]
+  }
+ ]
+}
