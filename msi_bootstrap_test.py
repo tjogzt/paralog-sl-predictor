@@ -1,15 +1,15 @@
 """
 Task 4 — Stratified bootstrap test of MSI-H vs MSS DD-AUROC differences
 ========================================================================
-Manuscript (MSI section, >=3-per-group sensitivity frame):
-  endometrial AUROC = 0.838 (MSI-H, n=17 lines) vs 0.556 (MSS, n=11),
-  colorectal  AUROC = 0.767 (MSI-H, n=14) vs 0.712 (MSS, n=45);
+Manuscript (MSI section, >=3-per-group sensitivity frame, signed DD):
+  endometrial AUROC = 0.303 (MSI-H, n=17 lines) vs 0.500 (MSS, n=11),
+  colorectal  AUROC = 0.558 (MSI-H, n=14) vs 0.545 (MSS, n=45);
   the differences were not formally tested. This script performs that test.
 
 Data: pair-level subgroup results written by the min3 sensitivity run
-(output/msi_<cancer>_<subgroup>_results_min3.csv). Score = |dependency_dd|,
-label = is_known_paralog_sl — the exact quantities used for the published
-AUROCs (msi_analysis.py).
+(output/msi_<cancer>_<subgroup>_results_min3.csv). Score = signed
+dependency_dd (primary metric; positive = compensation), as produced by
+msi_analysis.py.
 
 Procedure (seed 42, 10,000 iterations): within each subgroup, resample the
 positive pairs and the negative pairs separately with replacement
@@ -43,17 +43,11 @@ CANCERS = {
     },
 }
 
-# Published subgroup AUROCs (output/msi_key_numbers_min3.json)
-PUBLISHED = {
-    "Endometrial": {"msi_h": 0.8376, "mss": 0.5556},
-    "Colorectal": {"msi_h": 0.7674, "mss": 0.7121},
-}
-
 
 def load_scores(path):
     df = pd.read_csv(path)
     y = df["is_known_paralog_sl"].astype(int).values
-    s = df["dependency_dd"].abs().fillna(0).values
+    s = df["dependency_dd"].fillna(0).values
     return y, s
 
 
@@ -105,12 +99,6 @@ def main():
                 "msi_h": int(len(y_h)), "mss": int(len(y_s)),
                 "msi_h_positives": int(y_h.sum()), "mss_positives": int(y_s.sum()),
             },
-            "published_auroc_msi_h": PUBLISHED[cancer]["msi_h"],
-            "published_auroc_mss": PUBLISHED[cancer]["mss"],
-            "auroc_reproduces_published": bool(
-                abs(auc_h - PUBLISHED[cancer]["msi_h"]) < 5e-4
-                and abs(auc_s - PUBLISHED[cancer]["mss"]) < 5e-4
-            ),
         }
         results.append(rec)
         print(f"{cancer:12s} MSI-H={auc_h:.3f} MSS={auc_s:.3f} "
@@ -120,7 +108,7 @@ def main():
     out_obj = {
         "method": {
             "frame": ">=3-per-group sensitivity frame (min3 products)",
-            "score": "|dependency_dd|", "label": "is_known_paralog_sl",
+            "score": "signed dependency_dd (positive = compensation)", "label": "is_known_paralog_sl",
             "bootstrap": f"stratified (pos/neg preserved within subgroup), "
                          f"B={B}, seed={SEED}",
             "p_value": "two-sided empirical vs delta=0: "

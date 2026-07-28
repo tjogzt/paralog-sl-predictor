@@ -1,32 +1,36 @@
 {
-  "generated_at": "2026-07-27T16:06:48+00:00",
+  "generated_at": "2026-07-28T01:42:21+00:00",
   "generated_by": "compute_headline_metrics.py",
   "source_files": [
     "output/tables/TableS2_FullResults.tsv",
     "output/validation_report.json"
   ],
-  "scoring": "AUROC of |DD| (manuscript convention); AUPRC = average precision",
+  "scoring": "AUROC of signed DD (primary metric; positive = compensation); AUROC of |DD| reported as sensitivity analysis; AUPRC = average precision",
   "bootstrap": "percentile 95% CI, 10000 entry resamples, seed 42",
   "sign_convention": "DD = mean(Chronos|WT) - mean(Chronos|MUT); positive = compensation",
   "min_samples": "primary analysis: >=5 mutant and >=5 WT cell lines per stratum",
   "lineage_full": {
-    "auroc": 0.6764705882352942,
-    "auprc": 0.3858255702727791,
+    "auroc": 0.6286764705882353,
+    "auprc": 0.3461470293095671,
+    "auroc_abs_dd_sensitivity": 0.6764705882352942,
+    "auprc_abs_dd_sensitivity": 0.3858255702727791,
     "n_entries": 110,
     "n_positives": 8,
     "label": "Full set (12 curated pairs; secondary)",
     "auroc_ci95": [
-      0.40359089184309005,
-      0.92
+      0.32948471730289913,
+      0.8899122939816917
     ],
     "auprc_ci95": [
-      0.06300778444034776,
-      0.7125036375661375
+      0.04757532841274027,
+      0.676192709406995
     ]
   },
   "lineage_tier_ab": {
     "auroc": 1.0,
     "auprc": 1.0,
+    "auroc_abs_dd_sensitivity": 1.0,
+    "auprc_abs_dd_sensitivity": 1.0,
     "n_entries": 104,
     "n_positives": 2,
     "label": "PRIMARY: Tier A \u222a Tier B (5 pairs, external direct/conditional evidence)",
@@ -51,6 +55,8 @@
   "lineage_tier_a": {
     "auroc": null,
     "auprc": null,
+    "auroc_abs_dd_sensitivity": null,
+    "auprc_abs_dd_sensitivity": null,
     "n_entries": 102,
     "n_positives": 0,
     "label": "Tier A only (3 pairs, direct dual-perturbation evidence)",
@@ -66,6 +72,8 @@
   "lineage_tier_b": {
     "auroc": 1.0,
     "auprc": 1.0,
+    "auroc_abs_dd_sensitivity": 1.0,
+    "auprc_abs_dd_sensitivity": 1.0,
     "n_entries": 104,
     "n_positives": 2,
     "label": "Tier B only (2 pairs, genotype-conditional dependency)",
@@ -79,18 +87,20 @@
     ]
   },
   "lineage_primary": {
-    "auroc": 0.7009803921568627,
-    "auprc": 0.46520576395112306,
+    "auroc": 0.5604575163398693,
+    "auprc": 0.38121986658741164,
+    "auroc_abs_dd_sensitivity": 0.7009803921568627,
+    "auprc_abs_dd_sensitivity": 0.46520576395112306,
     "n_entries": 108,
     "n_positives": 6,
     "label": "Curated sequence paralogs (10 pairs; comparators excluded)",
     "auroc_ci95": [
-      0.326984126984127,
-      0.9879807692307693
+      0.1873015873015873,
+      0.9142857142857143
     ],
     "auprc_ci95": [
-      0.05868814521013102,
-      0.8666666666666666
+      0.02427414632250907,
+      0.809433962264151
     ],
     "excluded_pairs": [
       "BRCA1->BRCA2",
@@ -98,18 +108,20 @@
     ]
   },
   "lineage_leave_out_depmap_era": {
-    "auroc": 0.7254901960784313,
-    "auprc": 0.4263845068929815,
+    "auroc": 0.6134453781512605,
+    "auprc": 0.36822517105535973,
+    "auroc_abs_dd_sensitivity": 0.7254901960784313,
+    "auprc_abs_dd_sensitivity": 0.4263845068929815,
     "n_entries": 109,
     "n_positives": 7,
     "label": "Leave-out (DepMap-era pairs removed)",
     "auroc_ci95": [
-      0.4189562706270627,
-      0.969047619047619
+      0.2714285714285714,
+      0.9224234503360718
     ],
     "auprc_ci95": [
-      0.06524036469258443,
-      0.7777777777777778
+      0.03879295444289406,
+      0.7321312946233489
     ],
     "excluded_pairs": [
       "FBXW7->FBXW2",
@@ -117,36 +129,42 @@
     ]
   },
   "lineage_pre_depmap_only": {
-    "auroc": 0.7745098039215687,
-    "auprc": 0.5427672955974844,
+    "auroc": 0.5254901960784314,
+    "auprc": 0.4299585218702865,
+    "auroc_abs_dd_sensitivity": 0.7745098039215687,
+    "auprc_abs_dd_sensitivity": 0.5427672955974844,
     "n_entries": 107,
     "n_positives": 5,
     "label": "Pre-DepMap evidence only (8 pairs)",
     "auroc_ci95": [
-      0.3333333333333333,
+      0.0380952380952381,
       1.0
     ],
     "auprc_ci95": [
-      0.06923577872163099,
+      0.014754416618132402,
       1.0
     ]
   },
   "lineage_full_direction_strict": {
-    "auroc": 0.6764705882352942,
-    "auprc": 0.3858255702727791,
+    "auroc": 0.6286764705882353,
+    "auprc": 0.3461470293095671,
+    "auroc_abs_dd_sensitivity": 0.6764705882352942,
+    "auprc_abs_dd_sensitivity": 0.3858255702727791,
     "n_entries": 110,
     "n_positives": 8,
     "label": "Full set, direction-strict (EP300->CREBBP relabelled non-positive)"
   },
   "component_decomposition_lineage": {
-    "dd": 0.6764705882352942,
+    "dd": 0.6286764705882353,
+    "dd_abs_sensitivity": 0.6764705882352942,
     "pcs": 0.8247549019607843,
     "delta_expression_abs": 0.5465686274509803,
     "delta_expression_signed": 0.8075980392156863,
     "necessity": 0.6421568627450981
   },
   "component_decomposition_lineage_auprc": {
-    "dd": 0.3858255702727791,
+    "dd": 0.3461470293095671,
+    "dd_abs_sensitivity": 0.3858255702727791,
     "pcs": 0.30470932302346776,
     "delta_expression_abs": 0.1470228184087264,
     "delta_expression_signed": 0.31660865410865413,
@@ -155,8 +173,8 @@
   "component_paired_bootstrap": {
     "dd": {
       "ci95": [
-        0.40359089184309005,
-        0.92
+        0.32948471730289913,
+        0.8899122939816917
       ],
       "n_boot": 9999
     },
@@ -182,28 +200,28 @@
       "n_boot": 9999
     },
     "pcs_minus_dd": {
-      "mean_delta": 0.15015602137816347,
+      "mean_delta": 0.1954462633268126,
       "ci95": [
-        -0.10958032157971484,
-        0.456404920458749
+        -0.13248281855684763,
+        0.5451799294484148
       ],
-      "frac_above_dd": 0.8557855785578558
+      "frac_above_dd": 0.8776877687768777
     },
     "delta_expression_abs_minus_dd": {
-      "mean_delta": -0.1274983854456586,
+      "mean_delta": -0.08220814349700949,
       "ci95": [
-        -0.5028206197229089,
-        0.2783018867924528
+        -0.47434862294432334,
+        0.32655408163265276
       ],
-      "frac_above_dd": 0.24592459245924592
+      "frac_above_dd": 0.33043304330433043
     },
     "necessity_minus_dd": {
-      "mean_delta": -0.03239502609070563,
+      "mean_delta": 0.012895215857943497,
       "ci95": [
-        -0.32871012482662965,
-        0.33337924701561
+        -0.33820701357466065,
+        0.37383177570093457
       ],
-      "frac_above_dd": 0.39303930393039305
+      "frac_above_dd": 0.5223522352235224
     }
   },
   "identity_filter": {
@@ -211,7 +229,7 @@
     "metric": "k-mer Jaccard (k=3), Methods-validated identity-enrichment proxy",
     "pairs_with_identity": 16,
     "id_ge_0.2": {
-      "auroc": 0.5833333333333334,
+      "auroc": 0.8333333333333334,
       "n_entries": 7,
       "n_unique_pairs": 5,
       "n_positives": 4
@@ -225,40 +243,44 @@
   },
   "per_pair_framework": {
     "source": "output/validation_report.json",
-    "observed_auroc": 0.5,
-    "null_auroc_mean": 0.5006060606060606,
-    "empirical_p_value": 0.5027497250274973,
+    "observed_auroc": 0.5984848484848485,
+    "null_auroc_mean": 0.5013363636363636,
+    "empirical_p_value": 0.22257774222577742,
     "n_known": "6",
     "n_total": 72,
     "n_permutations": 10000,
     "bootstrap": {
-      "auroc_mean": 0.49636178267449665,
-      "auroc_ci_low": 0.18507246376811595,
-      "auroc_ci_high": 0.8127060439560438,
+      "auroc_mean": 0.5902691772967428,
+      "auroc_ci_low": 0.29411764705882354,
+      "auroc_ci_high": 0.8454106280193237,
       "n_bootstrap": 1000
     },
     "expression_only_auroc": 0.5675675675675675
   },
   "per_pair_mean_from_tables2": {
-    "auroc_dd": 0.5656565656565656,
-    "auprc_dd": 0.3036131982950827,
+    "auroc_dd": 0.6717171717171717,
+    "auprc_dd": 0.3107195107195107,
+    "auroc_dd_abs_sensitivity": 0.5656565656565656,
+    "auprc_dd_abs_sensitivity": 0.3036131982950827,
     "auroc_pcs": 0.8143939393939394,
     "auroc_delta_expression": 0.6085858585858586,
     "auroc_necessity": 0.6590909090909091,
     "auroc_dd_ci95": [
-      0.22411409578076244,
-      0.8944538670284922
+      0.34328358208955223,
+      0.9264705882352942
     ],
     "n_pairs": 72,
     "n_positives": 6,
-    "aggregation": "mean across lineages per pair, from TableS2"
+    "aggregation": "mean signed DD across lineages per pair, from TableS2"
   },
   "per_pair_max_from_tables2": {
-    "auroc_dd": 0.5,
-    "auprc_dd": 0.266855408896079,
+    "auroc_dd": 0.5984848484848485,
+    "auprc_dd": 0.26842501368363436,
+    "auroc_dd_abs_sensitivity": 0.5,
+    "auprc_dd_abs_sensitivity": 0.266855408896079,
     "n_pairs": 72,
     "n_positives": 6,
-    "aggregation": "max |DD| across lineages per pair, from TableS2"
+    "aggregation": "max signed DD across lineages per pair, from TableS2"
   },
   "per_pair_composite_mean": {
     "auroc": 0.8308080808080808,
@@ -273,13 +295,13 @@
   },
   "leave_one_lineage_out": {
     "values": {
-      "without_Cervical": 0.7042857142857143,
-      "without_Endometrial": 0.6564102564102564,
-      "without_Ovarian": 0.6807692307692308
+      "without_Cervical": 0.6057142857142858,
+      "without_Endometrial": 0.6923076923076923,
+      "without_Ovarian": 0.6192307692307693
     },
     "range": [
-      0.6564102564102564,
-      0.7042857142857143
+      0.6057142857142858,
+      0.6923076923076923
     ]
   },
   "published_benchmarks": {
@@ -299,14 +321,14 @@
   "manuscript_claims_check": [
     {
       "metric": "dd_auroc_lineage_full",
-      "claimed": 0.676,
-      "computed": 0.6765,
+      "claimed": 0.629,
+      "computed": 0.6287,
       "status": "match"
     },
     {
       "metric": "auprc_lineage_full",
-      "claimed": 0.386,
-      "computed": 0.3858,
+      "claimed": 0.346,
+      "computed": 0.3461,
       "status": "match"
     },
     {
@@ -323,26 +345,26 @@
     },
     {
       "metric": "dd_auroc_lineage_leave_out_depmap_era",
-      "claimed": 0.725,
-      "computed": 0.7255,
+      "claimed": 0.613,
+      "computed": 0.6134,
       "status": "match"
     },
     {
       "metric": "dd_auroc_lineage_pre_depmap_only",
-      "claimed": 0.774,
-      "computed": 0.7745,
+      "claimed": 0.525,
+      "computed": 0.5255,
       "status": "match"
     },
     {
       "metric": "dd_auroc_lineage_full_direction_strict",
-      "claimed": 0.676,
-      "computed": 0.6765,
+      "claimed": 0.629,
+      "computed": 0.6287,
       "status": "match"
     },
     {
       "metric": "dd_auroc_id_filter_0.2",
-      "claimed": 0.583,
-      "computed": 0.5833,
+      "claimed": 0.833,
+      "computed": 0.8333,
       "status": "match"
     },
     {
@@ -353,8 +375,8 @@
     },
     {
       "metric": "component_dd",
-      "claimed": 0.676,
-      "computed": 0.6765,
+      "claimed": 0.629,
+      "computed": 0.6287,
       "status": "match"
     },
     {
@@ -377,14 +399,14 @@
     },
     {
       "metric": "per_pair_auroc",
-      "claimed": 0.5,
-      "computed": 0.5,
+      "claimed": 0.599,
+      "computed": 0.5985,
       "status": "match"
     },
     {
       "metric": "dd_auroc_per_pair_mean",
-      "claimed": 0.566,
-      "computed": 0.5657,
+      "claimed": 0.672,
+      "computed": 0.6717,
       "status": "match"
     },
     {
@@ -401,14 +423,14 @@
     },
     {
       "metric": "llo_auroc_min",
-      "claimed": 0.656,
-      "computed": 0.6564,
+      "claimed": 0.606,
+      "computed": 0.6057,
       "status": "match"
     },
     {
       "metric": "llo_auroc_max",
-      "claimed": 0.704,
-      "computed": 0.7043,
+      "claimed": 0.692,
+      "computed": 0.6923,
       "status": "match"
     }
   ]

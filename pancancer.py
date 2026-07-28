@@ -145,7 +145,7 @@ def main():
         all_results[cancer_name] = results_df
 
         yt = results_df["is_known_paralog_sl"].astype(int).values
-        ys = results_df["dependency_dd"].abs().fillna(0).values
+        ys = results_df["dependency_dd"].fillna(0).values
         nk = int(yt.sum())
         auc = roc_auc_score(yt, ys) if nk >= 2 else float("nan")
 

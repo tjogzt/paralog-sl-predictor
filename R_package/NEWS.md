@@ -1,5 +1,21 @@
 # paralogSL News
 
+## v1.1.2 (2026-07-28)
+
+### Signed-DD primary metric release (paralog-sl-predictor v1.3.2 framework)
+
+- `compute_auroc()` now ranks by signed DD by default (the manuscript's
+  primary metric: positive DD = compensation); new `score` argument with
+  `score = "abs"` restoring the pre-v1.1.2 direction-agnostic behaviour,
+  which the manuscript reports only as a sensitivity analysis
+- All built-in datasets regenerated from the canonical artifacts:
+  `solid_tumor_summary` / `cross_cancer_summary` now carry signed
+  `dd_auroc` plus a `dd_auroc_abs_sensitivity` column (primary frame:
+  1 of 8 evaluable lineages above AUROC 0.7; sensitivity frame: 6 of 12)
+- `benchmark_methods` this-study DD row updated to the signed value
+  (full lineage-level frame AUROC 0.629; |DD| sensitivity 0.676;
+  Tier A + B external benchmark unchanged at 1.000)
+
 ## v1.1.0 (2026-07-26)
 
 ### Manuscript-alignment release (paralog-sl-predictor v1.1.0 framework)

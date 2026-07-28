@@ -49,10 +49,10 @@ def run_full_validation(results, n_permutations: int = 10000,
     """
     rng = np.random.default_rng(seed)
 
-    # ── Per-pair framework: gyn3 lineages, max |DD| across lineages ──
+    # ── Per-pair framework: gyn3 lineages, max signed DD across lineages ──
     gyn = results[results["cancer_type"].isin(["Ovarian", "Endometrial", "Cervical"])]
     pp = (gyn.groupby(["driver_gene", "paralog_gene"])
-             .agg(score=("dependency_dd", lambda s: s.abs().max()),
+             .agg(score=("dependency_dd", "max"),
                   known=("is_known_paralog_sl", "max"))
              .reset_index())
     yt = pp["known"].astype(int).values
@@ -82,7 +82,7 @@ def run_full_validation(results, n_permutations: int = 10000,
     # ── Lineage-level frame (gyn3 entries; manuscript's "cancer-type-specific"
     # evaluation: 118 driver x paralog x lineage entries, 11 positives) ──
     yt_lin = gyn["is_known_paralog_sl"].astype(int).values
-    ys_lin = gyn["dependency_dd"].abs().fillna(0).values
+    ys_lin = gyn["dependency_dd"].fillna(0).values
     nk_lin = int(yt_lin.sum())
     lin_dd_auroc = roc_auc_score(yt_lin, ys_lin) if nk_lin >= 2 else float("nan")
     ys_comp = gyn.get("composite_score", pd.Series(0, index=gyn.index)).fillna(0).values
@@ -101,7 +101,7 @@ def run_full_validation(results, n_permutations: int = 10000,
             component_metrics["expression_only"] = float("nan")
 
     return {
-        "framework": "per_pair: gyn3 unique pairs, score = max |DD| across lineages",
+        "framework": "per_pair: gyn3 unique pairs, score = max signed DD across lineages",
         "note": ("Reproducible companion to the frozen historical "
                  "output/validation_report.json; label-shuffle null is seeded "
                  "and has mean ~0.5 by construction."),
@@ -154,7 +154,7 @@ def cross_cancer_validation(all_results):
     for ct in cancers:
         r = all_results[ct]
         yt = r["is_known_paralog_sl"].astype(int).values
-        ys = r["dependency_dd"].abs().fillna(0).values
+        ys = r["dependency_dd"].fillna(0).values
         nk = int(yt.sum())
         auc = roc_auc_score(yt, ys) if nk >= 2 else float("nan")
         astr = f"{auc:.3f}" if not np.isnan(auc) else "N/A"

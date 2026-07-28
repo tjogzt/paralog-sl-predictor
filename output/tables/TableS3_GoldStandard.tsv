@@ -7,7 +7,7 @@ B	ARID1A	ARID1B	shRNA knockdown conditioned on natural ARID1A mutation	ARID1A-mu
 C	EP300	CREBBP	p300 degradation / CRISPR in CREBBP-deficient lines	CREBBP-mutant cancer lines	Reciprocal only (CREBBP->EP300)	No	Yes	Reciprocal	Secondary	Ogiwara 2016; Nie 2021
 C	PIK3CA	PIK3CB	shRNA / PI3K inhibitor in PTEN-deficient lines	PTEN-deficient cancer lines	PTEN->PIK3CB only	No	Yes	No (other driver)	Secondary	Wee 2008
 C	CCNE1	CCNE2	Mouse developmental double knockout	Mouse embryo	CCNE1<->CCNE2 redundancy	Yes (mouse)	Yes	No (redundancy)	Secondary	Geng 2003
-C	FBXW7	FBXW2	DepMap computational analysis	700+ cell lines	FBXW7->FBXW2	No	No	No (computational)	Secondary	DepMap
-C	PPP2R1A	PPP2R1B	DepMap computational analysis	700+ cell lines	PPP2R1A->PPP2R1B	No	No	No (computational)	Secondary	DepMap
+C	FBXW7	FBXW2	DepMap computational analysis	700+ cell lines	FBXW7->FBXW2	No	No	No (computational)	Secondary	DepMap 26Q1 release
+C	PPP2R1A	PPP2R1B	DepMap computational analysis	700+ cell lines	PPP2R1A->PPP2R1B	No	No	No (computational)	Secondary	DepMap 26Q1 release
 Comparator	BRCA1	BRCA2	PARP inhibition / genetic screen (functional analogs)	BRCA-mutant cancer lines	BRCA1/2->PARP axis	No	Yes	Functional analog	Comparator	Bryant 2005
 Comparator	STK11	SIK1	Mouse genetics, LKB1-SIK axis (partial homolog)	Mouse NSCLC models	STK11->SIK1/3 axis	No	Yes	Pathway axis	Comparator	Hollstein 2019

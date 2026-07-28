@@ -80,7 +80,7 @@ Sequence features (length, molecular weight, pI, GRAVY hydrophobicity, disorder 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS2_CrossCancer_AUROC.pdf}
-\caption{\textbf{Cross-cancer DD AUROC.} DD AUROC for each of the 8 evaluable solid tumor types on the primary $\geq$5-per-group frame, grouped by signal strength. a, Strong signal (AUROC~$\ge$~0.7; 7 lineages: Esophagogastric 0.965, SCLC 0.906, Bladder Urothelial 0.844, Colorectal 0.828, Endometrial 0.818, Breast 0.750, NSCLC 0.741). b, Moderate signal (AUROC 0.5--0.7; Ovarian 0.661). Dashed line indicates random classifier (0.5). Bar labels show the number of tested paralog pairs per lineage. Cancer types with $<$2 known positive pairs were excluded from AUROC evaluation (see Table~S1 for the 15 non-evaluable types). On the $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.949, Melanoma 0.617, Cervical 0.500; 9 of 12 evaluable lineages exceed 0.7).}
+\caption{\textbf{Cross-cancer DD AUROC.} DD AUROC for each of the 8 evaluable solid tumor types on the primary $\geq$5-per-group frame, grouped by signal strength. a, Strong signal (AUROC~$\ge$~0.7; Colorectal 0.775). b, Moderate signal (AUROC 0.5--0.7; Esophagogastric 0.674, NSCLC 0.664, SCLC 0.651, Ovarian 0.611, Bladder Urothelial 0.531, Endometrial 0.519) and below-chance signal (Breast 0.150). Dashed line indicates random classifier (0.5). Bar labels show the number of tested paralog pairs per lineage. Cancer types with $<$2 known positive pairs were excluded from AUROC evaluation (see Table~S1 for the 15 non-evaluable types). On the $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.962, Melanoma 0.840, Cervical 0.714; 6 of 12 evaluable lineages exceed 0.7).}
 \end{figure}
 
 % S3
@@ -108,7 +108,7 @@ Sequence features (length, molecular weight, pI, GRAVY hydrophobicity, disorder 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS6_MutationType.pdf}
-\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.015$), indicating that truncating~$>$~missense is pair-specific rather than universal. c, $|$DD$|$ under truncating (red) versus missense (blue) mutations for the known gold-standard SL pairs (maximum across cancer types, one row per pair); the truncating--missense gap is largest for ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal). d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.726) vs.\ missense-only (0.391) and overall DD performance. Panel d is computed on the mutation-type analysis frame (48 Breast pairs); the resulting ``All'' AUC (0.735) therefore differs from the cross-cancer frame value (0.750; Fig.~1a), which uses a different pair universe.}
+\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.015$), indicating that truncating~$>$~missense is pair-specific rather than universal. c, $|$DD$|$ under truncating (red) versus missense (blue) mutations for the known gold-standard SL pairs (maximum across cancer types, one row per pair); the truncating--missense gap is largest for ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal). d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.460) vs.\ missense-only (0.437) and overall DD performance. Panel d is computed on the mutation-type analysis frame (48 Breast pairs); the resulting ``All'' AUC (0.465) therefore differs from the cross-cancer frame value (0.150; Fig.~1a), which uses a different pair universe.}
 \end{figure}
 
 % S7
@@ -122,7 +122,7 @@ Sequence features (length, molecular weight, pI, GRAVY hydrophobicity, disorder 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth,keepaspectratio]{output/figures/FigS8_Bootstrap_NegCtrl.pdf}
-\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 72 pairs, 6 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.185--0.813). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.503$). The observed per-pair AUROC (0.500) does not exceed the null mean (0.501): with only 6 positive pairs the aggregated per-pair evaluation has no detectable signal, and the lineage-level evaluation (0.676, reported in the benchmark comparison) serves as the primary framework because it evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
+\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 72 pairs, 6 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.294--0.845). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.223$). The observed per-pair AUROC (0.598) does not significantly exceed the null mean (0.501): with only 6 positive pairs the aggregated per-pair evaluation remains underpowered, and the lineage-level evaluation (0.629, reported in the benchmark comparison) serves as the primary framework because it evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
 \end{figure}
 
 \begin{figure}[H]
@@ -167,15 +167,16 @@ Sequence features (length, molecular weight, pI, GRAVY hydrophobicity, disorder 
 \toprule
 \textbf{Label} & \textbf{Full name} & \textbf{Cell Lines} & \textbf{Pairs} & \textbf{Known+} & \textbf{DD AUROC} \\
 \midrule
-Esophagogastric & \shortstack[l]{Esophagogastric adenocarcinoma /\\esophageal SCC} & 62 & 50 & 3 & 0.965 \\
-SCLC & Small cell lung cancer & 121 & 99 & 5 & 0.906 \\
-Bladder Urothelial & Bladder urothelial carcinoma & 30 & 18 & 2 & 0.844 \\
-Colorectal & Colorectal adenocarcinoma & 59 & 62 & 5 & 0.828 \\
-Endometrial & Endometrial carcinoma & 31 & 62 & 5 & 0.818 \\
-Breast & Invasive breast carcinoma & 50 & 12 & 2 & 0.750 \\
-NSCLC & Non-small cell lung cancer & 95 & 96 & 5 & 0.741 \\
+Colorectal & Colorectal adenocarcinoma & 59 & 62 & 5 & 0.775 \\
 \midrule
-Ovarian & Ovarian epithelial carcinoma & 55 & 50 & 7 & 0.661 \\
+Esophagogastric & \shortstack[l]{Esophagogastric adenocarcinoma /\\esophageal SCC} & 62 & 50 & 3 & 0.674 \\
+NSCLC & Non-small cell lung cancer & 95 & 96 & 5 & 0.664 \\
+SCLC & Small cell lung cancer & 121 & 99 & 5 & 0.651 \\
+Ovarian & Ovarian epithelial carcinoma & 55 & 50 & 7 & 0.611 \\
+Bladder Urothelial & Bladder urothelial carcinoma & 30 & 18 & 2 & 0.531 \\
+Endometrial & Endometrial carcinoma & 31 & 62 & 5 & 0.519 \\
+\midrule
+Breast & Invasive breast carcinoma & 50 & 12 & 2 & 0.150 \\
 \midrule
 Biliary Tract & Biliary tract cancer & 39 & 38 & 0 & --- \\
 Melanoma & Melanoma & 78 & 22 & 1 & --- \\
@@ -194,7 +195,7 @@ Rhabdomyosarcoma & Rhabdomyosarcoma & 12 & 0 & 0 & --- \\
 Thyroid & Thyroid carcinoma & 10 & 0 & 0 & --- \\
 \bottomrule
 \end{tabular}
-\caption{Cell line counts and DD AUROC across all 23 analyzed solid tumor types (primary $\geq$5-per-group frame). Top: AUROC~$>$~0.7 (7 types). Middle: AUROC~$\le$~0.7 (1 type). Bottom: insufficient known positives for AUROC (15 types). Known+: number of gold-standard positive pairs evaluable in each lineage. ``---'': AUROC not computable ($<$2 known positives). Pairs: driver$\times$paralog combinations passing the $\geq$5 mutant / $\geq$5 wild-type filter. On the relaxed $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.949, Melanoma 0.617, Cervical 0.500), giving 12 evaluable lineages in total (9 above 0.7). Full name: standardized cancer-type name corresponding to each short label; SCC, squamous cell carcinoma.}
+\caption{Cell line counts and DD AUROC across all 23 analyzed solid tumor types (primary $\geq$5-per-group frame). Top: AUROC~$>$~0.7 (1 type). Upper middle: AUROC 0.5--0.7 (6 types). Lower middle: AUROC~$<$~0.5 (1 type; Breast, where reverse-direction entries dominate under signed scoring). Bottom: insufficient known positives for AUROC (15 types). AUROC is computed on signed DD (primary metric). Known+: number of gold-standard positive pairs evaluable in each lineage. ``---'': AUROC not computable ($<$2 known positives). Pairs: driver$\times$paralog combinations passing the $\geq$5 mutant / $\geq$5 wild-type filter. On the relaxed $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.962, Melanoma 0.840, Cervical 0.714), giving 12 evaluable lineages in total (6 above 0.7). Full name: standardized cancer-type name corresponding to each short label; SCC, squamous cell carcinoma.}
 \end{table}
 
 \subsection{Table S2: Complete paralog-SL pair analysis results}
@@ -490,5 +491,8 @@ Selectivity $>$ 0.20 & 1 & 1 \\
 \end{tabular}
 \caption{Sensitivity of DWS-based rankings to the denominator definition (upper block) and of the HIGH\_SELECTIVITY classification to the selectivity threshold (lower block), for the 21 evaluated paralog pairs. Spearman $\rho$: rank correlation of the DWS ranking against the production definition; top-5 overlap: number of shared pairs in the top five of both rankings. At threshold 0.10, EP300$\rightarrow$CREBBP additionally enters HIGH\_SELECTIVITY; at 0.20, SMARCA4$\rightarrow$SMARCA2 drops out; ARID1A$\rightarrow$ARID1B remains HIGH\_SELECTIVITY at all three thresholds. Source: \texttt{output/dws\_robustness.json} (\texttt{dws\_robustness.py}; 1{,}000 stratified bootstrap resamples, seed 42).}
 \end{table}
+
+\subsection{Table S11: Full regression model table for confounder controls}
+The complete regression results underlying the confounder-control analyses (main text, ``Potential confounders and causal interpretation'') are provided as a tab-separated file: \texttt{TableS11\_RegressionModels.tsv} (43 rows $\times$ 12 columns; 11 driver--paralog pairs $\times$ up to four model variants). Models: \texttt{base} (gene effect $\sim$ driver mutation), \texttt{cnv\_adj} (+ paralog copy number), \texttt{expr\_adj} (+ paralog expression), \texttt{lineage\_adj} (+ lineage fixed effects). Columns: \texttt{pair}, \texttt{model}, \texttt{n\_mut}/\texttt{n\_wt} (mutant and wild-type cell lines), \texttt{beta\_mut} (mutation coefficient; DD $=$ $-$\texttt{beta\_mut}), \texttt{dd} (DD on the manuscript sign convention), \texttt{se} (HC3 heteroskedasticity-robust standard error), \texttt{ci\_lo}/\texttt{ci\_hi} (95\% confidence interval), \texttt{p} (nominal $p$-value), \texttt{n} (cell lines in model), \texttt{q\_bh} (Benjamini--Hochberg $q$ within each model family). One pair lacks a \texttt{cnv\_adj} model because its copy-number covariate had insufficient variance. TP53 co-mutation control for ARID1A$\rightarrow$ARID1B is reported separately in \texttt{output/regression\_controls.json}. Source: \texttt{output/regression\_table\_full.csv} (\texttt{regression\_controls.py}).
 
 \end{document}

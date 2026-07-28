@@ -310,9 +310,9 @@ def run_mutation_type_analysis():
         # AUROC per mutation type
         yt = detail_df["is_known_sl"].astype(int).values
         
-        auc_all = roc_auc_score(yt, detail_df["dd_all"].abs().fillna(0)) if yt.sum() >= 2 else np.nan
-        auc_trunc = roc_auc_score(yt, detail_df["dd_trunc"].abs().fillna(0)) if yt.sum() >= 2 else np.nan
-        auc_miss = roc_auc_score(yt, detail_df["dd_miss"].abs().fillna(0)) if yt.sum() >= 2 else np.nan
+        auc_all = roc_auc_score(yt, detail_df["dd_all"].fillna(0)) if yt.sum() >= 2 else np.nan
+        auc_trunc = roc_auc_score(yt, detail_df["dd_trunc"].fillna(0)) if yt.sum() >= 2 else np.nan
+        auc_miss = roc_auc_score(yt, detail_df["dd_miss"].fillna(0)) if yt.sum() >= 2 else np.nan
         
         # Mean DD magnitude comparison
         mean_dd_trunc = detail_df["dd_trunc"].abs().mean()
@@ -358,9 +358,9 @@ def run_mutation_type_analysis():
         print(f"{'-' * 60}")
         for cancer_name, detail_df in all_results.items():
             yt = detail_df["is_known_sl"].astype(int).values
-            ys_all = detail_df["dd_all"].abs().fillna(0)
-            ys_trunc = detail_df["dd_trunc"].abs().fillna(0)
-            ys_miss = detail_df["dd_miss"].abs().fillna(0)
+            ys_all = detail_df["dd_all"].fillna(0)
+            ys_trunc = detail_df["dd_trunc"].fillna(0)
+            ys_miss = detail_df["dd_miss"].fillna(0)
             
             auc_all = roc_auc_score(yt, ys_all) if yt.sum() >= 2 else np.nan
             auc_trunc = roc_auc_score(yt, ys_trunc) if yt.sum() >= 2 else np.nan

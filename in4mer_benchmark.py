@@ -149,9 +149,15 @@ def main():
     for frame, col, ncol in (("min5", "dd_min5", "n_lineages_eval_5"),
                              ("min3", "dd_min3", "n_lineages_eval_3")):
         sub = df.dropna(subset=[col]).copy()
+        # in4mer gold standards are mutation-agnostic and carry no driver
+        # direction, so the natural score here is |DD|; signed DD is reported
+        # as a sensitivity value (arbitrary driver orientation makes it
+        # uninformative by construction).
         sub["score"] = sub[col].abs()
+        sub["score_signed"] = sub[col]
         y = (sub["label"] == "in4mer_gold").astype(int).values
         s = sub["score"].values
+        s_signed = sub["score_signed"].values
         n_pos = int(y.sum())
         n_neg = int(len(y) - n_pos)
         entry = {"n_pos": n_pos, "n_neg": n_neg}
@@ -167,6 +173,7 @@ def main():
                              for _ in range(10000)])
             entry.update({
                 "auroc": auc,
+                "auroc_signed_dd_sensitivity": float(roc_auc_score(y, s_signed)),
                 "bootstrap_ci_low": float(np.percentile(bs, 2.5)),
                 "bootstrap_ci_high": float(np.percentile(bs, 97.5)),
                 "permutation_p": float((np.sum(null >= auc) + 1) / 10001),

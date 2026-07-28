@@ -10,9 +10,9 @@
 Delta Dependency (DD) is a simple, interpretable, discovery-stage metric for prioritizing paralog-based synthetic lethality (SL) candidates from Cancer Dependency Map (DepMap) CRISPR screening data. DD measures the shift in Chronos gene-effect scores between driver-mutant and wild-type cell lines, computed separately per cancer lineage.
 
 **Key findings (see manuscript for full context):**
-- **Gold-standard evaluation (evidence-tiered, citation-verified):** AUROC = 0.676 on the full 12-pair curated set; 0.725 excluding two DepMap-derived pairs; 0.774 on pre-DepMap evidence only; unchanged (0.676) under direction-strict relabelling. Both lineage-evaluable positives on the Tier A∪B external benchmark rank above all unlabeled controls (AUROC = 1.000; 2 of 5 benchmark pairs lineage-evaluable)
-- **DD vs. published methods (contextual reference, CV3-analogous framework):** AUROC = 0.676 without training; best published CV3 result 0.790 (SLMGAE) — analogous, not identical, evaluation frameworks
-- **Head-to-head (identical 72-pair test set, 6 positives):** the interpretable composite score (0.831) matches the best of four multi-feature classifiers under leave-one-pair-out CV (SVM-RBF 0.843, RF 0.722, SVM-Linear 0.114, LR 0.136; DD alone 0.566) — small-n results reported with an explicit power caveat
+- **Gold-standard evaluation (evidence-tiered, citation-verified):** signed DD AUROC = 0.629 on the full 12-pair curated set; 0.613 excluding two DepMap-derived pairs; 0.525 on pre-DepMap evidence only; unchanged (0.629) under direction-strict relabelling (direction-agnostic |DD| values are reported as sensitivity analyses). Both lineage-evaluable positives on the Tier A∪B external benchmark rank above all unlabeled controls (AUROC = 1.000; 2 of 5 benchmark pairs lineage-evaluable)
+- **DD vs. published methods (contextual reference, CV3-analogous framework):** signed DD AUROC = 0.629 without training; best published CV3 result 0.790 (SLMGAE) — analogous, not identical, evaluation frameworks
+- **Head-to-head (identical 72-pair test set, 6 positives):** the interpretable composite score (0.831) matches the best of four multi-feature classifiers under leave-one-pair-out CV (SVM-RBF 0.843, RF 0.722, SVM-Linear 0.114, LR 0.136; DD alone 0.672) — small-n results reported with an explicit power caveat
 - DD + ≥30% sequence identity filter → AUROC = 1.000
 
 ## Directory Structure

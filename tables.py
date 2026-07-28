@@ -128,6 +128,18 @@ cl_counts = summary[["cancer","n_lines"]].copy()
 cl_counts.columns = ["Cancer Type","Cell Lines (with data)"]
 cl_counts.to_csv(OUT / "TableS1_CellLineCounts.tsv", sep="\t", index=False)
 
+# ── Table S11: Full regression model table (confounder controls) ──
+# Machine-readable mirror of output/regression_table_full.csv written by
+# regression_controls.py (base / CNV- / expression- / lineage-adjusted models
+# with beta, HC3 robust SE, 95% CI, nominal p and BH q per pair).
+_reg_path = OUT.parent / "regression_table_full.csv"
+if not _reg_path.exists():
+    raise SystemExit("output/regression_table_full.csv not found — "
+                     "run regression_controls.py first")
+_regtab = pd.read_csv(_reg_path)
+_regtab.to_csv(OUT / "TableS11_RegressionModels.tsv", sep="\t", index=False)
+print(f"  TableS11_RegressionModels.tsv: {len(_regtab)} rows")
+
 print(f"Tables saved to {OUT}")
 print(f"  Table1_DeNovoCandidates.tsv: {len(cand) if all_candidates else 0} rows")
 print(f"  Table1_Benchmark.tsv: {len(bench)} rows")

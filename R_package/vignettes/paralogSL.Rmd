@@ -175,13 +175,14 @@ This vignette reproduces the core findings from the manuscript:
 > *Delta Dependency Prioritizes Paralog-Based Synthetic Lethality
 > Candidates Across Solid Tumor Types* (Mo & Zhu, Genome Biology, 2026)
 
-Current headline evaluation (paralog-sl-predictor v1.1.0 artifacts):
+Current headline evaluation (paralog-sl-predictor v1.3.2 artifacts):
 
-- DD AUROC = 0.676 on the full lineage-level frame (110 driver--paralog--lineage
-  entries, 8 positives); 7 of 8 evaluable lineages reach AUROC >= 0.7
+- Signed DD AUROC = 0.629 on the full lineage-level frame (110
+  driver--paralog--lineage entries, 8 positives; |DD| sensitivity 0.676);
+  1 of 8 evaluable lineages reaches AUROC >= 0.7
 - DD AUROC = 1.000 on the Tier A + Tier B external benchmark (2 of 5 pairs
   lineage-evaluable; evidence-tiered gold standard, `?known_sl_pairs`)
-- Pair-level aggregate: DD alone 0.566; interpretable composite score 0.831
+- Pair-level aggregate: DD alone 0.672; interpretable composite score 0.831
   (AUPRC 0.356, 4.3x baseline prevalence)
 - DD + 30% k-mer identity filter -> AUROC = 1.000 on a 3-pair high-identity
   subset (2 positives; anecdotal)

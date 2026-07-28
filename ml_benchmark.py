@@ -70,7 +70,7 @@ CLAIMS = {
     "RF": 0.722,
     "SVM_RBF_low": 0.843,
     "SVM_Linear_high": 0.114,
-    "dd_alone": 0.566,
+    "dd_alone": 0.672,
     "composite_alone": 0.831,
     "lr_beta_dd": 0.40,
     "lr_p_dd": 0.253,
@@ -97,6 +97,7 @@ def build_pair_frame(df):
     g = df.groupby(["driver_gene", "paralog_gene"], as_index=False).agg(
         known=("is_known_paralog_sl", "max"),
         dd_abs=("dependency_dd", lambda s: s.abs().mean()),
+        dd_signed=("dependency_dd", "mean"),
         pcs=("pcs", "mean"),
         dexpr_abs=("delta_expression", lambda s: s.abs().mean()),
         necessity=("necessity", "mean"),
@@ -153,9 +154,11 @@ def main():
         print(f"  {name:12s} LOO AUROC = {results[name]['auroc']:.4f}")
 
     # Single-feature references (no training)
-    dd_alone = auroc(y, pairs["dd_abs"].fillna(0).values)
+    dd_alone = auroc(y, pairs["dd_signed"].fillna(0).values)
+    dd_abs_alone = auroc(y, pairs["dd_abs"].fillna(0).values)
     comp_alone = auroc(y, pairs["composite"].fillna(0).values)
     print(f"  {'DD alone':12s} AUROC = {dd_alone:.4f}")
+    print(f"  {'|DD| (sensitivity)':12s} AUROC = {dd_abs_alone:.4f}")
     print(f"  {'Composite alone':12s} AUROC = {comp_alone:.4f}")
 
     # LR standardized coefficients + Wald p-values (statsmodels MLE fit)
@@ -183,7 +186,7 @@ def main():
         "cv": "leave-one-pair-out (77 folds), AUROC on out-of-fold scores",
         "seed": SEED,
         "classifiers": results,
-        "single_feature": {"dd_alone": dd_alone, "composite_alone": comp_alone},
+        "single_feature": {"dd_alone": dd_alone, "dd_abs_alone_sensitivity": dd_abs_alone, "composite_alone": comp_alone},
         "lr_coefficients": coef_info,
     }
 

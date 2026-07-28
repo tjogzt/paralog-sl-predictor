@@ -38,6 +38,9 @@ else
   "$PY" regression_controls.py --stage analyze
 fi
 
+echo "==> [3b/5] Table mirrors (tables.py)"
+"$PY" tables.py
+
 echo "==> [4/5] Manuscript number audit (audit_manuscript_numbers.py)"
 "$PY" audit_manuscript_numbers.py
 

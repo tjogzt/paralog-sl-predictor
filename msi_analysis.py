@@ -305,7 +305,7 @@ def run_msi_analysis():
             all_results[key] = results_df
             
             yt = results_df["is_known_paralog_sl"].astype(int).values
-            ys = results_df["dependency_dd"].abs().fillna(0).values
+            ys = results_df["dependency_dd"].fillna(0).values
             nk = int(yt.sum())
             n_pairs = len(results_df)
             

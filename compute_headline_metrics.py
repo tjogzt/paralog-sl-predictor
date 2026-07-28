@@ -114,25 +114,25 @@ PUBLISHED_BENCHMARKS = {
 # (Tier A pairs have no >=5/>=5 stratum in the gyn3 frame; primary carried
 # by the two Tier B pairs — see manuscript "Evaluation frameworks").
 MANUSCRIPT_CLAIMS = {
-    "dd_auroc_lineage_full": 0.676,
-    "auprc_lineage_full": 0.386,
+    "dd_auroc_lineage_full": 0.629,
+    "auprc_lineage_full": 0.346,
     "dd_auroc_lineage_tier_ab": 1.000,
     "auprc_lineage_tier_ab": 1.000,
-    "dd_auroc_lineage_leave_out_depmap_era": 0.725,
-    "dd_auroc_lineage_pre_depmap_only": 0.774,
-    "dd_auroc_lineage_full_direction_strict": 0.676,
-    "dd_auroc_id_filter_0.2": 0.583,
+    "dd_auroc_lineage_leave_out_depmap_era": 0.613,
+    "dd_auroc_lineage_pre_depmap_only": 0.525,
+    "dd_auroc_lineage_full_direction_strict": 0.629,
+    "dd_auroc_id_filter_0.2": 0.833,
     "dd_auroc_id_filter_0.3": 1.000,
-    "component_dd": 0.676,
+    "component_dd": 0.629,
     "component_pcs": 0.825,
     "component_delta_expression": 0.547,
     "component_necessity": 0.642,
-    "per_pair_auroc": 0.500,
-    "dd_auroc_per_pair_mean": 0.566,
+    "per_pair_auroc": 0.599,
+    "dd_auroc_per_pair_mean": 0.672,
     "composite_auroc_per_pair_mean": 0.831,
     "auprc_composite_per_pair": 0.357,
-    "llo_auroc_min": 0.656,
-    "llo_auroc_max": 0.704,
+    "llo_auroc_min": 0.606,
+    "llo_auroc_max": 0.692,
 }
 TOL = 0.005  # claims match if |computed - claimed| <= TOL
 
@@ -193,10 +193,13 @@ def pair_key(df):
 
 def lineage_metrics(df, label, with_ci=True):
     yt = df["is_known_paralog_sl"].astype(int).values
-    ys = df["dependency_dd"].abs().fillna(0).values
+    ys = df["dependency_dd"].fillna(0).values
+    ys_abs = df["dependency_dd"].abs().fillna(0).values
     out = {
         "auroc": auroc(yt, ys),
         "auprc": auprc(yt, ys),
+        "auroc_abs_dd_sensitivity": auroc(yt, ys_abs),
+        "auprc_abs_dd_sensitivity": auprc(yt, ys_abs),
         "n_entries": int(len(df)),
         "n_positives": int(yt.sum()),
         "label": label,
@@ -224,7 +227,7 @@ def main():
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "generated_by": "compute_headline_metrics.py",
         "source_files": [str(TABLES2.relative_to(ROOT))],
-        "scoring": "AUROC of |DD| (manuscript convention); AUPRC = average precision",
+        "scoring": "AUROC of signed DD (primary metric; positive = compensation); AUROC of |DD| reported as sensitivity analysis; AUPRC = average precision",
         "bootstrap": f"percentile 95% CI, {N_BOOT} entry resamples, seed {BOOT_SEED}",
         "sign_convention": "DD = mean(Chronos|WT) - mean(Chronos|MUT); positive = compensation",
         "min_samples": "primary analysis: >=5 mutant and >=5 WT cell lines per stratum",
@@ -278,8 +281,10 @@ def main():
     yt_ds = df["is_known_paralog_sl"].astype(int).copy()
     yt_ds[pd.Series([k in TIER_RECIPROCAL for k in keys], index=df.index)] = 0
     metrics["lineage_full_direction_strict"] = {
-        "auroc": auroc(yt_ds.values, df["dependency_dd"].abs().fillna(0).values),
-        "auprc": auprc(yt_ds.values, df["dependency_dd"].abs().fillna(0).values),
+        "auroc": auroc(yt_ds.values, df["dependency_dd"].fillna(0).values),
+        "auprc": auprc(yt_ds.values, df["dependency_dd"].fillna(0).values),
+        "auroc_abs_dd_sensitivity": auroc(yt_ds.values, df["dependency_dd"].abs().fillna(0).values),
+        "auprc_abs_dd_sensitivity": auprc(yt_ds.values, df["dependency_dd"].abs().fillna(0).values),
         "n_entries": int(len(df)),
         "n_positives": int(yt_ds.sum()),
         "label": "Full set, direction-strict (EP300->CREBBP relabelled non-positive)",
@@ -288,7 +293,8 @@ def main():
     # ── 2. Component decomposition + paired bootstrap (same universe) ──
     yt = df["is_known_paralog_sl"].astype(int).values
     comp_scores = {
-        "dd": df["dependency_dd"].abs().fillna(0).values,
+        "dd": df["dependency_dd"].fillna(0).values,
+        "dd_abs_sensitivity": df["dependency_dd"].abs().fillna(0).values,
         "pcs": df["pcs"].fillna(0).values,
         "delta_expression_abs": df["delta_expression"].abs().fillna(0).values,
         "delta_expression_signed": df["delta_expression"].fillna(0).values,
@@ -309,7 +315,7 @@ def main():
         yb = yt[idx]
         if yb.sum() == 0 or yb.sum() == len(yb):
             continue
-        vals = {k: auroc(yb, v[idx]) for k, v in comp_scores.items() if k != "delta_expression_signed"}
+        vals = {k: auroc(yb, v[idx]) for k, v in comp_scores.items() if k in boot_stats}
         for k, v in vals.items():
             if not np.isnan(v):
                 boot_stats[k].append(v)
@@ -353,7 +359,7 @@ def main():
             sub = df[df["_kmer_id"] >= thr]
             metrics["identity_filter"][f"id_ge_{thr}"] = {
                 "auroc": auroc(sub["is_known_paralog_sl"].astype(int).values,
-                               sub["dependency_dd"].abs().fillna(0).values),
+                               sub["dependency_dd"].fillna(0).values),
                 "n_entries": int(len(sub)),
                 "n_unique_pairs": int(sub[["driver_gene", "paralog_gene"]].drop_duplicates().shape[0]),
                 "n_positives": int(sub["is_known_paralog_sl"].sum()),
@@ -385,7 +391,8 @@ def main():
     # ── 4b. Per-pair mean framework recomputed from TableS2 ──
     g = df.groupby(["driver_gene", "paralog_gene"], as_index=False).agg(
         known=("is_known_paralog_sl", "max"),
-        dd=("dependency_dd", lambda s: s.abs().mean()),
+        dd=("dependency_dd", "mean"),
+        dd_abs=("dependency_dd", lambda s: s.abs().mean()),
         pcs=("pcs", "mean"),
         dexpr=("delta_expression", lambda s: s.abs().mean()),
         necessity=("necessity", "mean"),
@@ -394,27 +401,32 @@ def main():
     metrics["per_pair_mean_from_tables2"] = {
         "auroc_dd": auroc(yt_g, g["dd"].values),
         "auprc_dd": auprc(yt_g, g["dd"].values),
+        "auroc_dd_abs_sensitivity": auroc(yt_g, g["dd_abs"].values),
+        "auprc_dd_abs_sensitivity": auprc(yt_g, g["dd_abs"].values),
         "auroc_pcs": auroc(yt_g, g["pcs"].values),
         "auroc_delta_expression": auroc(yt_g, g["dexpr"].values),
         "auroc_necessity": auroc(yt_g, g["necessity"].values),
         "auroc_dd_ci95": list(bootstrap_ci(yt_g, g["dd"].values, auroc)),
         "n_pairs": int(len(g)),
         "n_positives": int(yt_g.sum()),
-        "aggregation": "mean across lineages per pair, from TableS2",
+        "aggregation": "mean signed DD across lineages per pair, from TableS2",
     }
 
     # ── 4c. Per-pair MAX aggregation ──
     gmax = df.groupby(["driver_gene", "paralog_gene"], as_index=False).agg(
         known=("is_known_paralog_sl", "max"),
-        dd=("dependency_dd", lambda s: s.abs().max()),
+        dd=("dependency_dd", "max"),
+        dd_abs=("dependency_dd", lambda s: s.abs().max()),
     )
     yt_m = gmax["known"].astype(int).values
     metrics["per_pair_max_from_tables2"] = {
         "auroc_dd": auroc(yt_m, gmax["dd"].values),
         "auprc_dd": auprc(yt_m, gmax["dd"].values),
+        "auroc_dd_abs_sensitivity": auroc(yt_m, gmax["dd_abs"].values),
+        "auprc_dd_abs_sensitivity": auprc(yt_m, gmax["dd_abs"].values),
         "n_pairs": int(len(gmax)),
         "n_positives": int(yt_m.sum()),
-        "aggregation": "max |DD| across lineages per pair, from TableS2",
+        "aggregation": "max signed DD across lineages per pair, from TableS2",
     }
 
     # ── 4d. Composite score on the per-pair mean frame ──
@@ -437,7 +449,7 @@ def main():
     for ct in sorted(df["cancer_type"].unique()):
         sub = df[df["cancer_type"] != ct]
         yt_s = sub["is_known_paralog_sl"].astype(int).values
-        llo[f"without_{ct}"] = auroc(yt_s, sub["dependency_dd"].abs().fillna(0).values)
+        llo[f"without_{ct}"] = auroc(yt_s, sub["dependency_dd"].fillna(0).values)
     metrics["leave_one_lineage_out"] = {
         "values": llo,
         "range": [float(np.nanmin(list(llo.values()))), float(np.nanmax(list(llo.values())))],
@@ -541,6 +553,8 @@ def main():
 
     add("dd_auroc_lineage_full", metrics["lineage_full"]["auroc"], "recomputed:TableS2")
     add("auprc_lineage_full", metrics["lineage_full"]["auprc"], "recomputed:TableS2")
+    add("dd_auroc_lineage_full_abs_sens", metrics["lineage_full"]["auroc_abs_dd_sensitivity"], "recomputed:TableS2(|DD| sensitivity)")
+    add("auprc_lineage_full_abs_sens", metrics["lineage_full"]["auprc_abs_dd_sensitivity"], "recomputed:TableS2(|DD| sensitivity)")
     add_ci("dd_lineage_full", metrics["lineage_full"], "recomputed:TableS2(bootstrap)")
     add("dd_auroc_lineage_tier_ab", metrics["lineage_tier_ab"]["auroc"], "recomputed:TableS2")
     add("auprc_lineage_tier_ab", metrics["lineage_tier_ab"]["auprc"], "recomputed:TableS2")
@@ -555,6 +569,11 @@ def main():
     add("dd_auroc_lineage_leave_out_depmap_era", metrics["lineage_leave_out_depmap_era"]["auroc"], "recomputed:TableS2")
     add("dd_auroc_lineage_pre_depmap_only", metrics["lineage_pre_depmap_only"]["auroc"], "recomputed:TableS2")
     add("dd_auroc_lineage_full_direction_strict", metrics["lineage_full_direction_strict"]["auroc"], "recomputed:TableS2")
+    add("dd_auroc_direction_strict_abs_sens", metrics["lineage_full_direction_strict"]["auroc_abs_dd_sensitivity"], "recomputed:TableS2(|DD| sensitivity)")
+    add("dd_auroc_tier_ab_abs_sens", metrics["lineage_tier_ab"]["auroc_abs_dd_sensitivity"], "recomputed:TableS2(|DD| sensitivity)")
+    add("dd_auroc_per_pair_mean_abs_sens", metrics["per_pair_mean_from_tables2"]["auroc_dd_abs_sensitivity"], "recomputed:TableS2(|DD| sensitivity)")
+    add("dd_auroc_per_pair_max_abs_sens", metrics["per_pair_max_from_tables2"]["auroc_dd_abs_sensitivity"], "recomputed:TableS2(|DD| sensitivity)")
+    add("component_dd_abs_sens", comp["dd_abs_sensitivity"], "recomputed:TableS2(|DD| sensitivity)")
     add("component_dd", comp["dd"], "recomputed:TableS2")
     add("component_pcs", comp["pcs"], "recomputed:TableS2")
     add("component_delta_expression", comp["delta_expression_abs"], "recomputed:TableS2")

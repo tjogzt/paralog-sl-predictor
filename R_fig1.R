@@ -61,8 +61,8 @@ panel_a <- function() {
                linewidth = 0.3, color = c(GRAY, RED), alpha = 0.35) +
     labs(x = "DD AUROC", y = NULL) +
     theme_sci +
-    annotate("text", x = 0.72, y = 0.8,
-             label = "AUROC 0.7", size = 2.5, color = RED, hjust = 0)
+    annotate("text", x = 0.69, y = 0.8,
+             label = "AUROC 0.7", size = 2.5, color = RED, hjust = 1)
 }
 
 # ═══════════════════════════════════════════════════════════════

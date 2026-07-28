@@ -54,21 +54,25 @@ panel_a <- function() {
     theme_sci + theme(plot.title = element_text(size = 7, face = "bold"))
 }
 
-# ── Panel B: Moderate AUROC (0.5-0.7) ──
+# ── Panel B: Moderate (0.5-0.7) plus below-chance (< 0.5) AUROC ──
+# Under signed-DD scoring Breast falls below 0.5 on the primary frame; it is
+# shown in gray so no evaluable lineage is silently dropped.
 panel_b <- function() {
-  df <- df_raw %>% filter(dd_auroc >= 0.5 & dd_auroc < 0.7)
+  df <- df_raw %>% filter(dd_auroc < 0.7)
   df$cancer_short <- factor(df$cancer_short, levels = df$cancer_short)
+  df$clr <- ifelse(df$dd_auroc >= 0.5, BLUE, GRAY)
   ggplot(df, aes(dd_auroc, cancer_short)) +
-    geom_col(fill = BLUE, width = 0.6) +
-    geom_text(aes(label = sprintf("%.3f", dd_auroc)), hjust = -0.1, size = 2.5, color = BLUE) +
+    geom_col(aes(fill = clr), width = 0.6) +
+    scale_fill_identity() +
+    geom_text(aes(label = sprintf("%.3f", dd_auroc), color = clr), hjust = -0.1, size = 2.5) +
+    scale_color_identity() +
+    geom_vline(xintercept = 0.5, linetype = "dashed", linewidth = 0.3, color = GRAY, alpha = 0.6) +
     scale_x_continuous(expand = expansion(mult = c(0, 0.35))) +
-    labs(x = "DD AUROC", y = NULL, title = "Moderate signal") +
+    labs(x = "DD AUROC", y = NULL, title = "Moderate / below-chance") +
     theme_sci + theme(plot.title = element_text(size = 7, face = "bold"))
 }
 
-# ── Panel C (weak signal, AUROC < 0.5) intentionally omitted:
-# no evaluable lineage falls below 0.5 on the primary >=5 frame, so the panel
-# would be empty. The caption describes panels a and b only.
+# ── Panel C is not used: below-chance lineages are folded into panel b. ──
 
 # ── MAIN ──
 message("=== FigS2 Panel Generation (R) ===")
@@ -90,4 +94,4 @@ ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.svg"), p,
        width = 120, height = 60, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "FigS2_CrossCancer_AUROC.tiff"), p,
        width = 120, height = 60, units = "mm", device = ragg::agg_tiff, dpi = 600)
-message("FigS2_CrossCancer_AUROC.pdf (120x60mm, 2 panels; weak-signal panel dropped) ✓")
+message("FigS2_CrossCancer_AUROC.pdf (120x60mm, 2 panels; below-chance lineages shown in panel b) ✓")

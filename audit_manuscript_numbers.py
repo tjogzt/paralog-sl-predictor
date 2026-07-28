@@ -97,46 +97,46 @@ ML = "output/ml_benchmark.json"
 #    aggregates them so a reviewer sees one closed loop)
 # ═══════════════════════════════════════════════════════════════════
 f = hm["lineage_full"]
-check("full_auroc", "Full-set AUROC (110 entries, 8 positives)", "0.676", f["auroc"], HM)
+check("full_auroc", "Full-set AUROC (110 entries, 8 positives)", "0.629", f["auroc"], HM)
 check_int("full_n", "Full-set entries", 110, f["n_entries"], HM)
 check_int("full_pos", "Full-set positives", 8, f["n_positives"], HM)
-check("full_auprc", "Full-set AUPRC", "0.386", f["auprc"], HM)
+check("full_auprc", "Full-set AUPRC", "0.346", f["auprc"], HM)
 lo = hm["lineage_leave_out_depmap_era"]
-check("leave_out_auroc", "Leave-out (DepMap-era removed) AUROC", "0.725", lo["auroc"], HM)
+check("leave_out_auroc", "Leave-out (DepMap-era removed) AUROC", "0.613", lo["auroc"], HM)
 pd_ = hm["lineage_pre_depmap_only"]
-check("pre_depmap_auroc", "Pre-DepMap evidence AUROC", "0.774", pd_["auroc"], HM, tol=1.0)  # 0.77451 sits on the rounding boundary; 0.774 is a defensible print
+check("pre_depmap_auroc", "Pre-DepMap evidence AUROC", "0.525", pd_["auroc"], HM)
 tab = hm["lineage_tier_ab"]
 check("tier_ab_auroc", "Tier A∪B primary benchmark AUROC", "1.000", tab["auroc"], HM)
 check_int("tier_ab_pos", "Tier A∪B evaluable positives", 2, tab["n_positives"], HM)
 ds = hm["lineage_full_direction_strict"]
-check("direction_strict", "Direction-strict AUROC", "0.676", ds["auroc"], HM)
+check("direction_strict", "Direction-strict AUROC", "0.629", ds["auroc"], HM)
 llo = hm["leave_one_lineage_out"]["range"]
-check("llo_lo", "Leave-one-lineage-out lower bound", "0.656", llo[0], HM)
-check("llo_hi", "Leave-one-lineage-out upper bound", "0.704", llo[1], HM)
+check("llo_lo", "Leave-one-lineage-out lower bound", "0.606", llo[0], HM)
+check("llo_hi", "Leave-one-lineage-out upper bound", "0.692", llo[1], HM)
 
 comp = hm["component_decomposition_lineage"]
-check("comp_dd", "Component: DD", "0.676", comp["dd"], HM)
+check("comp_dd", "Component: DD", "0.629", comp["dd"], HM)
 check("comp_pcs", "Component: PCS", "0.825", comp["pcs"], HM)
 check("comp_dexpr", "Component: ΔExpression", "0.547", comp["delta_expression_abs"], HM)
 check("comp_nec", "Component: necessity", "0.642", comp["necessity"], HM)
 pb = hm["component_paired_bootstrap"]["pcs_minus_dd"]
-check("pb_pcs_dd", "Paired bootstrap PCS−DD", "+0.150", pb["mean_delta"], HM)
-check("pb_pcs_dd_lo", "Paired bootstrap CI lower", "-0.110", pb["ci95"][0], HM)
-check("pb_pcs_dd_hi", "Paired bootstrap CI upper", "+0.456", pb["ci95"][1], HM)
+check("pb_pcs_dd", "Paired bootstrap PCS−DD", "+0.195", pb["mean_delta"], HM)
+check("pb_pcs_dd_lo", "Paired bootstrap CI lower", "-0.132", pb["ci95"][0], HM)
+check("pb_pcs_dd_hi", "Paired bootstrap CI upper", "+0.545", pb["ci95"][1], HM)
 
 # ═══════════════════════════════════════════════════════════════════
 # 2. Per-pair framework
 # ═══════════════════════════════════════════════════════════════════
 nc = vr["negative_control"]
-check("pp_auroc", "Per-pair AUROC (72 pairs, 6 positives)", "0.500", nc["observed_auroc"], VR)
+check("pp_auroc", "Per-pair AUROC (72 pairs, 6 positives)", "0.598", nc["observed_auroc"], VR)
 check_int("pp_n", "Per-pair universe", 72, nc["n_total"], VR)
 check("pp_null", "Permutation null mean", "0.501", nc["null_auroc_mean"], VR)
-check("pp_p", "Permutation empirical p", "0.503", nc["empirical_p_value"], VR)
+check("pp_p", "Permutation empirical p", "0.223", nc["empirical_p_value"], VR)
 bs = vr["bootstrap"]
-check("pp_bs_lo", "Per-pair bootstrap CI lower", "0.185", bs["auroc_ci_low"], VR)
-check("pp_bs_hi", "Per-pair bootstrap CI upper", "0.813", bs["auroc_ci_high"], VR)
+check("pp_bs_lo", "Per-pair bootstrap CI lower", "0.294", bs["auroc_ci_low"], VR)
+check("pp_bs_hi", "Per-pair bootstrap CI upper", "0.845", bs["auroc_ci_high"], VR)
 ppm = hm["per_pair_mean_from_tables2"]
-check("pp_mean_dd", "Per-pair mean |DD| AUROC", "0.566", ppm["auroc_dd"], HM)
+check("pp_mean_dd", "Per-pair mean signed DD AUROC", "0.672", ppm["auroc_dd"], HM)
 pc = hm["per_pair_composite_mean"]
 check("pp_comp", "Composite AUROC", "0.831", pc["auroc"], HM)
 check("pp_comp_auprc", "Composite AUPRC", "0.356", pc["auprc"], HM)
@@ -152,7 +152,7 @@ check("ml_svmrbf", "SVM-RBF AUROC", "0.843", clf["SVM_RBF"]["auroc"], ML)
 check("ml_rf", "Random forest AUROC", "0.722", clf["RF"]["auroc"], ML)
 check("ml_svmlin", "SVM-Linear AUROC", "0.114", clf["SVM_Linear"]["auroc"], ML)
 check("ml_lr", "Logistic regression AUROC", "0.136", clf["LR"]["auroc"], ML)
-check("ml_dd", "DD alone AUROC", "0.566", ml["single_feature"]["dd_alone"], ML)
+check("ml_dd", "DD alone AUROC", "0.672", ml["single_feature"]["dd_alone"], ML)
 check("ml_comp", "Composite alone AUROC", "0.831", ml["single_feature"]["composite_alone"], ML)
 feat_ps = [v["p_value"] for k, v in ml["lr_coefficients"].items() if k != "const"]
 ROWS.append({"id": "ml_lr_feat_p", "description": "All LR feature p-values > 0.23",
@@ -167,28 +167,28 @@ S3 = "output/solid_tumor_summary_min3.csv"
 ev = solid.dropna(subset=["dd_auroc"])
 ev = ev[ev.n_known >= 2]
 check_int("lin_neval", "Evaluable lineages (primary ≥5 frame)", 8, len(ev), S)
-check_int("lin_n07", "Lineages with AUROC ≥ 0.7", 7, (ev.dd_auroc >= 0.7).sum(), S)
-for name, val in [("Esophagogastric", "0.965"), ("SCLC", "0.906"),
-                  ("Bladder Urothelial", "0.844"), ("Colorectal", "0.828"),
-                  ("Endometrial", "0.818"), ("Breast", "0.750"),
-                  ("NSCLC", "0.741"), ("Ovarian", "0.661")]:
+check_int("lin_n01", "Lineages with AUROC ≥ 0.7", 1, (ev.dd_auroc >= 0.7).sum(), S)
+for name, val in [("Esophagogastric", "0.674"), ("SCLC", "0.651"),
+                  ("Bladder Urothelial", "0.531"), ("Colorectal", "0.775"),
+                  ("Endometrial", "0.519"), ("Breast", "0.150"),
+                  ("NSCLC", "0.664"), ("Ovarian", "0.611")]:
     got = solid.loc[solid.cancer == name, "dd_auroc"].iloc[0]
     check(f"lin_{name[:6]}", f"{name} AUROC (primary frame)", val, got, S)
 
 ev3 = solid3.dropna(subset=["dd_auroc"])
 ev3 = ev3[ev3.n_known >= 2]
 check_int("lin3_neval", "Evaluable lineages (sensitivity ≥3 frame)", 12, len(ev3), S3)
-check_int("lin3_n07", "Sensitivity lineages with AUROC ≥ 0.7", 9, (ev3.dd_auroc >= 0.7).sum(), S3)
-for name, val in [("Biliary Tract", "0.990"), ("Pancreatic", "0.949"),
-                  ("Melanoma", "0.617"), ("Cervical", "0.500")]:
+check_int("lin3_n07", "Sensitivity lineages with AUROC ≥ 0.7", 6, (ev3.dd_auroc >= 0.7).sum(), S3)
+for name, val in [("Biliary Tract", "0.990"), ("Pancreatic", "0.962"),
+                  ("Melanoma", "0.840"), ("Cervical", "0.714")]:
     got = solid3.loc[solid3.cancer == name, "dd_auroc"].iloc[0]
     check(f"lin3_{name[:6]}", f"{name} AUROC (sensitivity frame)", val, got, S3)
 
 ONC = {"Melanoma", "NSCLC", "Pancreatic"}
 tsg = ev3[~ev3.cancer.isin(ONC)].dd_auroc.values
 onc = ev3[ev3.cancer.isin(ONC)].dd_auroc.values
-check("tsg_mean", "TSG-driven mean AUROC (n=9)", "0.814", tsg.mean(), S3)
-check("onc_mean", "Oncogene-driven mean AUROC (n=3)", "0.768", onc.mean(), S3)
+check("tsg_mean", "TSG-driven mean AUROC (n=9)", "0.649", tsg.mean(), S3)
+check("onc_mean", "Oncogene-driven mean AUROC (n=3)", "0.834", onc.mean(), S3)
 vals = np.concatenate([tsg, onc])
 obs = tsg.mean() - onc.mean()
 diffs = []
@@ -199,8 +199,8 @@ for ii in combinations(range(len(vals)), len(onc)):
 diffs = np.array(diffs)
 perm_p = min(1.0, 2 * min((diffs >= obs).mean(), (diffs <= obs).mean()))
 mw_p = stats.mannwhitneyu(tsg, onc, alternative="two-sided", method="exact").pvalue
-check("tsg_perm_p", "TSG vs ONC permutation p (exact, 220 combos)", "0.645", perm_p, S3)
-check("tsg_mw_p", "TSG vs ONC exact Mann-Whitney p", "0.600", mw_p, S3)
+check("tsg_perm_p", "TSG vs ONC permutation p (exact, 220 combos)", "0.127", perm_p, S3)
+check("tsg_mw_p", "TSG vs ONC exact Mann-Whitney p", "0.145", mw_p, S3)
 
 # ═══════════════════════════════════════════════════════════════════
 # 5. MSI stratification (blind spot #2)
@@ -208,10 +208,10 @@ check("tsg_mw_p", "TSG vs ONC exact Mann-Whitney p", "0.600", mw_p, S3)
 M3 = "output/msi_key_numbers_min3.json"
 M5 = "output/msi_key_numbers_min5.json"
 g = msi3["subgroups"]
-check("msi_endo_h", "Endometrial MSI-H AUROC (sensitivity)", "0.838", g["Endometrial_MSI_H"]["dd_auroc"], M3)
-check("msi_endo_s", "Endometrial MSS AUROC (sensitivity)", "0.556", g["Endometrial_MSS"]["dd_auroc"], M3)
-check("msi_col_h", "Colorectal MSI-H AUROC (sensitivity)", "0.767", g["Colorectal_MSI_H"]["dd_auroc"], M3)
-check("msi_col_s", "Colorectal MSS AUROC (sensitivity)", "0.712", g["Colorectal_MSS"]["dd_auroc"], M3)
+check("msi_endo_h", "Endometrial MSI-H AUROC (sensitivity)", "0.303", g["Endometrial_MSI_H"]["dd_auroc"], M3)
+check("msi_endo_s", "Endometrial MSS AUROC (sensitivity)", "0.500", g["Endometrial_MSS"]["dd_auroc"], M3)
+check("msi_col_h", "Colorectal MSI-H AUROC (sensitivity)", "0.558", g["Colorectal_MSI_H"]["dd_auroc"], M3)
+check("msi_col_s", "Colorectal MSS AUROC (sensitivity)", "0.545", g["Colorectal_MSS"]["dd_auroc"], M3)
 check_int("msi_n17", "Endometrial MSI-H cell lines", 17, g["Endometrial_MSI_H"]["n_lines"], M3)
 check_int("msi_n11", "Endometrial MSS cell lines", 11, g["Endometrial_MSS"]["n_lines"], M3)
 check_int("msi_n14", "Colorectal MSI-H cell lines", 14, g["Colorectal_MSI_H"]["n_lines"], M3)
@@ -220,7 +220,7 @@ g5 = msi5["subgroups"]
 check_none("msi5_endo", "Endometrial MSI subgroups not evaluable (primary frame)",
            g5["Endometrial_MSI_H"]["dd_auroc"], M5)
 check("msi5_col_h", "Colorectal MSI-H AUROC (primary)", "0.574", g5["Colorectal_MSI_H"]["dd_auroc"], M5)
-check("msi5_col_s", "Colorectal MSS AUROC (primary)", "0.595", g5["Colorectal_MSS"]["dd_auroc"], M5)
+check("msi5_col_s", "Colorectal MSS AUROC (primary)", "0.298", g5["Colorectal_MSS"]["dd_auroc"], M5)
 
 # ═══════════════════════════════════════════════════════════════════
 # 6. Mutation type (blind spot #3)
@@ -236,12 +236,12 @@ check("mt_ep_m", "EP300→CREBBP Colorectal missense DD", "0.150", ep_col.dd_mis
 br = mut[mut.cancer == "Breast"]
 yt = br.is_known_sl.astype(int)
 from sklearn.metrics import roc_auc_score
-check("mt_br_all", "Breast all-DD AUROC (muttype frame)", "0.735",
-      roc_auc_score(yt, br.dd_all.abs().fillna(0)), MT)
-check("mt_br_t", "Breast truncating-only AUROC", "0.726",
-      roc_auc_score(yt, br.dd_trunc.abs().fillna(0)), MT)
-check("mt_br_m", "Breast missense-only AUROC", "0.391",
-      roc_auc_score(yt, br.dd_miss.abs().fillna(0)), MT)
+check("mt_br_all", "Breast all-DD AUROC (muttype frame)", "0.465",
+      roc_auc_score(yt, br.dd_all.fillna(0)), MT)
+check("mt_br_t", "Breast truncating-only AUROC", "0.460",
+      roc_auc_score(yt, br.dd_trunc.fillna(0)), MT)
+check("mt_br_m", "Breast missense-only AUROC", "0.437",
+      roc_auc_score(yt, br.dd_miss.fillna(0)), MT)
 
 sub = mut.dropna(subset=["dd_trunc", "dd_miss"])
 t_stat, p_val = stats.ttest_rel(sub.dd_miss.abs(), sub.dd_trunc.abs())
@@ -256,7 +256,7 @@ check("mt_panelb_mean", "Fig S6b mean(|trunc|−|miss|)", "-0.015",
 # ═══════════════════════════════════════════════════════════════════
 DA = "output/direction_audit.json"
 fr_full = next(x for x in da["frames"] if x["frame"] == "pair_level_primary_gyn3")
-check("dir_abs", "Full frame |DD| AUROC", "0.676", fr_full["auroc_abs"], DA)
+check("dir_abs", "Full frame |DD| AUROC (sensitivity analysis)", "0.676", fr_full["auroc_abs"], DA)
 check("dir_signed", "Full frame signed-DD AUROC", "0.629", fr_full["auroc_signed"], DA)
 check_int("dir_neg", "Positive entries with DD<0", 3, fr_full["n_pos_dd_negative"], DA)
 fr_tier = next(x for x in da["frames"] if "TIER_A" in x["frame"])
@@ -397,7 +397,7 @@ for tname in ["Table1_Benchmark.tsv", "Table2_Benchmark.tsv"]:
     tb_dd = tb.loc[tb.Method == "DD (this study)", "CV3_AUROC"].iloc[0]
     tb_id = tb.loc[tb.Method.str.startswith("DD + ID"), "CV3_AUROC"].iloc[0]
     tb_sl = tb.loc[tb.Method == "SLMGAE", "CV3_AUROC"].iloc[0]
-    check(f"{tname[:6]}_dd", f"{tname} DD row", "0.676", tb_dd, src)
+    check(f"{tname[:6]}_dd", f"{tname} DD row", "0.629", tb_dd, src)
     check(f"{tname[:6]}_id", f"{tname} DD+ID row", "1.000", tb_id, src)
     check(f"{tname[:6]}_slm", f"{tname} SLMGAE row", "0.790", tb_sl, src)
 
@@ -414,6 +414,20 @@ ROWS.append({"id": "s3_tier_b", "description": "Table S3 Tier B == headline tier
              "manuscript": str(hm["lineage_tier_ab"]["tier_b_pairs"]),
              "recomputed": str(s3_b), "source": S3,
              "status": "match" if s3_b == sorted(hm["lineage_tier_ab"]["tier_b_pairs"]) else "MISMATCH"})
+
+# Table S11: full regression model table (confounder controls)
+s11 = pd.read_csv(OUT / "tables" / "TableS11_RegressionModels.tsv", sep="\t")
+S11 = "output/tables/TableS11_RegressionModels.tsv"
+_reg_src = pd.read_csv(OUT / "regression_table_full.csv")
+check_int("s11_rows", "Table S11 regression model rows (43)", 43, len(s11), S11)
+check_int("s11_mirror_rows", "Table S11 mirrors regression_table_full.csv rows",
+          len(_reg_src), len(s11), S11)
+check_int("s11_models", "Table S11 model variants (base/cnv/expr/lineage)", 4,
+          s11["model"].nunique(), S11)
+_s11_arid = s11[(s11["pair"] == "ARID1A->ARID1B") &
+                (s11["model"] == "lineage_adj")]["p"].iloc[0]
+check("s11_arid1b_lineage_p", "Table S11 ARID1A->ARID1B lineage-adjusted p (text: 2.2e-13)",
+      "2.2e-13", _s11_arid, S11)
 
 # ═══════════════════════════════════════════════════════════════════
 # TCGA survival v2 (continuous Cox PH, multivariable age+stage) — Fig. 3c,
@@ -532,13 +546,13 @@ check("cptac_ucec_q", "ARID1B BH q across ten UCEC tests (text: 0.27)", "0.27",
 mb = json.loads((OUT / "msi_bootstrap_test.json").read_text())
 MB = "output/msi_bootstrap_test.json (msi_bootstrap_test.py)"
 mbr = {r["cancer"]: r for r in mb["results"]}
-check("msi_boot_endo_delta", "Endometrial MSI-H vs MSS delta AUROC (text: +0.282)",
-      "+0.282", mbr["Endometrial"]["delta"], MB)
-check("msi_boot_endo_p", "Endometrial bootstrap p (text: 0.34)", "0.34",
+check("msi_boot_endo_delta", "Endometrial MSI-H vs MSS delta AUROC (text: -0.197)",
+      "-0.197", mbr["Endometrial"]["delta"], MB)
+check("msi_boot_endo_p", "Endometrial bootstrap p (text: 0.534)", "0.534",
       mbr["Endometrial"]["p_empirical"], MB)
-check("msi_boot_crc_delta", "Colorectal MSI-H vs MSS delta AUROC (text: +0.055)",
-      "+0.055", mbr["Colorectal"]["delta"], MB)
-check("msi_boot_crc_p", "Colorectal bootstrap p (text: 0.83)", "0.83",
+check("msi_boot_crc_delta", "Colorectal MSI-H vs MSS delta AUROC (text: +0.013)",
+      "+0.013", mbr["Colorectal"]["delta"], MB)
+check("msi_boot_crc_p", "Colorectal bootstrap p (text: 0.83)", "0.967",
       mbr["Colorectal"]["p_empirical"], MB)
 
 # ═══════════════════════════════════════════════════════════════════

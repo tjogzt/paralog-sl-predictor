@@ -27,7 +27,7 @@
       "n_lines": 45,
       "n_pairs": 44,
       "n_known": 2,
-      "dd_auroc": 0.5952
+      "dd_auroc": 0.2976
     }
   }
 }

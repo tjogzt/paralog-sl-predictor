@@ -7,27 +7,27 @@
   "subgroups": {
     "Endometrial_MSI_H": {
       "n_lines": 17,
-      "n_pairs": 81,
-      "n_known": 3,
-      "dd_auroc": 0.8376
+      "n_pairs": 59,
+      "n_known": 1,
+      "dd_auroc": null
     },
     "Endometrial_MSS": {
       "n_lines": 11,
-      "n_pairs": 9,
-      "n_known": 3,
-      "dd_auroc": 0.5556
+      "n_pairs": 1,
+      "n_known": 1,
+      "dd_auroc": null
     },
     "Colorectal_MSI_H": {
       "n_lines": 14,
-      "n_pairs": 47,
-      "n_known": 4,
-      "dd_auroc": 0.7674
+      "n_pairs": 36,
+      "n_known": 2,
+      "dd_auroc": 0.5735
     },
     "Colorectal_MSS": {
       "n_lines": 45,
-      "n_pairs": 47,
-      "n_known": 3,
-      "dd_auroc": 0.7121
+      "n_pairs": 44,
+      "n_known": 2,
+      "dd_auroc": 0.2976
     }
   }
 }

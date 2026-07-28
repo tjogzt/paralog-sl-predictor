@@ -249,12 +249,11 @@ filter_cancer_cell_lines <- function(models_df, cancer_types) {
 
 #' Compute AUROC for DD prediction against known SL pairs
 #'
-#' Ranks pairs by |DD| (absolute Delta Dependency), matching the validation
-#' convention used throughout the companion manuscript and Python pipeline
-#' ("DD alone, using only |DD|"). With the manuscript sign convention
-#' (DD = mean WT − mean MUT), a large positive DD indicates compensatory
-#' dependency in mutant lines; the absolute value additionally credits pairs
-#' where dependency shifts strongly in either direction.
+#' Ranks pairs by signed DD, the primary metric of the companion manuscript
+#' (DD = mean WT − mean MUT; positive values indicate compensatory dependency
+#' in mutant lines). Use \code{score = "abs"} for the direction-agnostic
+#' |DD| variant, which additionally credits reverse-direction shifts and is
+#' reported in the manuscript only as a sensitivity analysis.
 #'
 #' @param results_df Results from run_paralog_analysis()
 #' @param known_pairs data.frame with columns gene_A, gene_B; optionally a
@@ -264,10 +263,15 @@ filter_cancer_cell_lines <- function(models_df, cancer_types) {
 #'   manuscript's primary external benchmark (Tier A + Tier B: direct
 #'   dual-perturbation or genotype-conditional genetic evidence). Set to
 #'   `NULL` to use every row of `known_pairs` (the pre-v1.1.0 behavior).
+#' @param score character, \code{"signed"} (default; manuscript primary
+#'   metric) or \code{"abs"} (direction-agnostic sensitivity analysis;
+#'   the pre-v1.1.2 behavior).
 #' @return The AUROC value
 #' @importFrom pROC roc
 #' @export
-compute_auroc <- function(results_df, known_pairs, tiers = c("A", "B")) {
+compute_auroc <- function(results_df, known_pairs, tiers = c("A", "B"),
+                          score = c("signed", "abs")) {
+  score <- match.arg(score)
   if (!is.null(tiers) && "tier" %in% names(known_pairs)) {
     known_pairs <- known_pairs[known_pairs$tier %in% tiers, ]
   }
@@ -278,7 +282,9 @@ compute_auroc <- function(results_df, known_pairs, tiers = c("A", "B")) {
 
   if (sum(is_known) < 2 || sum(!is_known) < 2) return(NA_real_)
 
-  roc_obj <- pROC::roc(is_known, abs(results_df$DD), quiet = TRUE)
+  roc_obj <- pROC::roc(is_known,
+                       if (score == "signed") results_df$DD else abs(results_df$DD),
+                       quiet = TRUE)
   as.numeric(roc_obj$auc)
 }
 
@@ -286,7 +292,7 @@ compute_auroc <- function(results_df, known_pairs, tiers = c("A", "B")) {
 #'
 #' Returns the shipped `benchmark_methods` dataset: CV3 AUROC values for 8
 #' published SL prediction methods from Feng et al. (2024), plus this-study
-#' DD rows (full lineage-level frame, AUROC 0.676; DD + ID >= 0.3
+#' DD rows (full lineage-level frame, signed-DD AUROC 0.629; DD + ID >= 0.3
 #' high-identity subset, AUROC 1.000, anecdotal). Published values are
 #' contextual reference points from a general SL gene-pair universe, not a
 #' head-to-head benchmark. The dataset is regenerated from the canonical

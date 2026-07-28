@@ -1,11 +1,11 @@
 citHeader("To cite paralogSL in publications, please use:")
 
 citEntry(
-  entry    = "Article",
-  title    = "Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types",
+  entry    = "Manual",
+  title    = "paralogSL: Paralog-Based Synthetic Lethality Prioritization via Delta Dependency",
   author   = personList(as.person("Qingqing Mo"), as.person("Tao Zhu")),
-  journal  = "Genome Biology",
   year     = "2026",
-  doi      = "10.5281/zenodo.21502031",
-  textVersion = "Mo Q, Zhu T (2026). Delta Dependency Prioritizes Paralog-Based Synthetic Lethality Candidates Across Solid Tumor Types. Genome Biology."
+  note     = "R package version 1.1.2",
+  doi      = "10.5281/zenodo.21502113",
+  textVersion = "Mo Q, Zhu T (2026). paralogSL: Paralog-Based Synthetic Lethality Prioritization via Delta Dependency. R package version 1.1.2. doi:10.5281/zenodo.21502113. Companion manuscript under review at Genome Biology."
 )

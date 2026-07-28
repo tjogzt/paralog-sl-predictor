@@ -10,7 +10,7 @@
 
 ```bash
 cd paralog_sl_predictor && bash verify_all.sh
-# 期望输出：237/237 claims match; 31 passed; ALL CHECKS PASSED
+# 期望输出：241/241 claims match; 31 passed; ALL CHECKS PASSED
 ```
 
 - [ ] verify_all.sh 全绿
@@ -40,7 +40,7 @@ Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor T
 
 **Background:** Paralog compensation is a specific mechanism of synthetic lethality (SL): when a tumor-suppressor driver gene is lost to mutation, its sequence-similar paralog can become conditionally essential. Systematic prioritization of paralog-SL candidates remains limited because existing computational methods are black boxes that cannot explain their predictions, hindering targeted validation.
 
-**Results:** We introduce Delta Dependency (DD), a single interpretable metric measuring the dependency shift on a paralog between driver-mutant and wild-type cell lines in DepMap (1,208 lines, 23 solid tumor types). In the pre-specified primary evaluation, a lineage-level benchmark on twelve curated, evidence-tiered paralog-SL pairs, DD achieved AUROC = 0.676 (0.725 excluding two pairs with DepMap-derived labels; 1.000 on the Tier A/B external benchmark, two of five pairs lineage-evaluable). In pair-level evaluation on the same 72 test pairs, the interpretable composite score reached AUROC = 0.831, statistically indistinguishable from the best multi-feature classifier (SVM-RBF, 0.843) under leave-one-pair-out cross-validation. Exploratory analyses across seven CPTAC cohorts (n = 771) detected protein-level paralog co-variation invisible at the RNA level. Dependency-window scoring prioritized ARID1A->ARID1B (DWS = 2.82) as the leading selective candidate, suggesting a hypothesis-generating biomarker strategy centered on truncating ARID1A mutations.
+**Results:** We introduce Delta Dependency (DD), a single interpretable metric measuring the dependency shift on a paralog between driver-mutant and wild-type cell lines in DepMap (1,208 lines, 23 solid tumor types). In the pre-specified primary evaluation, a lineage-level benchmark on twelve curated, evidence-tiered paralog-SL pairs, signed DD achieved AUROC = 0.629 (0.613 excluding two pairs with DepMap-derived labels; 1.000 on the Tier A/B external benchmark, two of five pairs lineage-evaluable). In pair-level evaluation on the same 72 test pairs, the interpretable composite score reached AUROC = 0.831, statistically indistinguishable from the best multi-feature classifier (SVM-RBF, 0.843) under leave-one-pair-out cross-validation. Exploratory analyses across seven CPTAC cohorts (n = 771) detected protein-level paralog co-variation invisible at the RNA level. Dependency-window scoring prioritized ARID1A->ARID1B (DWS = 2.82) as the leading selective candidate, suggesting a hypothesis-generating biomarker strategy centered on truncating ARID1A mutations.
 
 **Conclusions:** DD offers a mechanistically transparent alternative to black-box SL prediction: each nomination traces to a measured dependency shift, enabling rational experimental follow-up. DD is an association-based prioritization metric, not a causal test of synthetic lethality; all candidates require experimental validation. An open-source R package (paralogSL) and a reproducible pipeline are provided.
 
@@ -133,7 +133,7 @@ paralogSL R package v1.1.0 at https://github.com/tjogzt/paralogSL
 (https://doi.org/10.5281/zenodo.21502113);
 complete analysis pipeline at https://github.com/tjogzt/paralog-sl-predictor
 (https://doi.org/10.5281/zenodo.21502030).
-A single entry point (verify_all.sh) recomputes all 237 audited numeric claims
+A single entry point (verify_all.sh) recomputes all 241 audited numeric claims
 in under one minute.
 ```
 

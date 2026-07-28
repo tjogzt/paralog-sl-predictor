@@ -1,17 +1,20 @@
 
 # ═══════════════════════════════════════════════════════════════
-# Clinical Decision Support Functions
+# Candidate Prioritization (deprecated clinical alias retained)
 # ═══════════════════════════════════════════════════════════════
 
 #' Predict trial response priority for a paralog-SL candidate
 #'
-#' Combines DD magnitude, therapeutic index, MSI status, and mutation type
-#' into a composite clinical priority score for trial design.
+#' \strong{Deprecated.} This name overstated the scope of the score: the
+#' composite is an in vitro, association-based \emph{prioritization}
+#' heuristic, not a predictor of clinical trial response. Please use
+#' \code{\link{rank_dependency_candidates}} instead. This wrapper is
+#' retained for backward compatibility and delegates to the new function.
 #'
 #' @param driver Character, driver gene name (e.g., "ARID1A")
 #' @param paralog Character, paralog gene name (e.g., "ARID1B")
 #' @param dd Numeric, absolute Delta Dependency value
-#' @param ti Numeric, therapeutic index (default NA, computed if possible)
+#' @param ti Numeric, dependency window score (DWS; default NA)
 #' @param msi_status Character, "MSS" or "MSI-H" (default "MSS")
 #' @param mutation_type Character, "truncating" or "missense" (default "truncating")
 #' @param selectivity Numeric, selectivity score (default 0)
@@ -19,46 +22,17 @@
 #' @export
 #' @examples
 #' # Manuscript Table S5 values for the leading candidate ARID1A->ARID1B
-#' predict_trial_response("ARID1A", "ARID1B", dd = 0.270, ti = 2.82,
-#'                        msi_status = "MSS", mutation_type = "truncating")
+#' rank_dependency_candidates("ARID1A", "ARID1B", dd = 0.270, ti = 2.82,
+#'                            msi_status = "MSS", mutation_type = "truncating")
 predict_trial_response <- function(driver, paralog, dd, ti = NA,
                                     msi_status = "MSS",
                                     mutation_type = "truncating",
                                     selectivity = 0) {
-  # Base score from DD magnitude
-  score <- abs(dd) * 10  # scale to 0-3 range
-
-  # TI bonus
-  if (!is.na(ti) && ti > 1.0) score <- score + log2(ti)
-
-  # Selectivity bonus
-  if (selectivity > 0.15) score <- score + 1.0
-
-  # MSI penalty (MSI-H shows weaker signal)
-  if (toupper(msi_status) == "MSI-H") score <- score * 0.7
-
-  # Mutation type adjustment (truncating > missense)
-  if (tolower(mutation_type) == "missense") score <- score * 0.8
-
-  # Classify tier
-  tier <- if (score >= 4) "HIGH_PRIORITY" else
-          if (score >= 2) "MODERATE_PRIORITY" else "LOW_PRIORITY"
-
-  rationale <- sprintf(
-    "%s->%s: |DD|=%.3f, TI=%s, %s, %s mutation. Score=%.2f (%s).",
-    driver, paralog, abs(dd),
-    if (is.na(ti)) "NA" else sprintf("%.2f", ti),
-    msi_status, mutation_type, score, tier)
-
-  list(
-    driver = driver,
-    paralog = paralog,
-    priority_score = round(score, 3),
-    tier = tier,
-    rationale = rationale,
-    biomarkers = list(msi = msi_status, mutation = mutation_type,
-                      dd = abs(dd), ti = ti, selectivity = selectivity)
-  )
+  .Deprecated("rank_dependency_candidates")
+  rank_dependency_candidates(driver, paralog, dd, ti = ti,
+                             msi_status = msi_status,
+                             mutation_type = mutation_type,
+                             selectivity = selectivity)
 }
 
 #' Visualize dependency shift for a driver-paralog pair

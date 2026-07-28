@@ -1,7 +1,7 @@
 {
   "method": {
     "frame": ">=3-per-group sensitivity frame (min3 products)",
-    "score": "|dependency_dd|",
+    "score": "signed dependency_dd (positive = compensation)",
     "label": "is_known_paralog_sl",
     "bootstrap": "stratified (pos/neg preserved within subgroup), B=10000, seed=42",
     "p_value": "two-sided empirical vs delta=0: 2*min(P(delta*<=0), P(delta*>=0)), (+1)/(B+1) corrected"
@@ -9,39 +9,33 @@
   "results": [
     {
       "cancer": "Endometrial",
-      "auroc_msi_h": 0.8376,
-      "auroc_mss": 0.5556,
-      "delta": 0.2821,
-      "boot_ci_low": -0.2181,
-      "boot_ci_high": 0.8205,
-      "p_empirical": 0.3408,
+      "auroc_msi_h": 0.3034,
+      "auroc_mss": 0.5,
+      "delta": -0.1966,
+      "boot_ci_low": -0.7735,
+      "boot_ci_high": 0.4744,
+      "p_empirical": 0.5337,
       "n_pairs_evaluable": {
         "msi_h": 81,
         "mss": 9,
         "msi_h_positives": 3,
         "mss_positives": 3
-      },
-      "published_auroc_msi_h": 0.8376,
-      "published_auroc_mss": 0.5556,
-      "auroc_reproduces_published": true
+      }
     },
     {
       "cancer": "Colorectal",
-      "auroc_msi_h": 0.7674,
-      "auroc_mss": 0.7121,
-      "delta": 0.0553,
-      "boot_ci_low": -0.3453,
-      "boot_ci_high": 0.5381,
-      "p_empirical": 0.8345,
+      "auroc_msi_h": 0.5581,
+      "auroc_mss": 0.5455,
+      "delta": 0.0127,
+      "boot_ci_low": -0.573,
+      "boot_ci_high": 0.5921,
+      "p_empirical": 0.9665,
       "n_pairs_evaluable": {
         "msi_h": 47,
         "mss": 47,
         "msi_h_positives": 4,
         "mss_positives": 3
-      },
-      "published_auroc_msi_h": 0.7674,
-      "published_auroc_mss": 0.7121,
-      "auroc_reproduces_published": true
+      }
     }
   ]
 }

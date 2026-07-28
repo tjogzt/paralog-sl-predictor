@@ -5,7 +5,7 @@
 #' covering 23 solid tumor lineages. Regenerated from
 #' `solid_tumor_summary_min3.csv` in the companion analysis repository
 #' (paralog-sl-predictor); 12 lineages are evaluable (>= 2 known positives),
-#' 9 of them with AUROC >= 0.7.
+#' 6 of them with AUROC >= 0.7 under signed-DD scoring.
 #'
 #' @format A data.frame with columns:
 #' \describe{
@@ -13,7 +13,10 @@
 #'   \item{n_lines}{Number of cell lines}
 #'   \item{n_pairs}{Number of paralog pairs tested}
 #'   \item{n_known}{Number of known paralog-SL pairs}
-#'   \item{dd_auroc}{DD AUROC against gold standard (NA when < 2 known positives)}
+#'   \item{dd_auroc}{Signed-DD AUROC against gold standard (NA when < 2 known
+#'     positives); signed DD is the manuscript's primary metric}
+#'   \item{dd_auroc_abs_sensitivity}{Direction-agnostic |DD| AUROC (sensitivity
+#'     analysis, NA when < 2 known positives)}
 #' }
 "cross_cancer_summary"
 
@@ -22,7 +25,8 @@
 #' Per-lineage DD benchmark results on the manuscript's primary frame
 #' (minimum 5 mutant and 5 wild-type cell lines per driver-paralog group),
 #' covering 19 solid tumor lineages; 8 are evaluable (>= 2 known positives)
-#' and 7 reach AUROC >= 0.7. Regenerated from `solid_tumor_summary.csv` in
+#' and 1 reaches AUROC >= 0.7 under signed-DD scoring (Colorectal 0.775).
+#' Regenerated from `solid_tumor_summary.csv` in
 #' the companion analysis repository (paralog-sl-predictor).
 #'
 #' @format A data.frame with columns:
@@ -31,7 +35,10 @@
 #'   \item{n_lines}{Number of cell lines}
 #'   \item{n_pairs}{Number of paralog pairs tested}
 #'   \item{n_known}{Number of known paralog-SL pairs}
-#'   \item{dd_auroc}{DD AUROC against gold standard (NA when < 2 known positives)}
+#'   \item{dd_auroc}{Signed-DD AUROC against gold standard (NA when < 2 known
+#'     positives); signed DD is the manuscript's primary metric}
+#'   \item{dd_auroc_abs_sensitivity}{Direction-agnostic |DD| AUROC (sensitivity
+#'     analysis, NA when < 2 known positives)}
 #' }
 "solid_tumor_summary"
 
@@ -101,7 +108,8 @@
 #' this-study DD values. Published values are contextual reference points
 #' from a general SL gene-pair universe, NOT a head-to-head benchmark on
 #' the same test set; DD was evaluated on paralog-SL pairs only (full
-#' lineage-level frame, 110 entries / 8 positives, AUROC 0.676; DD + ID
+#' lineage-level frame, 110 entries / 8 positives, signed-DD AUROC 0.629;
+#' DD + ID
 #' >= 30% on a 3-pair high-identity subset, 2 positives, AUROC 1.000,
 #' anecdotal).
 #'
