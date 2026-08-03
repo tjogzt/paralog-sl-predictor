@@ -5,8 +5,12 @@ Quantifies the therapeutic index for each paralog-SL candidate pair
 by assessing paralog essentiality in driver-MUT vs driver-WT contexts.
 
 Key metrics:
-  1. Therapeutic Index (TI) = |DD| / (pan-essentiality + ε)
-     - Higher TI = more selective killing in MUT context
+  1. Dependency Window Score (DWS, primary) = max(DD, 0) / pan-essentiality
+     - Signed numerator: only positive DD (compensation in driver-mutant
+       lines) contributes; negative-DD (reverse-direction) pairs score 0.
+     - The |DD| version (therapeutic_index) is retained as a sensitivity
+       output only (round-7 review: |DD| conflicts with the signed
+       compensation logic by ranking reverse pairs highly).
   2. Selectivity Score = fraction of cell lines where paralog is
      essential (CERES < -0.5) in MUT vs WT
   3. Window Width = quantile difference in CERES distribution
@@ -92,9 +96,10 @@ def compute_therapeutic_window(dep, driver, paralog, mut_ids, wt_ids, all_ids):
         return None
     
     # Basic DD (manuscript Eq. 1: WT − MUT; positive = compensation in
-    # driver-mutant lines). All downstream ranking uses |dd| (dd_abs), so
-    # this sign convention is presentation-only but kept consistent with
-    # pcs.py and the paralogSL R package (compute_dd).
+    # driver-mutant lines). Sign convention matches pcs.py and the
+    # paralogSL R package (compute_dd). The primary DWS uses the signed
+    # numerator max(dd, 0) so that only compensation-direction dependency
+    # counts; |dd| is kept solely for the sensitivity output below.
     dd = wt_vals.mean() - mut_vals.mean()
     
     # Pan-essentiality
@@ -106,11 +111,15 @@ def compute_therapeutic_window(dep, driver, paralog, mut_ids, wt_ids, all_ids):
     wt_essential_frac = (wt_vals < CERES_ESSENTIAL_THRESHOLD).mean()
     selectivity = mut_essential_frac - wt_essential_frac
     
-    # Therapeutic Index: how much MORE essential in MUT, normalized by pan-essentiality
-    # Add epsilon to avoid division by zero
+    # Dependency Window Score: how much MORE essential in MUT, normalized
+    # by pan-essentiality. Epsilon floor avoids division by zero; the same
+    # denominator max(|pan_mean|, pan_essential_frac, ε) is shared by the
+    # primary signed DWS and the |DD| sensitivity version.
     epsilon = 0.01
     pan_essentiality = max(abs(pan_mean), pan_essential_frac, epsilon)
-    ti = abs(dd) / pan_essentiality
+    dd_pos = max(dd, 0.0)
+    dws_signed = dd_pos / pan_essentiality   # primary metric
+    ti = abs(dd) / pan_essentiality          # |DD| sensitivity metric
     
     # Alternative: Window Width
     # Difference in the 25th percentile between MUT and WT
@@ -135,20 +144,24 @@ def compute_therapeutic_window(dep, driver, paralog, mut_ids, wt_ids, all_ids):
         "paralog": paralog,
         "dd": dd,
         "dd_abs": abs(dd),
+        "dd_pos": dd_pos,
         "cohens_d": cohens_d,
         "p_value": p_val,
         
         # Pan-essentiality
         "paralog_mean_ceres": pan_mean,
         "paralog_pan_essential_frac": pan_essential_frac,
+        "pan_essentiality_denominator": pan_essentiality,
+        "floor_0_01_active": bool(pan_essentiality == epsilon),
         
         # Context essentiality
         "mut_essential_frac": mut_essential_frac,
         "wt_essential_frac": wt_essential_frac,
         "selectivity": selectivity,  # MUT - WT essential fraction
         
-        # Therapeutic indices
-        "therapeutic_index": ti,
+        # Dependency window scores
+        "dws_signed": dws_signed,      # PRIMARY: max(DD,0) / pan-essentiality
+        "therapeutic_index": ti,       # SENSITIVITY: |DD| / pan-essentiality
         "window_width": window_width,
         
         # Sample sizes
@@ -249,26 +262,27 @@ def run_therapeutic_window_analysis():
         context_df = pd.DataFrame(context_results)
         all_results.append(context_df)
         
-        # Summary stats
+        # Summary stats (primary DWS = signed max(DD,0) version)
         n_total = len(context_df)
         n_known = context_df["is_known_sl"].sum()
-        ti_median = context_df["therapeutic_index"].median()
+        ti_median = context_df["dws_signed"].median()
         n_selective = (context_df["selectivity"] > 0).sum()
-        n_good_ti = (context_df["therapeutic_index"] > 0.5).sum()
+        n_good_ti = (context_df["dws_signed"] > 0.5).sum()
         
         print(f"  Pairs analyzed: {n_total} ({int(n_known)} known)")
-        print(f"  Median TI: {ti_median:.3f}")
+        print(f"  Median DWS (signed): {ti_median:.3f}")
         print(f"  Selectivity > 0: {n_selective}/{n_total} ({n_selective/n_total*100:.0f}%)")
-        print(f"  TI > 0.5 (good window): {n_good_ti}/{n_total}")
+        print(f"  DWS > 0.5 (good window): {n_good_ti}/{n_total}")
         
-        # Top pairs by therapeutic index
-        top_ti = context_df.nlargest(15, "therapeutic_index")
+        # Top pairs by primary (signed) DWS
+        top_ti = context_df.nlargest(15, "dws_signed")
         print(f"\n  Top therapeutic windows:")
         for _, r in top_ti.iterrows():
             flag = "★" if r["is_known_sl"] else "·"
-            ti_stars = "★" if r["therapeutic_index"] > 2.0 else "☆" if r["therapeutic_index"] > 1.0 else "·"
+            ti_stars = "★" if r["dws_signed"] > 2.0 else "☆" if r["dws_signed"] > 1.0 else "·"
             print(f"    {flag} {r['driver']:10s}→{r['paralog']:10s}  "
-                  f"TI={r['therapeutic_index']:.3f}  "
+                  f"DWS={r['dws_signed']:.3f}  "
+                  f"(|DD| sens={r['therapeutic_index']:.3f})  "
                   f"DD={r['dd']:+.3f}  d={r['cohens_d']:+.2f}  "
                   f"sel={r['selectivity']:+.2f}  "
                   f"pan_ess={r['paralog_pan_essential_frac']:.2f}  "
@@ -299,7 +313,7 @@ def run_therapeutic_window_analysis():
         
         # Summary table
         summary_df = pd.DataFrame(context_summaries)
-        print(f"\n{'Context':20s} {'Lines':>6s} {'Pairs':>6s} {'Known':>6s} {'TI':>7s} {'Sel%':>6s} {'Good':>6s}")
+        print(f"\n{'Context':20s} {'Lines':>6s} {'Pairs':>6s} {'Known':>6s} {'DWS':>7s} {'Sel%':>6s} {'Good':>6s}")
         print("-" * 65)
         for _, r in summary_df.iterrows():
             sel_pct = r["n_selective"] / r["n_pairs"] * 100 if r["n_pairs"] > 0 else 0
@@ -308,35 +322,41 @@ def run_therapeutic_window_analysis():
                   f"{int(r['n_good_window']):>6d}")
         summary_df.to_csv(OUTPUT_DIR / "therapeutic_window_summary.csv", index=False)
         
-        # ── Consistent high-TI pairs across contexts ──
-        # Find pairs with TI > 1.0 in ≥2 contexts
-        high_ti = combined[combined["therapeutic_index"] > 1.0]
+        # ── Consistent high-DWS pairs across contexts ──
+        # Find pairs with signed DWS > 1.0 in ≥2 contexts
+        high_ti = combined[combined["dws_signed"] > 1.0]
         pair_context_counts = high_ti.groupby(["driver", "paralog"])["context"].nunique().reset_index()
         pair_context_counts.columns = ["driver", "paralog", "n_contexts"]
-        pair_mean_ti = high_ti.groupby(["driver", "paralog"])["therapeutic_index"].mean().reset_index()
+        pair_mean_ti = high_ti.groupby(["driver", "paralog"])["dws_signed"].mean().reset_index()
         
         consistent = pair_context_counts.merge(pair_mean_ti, on=["driver", "paralog"])
         consistent = consistent[consistent["n_contexts"] >= 2].sort_values(
-            ["n_contexts", "therapeutic_index"], ascending=[False, False]
+            ["n_contexts", "dws_signed"], ascending=[False, False]
         )
         
         if len(consistent) > 0:
-            print(f"\n  Consistent high-TI pairs (TI > 1 in ≥2 contexts):")
+            print(f"\n  Consistent high-DWS pairs (signed DWS > 1 in ≥2 contexts):")
             for _, r in consistent.head(15).iterrows():
                 is_known = ((r["driver"].upper(), r["paralog"].upper()) in known_set)
                 flag = "★" if is_known else "·"
                 print(f"    {flag} {r['driver']:10s}→{r['paralog']:10s}  "
-                      f"contexts={int(r['n_contexts'])}  mean_TI={r['therapeutic_index']:.3f}")
+                      f"contexts={int(r['n_contexts'])}  mean_DWS={r['dws_signed']:.3f}")
         
         # ── Paralog toxicity classification ──
         # Pan-essential paralogs: essential in >50% of lines
         # Context-selective: essential mostly in MUT lines
         # Safe paralogs: never essential (good drug target)
+        # mean_ti = PRIMARY signed DWS (mean of max(DD,0)/denominator across
+        # contexts); mean_ti_abs = |DD| sensitivity version.
         paralog_summary = combined.groupby(["driver", "paralog"]).agg(
-            mean_ti=("therapeutic_index", "mean"),
+            mean_ti=("dws_signed", "mean"),
+            mean_ti_abs=("therapeutic_index", "mean"),
             mean_dd=("dd_abs", "mean"),
+            mean_dd_pos=("dd_pos", "mean"),
             mean_selectivity=("selectivity", "mean"),
             mean_pan_essential=("paralog_pan_essential_frac", "mean"),
+            mean_denominator=("pan_essentiality_denominator", "mean"),
+            floor_0_01_active=("floor_0_01_active", "max"),
             n_contexts=("context", "nunique"),
         ).reset_index()
         
@@ -363,7 +383,7 @@ def run_therapeutic_window_analysis():
                     is_known = ((r["driver"].upper(), r["paralog"].upper()) in known_set)
                     flag = "★" if is_known else "·"
                     print(f"      {flag} {r['driver']:10s}→{r['paralog']:10s}  "
-                          f"TI={r['mean_ti']:.2f}  sel={r['mean_selectivity']:+.2f}  "
+                          f"DWS={r['mean_ti']:.2f}  sel={r['mean_selectivity']:+.2f}  "
                           f"pan_ess={r['mean_pan_essential']:.2f}")
         
         paralog_summary.to_csv(OUTPUT_DIR / "therapeutic_window_paralog_classification.csv", index=False)

@@ -1,0 +1,108 @@
+{
+  "generated_at": "2026-08-02T15:22:26+00:00",
+  "generated_by": "cluster_bootstrap_primary.py",
+  "source": "output/tables/TableS2_FullResults.tsv",
+  "frame": {
+    "description": "PRIMARY lineage-level frame (TableS2): signed DD over 110 driver\u00d7paralog\u00d7lineage entries (Ovarian/Endometrial/Cervical)",
+    "n_entries": 110,
+    "n_unique_pairs": 72,
+    "n_positive_entries": 8,
+    "n_positive_pairs": 6,
+    "score": "dependency_dd (signed)",
+    "label": "is_known_paralog_sl"
+  },
+  "seed": 42,
+  "definitions": "auroc/auprc imported from compute_headline_metrics.py (rank-based Mann-Whitney AUROC, average ties; AUPRC = average precision)",
+  "pair_clustered_bootstrap_auroc": {
+    "observed": 0.6286764705882353,
+    "boot_mean": 0.6358071987774815,
+    "ci95_percentile": [
+      0.25298590953072086,
+      0.9334862385321101
+    ],
+    "n_boot": 10000,
+    "n_used": 9906,
+    "n_skipped_fewer_than_2_positives": 94,
+    "frac_skipped": 0.0094,
+    "scheme": "resample 72 pairs with replacement; carry all lineage entries of each resampled pair; AUROC over resulting entry multiset"
+  },
+  "pair_clustered_bootstrap_auprc": {
+    "observed": 0.3461470293095671,
+    "boot_mean": 0.3276621230071951,
+    "ci95_percentile": [
+      0.0390289755886131,
+      0.7516419517982018
+    ],
+    "baseline_prevalence": 0.07272727272727272,
+    "n_boot": 10000,
+    "n_used": 9906,
+    "n_skipped_fewer_than_2_positives": 94,
+    "frac_skipped": 0.0094,
+    "scheme": "same resampled draws and skip rule as the AUROC bootstrap"
+  },
+  "driver_block_bootstrap_auroc": {
+    "observed": 0.6286764705882353,
+    "boot_mean": 0.6419883271162716,
+    "ci95_percentile": [
+      0.2717930694734818,
+      0.9290512274322515
+    ],
+    "n_boot": 10000,
+    "n_used": 9986,
+    "n_skipped_fewer_than_2_positives": 14,
+    "frac_skipped": 0.0014,
+    "n_driver_blocks": 11,
+    "scheme": "resample driver genes with replacement; carry all lineage entries of every pair under each resampled driver; AUROC over the resulting entry multiset; same skip rule as the pair-clustered bootstrap"
+  },
+  "pair_level_permutation_primary": {
+    "observed": 0.6286764705882353,
+    "null_mean": 0.5009353187350524,
+    "null_std": 0.10881010735545457,
+    "empirical_p": 0.12188781121887811,
+    "n_permutations": 10000,
+    "scheme": "permute pair-level labels (6 positive / 66 control); carry labels down to that pair's lineage entries; AUROC over the 110 entries",
+    "p_formula": "(1 + #{null >= observed}) / (1 + n_perm)"
+  },
+  "effective_sample_size": {
+    "n_entries": 110,
+    "n_clusters": 72,
+    "avg_cluster_size_m": 1.5277777777777777,
+    "m0_unequal_size_correction": 1.5254801536491678,
+    "cluster_size_distribution": {
+      "1": 34,
+      "2": 38
+    },
+    "anova_icc_dependency_dd_by_pair": 0.5539853314435843,
+    "msb": 0.008677072897129092,
+    "msw": 0.0029975036183924595,
+    "neff_formula": "NEFF = 110 / (1 + (m-1)*ICC)",
+    "neff": 85.11420972250257,
+    "note": "one-way random-effects ANOVA ICC = (MSB-MSW)/(MSB+(m0-1)*MSW); negative ICC implies within-pair variance exceeds between-pair variance (no clustering penalty)"
+  },
+  "per_pair_mean_aggregation_permutation": {
+    "observed": 0.6717171717171717,
+    "null_mean": 0.5011969696969696,
+    "null_std": 0.1240178928056162,
+    "empirical_p": 0.0898910108989101,
+    "n_permutations": 10000,
+    "n_pairs": 72,
+    "n_positives": 6,
+    "aggregation": "mean signed DD across lineages per pair (the 0.672 frame of ml_benchmark.py / compute_headline_metrics.py; never previously permutation-tested)",
+    "p_formula": "(1 + #{null >= observed}) / (1 + n_perm)"
+  },
+  "precision_at_k_primary": {
+    "precision_at_10": {
+      "n_positives_in_top_k": 2,
+      "k": 10,
+      "precision": 0.2
+    },
+    "precision_at_20": {
+      "n_positives_in_top_k": 3,
+      "k": 20,
+      "precision": 0.15
+    },
+    "ranking": "entries ranked by signed dependency_dd, descending",
+    "n_positives_total": 8,
+    "n_entries": 110
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "generated_at": "2026-07-31T15:46:04+00:00",
+  "generated_by": "in4mer_seed_sensitivity.py",
+  "design": "repeat ONLY the control-pair sampling of in4mer_benchmark.py with seeds 42-61; recompute the >=3-mutant/>=3-WT (min3) frame AUROC (max |DD| across both orientations x all lineages; sklearn roc_auc_score on |DD|, in4mer_gold=1). Frozen in4mer outputs untouched; seed 42 reproduces them as a built-in check.",
+  "frame": "min3 (>=3 mutant and >=3 WT lines per lineage stratum)",
+  "n_controls_per_seed": 400,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61
+  ],
+  "per_seed": [
+    {
+      "seed": 42,
+      "auroc_min3": 0.49754601226993866,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 326
+    },
+    {
+      "seed": 43,
+      "auroc_min3": 0.4798816568047337,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 338
+    },
+    {
+      "seed": 44,
+      "auroc_min3": 0.5094512195121952,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 328
+    },
+    {
+      "seed": 45,
+      "auroc_min3": 0.5109422492401215,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 329
+    },
+    {
+      "seed": 46,
+      "auroc_min3": 0.5074626865671643,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 335
+    },
+    {
+      "seed": 47,
+      "auroc_min3": 0.507250755287009,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 331
+    },
+    {
+      "seed": 48,
+      "auroc_min3": 0.49533527696793,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 343
+    },
+    {
+      "seed": 49,
+      "auroc_min3": 0.49076923076923074,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 325
+    },
+    {
+      "seed": 50,
+      "auroc_min3": 0.5219512195121951,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 328
+    },
+    {
+      "seed": 51,
+      "auroc_min3": 0.5009584664536741,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 313
+    },
+    {
+      "seed": 52,
+      "auroc_min3": 0.4904761904761904,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 315
+    },
+    {
+      "seed": 53,
+      "auroc_min3": 0.49461077844311374,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 334
+    },
+    {
+      "seed": 54,
+      "auroc_min3": 0.4887195121951219,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 328
+    },
+    {
+      "seed": 55,
+      "auroc_min3": 0.4978328173374614,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 323
+    },
+    {
+      "seed": 56,
+      "auroc_min3": 0.5173780487804878,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 328
+    },
+    {
+      "seed": 57,
+      "auroc_min3": 0.5067278287461774,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 327
+    },
+    {
+      "seed": 58,
+      "auroc_min3": 0.5052307692307692,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 325
+    },
+    {
+      "seed": 59,
+      "auroc_min3": 0.5076923076923077,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 325
+    },
+    {
+      "seed": 60,
+      "auroc_min3": 0.4864306784660767,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 339
+    },
+    {
+      "seed": 61,
+      "auroc_min3": 0.49787878787878787,
+      "n_in4mer_evaluable_of_13": 10,
+      "n_controls_evaluable_of_400": 330
+    }
+  ],
+  "summary": {
+    "min": 0.4798816568047337,
+    "median": 0.499418627166231,
+    "max": 0.5219512195121951,
+    "mean": 0.5007263246315343,
+    "std": 0.010443647261449031,
+    "n_seeds": 20,
+    "n_in4mer_evaluable_per_seed": [
+      10
+    ]
+  },
+  "frozen_benchmark_consistency_check": {
+    "frozen_summary": "output/in4mer_benchmark_summary.json",
+    "frozen_csv": "output/in4mer_benchmark.csv",
+    "frozen_min3_auroc": 0.49754601226993866,
+    "rerun_seed42_auroc": 0.49754601226993866,
+    "abs_diff": 0.0,
+    "frozen_min3_n_pos": 10,
+    "frozen_min3_n_neg": 326,
+    "rerun_seed42_n_pos": 10,
+    "rerun_seed42_n_neg": 326,
+    "status": "match",
+    "frozen_csv_positive_dd_min3_mismatches": [],
+    "csv_check_status": "match"
+  }
+}

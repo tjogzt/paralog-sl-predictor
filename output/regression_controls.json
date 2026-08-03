@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-28T01:42:57+00:00",
+  "generated_at": "2026-08-02T15:39:18+00:00",
   "generated_by": "regression_controls.py",
   "sign_convention": "DD = mean(dep|WT) - mean(dep|MUT) (manuscript Eq. 1)",
   "results": {
@@ -189,7 +189,24 @@
       }
     },
     "full_regression_table": "output/regression_table_full.csv",
-    "arid1a_arid1b_lineage_adj_p": 2.2399027421204218e-13
+    "arid1a_arid1b_lineage_adj_p": 2.2399027421204218e-13,
+    "lineage_cluster_se_headline": {
+      "ARID1A->ARID1B": {
+        "model": "lineage_adj",
+        "se_lineage_cluster": 0.04448207159580858,
+        "p_lineage_cluster": 1.7137421833113402e-09
+      },
+      "SMARCA4->SMARCA2": {
+        "model": "lineage_adj",
+        "se_lineage_cluster": 0.10796733928228283,
+        "p_lineage_cluster": 0.005175953596767497
+      },
+      "EP300->CREBBP": {
+        "model": "lineage_adj",
+        "se_lineage_cluster": 0.06992953167749537,
+        "p_lineage_cluster": 3.2408167023862053e-06
+      }
+    }
   },
   "computed": {
     "cnv_r2_max": 0.0573300309840755,

@@ -9,7 +9,7 @@ CNV R2 panel (annotated in-source as "estimated R2 values"), a
 cross-cancer transfer matrix with no source artifact, and
 survival/co-occurrence numbers that contradicted the recomputed pipeline
 outputs. Manuscript figures are produced exclusively by the
-artifact-driven R scripts (R_fig1.R ... R_figS10.R), which read
+artifact-driven R scripts (R_fig1.R ... R_figS9_descriptors.R), which read
 single-source-of-truth outputs and fail loudly (stop()) when an artifact
 is missing. Simulated, random, or hardcoded data are forbidden in this
 repository.
@@ -39,7 +39,7 @@ def run_full_validation(results, n_permutations: int = 10000,
         (206 entries, 11 positives; AUROC 0.794).
 
     The pre-2026-07-25 output/validation_report.json (cited by the manuscript
-    and by R_figS8.R) was produced by a no-longer-present script whose
+    and by R_figS2_robustness.R) was produced by a no-longer-present script whose
     label-null had mean 0.58 — inconsistent with a true label shuffle (which
     must have mean 0.5). That historical version is preserved under
     output/backup_prerun_20260725/; main.py now regenerates
@@ -173,5 +173,5 @@ if __name__ == "__main__":
     raise SystemExit(
         "validation_viz.py no longer generates figures (the legacy figure "
         "functions were removed because they hardcoded fabricated values). "
-        "Use the artifact-driven R figure scripts (R_fig1.R ... R_figS10.R)."
+        "Use the artifact-driven R figure scripts (R_fig1.R ... R_figS9_descriptors.R)."
     )

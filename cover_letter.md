@@ -1,56 +1,41 @@
 # Cover Letter
 
-**Date:** July 27, 2026
+**Date:** August 3, 2026
 
-**To:** The Editors
-*Genome Biology*
+**To:** The Editors, *Genome Biology*
 
-**Re:** Submission of "Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types"
+**Re:** Submission of "Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types" (Research article)
 
 ---
 
 Dear Editors,
 
-We submit for consideration in *Genome Biology* our manuscript entitled **"Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types."**
+We submit for consideration in *Genome Biology* our manuscript **"Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types."**
 
-Paralog compensation is an attractive route to new cancer dependencies, but most computational synthetic-lethality (SL) predictors are multi-feature models whose nominations are hard to trace to a single measurable effect. We introduce Delta Dependency (DD): the difference in mean Chronos gene-effect scores between driver-mutant and wild-type cell lines. Each DD nomination traces directly to a measured dependency shift, making candidates straightforward to prioritize for experimental follow-up.
+Paralog compensation is an attractive route to new cancer dependencies, but most computational synthetic-lethality (SL) predictors are multi-feature models whose nominations are hard to trace to a single measurable effect. We introduce Delta Dependency (DD), the difference in mean Chronos gene-effect scores between driver-mutant and wild-type cell lines: each nomination traces directly to a measured dependency shift and an immediately designable validation experiment.
 
-**Primary evaluation.** On a curated set of 12 literature-derived paralog-SL pairs with tiered, citation-verified experimental evidence, signed DD achieves AUROC = 0.629, with explicit label-quality sensitivity analyses (0.613 excluding two DepMap-derived pairs; unchanged under a direction-strict relabelling; direction-agnostic |DD| values are reported as sensitivity analyses). Both lineage-evaluable positives on the Tier A + Tier B external benchmark rank above all unlabeled controls. In a head-to-head comparison on the same 72 pairs (6 known positives), an interpretable composite score (AUROC = 0.831) is statistically indistinguishable from the best of four standard classifiers under leave-one-pair-out cross-validation (SVM-RBF 0.843); with only 6 positives, these classifier comparisons carry wide uncertainty and are reported as internal context. Signed DD exceeds AUROC = 0.7 in 1 of 8 evaluable lineages on the primary frame (6 of 12 on the relaxed sensitivity frame) across 23 solid tumor types; we report signed DD as the primary metric because direction-agnostic scoring also credits reverse-direction shifts that are not paralog compensation.
+Three results define the study. First, on a citation-verified, evidence-tiered benchmark of 12 curated paralog-SL pairs, signed DD achieves AUROC = 0.629 in a positive–unlabeled evaluation with explicit label-quality sensitivity analyses; an interpretable composite score produced a similar point estimate to the best tested classifier on the same pairs, with wide uncertainty given only six positive pairs. The only lineage-evaluable Tier A/B pair, ARID1A→ARID1B, showed consistently increased dependency in two gynecological lineages; because this represents one biological pair, we do not treat the result as an independent performance estimate. Second, two combinatorial CRISPR screens published in 2025 (Harle et al., *Genome Biology*; Flister et al., *Cell Reports*) served as fully external tests that played no role in method development or candidate selection: dependency displacement separates experimentally determined digenic synthetic lethals from non-hits in both datasets (AUROC = 0.619 and 0.696; permutation p = 0.0002 and 0.0001), on experimental platforms independent of DepMap. Third, an in vitro dependency-window score recovers ARID1A→ARID1B as the highest-selectivity established dependency and nominates KMT2D→KMT2C as the highest-priority non-benchmark candidate for combinatorial-CRISPR testing. DD is an association-based prioritization metric, not a causal test of synthetic lethality; all candidates require experimental validation.
 
-**Supporting evidence.** CPTAC proteomics across seven cohorts (771 tumours) shows consistent protein-level paralog co-variation (RNA-level signal weak: AUROC = 0.564). PRISM drug screening (1,482 compounds) provides exploratory pharmacologic context, recovering known driver-genotype drug sensitivities. Exploratory biomarker stratification (mutation type; MSI status showed no significant modulation) and an in vitro dependency-window score nominate ARID1A→ARID1B (DWS = 2.82) as the leading selective candidate — a hypothesis-generating experimental validation strategy, not a clinical claim. DD is an association-based prioritization metric, not a causal test of synthetic lethality; all candidates require experimental validation.
+We believe this work suits *Genome Biology* because it pairs a mechanistically transparent metric with broad pan-cancer evaluation and an honestly bounded evidence chain. Relative to the recent combinatorial screens, which map paralog buffering experimentally and at scale, our contribution is complementary: a direction-aware, mutation-conditioned prioritization framework whose every quantitative claim is machine-auditable. All data are public; the analysis pipeline (https://github.com/tjogzt/paralog-sl-predictor) and the companion `paralogSL` R package (https://github.com/tjogzt/paralogSL) are openly available under the MIT license and archived on Zenodo (concept DOIs 10.5281/zenodo.21502030 and 10.5281/zenodo.21502113, which always resolve to the latest release; version-specific DOIs, release tag, and commit are listed in the manuscript). A single entry point (`verify_all.sh`) runs four audit modules plus a 31-test suite, recomputing 420 numeric claims directly from the analysis artifacts in under a minute, with all figures generated by scripts from the same artifacts.
 
-**Open science and reproducibility.** All data are from public repositories (DepMap, cBioPortal, PDC, UCSC Xena, HGNC). The analysis pipeline (https://github.com/tjogzt/paralog-sl-predictor) and the companion R package `paralogSL` v1.1.1 (https://github.com/tjogzt/paralogSL) are openly available under the MIT license and archived on Zenodo (concept DOIs: 10.5281/zenodo.21502030 and 10.5281/zenodo.21502113, which always resolve to the latest release). The main reported analyses can be reproduced using archived scripts and fixed software environments: a single entry point (`verify_all.sh`) runs five pipeline stages that recompute 241 numeric claims directly from the analysis artifacts plus a 31-test suite, completing in ~30 s on an Apple M4 Max (128 GB RAM), with all figures generated by scripts from the same artifacts.
+This manuscript is original, has not been published previously, and is not under consideration by any other journal. Both authors have read and approved the final manuscript and agree with its submission to *Genome Biology*. The authors declare no competing interests. Q.Q.M. and T.Z. conceived the study; T.Z. developed the methodology, performed all computational analyses, and developed the R package; Q.Q.M. curated clinical datasets and provided gynecological oncology domain expertise; Q.Q.M. and T.Z. wrote the manuscript.
 
-We believe this work suits *Genome Biology* because it pairs a mechanistically transparent metric with broad pan-cancer evaluation, openly verifiable analyses, and an honestly bounded evidence chain that ends in prioritized candidates for experimental testing.
+**Suggested reviewers** (also entered in the submission system):
 
-**Competing interests:** The authors declare no competing interests.
-
-**Author contributions:** Q.Q.M. and T.Z. conceived the study. T.Z. developed the methodology, performed all computational analyses, and developed the R package. Q.Q.M. curated clinical datasets and provided gynecological oncology domain expertise. Q.Q.M. and T.Z. wrote the manuscript.
-
-We confirm that this manuscript is original, has not been published previously, and is not under consideration by any other journal. Both authors have read and approved the final manuscript and agree with its submission to *Genome Biology*.
+1. Dr. Francisca Vazquez, DepMap / Broad Institute (CRISPR dependency expertise); <vazquez@broadinstitute.org>
+2. Dr. Jason Moffat, University of Toronto / The Hospital for Sick Children (synthetic-lethality and combinatorial CRISPR screening); <jason.moffat@sickkids.ca>
+3. Dr. Bing Zhang, Baylor College of Medicine (CPTAC proteogenomics); <bing.zhang@bcm.edu>
+4. Dr. G. Traver Hart, Department of Systems Biology, UT MD Anderson Cancer Center (combinatorial CRISPR screens, paralog synthetic lethality); <traver@hart-lab.org>
+5. Dr. Min Wu, Institute for Infocomm Research, A*STAR, Singapore (machine-learning benchmarking for SL prediction); <wumin@i2r.a-star.edu.sg>
 
 We thank you for your consideration and look forward to your response.
 
 Sincerely,
 
 Qingqing Mo and Tao Zhu
+
 $^{1}$Department of Obstetrics and Gynecology, National Clinical Research Center for Obstetrics and Gynecology, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China
+
 $^{2}$Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education), Hubei Key Laboratory of Tumor Invasion and Metastasis, Tongji Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China
 
 $^{\ast}$Correspondence: zhutao@tjh.tjmu.edu.cn
-
----
-
-\newpage
-
-**Suggested Reviewers:**
-
-1. Dr. Francisca Vazquez — DepMap / Broad Institute (CRISPR dependency expertise); <vazquez@broadinstitute.org>
-2. Dr. Michael P. Snyder — Stanford University (proteogenomics, CPTAC expertise); <mpsnyder@stanford.edu>
-3. Dr. Jason Moffat — University of Toronto / The Hospital for Sick Children (synthetic lethality screening); <jason.moffat@sickkids.ca>
-4. Dr. Rameen Beroukhim — Dana-Farber / Broad Institute (cancer genomics, paralog dependencies); <rameen_beroukhim@dfci.harvard.edu>
-5. Dr. Bing Zhang — Baylor College of Medicine (CPTAC proteogenomics); <bing.zhang@bcm.edu>
-6. Dr. G. Traver Hart — Department of Systems Biology, UT MD Anderson Cancer Center (combinatorial CRISPR screens, paralog synthetic lethality); <traver@hart-lab.org>
-7. Dr. Min Wu — Institute for Infocomm Research, A*STAR, Singapore (machine-learning benchmarking for SL prediction); <wumin@i2r.a-star.edu.sg>
-
-**Opposed Reviewers:** None.

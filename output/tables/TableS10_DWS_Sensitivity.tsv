@@ -1,10 +1,13 @@
 variant	spearman_rho_vs_base	top5_overlap_with_base	n_high_selectivity	classification_flips_vs_thr_0.15
-base (max of |mu|, f, 0.01)	1.0	5.0		
-denominator |mu| only	0.9896	4.0		
-denominator f only	0.8935	4.0		
-denominator mean(|mu|, f)	0.9883	4.0		
-floor 0.001	1.0	5.0		
-floor 0.05	0.974	5.0		
+base signed max(DD,0) (max of |mu|, f, 0.01)	1.0	5.0		
+denominator |mu| only	0.9922	5.0		
+denominator f only	0.9662	3.0		
+denominator mean(|mu|, f)	0.9935	4.0		
+floor 0.001	0.9961	5.0		
+floor 0.05	0.9792	4.0		
+numerator |DD| (pre-revision formula, sensitivity)	0.3805	4.0		
+denominator winsorized 1%/99%	0.9987	5.0		
+floor-dominated pairs removed (denominator at 0.01 floor in >=1 context)	1.0	4.0		
 HIGH_SELECTIVITY selectivity threshold 0.1			3.0	1.0
 HIGH_SELECTIVITY selectivity threshold 0.15			2.0	0.0
 HIGH_SELECTIVITY selectivity threshold 0.2			1.0	1.0

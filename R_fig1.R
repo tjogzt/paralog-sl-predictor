@@ -1,5 +1,9 @@
 # Fig1 — Framework, Benchmark & Validation (R)
 # Purpose: 4 individual 90×90mm panels → cowplot → 180×180mm composite
+# Note:    panel c is the benchmark-selection flowchart (replaced the former
+#          cross-study CV3 bar comparison after manuscript restructuring).
+#          All flowchart numbers are read from output/headline_metrics.json
+#          and output/tables/TableS3_GoldStandard.tsv — never literals.
 # Usage:   Rscript R_fig1.R
 library(ggplot2)
 library(cowplot)
@@ -17,6 +21,7 @@ dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
 # ── Colors ──
 BLUE  <- "#2171B5"; RED   <- "#CB181D"; GREEN <- "#238B45"
 ORANGE <- "#E6550D"; GRAY  <- "#636363"; DARK <- "#252525"
+DARKRED <- "#7F0000"
 
 # ── Theme ──
 theme_sci <- theme_classic(base_size = 7, base_family = "Arial") + theme(
@@ -57,12 +62,15 @@ panel_a <- function() {
   ggplot(df, aes(dd_auroc, cancer)) +
     geom_col(aes(fill = clr), width = 0.6) +
     scale_fill_identity() +
-    geom_vline(xintercept = c(0.5, 0.7), linetype = c("dashed","dotted"),
-               linewidth = 0.3, color = c(GRAY, RED), alpha = 0.35) +
+    geom_vline(xintercept = 0.5, linetype = "dashed",
+               linewidth = 0.3, color = GRAY, alpha = 0.35) +
+    geom_vline(xintercept = 0.7, linetype = "dotdash",
+               linewidth = 0.5, color = DARKRED) +
     labs(x = "DD AUROC", y = NULL) +
     theme_sci +
     annotate("text", x = 0.69, y = 0.8,
-             label = "AUROC 0.7", size = 2.5, color = RED, hjust = 1)
+             label = "AUROC 0.7", size = 2.5, color = DARKRED, hjust = 1,
+             fontface = "bold")
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -99,7 +107,8 @@ panel_b <- function() {
     scale_color_manual(values = c("TSG-driven" = BLUE, "Oncogene-driven" = RED)) +
     labs(x = NULL, y = "DD AUROC") +
     annotate("text", x = 1.5, y = 1.02,
-             label = sprintf("perm. p = %.3f\n(n=%d vs n=%d)", perm_p,
+             label = sprintf("perm. p = %.3f; exact MW p = %.3f\n(n=%d vs n=%d)",
+                             perm_p, pval,
                              sum(df$group == "TSG-driven"), n_onc),
              size = 2.5, hjust = 0.5) +
     geom_hline(yintercept = 0.5, linewidth = 0.3, color = GRAY, alpha = 0.3, linetype = "dashed") +
@@ -107,43 +116,117 @@ panel_b <- function() {
 }
 
 # ═══════════════════════════════════════════════════════════════
-# PANEL C — Benchmark Comparison
+# PANEL C — Benchmark selection flowchart
 # ═══════════════════════════════════════════════════════════════
 panel_c <- function() {
-  # This-study values from the metrics single-source-of-truth (never literals);
-  # published values are literature constants (Feng et al. 2024, Suppl. Data 1,
-  # CV3 NSMRand 1:1, complete dataset).
-  metrics_path <- "paralog_sl_predictor/output/tables/headline_metrics.tsv"
-  if (!file.exists(metrics_path))
-    stop("headline_metrics.tsv not found — run compute_headline_metrics.py first")
-  mt <- read_tsv(metrics_path, show_col_types = FALSE)
-  getv <- function(name) as.numeric(mt$value[mt$metric == name])
-  df <- tibble(
-    method = c("DD+ID>=30%","DD","SLMGAE","NSF4SL","GCATSL","GRSMF",
-               "PiLSL","KG4SL","SLGNN","PTGNN"),
-    auroc  = c(getv("dd_auroc_id_filter_0.3"), getv("dd_auroc_lineage_full"),
-               getv("published_SLMGAE"), getv("published_NSF4SL"),
-               getv("published_GCATSL"), getv("published_GRSMF"),
-               getv("published_PiLSL"), getv("published_KG4SL"),
-               getv("published_SLGNN"), getv("published_PTGNN")),
-    ours   = c(TRUE,TRUE,rep(FALSE,8)))
-  if (any(is.na(df$auroc)))
-    stop("headline_metrics.tsv is missing required metrics — re-run compute_headline_metrics.py")
-  df$method <- factor(df$method, levels = rev(df$method))
+  # Every number in this flowchart is read from the single-source-of-truth
+  # artifacts (simulated/hardcoded values are forbidden):
+  #   pair & tier counts  <- output/tables/TableS3_GoldStandard.tsv
+  #   entries/positives   <- output/headline_metrics.json (lineage_full)
+  #   evaluation lineages <- headline_metrics.json (leave_one_lineage_out)
+  #   min-sample rule     <- headline_metrics.json (min_samples string)
+  #   framework count     <- headline_metrics.json (framework result blocks)
+  gs_path <- "paralog_sl_predictor/output/tables/TableS3_GoldStandard.tsv"
+  hm_path <- "paralog_sl_predictor/output/headline_metrics.json"
+  if (!file.exists(gs_path))
+    stop("TableS3_GoldStandard.tsv not found — run tables.py first")
+  if (!file.exists(hm_path))
+    stop("headline_metrics.json not found — run compute_headline_metrics.py first")
+  gs <- read_tsv(gs_path, show_col_types = FALSE)
+  hm <- jsonlite::fromJSON(hm_path)
 
-  ggplot(df, aes(auroc, method, fill = ours)) +
-    geom_col(width = 0.55) +
-    geom_text(aes(label = sprintf("%.3f", auroc), color = ours),
-              hjust = -0.1, size = 2.5, fontface = "bold") +
-    scale_fill_manual(values = c(`TRUE` = RED, `FALSE` = "#9ECAE1"), guide = "none") +
-    scale_color_manual(values = c(`TRUE` = RED, `FALSE` = "#9ECAE1"), guide = "none") +
-    geom_vline(xintercept = 0.5, linewidth = 0.3, color = GRAY, linetype = "dashed", alpha = 0.35) +
-    labs(x = "CV3 AUROC", y = NULL) +
-    scale_x_continuous(limits = c(0, 1.3), breaks = seq(0, 1, 0.25),
-                       expand = expansion(mult = c(0, 0))) +
-    theme_sci + theme(plot.margin = margin(4, 8, 4, 20, "pt")) +
-    annotate("text", x = 1.0, y = 9.5, label = "This study", size = 2.5, color = RED, hjust = 0) +
-    annotate("text", x = 0.55, y = 7.5, label = "Published", size = 2.5, color = "#9ECAE1", hjust = 0)
+  n_pairs   <- nrow(gs)                                # 12 curated pairs
+  n_tier_a  <- sum(gs$Tier == "A")                     # dual-gene perturbation
+  n_tier_b  <- sum(gs$Tier == "B")                     # natural-genotype dep.
+  n_tier_c  <- sum(gs$Tier == "C")                     # indirect evidence
+  n_comp    <- sum(gs$Tier == "Comparator")            # specificity references
+  n_primary <- n_tier_a + n_tier_b                     # primary benchmark pairs
+  n_entries <- hm$lineage_full$n_entries               # 110
+  n_pos     <- hm$lineage_full$n_positives             # 8
+  n_ctrl    <- n_entries - n_pos                       # 102 unlabeled controls
+  frame_lineages <- sub("^without_", "",
+                        names(hm$leave_one_lineage_out$values))
+  # manuscript display order (validated against the artifact keys above)
+  lineage_order <- c("Ovarian", "Endometrial", "Cervical")
+  frame_lineages <- c(intersect(lineage_order, frame_lineages),
+                      setdiff(frame_lineages, lineage_order))
+  ms_rule <- gsub(">=", "\u2265",
+                  regmatches(hm$min_samples,
+                             regexpr(">=[0-9]+ mutant and >=[0-9]+ WT",
+                                     hm$min_samples)))
+  ms_rule <- gsub(" and ", " + ", ms_rule)
+  n_fw <- sum(c("lineage_full", "per_pair_max_from_tables2",
+                "per_pair_mean_from_tables2") %in% names(hm))
+
+  # ── Drawing primitives (canvas 0–100 × 0–100 on the square panel) ──
+  st_main <- list(fill = "#E8F1FA", border = BLUE, linetype = "solid", text = DARK)
+  st_side <- list(fill = "#F7F7F7", border = GRAY, linetype = "dashed", text = GRAY)
+
+  draw_box <- function(xc, yc, w, h, label, st, fs = 2.5) {
+    list(
+      annotation_custom(
+        grid::roundrectGrob(r = grid::unit(0.14, "snpc"),
+                            gp = grid::gpar(fill = st$fill, col = st$border,
+                                            lwd = 0.6, lty = st$linetype)),
+        xmin = xc - w / 2, xmax = xc + w / 2, ymin = yc - h / 2, ymax = yc + h / 2),
+      annotate("text", x = xc, y = yc, label = label, size = fs,
+               family = "Arial", color = st$text, lineheight = 0.95))
+  }
+  arw <- grid::arrow(length = grid::unit(1.4, "mm"), type = "closed")
+  seg <- function(x1, y1, x2, y2, st = st_main)
+    annotate("segment", x = x1, y = y1, xend = x2, yend = y2,
+             arrow = arw, color = st$border, linewidth = 0.5,
+             linetype = st$linetype)
+
+  layers <- c(
+    # main path (solid blue)
+    draw_box(37, 93, 62, 9,
+             sprintf("%d curated paralog pairs\n(citation-verified)", n_pairs),
+             st_main),
+    draw_box(18.5, 75.5, 33, 10,
+             sprintf("Tier A (%d): dual-gene\nperturbation", n_tier_a), st_main),
+    draw_box(53, 75.5, 35, 12,
+             sprintf("Tier B (%d):\nnatural-genotype\ndependency", n_tier_b), st_main),
+    draw_box(37, 58.5, 54, 8,
+             sprintf("%d pairs: primary literature-\nderived benchmark", n_primary), st_main),
+    draw_box(37, 43, 70, 10,
+             sprintf("Evaluation frame: %s\n%s lines",
+                     paste(frame_lineages, collapse = " / "), ms_rule), st_main),
+    draw_box(37, 28, 54, 9,
+             sprintf("%d entries: %d positive +\n%d unlabeled controls",
+                     n_entries, n_pos, n_ctrl), st_main),
+    draw_box(37, 12.5, 74, 10,
+             sprintf("%d aggregation frameworks: lineage-level (primary)\n\u00b7 per-pair max \u00b7 per-pair mean",
+                     n_fw), st_main),
+    # side branches (dashed gray — not part of the primary evaluation)
+    draw_box(84.5, 78, 29, 10,
+             sprintf("Tier C (%d):\nindirect evidence", n_tier_c), st_side),
+    draw_box(84.5, 64, 29, 10,
+             sprintf("Comparators (%d):\nspecificity references", n_comp), st_side),
+    list(
+      annotate("text", x = 84.5, y = 55.5,
+               label = "excluded from primary\nevaluation",
+               size = 2.5, family = "Arial", color = GRAY, fontface = "italic",
+               lineheight = 0.95),
+      # arrows: fan-out from the curated set
+      seg(28, 88.4, 21, 80.7),
+      seg(46, 88.4, 50, 81.9),
+      seg(68, 93.8, 84.5, 83.2, st_side),
+      seg(84.5, 72.8, 84.5, 69.4, st_side),
+      # arrows: Tier A + Tier B converge on the primary benchmark
+      seg(22, 70.3, 30, 62.7),
+      seg(48, 69.3, 44, 62.7),
+      # arrows: down the evaluation chain
+      seg(37, 54.3, 37, 48.3),
+      seg(37, 37.7, 37, 32.8),
+      seg(37, 23.3, 37, 17.8)))
+
+  ggplot() + layers +
+    coord_cartesian(xlim = c(0, 100), ylim = c(0, 100), expand = FALSE) +
+    theme_void(base_family = "Arial") +
+    theme(plot.margin = margin(2, 2, 2, 2, "pt"),
+          plot.background  = element_rect(fill = "white", color = NA),
+          panel.background = element_rect(fill = "white", color = NA))
 }
 
 # ═══════════════════════════════════════════════════════════════
@@ -236,5 +319,11 @@ ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.pdf"), p,
 ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.svg"), p,
        width = 180, height = 180, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.tiff"), p,
-       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
+       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 300)
+ggsave(file.path(OUT_DIR, "Fig1_Framework_Validation.png"), p,
+       width = 180, height = 180, units = "mm", device = ragg::agg_png, dpi = 300)
+REVIEW_DIR <- "figure_review"
+dir.create(REVIEW_DIR, showWarnings = FALSE, recursive = TRUE)
+file.copy(file.path(OUT_DIR, "Fig1_Framework_Validation.png"),
+          file.path(REVIEW_DIR, "Fig1_Framework_Validation.png"), overwrite = TRUE)
 message("Fig1_Framework_Validation.pdf (180×180mm) ✓")

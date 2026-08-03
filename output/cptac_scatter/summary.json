@@ -1,0 +1,27 @@
+{
+  "inventory": "R_figS4_cptac.R reads data/cptac_cache/UCEC_protein_data.json (per-sample dict gene -> {sample: log2 abundance}); all 7 cached cohorts have per-sample values -> rendered offline, no fetching",
+  "cohorts_with_cache": [
+    "BRCA",
+    "COAD",
+    "GBM",
+    "LUAD",
+    "LUSC",
+    "PDAC",
+    "UCEC"
+  ],
+  "cohorts_without_cache": [
+    "CCRCC",
+    "HNSCC",
+    "LSCC"
+  ],
+  "pair_source": "output/cptac_ucec_correlations.csv",
+  "n_pairs": 30,
+  "min_paired_samples": 10,
+  "n_plots": 122,
+  "n_skipped": 88,
+  "skipped_by_reason": {
+    "gene_not_in_cache": 87,
+    "fewer_than_10_paired_samples": 1
+  },
+  "manifest": "output/cptac_scatter/manifest.csv"
+}

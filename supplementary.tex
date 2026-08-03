@@ -42,117 +42,130 @@ $^{2}$ Key Laboratory of Cancer Invasion and Metastasis (Ministry of Education),
 
 \section{Supplementary Methods}
 
-\subsection{Gold-standard curation and tier assignment}
-Each of the twelve curated pairs was verified against its primary citation(s) before inclusion. For every pair we recorded the assay type, model system, validated direction, whether the evidence derives from simultaneous dual-gene perturbation, whether it is independent of DepMap CRISPR data, and whether it directly demonstrates synthetic lethality in the direction scored here (Table~S3). Pairs were then assigned to three evidence tiers. Tier~A requires direct genetic synthetic-lethal evidence from dual-gene perturbation (combinatorial or digenic CRISPR knockout; 3 pairs). Tier~B requires that the paralog be a demonstrated selective dependency in driver-mutant cells from single-gene perturbation with functional validation (natural-genotype conditional dependency; 2 pairs). The Tier~A~$\cup$~Tier~B set constitutes the pre-specified primary external benchmark. Tier~C comprises indirect evidence only --- reciprocal-direction-only evidence (EP300$\rightarrow$CREBBP), evidence supporting a different driver (PIK3CA$\rightarrow$PIK3CB, whose primary evidence supports PTEN$\rightarrow$PIK3CB), developmental redundancy (CCNE1$\rightarrow$CCNE2), or DepMap computational analyses (FBXW7$\rightarrow$FBXW2, PPP2R1A$\rightarrow$PPP2R1B) --- and is excluded from the primary benchmark (5 pairs). Two further pairs that are not sequence paralogs (BRCA1$\leftrightarrow$BRCA2, functional analog; STK11$\rightarrow$SIK1, partial homolog/pathway axis) serve as mechanistic comparators and specificity references only. Pharmacologic inhibition of both members of a gene family was not accepted as sufficient evidence of genotype-conditional synthetic lethality in a specified direction.
+\subsection{Curated-pair curation and tier assignment}
+Each of the twelve curated pairs was verified against its primary citation(s) before inclusion. For every pair we recorded the assay type, model system, validated direction, whether the evidence derives from simultaneous dual-gene perturbation, whether it is independent of DepMap CRISPR data, and whether it directly demonstrates synthetic lethality in the direction scored here (Table~S3). Pairs were then assigned to three evidence tiers. Tier~A requires direct genetic synthetic-lethal evidence from dual-gene perturbation (combinatorial or digenic CRISPR knockout; 3 pairs). Tier~B requires that the paralog be a demonstrated selective dependency in driver-mutant cells from single-gene perturbation with functional validation (natural-genotype conditional dependency; 2 pairs). The Tier~A~$\cup$~Tier~B set constitutes the primary literature-derived benchmark, with an evidence-independence asymmetry: Tier~A derives from dual-gene perturbation and is independent of the single-gene dependency data DD measures, whereas Tier~B is itself natural-genotype conditional dependency, the same data type as DD, so Tier~B concordance is partially expected by construction. Tier~C comprises indirect evidence only: reciprocal-direction-only evidence (EP300$\rightarrow$CREBBP), evidence supporting a different driver (PIK3CA$\rightarrow$PIK3CB, whose primary evidence supports PTEN$\rightarrow$PIK3CB), developmental redundancy (CCNE1$\rightarrow$CCNE2), or DepMap computational analyses (FBXW7$\rightarrow$FBXW2, PPP2R1A$\rightarrow$PPP2R1B); it is excluded from the primary benchmark (5 pairs). Two further pairs that are not sequence paralogs (BRCA1$\leftrightarrow$BRCA2, functional analog; STK11$\rightarrow$SIK1, partial homolog/pathway axis) serve as mechanistic comparators and specificity references only. Pharmacologic inhibition of both members of a gene family was not accepted as sufficient evidence of genotype-conditional synthetic lethality in a specified direction.
 
 \subsection{Driver-mutation classification}
-Driver-mutation status was defined per gene class on the default omics profile of each DepMap 26Q1 model (\texttt{IsDefaultEntryForModel}). Tumor suppressors (TSG) require a DepMap-curated likely loss-of-function variant (\texttt{LikelyLoF}; includes dominant-negative TP53 missense); oncogenes require a recurrent oncogenic hotspot variant (\texttt{Hotspot}). Gene classes were assigned by the DepMap 26Q1 \texttt{OncogeneHighImpact}/\texttt{TumorSuppressorHighImpact} majority vote, with one documented manual override (GATA3 as TSG). Amplification-driven oncogenes without qualifying hotspot mutations (e.g., CCNE1) contribute no mutant lines under this rule and are analysed through copy-number channels instead. The per-gene comparison of the permissive non-silent definition versus the class-specific rule, with retained cell line counts and the top VariantInfo terms, is given in Table~S6 (machine-readable mirror: \texttt{TableS6\_MutationRules.tsv}).
+Driver-mutation status was defined per gene class on the default omics profile of each DepMap 26Q1 model (\texttt{IsDefaultEntryForModel}). Tumor suppressors (TSG) require a DepMap-curated likely loss-of-function variant (\texttt{LikelyLoF}; includes dominant-negative TP53 missense); oncogenes require a recurrent oncogenic hotspot variant (\texttt{Hotspot}). Gene classes were assigned by the DepMap 26Q1 \texttt{OncogeneHighImpact}/\texttt{TumorSuppressorHighImpact} majority vote, with one documented manual override (GATA3 as TSG). Amplification-driven oncogenes without qualifying hotspot mutations (e.g., CCNE1) contribute no mutant lines under this rule and are analyzed through copy-number channels instead. The per-gene comparison of the permissive non-silent definition versus the class-specific rule, with retained cell line counts and the top VariantInfo terms, is given in Table~S6 (machine-readable mirror: \texttt{TableS6\_MutationRules.tsv}).
 
 \subsection{DD computation and evaluation frames}
-DD was computed per driver$\times$paralog$\times$lineage stratum as the difference in mean Chronos gene-effect scores between driver-mutant and wild-type cell lines (Equation 1 of the main text), with Welch's $t$-test (unequal variances); effect sizes are reported as Cohen's $d$ (pooled SD) and Hedges' $g$ (small-sample corrected; Table~S7). The primary analysis frame requires $\ge$5 mutant and $\ge$5 wild-type cell lines per stratum (110 evaluable driver$\times$paralog$\times$lineage associations across the 12 curated pairs and matched controls; 17 columns in \texttt{TableS2\_FullResults.tsv}); a relaxed $\ge$3/$\ge$3 frame was re-run as a sensitivity analysis (12 evaluable lineages versus 8 on the primary frame). Benjamini--Hochberg correction ($q<0.20$) was applied within each driver gene across all of that driver's HGNC paralogs and lineages jointly; a stricter $q<0.10$ cut was examined as sensitivity. This within-driver correction is a discovery-stage device and does not constitute genome-wide FDR control.
+DD was computed per driver$\times$paralog$\times$lineage stratum as the difference in mean Chronos gene-effect scores between driver-mutant and wild-type cell lines (Equation 1 of the main text), with Welch's $t$-test (unequal variances); effect sizes are reported as Cohen's $d$ (pooled SD) and Hedges' $g$ (small-sample corrected; Table~S7). The primary analysis frame requires $\ge$5 mutant and $\ge$5 wild-type cell lines per stratum (110 evaluable driver$\times$paralog$\times$lineage associations in the three evaluation lineages (Ovarian, Endometrial, Cervical) across the 12 curated pairs and matched controls; 17 columns in \texttt{TableS2\_FullResults.tsv}); a relaxed $\ge$3/$\ge$3 frame was re-run as a sensitivity analysis (12 evaluable lineages versus 8 on the primary frame). Benjamini--Hochberg correction ($q<0.20$) was applied within each driver gene across all of that driver's HGNC paralogs and lineages jointly; a stricter $q<0.10$ cut was examined as sensitivity. This within-driver correction is a discovery-stage device and does not constitute genome-wide FDR control.
 
 \subsection{Classifier training and cross-validation}
-For the head-to-head comparison on the 72-pair frame (6 known positives), four standard classifiers --- logistic regression (LR; \texttt{max\_iter=10{,}000}), random forest (RF; 500 trees, seed 42), SVM with RBF kernel, and SVM with linear kernel --- were trained on five features ($|$DD$|$, PCS, $\Delta$Expression, necessity, mutation frequency), all with default scikit-learn 1.3.0 hyperparameters and no tuning. The composite score was excluded from classifier inputs because it is a deterministic function of the other features. Features were z-score standardized; evaluation used leave-one-pair-out cross-validation, scoring each held-out pair with the out-of-fold decision function (or predicted probability), and AUROC was computed from the pooled out-of-fold scores with the rank-based Mann--Whitney statistic. Standardized LR coefficients with Wald $p$-values were obtained from a full-data maximum-likelihood fit (statsmodels 0.14). With only 6 positive pairs these classifier results are noise-dominated and are reported as descriptive context, not as model selection.
+For the head-to-head comparison on the 72-pair frame (6 known positives), four standard classifiers, namely logistic regression (LR; \texttt{max\_iter=10{,}000}), random forest (RF; 500 trees, seed 42), SVM with RBF kernel, and SVM with linear kernel, were trained on five features ($|$DD$|$, PCS, $\Delta$Expression, necessity, mutation frequency), all with default scikit-learn hyperparameters and no tuning (production versions pinned in the repository Dockerfile; the audit suite is additionally verified under scikit-learn 1.9.0). The composite score was excluded from classifier inputs because it is a deterministic function of the other features. Features were z-score standardized within each training fold (standardization parameters estimated on the training pairs only and applied to the held-out pair, preventing information leakage); evaluation used leave-one-pair-out cross-validation, scoring each held-out pair with the out-of-fold decision function (or predicted probability), and AUROC was computed from the pooled out-of-fold scores with the rank-based Mann--Whitney statistic. With only 6 positive pairs these classifier results are noise-dominated and are reported as descriptive context, not as model selection.
+
+\subsection{Composite score definition and provenance}
+The composite score is a deterministic weighted combination of four min-max-normalized components: PCS (weight 0.50), $|$DD$|$ (0.20), $-\log_{10}(q)$ (0.15), and mutation frequency (0.15), with normalization applied globally across the analysis table (\texttt{pcs.py}); $\Delta$Expression is \emph{not} a component. The weights are heuristic constants fixed in the analysis code; they were not fitted by nested resampling, and candidate-ranking iterations during development were evaluated against the same benchmark reported here. The composite AUROC (0.831) is therefore descriptive context for the value of combining interpretable components, not an independently validated model. Weight sensitivity: perturbing the weights with Dirichlet noise (concentration parameters $=$ base weights $\times$ 20; 200 samples, seed 42) gave AUROC quartiles of 0.803--0.838 (median 0.819, full range 0.664--0.884), so the descriptive performance is not fragile to the exact weight choice (\texttt{composite\_weight\_sensitivity.py}).
 
 \subsection{CPTAC cohorts, missingness, and multiplicity}
-Seven CPTAC cohorts were analysed (BRCA $n=122$, COAD $n=97$, LUAD $n=110$, GBM $n=99$, PDAC $n=140$, UCEC $n=95$, LUSC $n=108$; 771 tumours in total). Pearson correlations of log$_2$ protein abundance were computed per paralog pair within each cohort, requiring $\ge$10 paired samples per test; samples lacking either protein measurement were excluded pairwise (no imputation). Significance used Benjamini--Hochberg correction within each pair across the 7 cohorts. The mutation-conditioned UCEC analysis compared ARID1B protein abundance between ARID1A-mutant ($n=37$) and wild-type ($n=58$) samples with the Wilcoxon rank-sum test. The ovarian HGSC global proteome (PDC study PDC000360, $n=232$) was downloaded for reference but not used in the main analysis.
+Seven CPTAC cohorts were analyzed (BRCA $n=122$, COAD $n=97$, LUAD $n=110$, GBM $n=99$, PDAC $n=140$, UCEC $n=95$, LUSC $n=108$; 771 tumors in total). Pearson correlations of log$_2$ protein abundance were computed per paralog pair within each cohort, requiring $\ge$10 paired samples per test; samples lacking either protein measurement were excluded pairwise (no imputation). Significance used Benjamini--Hochberg correction within each pair across the 7 cohorts. The mutation-conditioned UCEC analysis compared ARID1B protein abundance between ARID1A-mutant ($n=37$) and wild-type ($n=58$) samples with the Wilcoxon rank-sum test. The ovarian HGSC global proteome (PDC study PDC000360, $n=232$) was downloaded for reference but not used in the main analysis.
 
 \subsection{PRISM analysis}
-The PRISM Repurposing secondary screen (1,482 compounds $\times$ 727 cell lines) was analysed as driver-genotype--conditioned drug sensitivity: $\Delta$AUC $=$ mean(log$_2$ AUC in driver-mutant lines) $-$ mean(log$_2$ AUC in wild-type lines). Selectivity calls required BH $q<0.25$, $\Delta$AUC $<0$, and enrichment $>0.1$; this deliberately permissive discovery-stage threshold admits up to $\sim$25\% expected false positives among passing associations. Drug--genotype associations do not imply direct binding of the paralog protein.
+The PRISM Repurposing secondary screen (1,482 compounds $\times$ 727 cell lines) was analyzed as driver-genotype--conditioned drug sensitivity: $\Delta$AUC $=$ mean(log$_2$ AUC in driver-mutant lines) $-$ mean(log$_2$ AUC in wild-type lines). Selectivity calls required BH $q<0.25$, $\Delta$AUC $<0$, and enrichment $>0.1$; this deliberately permissive discovery-stage threshold admits up to $\sim$25\% expected false positives among passing associations. Drug--genotype associations do not imply direct binding of the paralog protein. We did not adjust for cell-line proliferation rate, a known correlate of drug response in pooled viability screens; PRISM associations are therefore exploratory.
 
 \subsection{Dependency window score (DWS)}
-The DWS (Equation 2 of the main text) is the ratio of $|$DD$|$ to a conservative baseline-essentiality denominator, $\max(|\mu_{\text{Chronos}}|,\;f_{\text{pan-essential}},\;0.01)$, where $f_{\text{pan-essential}}$ is the fraction of lines with paralog Chronos score $<-0.5$ and the 0.01 floor prevents division by near-zero values. Selectivity is the mutant-minus-wild-type difference in the fraction of lines dependent on the paralog. Pairs were classified as PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$), HIGH\_SELECTIVITY (selectivity $>0.15$ and DWS $>1.0$), MODERATE, or LOW\_SELECTIVITY across 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer) on the $\ge$5-mutant frame. Robustness was assessed by re-deriving rankings under alternative denominators ($|\mu_{\text{Chronos}}|$ only; $f_{\text{pan-essential}}$ only; their mean), alternative floors (0.001, 0.05), and alternative selectivity thresholds (0.10, 0.20), and by bootstrap 95\% confidence intervals for mean DWS and selectivity from 1{,}000 stratified resamples of cell lines within each context (seed 42; Tables~S5 and~S10).
+The DWS (Equation 2 of the main text) is the ratio of the signed numerator $\max(\mathrm{DD},0)$, which credits only compensation-direction shifts, to a conservative baseline-essentiality denominator, $\max(|\mu_{\text{Chronos}}|,\;f_{\text{pan-essential}},\;0.01)$, where $f_{\text{pan-essential}}$ is the fraction of lines with paralog Chronos score $<-0.5$ and the 0.01 floor prevents division by near-zero values. Selectivity is the mutant-minus-wild-type difference in the fraction of lines dependent on the paralog. Pairs were classified as PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$), HIGH\_SELECTIVITY (selectivity $>0.15$ and DWS $>1.0$), MODERATE, or LOW\_SELECTIVITY across 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer) on the $\ge$5-mutant frame. Robustness was assessed by re-deriving rankings under alternative denominators ($|\mu_{\text{Chronos}}|$ only; $f_{\text{pan-essential}}$ only; their mean), alternative floors (0.001, 0.05), and alternative selectivity thresholds (0.10, 0.20), and by bootstrap 95\% confidence intervals for mean DWS and selectivity, plus per-pair bootstrap rank intervals, from 1{,}000 stratified resamples of cell lines within each context (seed 42; Tables~S5 and~S10). The $|$DD$|$-numerator variant (pre-revision formula) is retained as a sensitivity analysis (Table~S10).
 
 \subsection{Sequence- and structure-derived descriptors}
-Sequence features (length, molecular weight, pI, GRAVY hydrophobicity, disorder propensity, lysine/cysteine density) were computed from UniProt canonical sequences and domain architectures from UniProt annotations. For 13 of the 15 scored proteins, single-chain structures of the N-terminal 400 residues were predicted de novo with ESMFold v1 (mean pLDDT $=0.724$); ARID1A and ARID1B ($\sim$2,200 residues each) were assessed with sequence-level features only because the truncation covers only $\sim$17\% of the chain. Three heuristics are emphasized as exploratory: the feature-space structural similarity $\max(0,\,1-\overline{|\Delta\text{feature}|})$ over the sequence features (not a 3D alignment metric); a sliding-window pocket count (windows with pLDDT $>0.7$ and hydrophobic fraction 0.2--0.7, aggregated per 12 windows); and a PROTAC-suitability score (lysine density $\times\,2.0$ $+$ disorder propensity $-$ cysteine density $\times\,0.5$). The per-pair targetability score combined structural similarity (0.25), domain-architecture conservation (0.30), the druggability proxy (0.25), and the PROTAC score (0.20); the composite prioritization score combined max-normalized DWS (0.40), selectivity rescaled to $[0,1]$ as $(s+1)/2$ (0.30), and targetability (0.30), with all weights fixed a priori in \texttt{alphafold\_analysis.py} and no calibration against drug-development data. Sequence identity was approximated by $k$-mer Jaccard similarity ($k=3$), validated against Needleman--Wunsch global alignment identity on 50 protein pairs (Pearson $r=0.88$; Fig.~S9); the $\ge$30\% proxy threshold is an enrichment filter, not a precise identity cutoff.
+Sequence features (length, molecular weight, pI, GRAVY hydrophobicity, disorder propensity, lysine/cysteine density) were computed from UniProt canonical sequences and domain architectures from UniProt annotations. For 13 of the 15 scored proteins, single-chain structures of the N-terminal 400 residues were predicted de novo with ESMFold v1 (mean pLDDT $=0.724$); ARID1A and ARID1B ($\sim$2,200 residues each) were assessed with sequence-level features only because the truncation covers only $\sim$17\% of the chain. Three heuristics are emphasized as exploratory: the feature-space structural similarity $\max(0,\,1-\overline{|\Delta\text{feature}|})$ over the sequence features (not a 3D alignment metric); a sliding-window pocket count (windows with pLDDT $>0.7$ and hydrophobic fraction 0.2--0.7, aggregated per 12 windows); and a PROTAC-suitability score (lysine density $\times\,2.0$ $+$ disorder propensity $-$ cysteine density $\times\,0.5$). The per-pair targetability score combined structural similarity (0.25), domain-architecture conservation (0.30), the druggability proxy (0.25), and the PROTAC score (0.20); the composite prioritization score combined max-normalized DWS (0.40), selectivity rescaled to $[0,1]$ as $(s+1)/2$ (0.30), and targetability (0.30), with all weights fixed heuristically before final reporting in \texttt{alphafold\_analysis.py} and no calibration against drug-development data. Sequence identity was approximated by $k$-mer Jaccard similarity ($k=3$), validated against Needleman--Wunsch global alignment identity on 50 protein pairs (Pearson $r=0.88$; Fig.~S9a); the $\ge$30\% proxy threshold is an enrichment filter, not a precise identity cutoff.
+
+\subsection{External digenic screens (Harle 2025; Flister 2025)}
+\textbf{Data and hit definitions.} Harle et al.\ (Genome Biol 2025) screened 472 nominated synthetic-lethal candidate pairs with a dual-guide CRISPR/Cas9 library in 27 cell lines (10 melanoma, 9 lung, 8 pancreatic). We used their long-format genetic-interaction table (their Table~S4; mean normalized GI score and FDR per pair--line) with their hit criterion (mean normalized GI~$<-0.5$, FDR~$<0.01$, neither single-target depleted; a pair is a hit if hit in $\ge$1 line; 117/472 pairs). 26 of the 27 lines carry DepMap identifiers (line C092 excluded from genotype stratification). Flister et al.\ (Cell Rep 2025) screened 36{,}648 paralog pairs with digenic enAsCas12a libraries in NCI-H1299 and MDA-MB-231 and meta-analysed 462 pairs across 49 models. We used their per-model lethal calls (their Table~S3; 117 and 51 lethal pairs per model, 22 shared, 146 in the union; table values were used where the preprint text differs) for layer~1 and their 49-model meta-analysis table (their Table~S6; hit if dzL2FC~$\le-2$, reproducing the study's own SL counts for 98.3\% of pairs) for layer~2. Both datasets were downloaded on 2026-08-01 and analysed without modifying any frozen pipeline component; file hashes and origins are recorded in \texttt{output/external\_holdout.json}.
+
+\textbf{Layer 1 (mutation-agnostic).} Each pair was scored by max$|$DD$|$ across both orientations and all lineages ($\ge$3 mutant / $\ge$3 wild-type lines) with the frozen in4mer scoring engine (fidelity: maximum absolute difference $2.8\times10^{-16}$ across 413 pairs). max$|$DD$|$ separated screen hits from non-hits in both datasets (Harle: AUROC $=0.619$, 10{,}000-permutation $p=0.0002$, 411 scored pairs of which 98 hits; median $|$DD$|$ 0.202 in hits vs.\ 0.135 in non-hits. Flister union: AUROC $=0.696$, $p=0.0001$, 29{,}457 scored pairs of which 114 hits; median 0.165 vs.\ 0.105; per model 0.671 (NCI-H1299) and 0.744 (MDA-MB-231)). The Harle library is enriched for pairs nominated by earlier RNAi and digenic studies; the Flister pair selection is unbiased.
+
+\textbf{Layer 2 (genotype-stratified).} Driver-mutation status was projected onto screen models using the pipeline's class-specific rules (our Table~S6). Only three curated pairs per dataset retained any driver-mutant models, and no per-pair test remained significant after Benjamini--Hochberg correction within each dataset:
+
+\begin{center}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & Pair & Mutant (hits) & Wild-type (hits) & Fisher $p$ & MW $p$ \\
+\midrule
+Harle & SMARCA4$\rightarrow$SMARCA2 & 5 (0) & 21 (3) & 1.000 & 0.575 \\
+Harle & ARID1A$\rightarrow$ARID1B & 2 (0) & 24 (1) & 1.000 & 0.972 \\
+Harle & EP300$\rightarrow$CREBBP & 2 (0) & 24 (9) & 1.000 & 0.277 \\
+Flister & MAP2K1$\rightarrow$MAP2K2 & 1 (0) & 47 (8) & 1.000 & 0.282 \\
+Flister & SMARCA4$\rightarrow$SMARCA2 & 2 (0) & 46 (5) & 1.000 & 0.741 \\
+Flister & EP300$\rightarrow$CREBBP & 3 (2) & 46 (20) & 0.422 & 0.121 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Pooled across evaluable pairs, digenic hit rates did not differ between driver-mutant and wild-type models (Harle: 0/9 vs.\ 27/121, Fisher $p=1.0$, GI one-sided Mann--Whitney $p=0.899$; Flister: 2/6 vs.\ 59/235, Fisher $p=0.475$, Mann--Whitney $p=0.150$). The single directionally consistent case is EP300$\rightarrow$CREBBP in Flister (2/3 mutant models hit vs.\ 20/46 wild-type; mean GI $-2.84$ vs.\ $-1.61$). With at most 9 mutant model-observations per dataset, layer~2 is uninformative on the driver-conditioned proposition; both source studies report low genotype penetrance of digenic paralog SL. Per-pair--per-model values are provided in \texttt{output/external\_holdout\_harle\_layer2\_lines.csv} and \texttt{output/external\_holdout\_flister\_layer2\_models.csv}.
 
 \newpage
 \section{Supplementary Figures}
 
-% S1
+% S1 (merged 2026-07-29: former S1 landscape + former S2 AUROC detail)
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS1_CellLine_Landscape.pdf}
-\caption{\textbf{Cell line landscape and evaluation summary across 23 solid tumor types.} a, Cell line counts per cancer type, colored by DD AUROC tier (red: AUROC~$>$~0.7; blue: 0.5--0.7; gray: $<$~0.5; light gray: not evaluable). b, Tested paralog pairs per cancer type; red bars show known gold-standard positives. Numbers indicate known/total pairs.}
+\caption{\textbf{Evaluation overview across 23 solid tumor types.} a, Cell line counts per cancer type, colored by DD AUROC tier (red: AUROC~$>$~0.7; blue: 0.5--0.7; gray: $<$~0.5; light gray: not evaluable). b, Tested paralog pairs per cancer type; red bars show known positives. Numbers indicate known/total pairs. c, DD AUROC for each of the 8 evaluable solid tumor types on the primary $\geq$5-per-group frame, colored by the same tier key as in a; bar labels show DD AUROC values. Values: Colorectal 0.775, Esophagogastric 0.674, NSCLC 0.664, SCLC 0.651, Ovarian 0.611, Bladder Urothelial 0.531, Endometrial 0.519, Breast 0.150. Dashed line, random classifier (0.5). Cancer types with $<$2 known positive pairs were excluded from AUROC evaluation (see Table~S1 for the 15 non-evaluable types). On the $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.962, Melanoma 0.840, Cervical 0.714; 6 of 12 evaluable lineages exceed 0.7).}
 \end{figure}
 
-% S2
+% S2 (merged 2026-07-29: former S8 bootstrap/neg-ctrl + former S11 in4mer check)
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS2_CrossCancer_AUROC.pdf}
-\caption{\textbf{Cross-cancer DD AUROC.} DD AUROC for each of the 8 evaluable solid tumor types on the primary $\geq$5-per-group frame, grouped by signal strength. a, Strong signal (AUROC~$\ge$~0.7; Colorectal 0.775). b, Moderate signal (AUROC 0.5--0.7; Esophagogastric 0.674, NSCLC 0.664, SCLC 0.651, Ovarian 0.611, Bladder Urothelial 0.531, Endometrial 0.519) and below-chance signal (Breast 0.150). Dashed line indicates random classifier (0.5). Bar labels show the number of tested paralog pairs per lineage. Cancer types with $<$2 known positive pairs were excluded from AUROC evaluation (see Table~S1 for the 15 non-evaluable types). On the $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.962, Melanoma 0.840, Cervical 0.714; 6 of 12 evaluable lineages exceed 0.7).}
+\includegraphics[width=\textwidth,height=0.6\textheight,keepaspectratio]{output/figures/FigS2_Evaluation_Robustness.pdf}
+\caption{\textbf{Evaluation robustness: bootstrap, negative control, and external in4mer check.} a, Bootstrap distribution of the per-pair DD AUROC on the max-aggregation frame (pair score $=$ largest signed DD across the three evaluation lineages Ovarian/Endometrial/Cervical; 1,000 iterations; 72 pairs, 6 known positives; 95\% CI: 0.294--0.845). b, Null distribution from 10,000 label-shuffled permutations on the same frame (empirical $p = 0.223$). The observed per-pair AUROC (0.598, max aggregation) does not significantly exceed the null mean (0.501): with only 6 positive pairs the aggregated per-pair evaluation remains underpowered, and the lineage-level evaluation (0.629, reported in the benchmark comparison) serves as the primary framework because it evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages. c, External check against mutation-agnostic gold standards: distribution of $|$DD$|$ ($\ge$3-mutant framework) for 326 evaluable unlabeled control paralog pairs (gray histogram; 400 pairs sampled, seed 42). Red ticks: the 10 evaluable pairs of the 13 cross-platform in4mer gold standards (Esmaeili Anvar et al., Nat Commun 2024). Dashed line: control 90th percentile (0.217); the three pairs above it (ARFGEF1/ARFGEF2, HDAC1/HDAC2, SLC25A28/SLC25A37) are those with the most recurrent natural mutations. d, in4mer AUROC point estimates with bootstrap 95\% CI for both evaluation frameworks. Only 3 of the 13 pairs meet the $\ge$5-mutant threshold (exploratory AUROC $=$ 0.68); the 10 pairs evaluable at $\ge$3 do not separate from unlabeled controls (AUROC $=$ 0.50, permutation $p = 0.51$), consistent with the mutation-agnostic, dual-knockout definition of these gold standards and with the limited power of a 10-positive comparison (main text, Limitations); adequately powered external tests against two 2025 digenic screens (Harle et al., Genome Biol 2025; Flister et al., Cell Rep 2025) appear in Supplementary Methods (External digenic screens).}
 \end{figure}
 
-% S3
+% S3 (CNV; renumbered from S4)
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS3_CPTAC_PerCohort.pdf}
-\caption{\textbf{CPTAC per-cohort scatter plots (UCEC).} Driver vs.\ paralog protein abundance (log$_2$ normalized intensity) in the UCEC cohort ($n=83$): \textbf{a}, EP300 vs.\ CREBBP; \textbf{b}, PIK3CA vs.\ PIK3CB; \textbf{c}, PIK3R1 vs.\ CRKL. Each point represents one tumor sample. Line: linear regression fit with 95\% confidence band. Pearson $r$ is shown in each panel (ns: BH-corrected $q \ge 0.05$). Similar scatter plots for other cohorts and paralog pairs are available upon request.}
-\end{figure}
-
-% S4
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{output/figures/FigS4_CNV_Independence.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{output/figures/FigS3_CNV_Independence.pdf}
 \caption{\textbf{CNV independence analysis.} Scatter plots of relative copy number (x-axis) vs.\ Chronos gene-effect score (y-axis) for each of 23 paralog genes across 1,192 cell lines with both CNV and dependency data. Each panel shows one gene with the linear regression fit (red line) and $R^2$ value. All $R^2 < 0.10$, indicating that copy number variation explains $<$10\% of gene-effect variance. Multivariate regression controlling for driver mutation and TP53 co-mutation left DD estimates essentially unchanged after CNV adjustment (see main text).}
 \end{figure}
 
-% S5
+% S4 (CPTAC; renumbered from S3)
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{output/figures/FigS5_PRISM_Selectivity.pdf}
-\caption{\textbf{PRISM drug selectivity heatmap.} Heatmap of drug sensitivity differential ($\Delta$AUC = mean AUC in driver-mutant minus mean AUC in wild-type cell lines) for the top driver-genotype--drug sensitivity associations from the PRISM Repurposing screen (1,482 compounds, 727 cell lines). Negative $\Delta$AUC indicates selective sensitivity in driver-mutant cells. Associations shown met discovery-stage criteria (BH $q<0.25$, $\Delta$AUC$<0$, enrichment$>0.1$). Known drug--target biology is recovered: MEK inhibitors with KRAS-mutant lines, mTOR/AKT inhibitors with PTEN-mutant lines, HDAC inhibitors with EP300-mutant lines. Drugs shown are not necessarily direct binders of the paralog protein.}
+\includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS4_CPTAC_PerCohort.pdf}
+\caption{\textbf{CPTAC per-cohort scatter plots (UCEC).} Driver vs.\ paralog protein abundance (log$_2$ normalized intensity) in the UCEC cohort (95 tumors; $n=83$ with both proteins quantified for a given pair): \textbf{a}, EP300 vs.\ CREBBP; \textbf{b}, PIK3CA vs.\ PIK3CB; \textbf{c}, PIK3R1 vs.\ CRKL. Each point represents one tumor sample. Line: linear regression fit with 95\% confidence band. Pearson $r$ is shown in each panel (ns: BH-corrected $q \ge 0.05$). The complete set of per-cohort scatter plots for all 122 evaluable pair$\times$cohort combinations is available in the project repository (\texttt{output/cptac\_scatter/}, with a machine-readable manifest).}
 \end{figure}
 
-% S6
+% S5 (mutation type; renumbered from S6)
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS6_MutationType.pdf}
-\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.015$), indicating that truncating~$>$~missense is pair-specific rather than universal. c, $|$DD$|$ under truncating (red) versus missense (blue) mutations for the known gold-standard SL pairs (maximum across cancer types, one row per pair); the truncating--missense gap is largest for ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal). d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.460) vs.\ missense-only (0.437) and overall DD performance. Panel d is computed on the mutation-type analysis frame (48 Breast pairs); the resulting ``All'' AUC (0.465) therefore differs from the cross-cancer frame value (0.150; Fig.~1a), which uses a different pair universe.}
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS5_MutationType.pdf}
+\caption{\textbf{Mutation-type stratification.} a, DD AUROC stratified by mutation type (truncating vs.\ missense) across cancer types. b, Distribution of $\Delta$DD (truncating minus missense) across all tested driver--paralog pairs; overall mean near zero ($-0.015$), indicating that truncating~$>$~missense is pair-specific rather than universal. c, $|$DD$|$ under truncating (red) versus missense (blue) mutations for the curated SL pairs (maximum across cancer types, one row per pair); the truncating--missense gap is largest for ARID1A$\rightarrow$ARID1B ($+0.368$ in Ovarian) and EP300$\rightarrow$CREBBP ($+0.314$ in Colorectal). d, ROC curves for Breast cancer comparing truncating-only (AUROC~$=$~0.460) vs.\ missense-only (0.437) and overall DD performance. Panel d is computed on the mutation-type analysis frame (48 Breast pairs); the resulting ``All'' AUC (0.465) therefore differs from the cross-cancer frame value (0.150; Fig.~1a), which uses a different pair universe.}
 \end{figure}
 
-% S7
+% S6 (co-occurrence; renumbered from S12)
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS7_TherapeuticWindow.pdf}
-\caption{\textbf{Therapeutic window analysis.} a, All 21 paralog pairs ranked by mean dependency window score (DWS) across up to 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer) on the $\geq$5-mutant frame. SMARCA4$\rightarrow$SMARCA2 (4.87) and ARID1A$\rightarrow$ARID1B (2.82) are the two HIGH\_SELECTIVITY pairs; NF1$\rightarrow$RASA2 attains a higher raw DWS through a near-zero pan-essential denominator with selectivity~$\approx$~0. b, In vitro selectivity tier classification: HIGH\_SELECTIVITY (selectivity~$>$~0.15 and DWS~$>$~1.0; $n=2$), MODERATE ($n=5$), LOW\_SELECTIVITY ($n=11$), and PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$; $n=3$). c, DWS values broken down by individual cancer context showing cross-lineage consistency for top candidates. d, Selectivity vs.\ DWS scatter plot; ARID1A$\rightarrow$ARID1B and SMARCA4$\rightarrow$SMARCA2 occupy the upper-right quadrant (high DWS and high selectivity).}
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS6_Cooccurrence_TMB.pdf}
+\caption{\textbf{Mutational co-occurrence of paralog pairs, with and without tumor mutational burden (TMB) adjustment.} a, Pan-cancer co-occurrence odds ratios across 1{,}208 DepMap 26Q1 cell lines for the five testable pairs, unadjusted (Fisher's exact test, open circles) vs.\ TMB-adjusted (filled circles; logistic regression of paralog mutation status on driver mutation status and $\log_e(1+\mathrm{TMB})$ per line). After TMB adjustment only ARID1A/ARID1B (adjusted OR~$=$~2.38, $p=0.002$) and EP300/CREBBP (adjusted OR~$=$~2.14, $p=0.011$) remain significant ($^*$adjusted $p<0.05$). b, Per-lineage TMB-adjusted odds ratios. ``--'': not evaluable ($<30$ lines or $<3$ mutant lines per gene within the lineage); ``n.e.'': not estimable (complete separation). Mutation status follows the gene-class-specific driver rules (Table~S6). Source: \texttt{output/cooccurrence\_by\_lineage.json} (\texttt{cooccurrence\_by\_lineage.py}).}
 \end{figure}
 
-% S8
+% S7 (PRISM; renumbered from S5)
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth,keepaspectratio]{output/figures/FigS8_Bootstrap_NegCtrl.pdf}
-\caption{\textbf{Bootstrap and negative control (per-pair evaluation, 72 pairs, 6 known positives).} a, Bootstrap distribution (1,000 iterations; 95\% CI: 0.294--0.845). b, Null distribution from 10,000 label-shuffled permutations (empirical $p = 0.223$). The observed per-pair AUROC (0.598) does not significantly exceed the null mean (0.501): with only 6 positive pairs the aggregated per-pair evaluation remains underpowered, and the lineage-level evaluation (0.629, reported in the benchmark comparison) serves as the primary framework because it evaluates each driver$\times$paralog$\times$lineage combination separately rather than aggregating across lineages.}
+\includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{output/figures/FigS7_PRISM_Selectivity.pdf}
+\caption{\textbf{PRISM drug selectivity and assay-validity anchors.} \textbf{a}, Heatmap of drug sensitivity differential ($\Delta$AUC = mean AUC in driver-mutant minus mean AUC in wild-type cell lines) for the top driver-genotype--drug sensitivity associations from the PRISM Repurposing screen (1,482 compounds, 727 cell lines). Negative $\Delta$AUC indicates selective sensitivity in driver-mutant cells. Associations shown met discovery-stage criteria (BH $q<0.25$, $\Delta$AUC$<0$, enrichment$>0.1$). The displayed top associations are dominated by cytotoxic chemotherapies (tubulin inhibitors, topoisomerase poisons, and mitotic-kinase inhibitors) with $\Delta$AUC$<0$, indicating genotype-conditioned cytotoxic sensitivity rather than paralog-specific targeting. \textbf{b}, Top driver-genotype--drug sensitivity associations ranked by $|\Delta$AUC$|$ and coloured by drug class (BH $q<0.25$). Targeted agents recapitulate known driver-genotype biology and serve as assay-validity anchors: MEK inhibitors (AZD8330, Trametinib) selectively kill KRAS-mutant lines, mTOR/AKT inhibitors (Everolimus, Ipatasertib) kill PTEN-mutant lines, and the HDAC inhibitor Panobinostat kills EP300-mutant lines. The largest differentials are cytotoxic chemotherapies (``Other''), indicating genotype-conditioned cytotoxic sensitivity rather than paralog-specific targeting. Drugs shown are not necessarily direct binders of the paralog protein.}
 \end{figure}
 
+% S8 (dependency window; renumbered from S7)
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.45\textwidth,keepaspectratio]{output/figures/FigS9_kmer_validation.pdf}
-\caption{\textbf{$k$-mer Jaccard vs.\ Needleman-Wunsch alignment identity validation.} Scatter plot of $k$-mer Jaccard similarity ($k=3$) vs.\ global alignment identity for 50 protein pairs (13 known paralogs, 37 non-paralog controls). Red: known paralog-SL pairs; Blue: non-paralog pairs. Gray line: linear regression with 95\% CI.}
+\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS8_TherapeuticWindow.pdf}
+\caption{\textbf{Dependency window analysis.} a, All 21 paralog pairs ranked by mean dependency window score (DWS) across up to 5 cancer contexts (Ovarian, Endometrial, Breast, Colorectal, PanCancer) on the $\geq$5-mutant frame. SMARCA4$\rightarrow$SMARCA2 (4.87) and ARID1A$\rightarrow$ARID1B (2.82) are the two HIGH\_SELECTIVITY pairs; NF1$\rightarrow$RASA2's signed DWS (1.82) derives entirely from the Endometrial context, where the 0.01 denominator floor is active, with selectivity~$\approx$~0 and a wide bootstrap rank interval (95\% CI 1--18). b, In vitro selectivity tier classification: HIGH\_SELECTIVITY (selectivity~$>$~0.15 and DWS~$>$~1.0; $n=2$), MODERATE ($n=5$), LOW\_SELECTIVITY ($n=11$), and PAN\_ESSENTIAL ($f_{\text{pan-essential}}>0.5$; $n=3$). c, DWS values broken down by individual cancer context showing cross-lineage consistency for top candidates. d, Selectivity vs.\ DWS scatter plot; ARID1A$\rightarrow$ARID1B and SMARCA4$\rightarrow$SMARCA2 occupy the upper-right quadrant (high DWS and high selectivity).}
 \end{figure}
 
+% S9 (merged 2026-07-29: former S9 kmer + S10 druggability + S13 targetability)
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth,keepaspectratio]{output/figures/FigS10_Druggability.pdf}
-\caption{\textbf{Structure-based druggability assessment.} Composite druggability score for 15 proteins (7 paralog targets in red, 8 driver genes in blue) based on ESMFold-predicted structures. Scores integrate structural confidence (pLDDT), hydrophobic content, lysine density (K, relevant for PROTAC conjugation), and predicted pocket count (P). For 13 of the 15 proteins, ESMFold v1 structures of the N-terminal 400 residues were predicted de novo (mean pLDDT~$=$~0.724); ARID1A and ARID1B ($\sim$2,200 residues each) were assessed by sequence-level features only because the 400-residue truncation would cover only $\sim$17\% of the chain (Supplementary Table~S9). FBXW2 (0.871) and KRAS/HRAS (0.858--0.859) show the highest scores due to well-folded compact domains.}
+\includegraphics[width=\textwidth,height=0.6\textheight,keepaspectratio]{output/figures/FigS9_Sequence_Structure_Descriptors.pdf}
+\caption{\textbf{Exploratory sequence- and structure-derived descriptors.} a, Validation of the $k$-mer Jaccard proxy: scatter plot of $k$-mer Jaccard similarity ($k=3$) vs.\ Needleman-Wunsch global alignment identity for 50 protein pairs (13 known paralogs, 37 non-paralog controls). Red: known paralog-SL pairs; blue: non-paralog pairs. Gray line: linear regression with 95\% CI. b, Structure-based druggability assessment: composite druggability score for 15 proteins (7 paralog targets in red, 8 driver genes in blue) based on ESMFold-predicted structures. Scores integrate structural confidence (pLDDT), hydrophobic content, lysine density (K, relevant for PROTAC conjugation), and predicted pocket count (P). For 13 of the 15 proteins, ESMFold v1 structures of the N-terminal 400 residues were predicted de novo (mean pLDDT~$=$~0.724); ARID1A and ARID1B ($\sim$2,200 residues each) were assessed by sequence-level features only because the 400-residue truncation would cover only $\sim$17\% of the chain (Supplementary Table~S9). FBXW2 (0.871) and KRAS/HRAS (0.858--0.859) show the highest scores due to well-folded compact domains. c, Feature-space structural similarity (Structural) and UniProt domain-architecture conservation (Domain) for the eight pairs with the highest structural similarity among the ten pairs with non-zero domain overlap (of 13 scored pairs); five of the 13 (38\%) show perfect domain conservation. The structural similarity is a heuristic, $\max(0,\,1 - \overline{|\Delta\text{feature}|})$ over sequence-level features, not a three-dimensional alignment metric (Methods). d, Composite prioritization score (max-normalized signed DWS 0.40, rescaled selectivity 0.30, targetability 0.30; weights fixed heuristically before final reporting in \texttt{alphafold\_analysis.py}). ARID1A$\rightarrow$ARID1B ranks first (0.823), followed by EP300$\rightarrow$CREBBP (0.644); NF1$\rightarrow$RASA2 ranks third (0.554), its signed DWS resting on a floored denominator with selectivity~$\approx$~0. These descriptors are exploratory proxies and were not calibrated against drug-development data (main text, Methods and Limitations). Sources: \texttt{output/alphafold\_structural\_analysis.csv} and \texttt{output/druggability\_analysis.json} (\texttt{R\_figS9\_descriptors.R}).}
 \end{figure}
 
+% S10 (added 2026-08-01: TCGA BRCA survival forest, moved from main-text Fig. 3c)
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS11_in4mer_ExternalCheck.pdf}
-\caption{\textbf{External check against mutation-agnostic gold standards (in4mer).} a, Distribution of $|$DD$|$ ($\ge$3-mutant framework) for 326 evaluable unlabeled control paralog pairs (gray histogram; 400 pairs sampled, seed 42). Red ticks: the 10 evaluable pairs of the 13 cross-platform in4mer gold standards (Esmaeili Anvar et al., Nat Commun 2024). Dashed line: control 90th percentile (0.217); the three pairs above it (ARFGEF1/ARFGEF2, HDAC1/HDAC2, SLC25A28/SLC25A37) are those with the most recurrent natural mutations. b, AUROC point estimates with bootstrap 95\% CI for both evaluation frameworks. Only 3 of the 13 pairs meet the $\ge$5-mutant threshold (exploratory AUROC $=$ 0.68); the 10 pairs evaluable at $\ge$3 do not separate from unlabeled controls (AUROC $=$ 0.50, permutation $p = 0.51$), consistent with the mutation-agnostic, dual-knockout definition of these gold standards (main text, Limitations).}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS12_Cooccurrence_TMB.pdf}
-\caption{\textbf{Mutational co-occurrence of paralog pairs, with and without tumour mutational burden (TMB) adjustment.} a, Pan-cancer co-occurrence odds ratios across 1{,}208 DepMap 26Q1 cell lines for the five testable pairs, unadjusted (Fisher's exact test, open circles) vs.\ TMB-adjusted (filled circles; logistic regression of paralog mutation status on driver mutation status and $\log_e(1+\mathrm{TMB})$ per line). After TMB adjustment only ARID1A/ARID1B (adjusted OR~$=$~2.38, $p=0.002$) and EP300/CREBBP (adjusted OR~$=$~2.14, $p=0.011$) remain significant ($^*$adjusted $p<0.05$). b, Per-lineage TMB-adjusted odds ratios. ``--'': not evaluable ($<30$ lines or $<3$ mutant lines per gene within the lineage); ``n.e.'': not estimable (complete separation). Mutation status follows the gene-class-specific driver rules (Table~S6). Source: \texttt{output/cooccurrence\_by\_lineage.json} (\texttt{cooccurrence\_by\_lineage.py}).}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth,keepaspectratio]{output/figures/FigS13_Structure_Targetability.pdf}
-\caption{\textbf{Exploratory sequence- and structure-derived targetability descriptors.} a, Feature-space structural similarity (Structural) and UniProt domain-architecture conservation (Domain) for the eight pairs with the highest structural similarity among the ten pairs with non-zero domain overlap (of 13 scored pairs); five of the 13 (38\%) show perfect domain conservation. The structural similarity is a heuristic, $\max(0,\,1 - \overline{|\Delta\text{feature}|})$ over sequence-level features, not a three-dimensional alignment metric (Methods). b, Composite prioritization score (max-normalized DWS 0.40, rescaled selectivity 0.30, targetability 0.30; weights fixed a priori in \texttt{alphafold\_analysis.py}). NF1$\rightarrow$RASA2 ranks first (0.695) only through a near-zero pan-essential denominator that inflates its raw DWS (selectivity~$\approx$~0); ARID1A$\rightarrow$ARID1B (0.631) is the leading selective candidate. These descriptors are exploratory proxies and were not calibrated against drug-development data (main text, Methods and Limitations). Source: \texttt{output/alphafold\_structural\_analysis.csv} (\texttt{R\_figS13.R}).}
+\includegraphics[width=0.85\textwidth,keepaspectratio]{output/figures/FigS10_Survival.pdf}
+\caption{\textbf{Paralog expression and overall survival in TCGA BRCA.} Forest plot of paralog gene expression vs.\ overall survival in TCGA PanCan Atlas BRCA ($n=1{,}069$; Cox proportional-hazards on continuous log$_2$-transformed, z-scored expression, adjusted for age and AJCC stage). Four genes withstand Benjamini--Hochberg correction across the 32-gene family (\textit{PIK3CA}, $q=0.035$; \textit{ARID1B}, \textit{BRCA2}, \textit{RBL1}, each $q=0.040$); these four are shown together with the compensating paralogs of the lead candidate pairs and \textit{ARID1A} for direct contrast. Points, hazard ratio per SD; error bars, 95\% CI. Full 32-gene results in Supplementary Table~S8; UCEC and OV extensions in the Supplementary TCGA survival extension.}
+\label{fig:survival_forest}
 \end{figure}
 
 \clearpage
@@ -195,11 +208,11 @@ Rhabdomyosarcoma & Rhabdomyosarcoma & 12 & 0 & 0 & --- \\
 Thyroid & Thyroid carcinoma & 10 & 0 & 0 & --- \\
 \bottomrule
 \end{tabular}
-\caption{Cell line counts and DD AUROC across all 23 analyzed solid tumor types (primary $\geq$5-per-group frame). Top: AUROC~$>$~0.7 (1 type). Upper middle: AUROC 0.5--0.7 (6 types). Lower middle: AUROC~$<$~0.5 (1 type; Breast, where reverse-direction entries dominate under signed scoring). Bottom: insufficient known positives for AUROC (15 types). AUROC is computed on signed DD (primary metric). Known+: number of gold-standard positive pairs evaluable in each lineage. ``---'': AUROC not computable ($<$2 known positives). Pairs: driver$\times$paralog combinations passing the $\geq$5 mutant / $\geq$5 wild-type filter. On the relaxed $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.962, Melanoma 0.840, Cervical 0.714), giving 12 evaluable lineages in total (6 above 0.7). Full name: standardized cancer-type name corresponding to each short label; SCC, squamous cell carcinoma.}
+\caption{Cell line counts and DD AUROC across all 23 analyzed solid tumor types (primary $\geq$5-per-group frame). Top: AUROC~$>$~0.7 (1 type). Upper middle: AUROC 0.5--0.7 (6 types). Lower middle: AUROC~$<$~0.5 (1 type; Breast, where reverse-direction entries dominate under signed scoring). Bottom: insufficient known positives for AUROC (15 types). AUROC is computed on signed DD (primary metric). Known+: number of curated positive pairs evaluable in each lineage. ``---'': AUROC not computable ($<$2 known positives). Pairs: driver$\times$paralog combinations passing the $\geq$5 mutant / $\geq$5 wild-type filter. On the relaxed $\geq$3-per-group sensitivity frame, four additional lineages become evaluable (Biliary Tract 0.990, Pancreatic 0.962, Melanoma 0.840, Cervical 0.714), giving 12 evaluable lineages in total (6 above 0.7). Full name: standardized cancer-type name corresponding to each short label; SCC, squamous cell carcinoma.}
 \end{table}
 
 \subsection{Table S2: Complete paralog-SL pair analysis results}
-The full analysis results are provided as a tab-separated file: \texttt{TableS2\_FullResults.tsv} (110 rows $\times$ 17 columns, representing all driver$\times$paralog$\times$cancer-type combinations passing the minimum sample-size filter of $\geq$5 mutant and $\geq$5 wild-type cell lines). Effect sizes (Cohen's $d$, Hedges' $g$) and per-stratum Welch $t$-test $p$-values for the same 110 associations are provided as \texttt{TableS7\_EffectSizes.tsv} (Supplementary Table~S7).
+The full analysis results are provided as a tab-separated file: \texttt{TableS2\_FullResults.tsv} (110 rows $\times$ 17 columns, representing all driver$\times$paralog$\times$lineage combinations in the three evaluation lineages (Ovarian, Endometrial, Cervical) passing the minimum sample-size filter of $\geq$5 mutant and $\geq$5 wild-type cell lines). Effect sizes (Cohen's $d$, Hedges' $g$) and per-stratum Welch $t$-test $p$-values for the same 110 associations are provided as \texttt{TableS7\_EffectSizes.tsv} (Supplementary Table~S7).
 
 \textbf{Data dictionary:}
 \begin{itemize}\setlength\itemsep{0pt}
@@ -210,16 +223,16 @@ The full analysis results are provided as a tab-separated file: \texttt{TableS2\
 \item \texttt{delta\_expression}: $\Delta$Expression between MUT and WT groups.
 \item \texttt{necessity}: Mean gene-effect score of the paralog (more negative = more essential).
 \item \texttt{dependency\_dd}: Delta Dependency (signed; positive = greater dependency in MUT).
-\item \texttt{composite\_score}: Weighted composite of PCS, DD, and $\Delta$Expression.
-\item \texttt{novelty}: ``Known'' if in gold-standard set (Table~S3), else ``Novel''.
+\item \texttt{composite\_score}: Deterministic weighted composite of min-max-normalized PCS (0.50), $|$DD$|$ (0.20), $-\log_{10}(q)$ (0.15), and mutation frequency (0.15); weights fixed heuristically in \texttt{pcs.py}. $\Delta$Expression is not a component.
+\item \texttt{novelty}: ``Known'' if in the curated set (Table~S3), else ``Novel''.
 \item \texttt{q\_value}: Benjamini-Hochberg adjusted $p$-value within each driver gene.
 \item \texttt{mutation\_frequency}: Fraction of cell lines with driver mutation in this lineage.
 \item \texttt{n\_mut}, \texttt{n\_wt}: Number of mutant and wild-type cell lines.
-\item \texttt{is\_known\_paralog\_sl}: Boolean; TRUE if pair is in gold-standard set.
+\item \texttt{is\_known\_paralog\_sl}: Boolean; TRUE if pair is in the curated set (Table~S3).
 \end{itemize}
 \stepcounter{table} % Table S2 has no \begin{table}, manually increment counter
 
-\subsection{Table S3: Gold-standard paralog-SL pairs with evidence provenance and tier assignment}
+\subsection{Table S3: Curated paralog-SL pairs with evidence provenance and tier assignment}
 \begin{table}[H]
 \centering
 \scriptsize
@@ -246,12 +259,12 @@ comp. & STK11 & SIK1 & Mouse genetics, LKB1--SIK axis (partial homolog) & Mouse 
 \bottomrule
 \end{tabular}%
 }
-\caption{Twelve curated pairs with evidence provenance and tier assignment after verification of the primary citations. \textbf{Tier A} (3 pairs): direct genetic synthetic-lethal evidence from dual-gene perturbation (combinatorial/digenic CRISPR knockout). \textbf{Tier B} (2 pairs): natural-genotype conditional dependency --- the paralog is a demonstrated selective dependency in driver-mutant cells --- from single-gene perturbation with functional validation. The Tier A~$\cup$~Tier B set (5 pairs) constitutes the primary external benchmark. \textbf{Tier C} (5 pairs): indirect evidence only (reciprocal-direction-only, other-driver, developmental-redundancy, or DepMap-derived); excluded from the primary benchmark and reported separately. \textbf{Comparators} (2 pairs): mechanistic reference pairs that are not sequence paralogs (functional analog or pathway axis); used as specificity references only. \textbf{Dual?}: whether the evidence comes from simultaneous dual-gene perturbation. \textbf{Indep.}: evidence independent of DepMap CRISPR data. \textbf{Direct SL}: whether the evidence directly demonstrates synthetic lethality in the direction scored in this study (``Conditional'' = genotype-conditional dependency; ``Reciprocal'' = direct evidence for the reverse direction only). \textbf{Inclusion}: Primary = primary external benchmark; Secondary = reported separately; Comparator = specificity reference. All twelve pairs are HGNC gene-group sequence paralogs except the two comparators; validated directions refer to the driver$\rightarrow$paralog direction scored here. Key ref entries are short names corresponding to the numbered reference list in the main text.}
+\caption{Twelve curated pairs with evidence provenance and tier assignment after verification of the primary citations. \textbf{Tier A} (3 pairs): direct genetic synthetic-lethal evidence from dual-gene perturbation (combinatorial/digenic CRISPR knockout). \textbf{Tier B} (2 pairs): natural-genotype conditional dependency, i.e., the paralog is a demonstrated selective dependency in driver-mutant cells, from single-gene perturbation with functional validation. The Tier A~$\cup$~Tier B set (5 pairs) constitutes the primary literature-derived benchmark. \textbf{Tier C} (5 pairs): indirect evidence only (reciprocal-direction-only, other-driver, developmental-redundancy, or DepMap-derived); excluded from the primary benchmark and reported separately. \textbf{Comparators} (2 pairs): mechanistic reference pairs that are not sequence paralogs (functional analog or pathway axis); used as specificity references only. \textbf{Dual?}: whether the evidence comes from simultaneous dual-gene perturbation. \textbf{Indep.}: evidence independent of DepMap CRISPR data. \textbf{Direct SL}: whether the evidence directly demonstrates synthetic lethality in the direction scored in this study (``Conditional'' = genotype-conditional dependency; ``Reciprocal'' = direct evidence for the reverse direction only). \textbf{Inclusion}: Primary = primary literature-derived benchmark; Secondary = reported separately; Comparator = specificity reference. All twelve pairs are HGNC gene-group sequence paralogs except the two comparators; validated directions refer to the driver$\rightarrow$paralog direction scored here. Key ref entries are short names corresponding to the numbered reference list in the main text.}
 \end{table}
 
 \subsection{External combinatorial-CRISPR gold standards (in4mer)}
 
-Esmaeili Anvar et al.\ (2024) meta-analyzed five combinatorial CRISPR paralog screens (Dede 2020, Gonatopoulos-Pournatzis 2020, Parrish 2021, Thompson 2021, Ito 2021) and defined 13 candidate cross-study gold-standard paralog synthetic lethals (paralog score $>0.25$, called a hit in more than one study): CNOT7--CNOT8, PITPNA--PITPNB, TIA1--TIAL1, SAR1A--SAR1B, PTP4A1--PTP4A2, GSK3A--GSK3B, CSNK2A1--CSNK2A2, CSNK1D--CSNK1E, MAPK1--MAPK3, ARFGEF1--ARFGEF2, HDAC1--HDAC2, ASF1A--ASF1B, and SLC25A28--SLC25A37. We assessed whether these pairs could serve as an external benchmark for DD. Only one of the 13 pairs (MAPK1--MAPK3) involves a gene in our 40-gene driver panel, and MAPK1 carries qualifying oncogenic hotspot mutations in zero DepMap 26Q1 cell lines (Table~S6), so no in4mer gold-standard pair is evaluable in our driver-mutation-conditioned framework. This reflects a genuine division of scope rather than missing data: the in4mer gold standards measure background-independent paralog buffering under dual knockout, whereas DD quantifies dependency shifts conditioned on naturally occurring driver mutations. We therefore report the in4mer set as a conceptual cross-reference rather than a benchmark, and we note that only 8 of the 13 pairs replicated as hits in at least three of the four in4mer screens (Chou et al.\ 2025).
+Esmaeili Anvar et al.\ (2024) meta-analyzed five combinatorial CRISPR paralog screens (Dede 2020, Gonatopoulos-Pournatzis 2020, Parrish 2021, Thompson 2021, Ito 2021; full citations in Supplementary References) and defined 13 candidate cross-study gold-standard paralog synthetic lethals (paralog score $>0.25$, called a hit in more than one study): CNOT7--CNOT8, PITPNA--PITPNB, TIA1--TIAL1, SAR1A--SAR1B, PTP4A1--PTP4A2, GSK3A--GSK3B, CSNK2A1--CSNK2A2, CSNK1D--CSNK1E, MAPK1--MAPK3, ARFGEF1--ARFGEF2, HDAC1--HDAC2, ASF1A--ASF1B, and SLC25A28--SLC25A37. We assessed whether these pairs could serve as an external benchmark for DD. No in4mer pair involves a 40-panel driver gene; as the closest case we additionally audited MAPK1 (of MAPK1--MAPK3), which carries qualifying oncogenic hotspot mutations in zero DepMap 26Q1 cell lines (Table~S6), so no in4mer gold-standard pair is evaluable in our driver-mutation-conditioned framework. This reflects a genuine division of scope rather than missing data: the in4mer gold standards measure background-independent paralog buffering under dual knockout, whereas DD quantifies dependency shifts conditioned on naturally occurring driver mutations. We therefore report the in4mer set as a conceptual cross-reference rather than a benchmark, and we note that only 8 of the 13 pairs replicated as hits in at least three of the four in4mer screens (Chou et al.\ 2025). Repeating the control-pair sampling of the $\ge$3-mutant in4mer frame across 20 seeds (400 control pairs per seed) gave AUROC point estimates of 0.480--0.522 (median 0.499), confirming that the null separation is not an artifact of the control-sampling seed (\texttt{in4mer\_seed\_sensitivity.py}). Adequately powered external tests against two recent digenic screens (Harle et al., Genome Biol 2025; Flister et al., Cell Rep 2025) are reported in Supplementary Methods (External digenic screens): mutation-agnostic $|$DD$|$ separates screen hits from non-hits in both datasets.
 
 \subsection{Table S4: 40-gene driver panel}
 \begin{table}[H]
@@ -304,42 +317,42 @@ MYC & Pan-cancer & COSMIC & Oncogene \\
 \bottomrule
 \end{tabular}
 \caption{Complete 40-gene driver panel (machine-readable mirror: \texttt{TableS4\_DriverGenes.tsv}).
-Selection criteria: recurrently mutated in $\ge$1 TCGA pan-cancer study or COSMIC Cancer Gene Census,
-with $\ge$5 mutant cell lines in at least one DepMap lineage.}
+Selection criteria: membership in TCGA PanCanAtlas driver analyses (Bailey et al.\ 2018) or the COSMIC Cancer Gene Census (recurrently mutated cancer drivers); per-gene DepMap 26Q1 mutant-line counts under the final class-specific rules are given in Table~S6 (CCNE1 contributes zero mutant lines).}
 \end{table}
 
 \subsection{Table S5: All 21 paralog pairs ranked by dependency window score}
 \begin{table}[H]
 \centering
 \scriptsize
-\begin{tabular}{llrrrllcc}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llrrrlrlll}
 \toprule
-\textbf{Driver} & \textbf{Paralog} & \textbf{$|$DD$|$} & \textbf{DWS} & \textbf{Select.} & \textbf{Class} & \textbf{Type} & \textbf{DWS 95\% CI} & \textbf{Select.\ 95\% CI} \\
+\textbf{Driver} & \textbf{Paralog} & \textbf{Num.} & \textbf{Denom.} & \textbf{DWS} & \textbf{Select.} & \textbf{Class} & \textbf{DWS 95\% CI} & \textbf{Select.\ 95\% CI} & \textbf{Rank 95\% CI} \\
 \midrule
-NF1 & RASA2 & 0.101 & 5.421 & 0.005 & MOD & Seq & 1.22--13.83 & 0.00--0.02 \\
-SMARCA4 & SMARCA2 & 0.186 & 4.873 & 0.181 & HS & Seq & 3.28--7.78 & 0.07--0.32 \\
-RB1 & RBL1 & 0.164 & 3.439 & 0.007 & MOD & Seq & 1.95--10.92 & 0.00--0.02 \\
-ARID1A & ARID1B & 0.270 & 2.819 & 0.277 & HS & Seq & 1.76--5.89 & 0.19--0.37 \\
-EP300 & CREBBP & 0.279 & 1.815 & 0.108 & MOD & Seq & 1.13--4.55 & 0.00--0.21 \\
-KMT2D & KMT2C & 0.064 & 1.771 & 0.056 & MOD & Seq & 0.94--5.00 & 0.02--0.11 \\
-ATR & ATM & 0.070 & 1.656 & $-$0.027 & LS & Seq & 0.31--4.79 & $-$0.07--0.00 \\
-PIK3CA & PIK3CB & 0.152 & 1.356 & $-$0.065 & LS & Seq & 0.89--2.63 & $-$0.11--$-$0.01 \\
-BRAF & RAF1 & 0.245 & 1.174 & $-$0.178 & LS & Seq & 0.85--1.70 & $-$0.24--$-$0.12 \\
-PPP2R1A & PPP2R1B & 0.074 & 0.925 & 0.000 & LS & Seq & 0.09--2.22 & 0.00--0.00 \\
-TP53 & TP63 & 0.035 & 0.813 & 0.037 & MOD & Seq & 0.42--3.04 & 0.01--0.07 \\
-FBXW7 & FBXW2 & 0.025 & 0.720 & 0.000 & LS & Seq & 0.41--2.98 & 0.00--0.00 \\
-CDH1 & CDH2 & 0.098 & 0.687 & $-$0.086 & LS & Seq & 0.44--0.97 & $-$0.10--$-$0.07 \\
-KRAS & NRAS & 0.083 & 0.420 & $-$0.060 & LS & Seq & 0.26--0.83 & $-$0.11--$-$0.01 \\
-STK11 & SIK1 & 0.017 & 0.392 & $-$0.011 & LS & Part & 0.03--1.27 & $-$0.02--$-$0.01 \\
-KRAS & HRAS & 0.043 & 0.206 & $-$0.040 & LS & Seq & 0.11--0.43 & $-$0.08--$-$0.01 \\
-BRCA2 & BRCA1 & 0.111 & 0.193 & $-$0.047 & PE & Func & 0.13--0.45 & $-$0.23--0.14 \\
-PTEN & TNS2 & 0.042 & 0.174 & $-$0.006 & LS & Seq & 0.11--0.39 & $-$0.07--0.07 \\
-PIK3R1 & CRKL & 0.152 & 0.167 & $-$0.161 & PE & Seq & 0.08--0.71 & $-$0.36--0.05 \\
-BRCA1 & BRCA2 & 0.079 & 0.144 & $-$0.080 & PE & Func & 0.05--0.40 & $-$0.30--0.14 \\
-MAP2K1 & MAP2K2 & 0.001 & 0.003 & $-$0.034 & LS & Seq & 0.01--0.51 & $-$0.04--$-$0.02 \\
+SMARCA4 & SMARCA2 & 0.186 & 0.055 & 4.874 & 0.181 & HS & 3.09--7.59 & 0.07--0.32 & 1--2 \\
+ARID1A & ARID1B & 0.270 & 0.126 & 2.819 & 0.277 & HS & 1.72--5.89 & 0.19--0.37 & 1--4 \\
+NF1 & RASA2 & 0.018 & 0.027$^{\dagger}$ & 1.824 & 0.005 & MOD & 0.00--4.84 & 0.00--0.02 & 1--18 \\
+EP300 & CREBBP & 0.264 & 0.159 & 1.710 & 0.108 & MOD & 1.00--4.37 & 0.00--0.21 & 2--6 \\
+KMT2D & KMT2C & 0.046 & 0.039 & 1.261 & 0.056 & MOD & 0.50--3.56 & 0.02--0.11 & 2--8 \\
+PPP2R1A & PPP2R1B & 0.074 & 0.080 & 0.925 & 0.000 & LS & 0.00--2.22 & 0.00--0.00 & 3--17 \\
+FBXW7 & FBXW2 & 0.025 & 0.037 & 0.720 & 0.000 & LS & 0.24--2.79 & 0.00--0.00 & 3--9 \\
+TP53 & TP63 & 0.024 & 0.050 & 0.577 & 0.037 & MOD & 0.11--2.40 & 0.01--0.07 & 3--11 \\
+PIK3R1 & CRKL & 0.152 & 0.955 & 0.167 & $-$0.161 & PE & 0.00--0.68 & $-$0.36--0.05 & 7--17 \\
+BRCA2 & BRCA1 & 0.053 & 0.557 & 0.118 & $-$0.047 & PE & 0.04--0.33 & $-$0.23--0.14 & 8--13 \\
+BRCA1 & BRCA2 & 0.021 & 0.545 & 0.039 & $-$0.080 & PE & 0.00--0.20 & $-$0.30--0.14 & 9--18 \\
+PTEN & TNS2 & 0.004 & 0.248 & 0.014 & $-$0.006 & LS & 0.00--0.14 & $-$0.07--0.07 & 10--18 \\
+MAP2K1 & MAP2K2 & 0.001 & 0.186 & 0.003 & $-$0.034 & LS & 0.00--0.45 & $-$0.04--$-$0.02 & 7--18.5 \\
+CDH1 & CDH2 & 0.000 & 0.143 & 0.000 & $-$0.086 & LS & 0.00--0.00 & $-$0.10--$-$0.07 & 16.5--19 \\
+KRAS & HRAS & 0.000 & 0.195 & 0.000 & $-$0.040 & LS & 0.00--0.11 & $-$0.08--$-$0.01 & 10--18.5 \\
+ATR & ATM & 0.000 & 0.057 & 0.000 & $-$0.027 & LS & 0.00--0.96 & $-$0.07--0.00 & 6--18.5 \\
+PIK3CA & PIK3CB & 0.000 & 0.112 & 0.000 & $-$0.065 & LS & 0.00--0.07 & $-$0.11--$-$0.01 & 12--18.5 \\
+RB1 & RBL1 & 0.000 & 0.050 & 0.000 & 0.007 & MOD & 0.00--0.00 & 0.00--0.02 & 16.5--19 \\
+BRAF & RAF1 & 0.000 & 0.199 & 0.000 & $-$0.178 & LS & 0.00--0.00 & $-$0.24--$-$0.12 & 16.5--19 \\
+STK11 & SIK1 & 0.000 & 0.044 & 0.000 & $-$0.011 & LS & 0.00--0.51 & $-$0.02--$-$0.01 & 8--18.5 \\
+KRAS & NRAS & 0.000 & 0.193 & 0.000 & $-$0.060 & LS & 0.00--0.17 & $-$0.11--$-$0.01 & 10--18.5 \\
 \bottomrule
 \end{tabular}
-\caption{All 21 analyzed paralog pairs ranked by mean dependency window score (DWS) on the $\geq$5-mutant frame. $|$DD$|$: mean absolute Delta Dependency across cancer contexts. Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. Type: Seq=sequence paralog, Part=partial homology, Func=functional analog. DWS 95\% CI and Select.\ 95\% CI: bootstrap 95\% percentile intervals from 1{,}000 stratified resamples of cell lines within each cancer context (seed 42; \texttt{dws\_robustness.py}); the DWS and Select.\ columns report the observed point estimates, not bootstrap means. Three pairs evaluable under the previous frame (AKT1$\rightarrow$AKT2, CCNE1$\rightarrow$CCNE2, CDK4$\rightarrow$CDK6) no longer meet the $\geq$5-mutant threshold in any context and are not listed.}
+\caption{All 21 analyzed paralog pairs ranked by the signed dependency window score (DWS $=$ mean $\max(\mathrm{DD},0)$ $/$ denominator; Equation 2 of the main text) on the $\geq$5-mutant frame. Num.: DWS numerator, mean $\max(\mathrm{DD},0)$ across cancer contexts (only compensation-direction shifts contribute). Denom.: baseline-essentiality denominator $\max(|\mu_{\text{Chronos}}|, f_{\text{pan-essential}}, 0.01)$; $^{\dagger}$marks the only pair whose signed DWS derives from a context in which the 0.01 floor is active (NF1$\rightarrow$RASA2, Endometrial). Select.: mean selectivity (fraction mutant-essential minus fraction wild-type-essential). Class: HS=HIGH\_SELECTIVITY, MOD=MODERATE, LS=LOW\_SELECTIVITY, PE=PAN\_ESSENTIAL. DWS 95\% CI and Select.\ 95\% CI: bootstrap 95\% percentile intervals from 1{,}000 stratified resamples of cell lines within each cancer context (seed 42; \texttt{dws\_robustness.py}); the DWS and Select.\ columns report the observed point estimates, not bootstrap means. Rank 95\% CI: bootstrap 95\% interval of each pair's DWS rank across the same resamples. Three pairs evaluable under the previous frame (AKT1$\rightarrow$AKT2, CCNE1$\rightarrow$CCNE2, CDK4$\rightarrow$CDK6) do not meet the $\geq$5-mutant threshold in any context and are not listed. The $|$DD$|$-numerator variant (pre-revision formula) is reported as a sensitivity analysis (Table~S10); classification thresholds are operational stratifiers, not validated clinical cutoffs.}
 \end{table}
 
 
@@ -391,7 +404,7 @@ TSG: mutant requires \texttt{LikelyLoF}; ONC: mutant requires \texttt{Hotspot}.
 Old: cell lines carrying any non-silent variant (pre-revision permissive definition);
 New: cell lines qualifying under the class-specific rule; \% ret.: 100 $\times$ New/Old.
 The top VariantInfo terms per gene are at \texttt{output/driver\_mutation\_rules.csv}.
-CCNE1 and MAPK1 are amplification-driven oncogenes with no qualifying hotspot mutations.}
+CCNE1 and MAPK1 are amplification-driven oncogenes with no qualifying hotspot mutations. The table covers the 40-gene driver panel plus genes audited outside the panel (CDK4 and MAP2K1 for the curated benchmark; MAPK1 for the external in4mer analysis).}
 \end{table}
 
 \stepcounter{table} % Table S7 is a machine-readable TSV (no LaTeX float), manually increment counter
@@ -443,25 +456,32 @@ CCNE1 and MAPK1 are amplification-driven oncogenes with no qualifying hotspot mu
 \end{table}
 
 
+\subsection{TCGA survival extension: UCEC and OV cohorts}
+\label{sec:survival_ucec_ov}
+\begin{sloppypar}
+The BRCA survival pipeline (continuous log$_2$-transformed, z-scored expression; Cox proportional-hazards models with Wald confidence intervals; BH-FDR within each model family) was applied to the two benchmark-relevant gynecological cohorts, UCEC (\texttt{ucec\_tcga\_pan\_can\_atlas\_2018}; $n=525$, 87 events) and OV (\texttt{ov\_tcga\_pan\_can\_atlas\_2018}; $n=299$, 180 events). AJCC stage annotation is defined but entirely unpopulated for these two studies in cBioPortal (verified at both patient and sample level), so the age-only adjusted model is the adjusted estimate of record for these cohorts. \textit{ARID1B}: UCEC univariable HR~$=$~1.17 (95\% CI 0.941--1.464, $p=0.155$, BH $q=0.381$), age-adjusted HR~$=$~1.17 ($p=0.179$); OV univariable HR~$=$~1.26 (95\% CI 1.092--1.461, $p=0.002$, BH $q=0.054$), age-adjusted HR~$=$~1.21 ($p=0.013$, $q=0.406$). The BRCA association was directionally concordant in OV (nominal age-adjusted $p=0.013$, $q=0.406$, not FDR-significant) but not in UCEC; in BRCA it reached FDR only after covariate adjustment (univariable $q=0.129$; multivariable $q=0.040$), so its significance is adjustment-dependent. ARID1A-mutation stratification in UCEC (any non-silent \textit{ARID1A} mutation; mutant $n=226$, 19 events; wild-type $n=299$, 68 events): \textit{ARID1B} HR~$=$~1.24 (95\% CI 0.756--2.045, $p=0.391$) in the mutant stratum versus HR~$=$~1.15 (95\% CI 0.905--1.473, $p=0.248$) in wild-type, directionally consistent in both strata but not significant, with limited power in the mutant stratum (19 events). Machine-readable results: \texttt{output/tcga\_survival\_ucec.json}, \texttt{output/tcga\_survival\_ov.json}, and \texttt{output/tcga\_survival\_ucec\_ov\_summary.json} (\texttt{tcga\_survival\_ucec\_ov.py}). The BRCA cohort forest plot is shown in Supplementary Fig.~S10.
+\end{sloppypar}
+
+
 \subsection{Table S9: Top paralog-SL candidates ranked by composite prioritization score}
 \begin{table}[H]
 \centering
-\caption{Top paralog-SL candidates ranked by the exploratory composite prioritization score (moved from the main text when the structural analysis was demoted to exploratory descriptor status). DWS: mean dependency window score across up to 5 cancer contexts on the $\geq$5-mutant frame. Class: HS~$=$~HIGH\_SELECTIVITY, MOD~$=$~MODERATE, LS~$=$~LOW\_SELECTIVITY, PE~$=$~PAN\_ESSENTIAL. Struct: feature-space structural similarity (heuristic, not a 3D alignment metric; Methods). Target.: composite prioritization score (max-normalized DWS 0.40, rescaled selectivity 0.30, targetability 0.30; weights fixed a priori in \texttt{alphafold\_analysis.py}). Known SL pairs marked with $\star$. \textit{NF1$\rightarrow$RASA2's top composite score is driven by a near-zero pan-essential denominator (0.1\% of cell lines) that inflates its DWS; with selectivity~$\approx$~0 it is not a selective candidate, and ARID1A$\rightarrow$ARID1B remains the leading selective candidate. These descriptors were not calibrated against drug-development data; all candidates are computationally nominated and require experimental validation.}}
+\caption{Top paralog-SL candidates ranked by the exploratory composite prioritization score (moved from the main text when the structural analysis was demoted to exploratory descriptor status). DWS: mean dependency window score across up to 5 cancer contexts on the $\geq$5-mutant frame. Class: HS~$=$~HIGH\_SELECTIVITY, MOD~$=$~MODERATE, LS~$=$~LOW\_SELECTIVITY, PE~$=$~PAN\_ESSENTIAL. Struct: feature-space structural similarity (heuristic, not a 3D alignment metric; Methods). Target.: composite prioritization score (max-normalized signed DWS 0.40, rescaled selectivity 0.30, targetability 0.30; weights fixed heuristically before final reporting in \texttt{alphafold\_analysis.py}). Known SL pairs marked with $\star$. \textit{ARID1A$\rightarrow$ARID1B ranks first under the signed-DWS composite; NF1$\rightarrow$RASA2's earlier top score was driven by a near-zero pan-essential denominator (0.1\% of cell lines) that inflated its $|$DD$|$-based DWS, and with selectivity~$\approx$~0 it is not a selective candidate. These descriptors were not calibrated against drug-development data; all candidates are computationally nominated and require experimental validation. The machine-readable TSV (\texttt{TableS9\_CompositeScore.tsv}) additionally carries an \texttt{evidence\_tier} column mapping each candidate to its curated evidence tier (Tier A/B/C or comparator per Table~S3); candidates outside the curated set are labelled \texttt{unlabeled}.}}
 \label{tab:candidates}
 \begin{tabular}{llrlrrc}
 \toprule
 \textbf{Driver} & \textbf{Paralog} & \textbf{DWS} & \textbf{Class} & \textbf{Known} & \textbf{Struct} & \textbf{Target.} \\
 \midrule
-NF1      & RASA2    & 5.42 & MOD &         & 0.658 & 0.695 \\
-ARID1A   & ARID1B   & 2.82 & HS  & $\star$ & 0.952 & 0.631 \\
-EP300    & CREBBP   & 1.82 & MOD & $\star$ & 0.976 & 0.535 \\
-KMT2D    & KMT2C    & 1.77 & MOD &         & 0.829 & 0.477 \\
-PIK3CA   & PIK3CB   & 1.36 & LS  & $\star$ & 0.847 & 0.471 \\
-PPP2R1A  & PPP2R1B  & 0.93 & LS  & $\star$ & 0.921 & 0.452 \\
-TP53     & TP63     & 0.81 & MOD &         & 0.803 & 0.393 \\
-KRAS     & HRAS     & 0.21 & LS  &         & 0.885 & 0.392 \\
-FBXW7    & FBXW2    & 0.72 & LS  & $\star$ & 0.666 & 0.358 \\
-STK11    & SIK1     & 0.39 & LS  & $\star$ & 0.710 & 0.334 \\
+ARID1A     & ARID1B   & 2.82 & HS & $\star$ & 0.952 & 0.823 \\
+EP300      & CREBBP   & 1.71 & MOD & $\star$ & 0.976 & 0.644 \\
+NF1        & RASA2    & 1.82 & MOD &  & 0.658 & 0.554 \\
+KMT2D      & KMT2C    & 1.26 & MOD &  & 0.829 & 0.525 \\
+PPP2R1A    & PPP2R1B  & 0.93 & LS & $\star$ & 0.921 & 0.515 \\
+TP53       & TP63     & 0.58 & MOD &  & 0.803 & 0.415 \\
+FBXW7      & FBXW2    & 0.72 & LS & $\star$ & 0.666 & 0.407 \\
+KRAS       & HRAS     & 0.00 & LS &  & 0.885 & 0.377 \\
+PIK3CA     & PIK3CB   & 0.00 & LS & $\star$ & 0.847 & 0.371 \\
+STK11      & SIK1     & 0.00 & LS & $\star$ & 0.710 & 0.305 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -475,12 +495,15 @@ STK11    & SIK1     & 0.39 & LS  & $\star$ & 0.710 & 0.334 \\
 \toprule
 \textbf{Denominator variant} & \textbf{Spearman $\rho$ vs.\ base} & \textbf{Top-5 overlap} \\
 \midrule
-Base: $\max(|\mu|, f, 0.01)$ (production) & 1.000 & 5 \\
-$|\mu|$ only & 0.990 & 4 \\
-$f$ (pan-essential fraction) only & 0.893 & 4 \\
-mean$(|\mu|, f)$ & 0.988 & 4 \\
-Floor 0.001 & 1.000 & 5 \\
-Floor 0.05 & 0.974 & 5 \\
+Base: signed $\max(\mathrm{DD},0)$ numerator (production) & 1.000 & 5 \\
+$|\mu|$ only & 0.992 & 5 \\
+$f$ (pan-essential fraction) only & 0.966 & 3 \\
+mean$(|\mu|, f)$ & 0.994 & 4 \\
+Floor 0.001 & 0.996 & 5 \\
+Floor 0.05 & 0.979 & 4 \\
+$|$DD$|$ numerator (pre-revision formula, sensitivity) & 0.381 & 4 \\
+Winsorized denominator (1\%/99\%) & 0.999 & 5 \\
+Floor-dominated pairs removed & 1.000 & 4 \\
 \midrule
 \textbf{HIGH\_SELECTIVITY selectivity threshold} & \textbf{HS pairs} & \textbf{Flips vs.\ 0.15} \\
 \midrule
@@ -489,10 +512,42 @@ Selectivity $>$ 0.15 (base) & 2 & 0 \\
 Selectivity $>$ 0.20 & 1 & 1 \\
 \bottomrule
 \end{tabular}
-\caption{Sensitivity of DWS-based rankings to the denominator definition (upper block) and of the HIGH\_SELECTIVITY classification to the selectivity threshold (lower block), for the 21 evaluated paralog pairs. Spearman $\rho$: rank correlation of the DWS ranking against the production definition; top-5 overlap: number of shared pairs in the top five of both rankings. At threshold 0.10, EP300$\rightarrow$CREBBP additionally enters HIGH\_SELECTIVITY; at 0.20, SMARCA4$\rightarrow$SMARCA2 drops out; ARID1A$\rightarrow$ARID1B remains HIGH\_SELECTIVITY at all three thresholds. Source: \texttt{output/dws\_robustness.json} (\texttt{dws\_robustness.py}; 1{,}000 stratified bootstrap resamples, seed 42).}
+\caption{Sensitivity of DWS-based rankings to the numerator and denominator definitions (upper block) and of the HIGH\_SELECTIVITY classification to the selectivity threshold (lower block), for the 21 evaluated paralog pairs. The production denominator is $\max(|\mu|, f, 0.01)$; upper-block rows vary the denominator, floor, or numerator as indicated. The winsorized-denominator row clips the denominator at its 1st/99th percentiles across all pair$\times$context rows; the floor-dominated row removes the single pair whose denominator touches the 0.01 floor in at least one context (NF1$\rightarrow$RASA2) and re-ranks the remaining 20 pairs, whose relative order is unchanged by construction (NF1$\rightarrow$RASA2 drops out of the top five; PPP2R1A$\rightarrow$PPP2R1B enters). Spearman $\rho$: rank correlation of the DWS ranking against the production definition; top-5 overlap: number of shared pairs in the top five of both rankings. At threshold 0.10, EP300$\rightarrow$CREBBP additionally enters HIGH\_SELECTIVITY; at 0.20, SMARCA4$\rightarrow$SMARCA2 drops out; ARID1A$\rightarrow$ARID1B remains HIGH\_SELECTIVITY at all three thresholds. Source: \texttt{output/dws\_robustness.json} (\texttt{dws\_robustness.py}; 1{,}000 stratified bootstrap resamples, seed 42).}
 \end{table}
 
 \subsection{Table S11: Full regression model table for confounder controls}
-The complete regression results underlying the confounder-control analyses (main text, ``Potential confounders and causal interpretation'') are provided as a tab-separated file: \texttt{TableS11\_RegressionModels.tsv} (43 rows $\times$ 12 columns; 11 driver--paralog pairs $\times$ up to four model variants). Models: \texttt{base} (gene effect $\sim$ driver mutation), \texttt{cnv\_adj} (+ paralog copy number), \texttt{expr\_adj} (+ paralog expression), \texttt{lineage\_adj} (+ lineage fixed effects). Columns: \texttt{pair}, \texttt{model}, \texttt{n\_mut}/\texttt{n\_wt} (mutant and wild-type cell lines), \texttt{beta\_mut} (mutation coefficient; DD $=$ $-$\texttt{beta\_mut}), \texttt{dd} (DD on the manuscript sign convention), \texttt{se} (HC3 heteroskedasticity-robust standard error), \texttt{ci\_lo}/\texttt{ci\_hi} (95\% confidence interval), \texttt{p} (nominal $p$-value), \texttt{n} (cell lines in model), \texttt{q\_bh} (Benjamini--Hochberg $q$ within each model family). One pair lacks a \texttt{cnv\_adj} model because its copy-number covariate had insufficient variance. TP53 co-mutation control for ARID1A$\rightarrow$ARID1B is reported separately in \texttt{output/regression\_controls.json}. Source: \texttt{output/regression\_table\_full.csv} (\texttt{regression\_controls.py}).
+The complete regression results underlying the confounder-control analyses (main text, ``Potential confounders and causal interpretation'') are provided as a tab-separated file: \texttt{TableS11\_RegressionModels.tsv} (43 rows $\times$ 14 columns; 11 driver--paralog pairs $\times$ up to four model variants). Models: \texttt{base} (gene effect $\sim$ driver mutation), \texttt{cnv\_adj} (+ paralog copy number), \texttt{expr\_adj} (+ paralog expression), \texttt{lineage\_adj} (+ lineage fixed effects). Columns: \texttt{pair}, \texttt{model}, \texttt{n\_mut}/\texttt{n\_wt} (mutant and wild-type cell lines), \texttt{beta\_mut} (mutation coefficient; DD $=$ $-$\texttt{beta\_mut}), \texttt{dd} (DD on the manuscript sign convention), \texttt{se} (HC3 heteroskedasticity-robust standard error), \texttt{ci\_lo}/\texttt{ci\_hi} (95\% confidence interval), \texttt{p} (nominal $p$-value), \texttt{n} (cell lines in model), \texttt{q\_bh} (Benjamini--Hochberg $q$ within each model family), \texttt{se\_lineage\_cluster}/\texttt{p\_lineage\_cluster} (standard error and nominal $p$-value with cell lines clustered by Oncotree primary disease; addresses within-lineage correlation that HC3 cannot). One pair lacks a \texttt{cnv\_adj} model because its copy-number covariate had insufficient variance. TP53 co-mutation control for ARID1A$\rightarrow$ARID1B is reported separately in \texttt{output/regression\_controls.json}. Source: \texttt{output/regression\_table\_full.csv} (\texttt{regression\_controls.py}).
+
+
+\subsection{Table S12: Contextual literature values under non-comparable evaluation settings}
+\setcounter{table}{11}
+\begin{table}[H]
+\centering
+\caption{\textbf{Contextual literature values under non-comparable evaluation settings.} Published values are CV3 (gene-pair isolation) AUROCs from Feng et al.\ (2024; main-text reference list), Supplementary Data 1 (NSMRand negative sampling, 1:1 positive:negative ratio, complete dataset); individual method citations appear in the main-text reference list. The DD value from this study was evaluated on the full lineage-level frame (110 driver--paralog--lineage entries, 8 positives). \textit{Evaluation frameworks differ: published methods were tested on general SL gene-pair universes with different datasets, tasks, and positive:negative ratios; DD was tested on paralog-SL pairs only. Direct AUROC comparison is not warranted.}}
+\label{tab:benchmark}
+\begin{tabular}{lc}
+\toprule
+\textbf{Method} & \textbf{CV3 AUROC} \\
+\midrule
+DD (this study) & 0.629 \\
+SLMGAE & 0.790 \\
+NSF4SL & 0.683 \\
+GCATSL & 0.678 \\
+GRSMF & 0.656 \\
+PiLSL & 0.626 \\
+KG4SL & 0.563 \\
+SLGNN & 0.530 \\
+PTGNN & 0.529 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Supplementary References}
+\begin{enumerate}\setlength\itemsep{1pt}
+\item Gonatopoulos-Pournatzis T, Aregger M, Brown KR, Farhangmehr S, Braunschweig U, Ward HN, et al. Genetic interaction mapping and exon-resolution functional genomics with a hybrid Cas9--Cas12a platform. \textit{Nat Biotechnol}. 2020;38(5):638--648.
+\item Ito T, Young MJ, Li R, Jain S, Wernitznig A, Krill-Burger JM, et al. Paralog knockout profiling identifies DUSP4 and DUSP6 as a digenic dependence in MAPK pathway-driven cancers. \textit{Nat Genet}. 2021;53(12):1664--1672.
+\item Harle V, Offord V, Gökbağ B, Fotopoulos L, Williams T, Alexander D, et al. A compendium of synthetic lethal gene pairs defined by extensive combinatorial pan-cancer CRISPR screening. \textit{Genome Biol}. 2025;26:284.
+\item Flister MJ, Verduzco D, Petiwala S, Carneiro-Lobo TC, Ghekas C, Shi X, et al. Genetic mapping and predictive modeling of paralog synthetic lethality. \textit{Cell Rep}. 2025;44:116512.
+\end{enumerate}
 
 \end{document}

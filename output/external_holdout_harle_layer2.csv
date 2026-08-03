@@ -1,0 +1,13 @@
+driver,paralog,tier,in_screen,evaluable,driver_mutant_lines,hit_lines_all,hit_lines_driver_mutant,n_mut,n_wt,n_mut_hit,n_wt_hit,hit_rate_mut,hit_rate_wt,fisher_p_1sided_greater,fisher_p_2sided,gi_mean_mut,gi_mean_wt,gi_median_mut,gi_median_wt,mw_p_1sided_mut_more_negative,mw_p_2sided,fisher_q_BH,mw_q_BH
+AKT1,AKT2,A,False,False,,,,,,,,,,,,,,,,,,,
+CDK4,CDK6,A,False,False,,,,,,,,,,,,,,,,,,,
+MAP2K1,MAP2K2,A,False,False,,,,,,,,,,,,,,,,,,,
+SMARCA4,SMARCA2,B,True,True,A549;NCI-H1299;NCI-H1568;NCI-H23;SK-MEL-5,CFPAC-1;Capan-1;SK-MEL-2,,5.0,21.0,0.0,3.0,0.0,0.14285714285714285,1.0,1.0,-0.26370580479999994,-0.21778360057142856,-0.223842076,-0.120251141,0.5749315901489815,0.8997871693523868,1.0,0.8623973852234723
+ARID1A,ARID1B,B,True,True,AsPC-1;MIA PaCa-2,CHL-1,,2.0,24.0,0.0,1.0,0.0,0.041666666666666664,1.0,1.0,0.45561614699999997,-0.017018307375000003,0.45561614699999997,-0.006781736500000001,0.9723076923076923,0.07384615384615384,1.0,0.9723076923076923
+EP300,CREBBP,C,True,True,A-375;BxPC-3,AsPC-1;CHL-1;Capan-1;HPAF-II;KP4;LK-2;MIA PaCa-2;NCI-H1568;SK-MEL-5,,2.0,24.0,0.0,9.0,0.0,0.375,1.0,0.5292307692307692,-0.4986119445,-0.29465199950000004,-0.4986119445,-0.40154892,0.27692307692307694,0.5538461538461539,1.0,0.8307692307692308
+PIK3CA,PIK3CB,C,False,False,,,,,,,,,,,,,,,,,,,
+CCNE1,CCNE2,C,True,False,,AsPC-1;BxPC-3;Capan-1;EBC-1;KP-1N;KP4;LCLC-97TM1;NCI-H1568;SK-MEL-28;SU.86.86,,0.0,26.0,0.0,10.0,,,,,,,,,,,,
+FBXW7,FBXW2,C,False,False,,,,,,,,,,,,,,,,,,,
+PPP2R1A,PPP2R1B,C,True,False,,HPAF-II;NCI-H1299;NCI-H1568;SK-MEL-28,,0.0,26.0,0.0,4.0,,,,,,,,,,,,
+BRCA1,BRCA2,comparator,False,False,,,,,,,,,,,,,,,,,,,
+STK11,SIK1,comparator,False,False,,,,,,,,,,,,,,,,,,,

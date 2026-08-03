@@ -1,0 +1,886 @@
+{
+  "study": "ucec_tcga_pan_can_atlas_2018",
+  "expression_profile": "ucec_tcga_pan_can_atlas_2018_rna_seq_v2_mrna",
+  "methodology": "identical to tcga_survival_v2.py (BRCA cohort); core functions imported from that module",
+  "cohort": {
+    "n_samples": 525,
+    "n_events": 87,
+    "stage_missing_pct": 100.0,
+    "stage_note": "stage missingness high (>30%); rely on age-only model",
+    "age_missing": 2
+  },
+  "genes_missing_from_profile": [],
+  "models": {
+    "univariate": "PHReg OS ~ z(log2(expression+1)); HR per +1 SD of log2-transformed RSEM",
+    "multivariable": "PHReg OS ~ z(log2 expression) + age + AJCC stage (ordinal I-IV)",
+    "ph_test": "Schoenfeld residuals (manual, Breslow ties) vs ranked event times, Pearson correlation p; approximation without variance scaling",
+    "fdr": "Benjamini-Hochberg across 32 genes (scipy false_discovery_control), separately per family and per cohort"
+  },
+  "per_gene": [
+    {
+      "gene": "ARID1A",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.086056277567367,
+      "ci": [
+        0.8772617251614874,
+        1.3445454238030945
+      ],
+      "p": 0.4485386612578268,
+      "ph_test_p": 0.9472605232253933,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.0630151909628225,
+        "ci_multivar": [
+          0.8572516590995287,
+          1.318167523180647
+        ],
+        "p_multivar": 0.5777013394809309,
+        "q_fdr_multivar": 0.7702684526412412
+      },
+      "q_fdr": 0.5947502634284187
+    },
+    {
+      "gene": "ARID1B",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.173827581725778,
+      "ci": [
+        0.9411290644057125,
+        1.46406188453043
+      ],
+      "p": 0.15509808375080508,
+      "ph_test_p": 0.5851484099861922,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.1665215881363447,
+        "ci_multivar": [
+          0.9317123383355397,
+          1.460507239840889
+        ],
+        "p_multivar": 0.17921105709903795,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "SMARCA4",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.8519433295130007,
+      "ci": [
+        0.6982805710138428,
+        1.039420924525922
+      ],
+      "p": 0.1143365543577726,
+      "ph_test_p": 0.6023516680512562,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.8604024292024993,
+        "ci_multivar": [
+          0.7078254897977652,
+          1.0458684391107091
+        ],
+        "p_multivar": 0.13112196941033913,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "SMARCA2",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.9113248654074513,
+      "ci": [
+        0.7468914451257528,
+        1.1119594630918246
+      ],
+      "p": 0.36037335598451303,
+      "ph_test_p": 0.39826461573685107,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.8880398279721148,
+        "ci_multivar": [
+          0.72987868070573,
+          1.0804737238005369
+        ],
+        "p_multivar": 0.23540523446362382,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.5491403519764008
+    },
+    {
+      "gene": "BRCA1",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.0259468631254332,
+      "ci": [
+        0.8375072216727213,
+        1.2567855401350025
+      ],
+      "p": 0.8046002658300608,
+      "ph_test_p": 0.2256858353248448,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.0532336517304384,
+        "ci_multivar": [
+          0.8601214427382551,
+          1.2897029070754231
+        ],
+        "p_multivar": 0.6157470220086831,
+        "q_fdr_multivar": 0.7785943445470798
+      },
+      "q_fdr": 0.8826660832056886
+    },
+    {
+      "gene": "BRCA2",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1703954726351005,
+      "ci": [
+        0.9389141774811944,
+        1.458946509935064
+      ],
+      "p": 0.16169321009066062,
+      "ph_test_p": 0.6719305204045091,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.1481808021159445,
+        "ci_multivar": [
+          0.9154640102909525,
+          1.4400556870920858
+        ],
+        "p_multivar": 0.2318123379389786,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "EP300",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.8888812941645012,
+      "ci": [
+        0.7184812723844065,
+        1.099694571708793
+      ],
+      "p": 0.27801033461565594,
+      "ph_test_p": 0.5671829903551409,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.8657191959157507,
+        "ci_multivar": [
+          0.7010089271715133,
+          1.0691300739935428
+        ],
+        "p_multivar": 0.18051046732000497,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.4448165353850495
+    },
+    {
+      "gene": "CREBBP",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.9299459657636631,
+      "ci": [
+        0.7559718064028873,
+        1.1439573432705852
+      ],
+      "p": 0.49190217397906366,
+      "ph_test_p": 0.9242380609972074,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.928092548340132,
+        "ci_multivar": [
+          0.7532809885686365,
+          1.1434720792850546
+        ],
+        "p_multivar": 0.4833963170124044,
+        "q_fdr_multivar": 0.6725513975824756
+      },
+      "q_fdr": 0.6054180602819246
+    },
+    {
+      "gene": "PIK3CA",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.3452477448392073,
+      "ci": [
+        1.0929040846840024,
+        1.6558557336879378
+      ],
+      "p": 0.005139141258710824,
+      "ph_test_p": 0.4479432748658402,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.2921972205185346,
+        "ci_multivar": [
+          1.0441196707649414,
+          1.5992167406371331
+        ],
+        "p_multivar": 0.01842492423894805,
+        "q_fdr_multivar": 0.1473993939115844
+      },
+      "q_fdr": 0.041113130069686595
+    },
+    {
+      "gene": "PIK3CB",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.0689315228370313,
+      "ci": [
+        0.8702621184589638,
+        1.3129545412570698
+      ],
+      "p": 0.5251626195285268,
+      "ph_test_p": 0.9465074620190417,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.0170013974959673,
+        "ci_multivar": [
+          0.825064113151896,
+          1.2535896617264888
+        ],
+        "p_multivar": 0.8744699086949046,
+        "q_fdr_multivar": 0.9026786154269982
+      },
+      "q_fdr": 0.622414956478254
+    },
+    {
+      "gene": "PPP2R1A",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1395737652525935,
+      "ci": [
+        0.9212255257183696,
+        1.4096747541155088
+      ],
+      "p": 0.22861507676281856,
+      "ph_test_p": 0.7096934730978568,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.136612209195799,
+        "ci_multivar": [
+          0.920363179161781,
+          1.4036712282096495
+        ],
+        "p_multivar": 0.23433394717843858,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.4064268031338996
+    },
+    {
+      "gene": "PPP2R1B",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.6989625505471103,
+      "ci": [
+        0.5736413112113895,
+        0.8516622452375806
+      ],
+      "p": 0.0003812861419438536,
+      "ph_test_p": 0.5098573900900337,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.7161898323144207,
+        "ci_multivar": [
+          0.5873628042147107,
+          0.8732726557248203
+        ],
+        "p_multivar": 0.0009691237671083034,
+        "q_fdr_multivar": 0.015505980273732855
+      },
+      "q_fdr": 0.006100578271101657
+    },
+    {
+      "gene": "FBXW7",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.8645829742996771,
+      "ci": [
+        0.6994663985679412,
+        1.068677095825167
+      ],
+      "p": 0.1783960617406566,
+      "ph_test_p": 0.10432366363236224,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.8794998518257003,
+        "ci_multivar": [
+          0.7092332546595843,
+          1.0906425837754898
+        ],
+        "p_multivar": 0.24215054829192773,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "FBXW2",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.9264132194490867,
+      "ci": [
+        0.7547892195317432,
+        1.1370610906478742
+      ],
+      "p": 0.4646486433034521,
+      "ph_test_p": 0.25941977995111654,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.9514492056562338,
+        "ci_multivar": [
+          0.7752957379429437,
+          1.167626167203951
+        ],
+        "p_multivar": 0.6337608155205195,
+        "q_fdr_multivar": 0.7785943445470798
+      },
+      "q_fdr": 0.5947502634284187
+    },
+    {
+      "gene": "STK11",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.7339999674765552,
+      "ci": [
+        0.5870583497005639,
+        0.9177213006686352
+      ],
+      "p": 0.0066605201582492154,
+      "ph_test_p": 0.10151992202032249,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.7766228338663722,
+        "ci_multivar": [
+          0.6192081302960748,
+          0.9740554049156969
+        ],
+        "p_multivar": 0.028708969224230236,
+        "q_fdr_multivar": 0.18373740303507352
+      },
+      "q_fdr": 0.04262732901279498
+    },
+    {
+      "gene": "SIK1",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1441989015358291,
+      "ci": [
+        0.9310196385499871,
+        1.406190666734799
+      ],
+      "p": 0.2003552760667483,
+      "ph_test_p": 0.5776489817270131,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.1800303713262486,
+        "ci_multivar": [
+          0.9572605346969327,
+          1.4546423118688565
+        ],
+        "p_multivar": 0.12094894799424809,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38647198251679526
+    },
+    {
+      "gene": "KRAS",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1713276253403124,
+      "ci": [
+        0.9426858838697354,
+        1.4554247913984526
+      ],
+      "p": 0.15349649300980095,
+      "ph_test_p": 0.7605995281603278,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.1619749817049763,
+        "ci_multivar": [
+          0.9305462832931344,
+          1.4509604544655987
+        ],
+        "p_multivar": 0.18524758147434128,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "HRAS",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.8793890441787313,
+      "ci": [
+        0.7014143195686673,
+        1.102522531186898
+      ],
+      "p": 0.2652652707110502,
+      "ph_test_p": 0.21006873756048186,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.9213071394317383,
+        "ci_multivar": [
+          0.7338428311923976,
+          1.156660267142889
+        ],
+        "p_multivar": 0.4801029836801963,
+        "q_fdr_multivar": 0.6725513975824756
+      },
+      "q_fdr": 0.4448165353850495
+    },
+    {
+      "gene": "PIK3R1",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.8142432207003987,
+      "ci": [
+        0.6573951056815044,
+        1.0085137791971415
+      ],
+      "p": 0.05978933401996744,
+      "ph_test_p": 0.120188937858562,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.8260814010756566,
+        "ci_multivar": [
+          0.6728625931585854,
+          1.0141899522155249
+        ],
+        "p_multivar": 0.06794314619431398,
+        "q_fdr_multivar": 0.3105972397454353
+      },
+      "q_fdr": 0.2733226698055654
+    },
+    {
+      "gene": "CRKL",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1841082446868714,
+      "ci": [
+        0.9652029505995717,
+        1.4526606391582717
+      ],
+      "p": 0.1051469438067843,
+      "ph_test_p": 0.8681014079439546,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.139535853924565,
+        "ci_multivar": [
+          0.9331849949533074,
+          1.3915161188854748
+        ],
+        "p_multivar": 0.20000348734447515,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "PTEN",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.6723473030475211,
+      "ci": [
+        0.5544907187565508,
+        0.8152542154880472
+      ],
+      "p": 5.407849176670797e-05,
+      "ph_test_p": 0.3625647780680804,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.6847216785502498,
+        "ci_multivar": [
+          0.5660979823282679,
+          0.8282025227300657
+        ],
+        "p_multivar": 9.540342342332496e-05,
+        "q_fdr_multivar": 0.0030529095495463988
+      },
+      "q_fdr": 0.001730511736534655
+    },
+    {
+      "gene": "TNS2",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.9955988081653863,
+      "ci": [
+        0.805905533433068,
+        1.2299419047265545
+      ],
+      "p": 0.9673755374021537,
+      "ph_test_p": 0.0742999765963944,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.9924985147557622,
+        "ci_multivar": [
+          0.8033153621734824,
+          1.2262348613963936
+        ],
+        "p_multivar": 0.9443635344570428,
+        "q_fdr_multivar": 0.9443635344570428
+      },
+      "q_fdr": 0.9673755374021537
+    },
+    {
+      "gene": "KMT2D",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.0253097608648518,
+      "ci": [
+        0.8188765217787802,
+        1.2837834249309912
+      ],
+      "p": 0.8274994530053331,
+      "ph_test_p": 0.7940197112057398,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.0222858610211678,
+        "ci_multivar": [
+          0.8125387624040418,
+          1.2861766478091066
+        ],
+        "p_multivar": 0.8507752505655723,
+        "q_fdr_multivar": 0.9026786154269982
+      },
+      "q_fdr": 0.8826660832056886
+    },
+    {
+      "gene": "KMT2C",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.8677866368905279,
+      "ci": [
+        0.7069470389948228,
+        1.0652193242601413
+      ],
+      "p": 0.1751304781052313,
+      "ph_test_p": 0.2770923118929331,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.855649399054971,
+        "ci_multivar": [
+          0.6977413526263585,
+          1.0492941135670264
+        ],
+        "p_multivar": 0.13420582109558887,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "NF1",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.098497151810658,
+      "ci": [
+        0.8724828738616476,
+        1.3830598040225572
+      ],
+      "p": 0.4241030183019556,
+      "ph_test_p": 0.4876014125846056,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.1030682577616011,
+        "ci_multivar": [
+          0.8752011720045768,
+          1.3902627421011393
+        ],
+        "p_multivar": 0.40603123761497684,
+        "q_fdr_multivar": 0.649649980183963
+      },
+      "q_fdr": 0.5900563732896774
+    },
+    {
+      "gene": "RASA2",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1065480400248926,
+      "ci": [
+        0.8807799716973814,
+        1.3901866575408774
+      ],
+      "p": 0.3845085372811027,
+      "ph_test_p": 0.48742913153242223,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.0526726117356462,
+        "ci_multivar": [
+          0.8392920466585421,
+          1.3203027860326841
+        ],
+        "p_multivar": 0.6569389782115986,
+        "q_fdr_multivar": 0.7785943445470798
+      },
+      "q_fdr": 0.5592851451361494
+    },
+    {
+      "gene": "ATR",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1590111484384646,
+      "ci": [
+        0.9223844782410888,
+        1.4563415515905298
+      ],
+      "p": 0.20531324071204748,
+      "ph_test_p": 0.14273035634477177,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.0881173372879505,
+        "ci_multivar": [
+          0.8710470266986818,
+          1.3592829128801973
+        ],
+        "p_multivar": 0.4569475967933916,
+        "q_fdr_multivar": 0.6725513975824756
+      },
+      "q_fdr": 0.38647198251679526
+    },
+    {
+      "gene": "ATM",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.9614316540598872,
+      "ci": [
+        0.774721183978007,
+        1.1931399896437727
+      ],
+      "p": 0.7210682742495113,
+      "ph_test_p": 0.6635772768514767,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.96240812517746,
+        "ci_multivar": [
+          0.7753094773628669,
+          1.194657651494297
+        ],
+        "p_multivar": 0.7282872929834011,
+        "q_fdr_multivar": 0.8036273577747874
+      },
+      "q_fdr": 0.8240780277137271
+    },
+    {
+      "gene": "RB1",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.8214056854244504,
+      "ci": [
+        0.6752520793871268,
+        0.9991932207894714
+      ],
+      "p": 0.04905953672645313,
+      "ph_test_p": 0.19751736516619903,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.8096033748064592,
+        "ci_multivar": [
+          0.663766920400497,
+          0.9874816058964261
+        ],
+        "p_multivar": 0.03713138782175466,
+        "q_fdr_multivar": 0.1980340683826915
+      },
+      "q_fdr": 0.26165086254108333
+    },
+    {
+      "gene": "RBL1",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.1789775695490434,
+      "ci": [
+        0.9492310125997817,
+        1.464330696163023
+      ],
+      "p": 0.13652682323403095,
+      "ph_test_p": 0.022231163223224486,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.1484186871331725,
+        "ci_multivar": [
+          0.9214596526193493,
+          1.4312785993479598
+        ],
+        "p_multivar": 0.21799669399258126,
+        "q_fdr_multivar": 0.40783250238640456
+      },
+      "q_fdr": 0.38057826504673403
+    },
+    {
+      "gene": "BRAF",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 1.3949245851272722,
+      "ci": [
+        1.1208078203329292,
+        1.7360822818085802
+      ],
+      "p": 0.002866570983418601,
+      "ph_test_p": 0.12149245704136039,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 1.3648429593551503,
+        "ci_multivar": [
+          1.0960044812714203,
+          1.6996247146183083
+        ],
+        "p_multivar": 0.00545164006535927,
+        "q_fdr_multivar": 0.05815082736383221
+      },
+      "q_fdr": 0.030576757156465077
+    },
+    {
+      "gene": "RAF1",
+      "n": 525,
+      "n_events": 87,
+      "hr_continuous": 0.9938386186505875,
+      "ci": [
+        0.8114543892865739,
+        1.2172159186786844
+      ],
+      "p": 0.9523565103907237,
+      "ph_test_p": 0.8433980036202764,
+      "multivar_age_stage": null,
+      "multivar_age_only": {
+        "n": 523,
+        "hr_multivar": 0.9630727278117586,
+        "ci_multivar": [
+          0.7892832284199175,
+          1.1751283261289882
+        ],
+        "p_multivar": 0.7109472006401778,
+        "q_fdr_multivar": 0.8036273577747874
+      },
+      "q_fdr": 0.9673755374021537
+    }
+  ],
+  "arid1b_highlight": {
+    "gene": "ARID1B",
+    "n": 525,
+    "n_events": 87,
+    "hr_continuous": 1.173827581725778,
+    "ci": [
+      0.9411290644057125,
+      1.46406188453043
+    ],
+    "p": 0.15509808375080508,
+    "ph_test_p": 0.5851484099861922,
+    "multivar_age_stage": null,
+    "multivar_age_only": {
+      "n": 523,
+      "hr_multivar": 1.1665215881363447,
+      "ci_multivar": [
+        0.9317123383355397,
+        1.460507239840889
+      ],
+      "p_multivar": 0.17921105709903795,
+      "q_fdr_multivar": 0.40783250238640456
+    },
+    "q_fdr": 0.38057826504673403
+  },
+  "arid1a_stratified": {
+    "mutation_definition": "any non-silent ARID1A mutation in profile ucec_tcga_pan_can_atlas_2018_mutations; types counted: ['Frame_Shift_Del', 'Frame_Shift_Ins', 'In_Frame_Del', 'In_Frame_Ins', 'Missense_Mutation', 'Nonsense_Mutation', 'Nonstop_Mutation', 'Splice_Site', 'Translation_Start_Site']; Silent and non-coding-region records excluded",
+    "mutation_type_counts_all_records": {
+      "Nonsense_Mutation": 113,
+      "Frame_Shift_Del": 106,
+      "Missense_Mutation": 73,
+      "Frame_Shift_Ins": 34,
+      "Splice_Site": 5,
+      "In_Frame_Ins": 1,
+      "In_Frame_Del": 2
+    },
+    "n_cohort": 525,
+    "arid1b_model": "PHReg OS ~ z(log2(ARID1B RSEM+1)) within each ARID1A stratum; multivariable adds age + AJCC stage when stratum events allow (age-only fallback when stage is unpopulated, as in this study)",
+    "strata": [
+      {
+        "stratum": "ARID1A_mutant",
+        "n": 226,
+        "n_events": 19,
+        "univariate": {
+          "hr": 1.243328808620488,
+          "ci": [
+            0.7561083898844772,
+            2.044503866147853
+          ],
+          "p": 0.3907419374048041
+        },
+        "ph_test_p": 0.23289428244188204,
+        "multivariable": {
+          "covariates": [
+            "z",
+            "age"
+          ],
+          "n": 225,
+          "n_events": 19,
+          "hr": 1.2164429556379417,
+          "ci": [
+            0.7343055553444686,
+            2.0151467649281463
+          ],
+          "p": 0.44677352620292565,
+          "power_note": "only 19 events for a 2-covariate model (<10 events/variable); interpret with caution"
+        }
+      },
+      {
+        "stratum": "ARID1A_wildtype",
+        "n": 299,
+        "n_events": 68,
+        "univariate": {
+          "hr": 1.1545076875107358,
+          "ci": [
+            0.9049771150409615,
+            1.4728416645774047
+          ],
+          "p": 0.2475260517442298
+        },
+        "ph_test_p": 0.3082815236854265,
+        "multivariable": {
+          "covariates": [
+            "z",
+            "age"
+          ],
+          "n": 298,
+          "n_events": 68,
+          "hr": 1.1613724202225726,
+          "ci": [
+            0.9067610963415276,
+            1.4874765844008169
+          ],
+          "p": 0.23608374188954806
+        }
+      }
+    ]
+  }
+}

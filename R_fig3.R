@@ -1,6 +1,7 @@
 # Fig3 — Clinical Stratification (R)
-# Purpose: panels a+b (90×90mm) on top row, panel c (180×90mm) full width below
-#          → 180×180mm composite
+# Purpose: panels a+b (90×90mm) side by side → 180×90mm composite
+# Note:    former panel c (TCGA survival forest) moved to Supplementary
+#          Fig. S10 (R_figS10_survival.R) after manuscript restructuring.
 # Usage:   Rscript R_fig3.R
 library(ggplot2)
 library(cowplot)
@@ -65,7 +66,7 @@ panel_a <- function() {
   df <- bind_rows(pick("Colorectal_MSI_H"), pick("Colorectal_MSS"),
                   pick("Endometrial_MSI_H"), pick("Endometrial_MSS"))
   df$cancer <- factor(df$cancer, levels = c("Colorectal","Endometrial"))
-  df$msi_status <- factor(df$msi_status, levels = c("MSI-H","MSS"))
+  df$msi_status <- factor(df$msi_status, levels = c("MSS","MSI-H"))
 
   # For hatched bar, use a dummy value with patterned fill
   df$bar_val <- ifelse(is.na(df$auroc), 0.25, df$auroc)
@@ -118,90 +119,30 @@ panel_b <- function() {
 }
 
 # ═══════════════════════════════════════════════════════════════
-# PANEL C — TCGA Survival Forest Plot (multivariable v2, full width)
-# ═══════════════════════════════════════════════════════════════
-panel_c <- function() {
-  # Single source of truth: output/tcga_survival_v2.json, written by
-  # tcga_survival_v2.py (Cox PH on continuous z-scored log2 expression;
-  # multivariable model adjusting for age + AJCC stage; BH FDR across the
-  # 32-gene family). Never hardcoded literals.
-  v2_path <- "paralog_sl_predictor/output/tcga_survival_v2.json"
-  if (!file.exists(v2_path))
-    stop("tcga_survival_v2.json not found — run tcga_survival_v2.py first; ",
-         "simulated fallbacks are forbidden")
-  v2 <- jsonlite::fromJSON(v2_path)
-  # The four FDR-significant genes (BH q<0.05 in the multivariable family)
-  # plus the compensating paralogs of the lead candidate pairs and ARID1A
-  # for direct contrast (see manuscript text).
-  genes8 <- c("PIK3CA","ARID1B","RBL1","BRCA2","PIK3CB","ARID1A","SMARCA2","CREBBP")
-  pg <- v2$per_gene
-  df <- tibble(
-    gene = pg$gene,
-    hr   = pg$multivar_age_stage$hr_multivar,
-    lo   = vapply(pg$multivar_age_stage$ci_multivar, `[`, numeric(1), 1),
-    hi   = vapply(pg$multivar_age_stage$ci_multivar, `[`, numeric(1), 2),
-    p    = pg$multivar_age_stage$p_multivar,
-    q    = pg$multivar_age_stage$q_fdr_multivar
-  ) %>% filter(.data$gene %in% genes8) %>%
-    arrange(desc(.data$hr)) %>%
-    mutate(gene = factor(gene, levels = rev(gene)),   # highest HR on top
-           fdr = .data$q < 0.05,
-           clr = ifelse(fdr, RED, GRAY),
-           lab = paste0(gene, ifelse(fdr, "*", "")),
-           txt = sprintf("%.2f (%.2f\u2013%.2f)", hr, lo, hi),
-           ypos = as.numeric(gene))
-
-  ci_max <- max(df$hi); ci_min <- min(df$lo)
-  x_left  <- max(0.4, floor(ci_min * 10) / 10 - 0.1)
-  x_ann   <- ci_max * 1.12          # left edge of the HR (CI) text column
-  x_right <- x_ann * 1.5            # axis right limit
-
-  ggplot(df, aes(hr, gene)) +
-    geom_vline(xintercept = 1, linewidth = 0.4, color = DARK, alpha = 0.5) +
-    geom_errorbarh(aes(xmin = lo, xmax = hi, color = clr),
-                   height = 0.18, linewidth = 0.8) +
-    geom_point(aes(color = clr), size = 2) +
-    geom_text(aes(y = gene, label = txt), x = x_ann, hjust = 0,
-              size = 2.5, family = "Arial", color = DARK) +
-    annotate("text", x = x_ann, y = nrow(df) + 0.9, label = "HR (95% CI)",
-             hjust = 0, size = 2.5, fontface = "bold", family = "Arial",
-             color = DARK) +
-    annotate("text", x = x_left, y = 0.2, hjust = 0, vjust = 0,
-             label = "*FDR q < 0.05 (BH, 32-gene family)",
-             size = 2.5, family = "Arial", color = GRAY) +
-    scale_color_identity() +
-    scale_y_discrete(labels = setNames(df$lab, df$gene),
-                     expand = expansion(add = c(0.8, 1.6))) +
-    scale_x_continuous(limits = c(x_left, x_right),
-                       breaks = pretty(c(x_left, ci_max), n = 4)) +
-    labs(x = "Multivariable hazard ratio per SD\n(Cox PH, adjusted for age + AJCC stage)",
-         y = NULL) +
-    theme_sci +
-    theme(axis.text.y = element_text(size = TICK_FS, face = "italic"))
-}
-
-# ═══════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════
 message("=== Fig3 Panel Generation (R) ===")
-pa <- panel_a(); pb <- panel_b(); pc <- panel_c()
+pa <- panel_a(); pb <- panel_b()
 
-save_panel(pa, "a"); save_panel(pb, "b"); save_panel(pc, "c", w = PANEL_W * 2)
+save_panel(pa, "a"); save_panel(pb, "b")
 
-# 3-panel composite: a+b top row, c full width below
-top_row <- cowplot::plot_grid(pa, pb, ncol = 2, rel_widths = c(0.53, 0.47),
-                              labels = c("a","b"),
-                              label_size = 9, label_fontface = "bold",
-                              label_fontfamily = "Arial")
-p <- cowplot::plot_grid(top_row, pc, ncol = 1,
-                        labels = c("", "c"),
+# 2-panel composite: a+b side by side (rel_widths keep the two panels
+# visually balanced — review feedback 2026-07-28)
+p <- cowplot::plot_grid(pa, pb, ncol = 2, rel_widths = c(0.53, 0.47),
+                        labels = c("a","b"),
                         label_size = 9, label_fontface = "bold",
                         label_fontfamily = "Arial")
 
 ggsave(file.path(OUT_DIR, "Fig3_Clinical.pdf"), p,
-       width = 180, height = 180, units = "mm", device = cairo_pdf)
+       width = 180, height = 90, units = "mm", device = cairo_pdf)
 ggsave(file.path(OUT_DIR, "Fig3_Clinical.svg"), p,
-       width = 180, height = 180, units = "mm", device = svglite::svglite)
+       width = 180, height = 90, units = "mm", device = svglite::svglite)
 ggsave(file.path(OUT_DIR, "Fig3_Clinical.tiff"), p,
-       width = 180, height = 180, units = "mm", device = ragg::agg_tiff, dpi = 600)
-message("Fig3_Clinical.pdf (180×180mm) ✓")
+       width = 180, height = 90, units = "mm", device = ragg::agg_tiff, dpi = 300)
+ggsave(file.path(OUT_DIR, "Fig3_Clinical.png"), p,
+       width = 180, height = 90, units = "mm", device = ragg::agg_png, dpi = 300)
+REVIEW_DIR <- "figure_review"
+dir.create(REVIEW_DIR, showWarnings = FALSE, recursive = TRUE)
+file.copy(file.path(OUT_DIR, "Fig3_Clinical.png"),
+          file.path(REVIEW_DIR, "Fig3_Clinical.png"), overwrite = TRUE)
+message("Fig3_Clinical.pdf (180×90mm) ✓")

@@ -311,9 +311,13 @@ def run_structural_analysis():
     tw_path = OUTPUT_DIR / "therapeutic_window_all_results.csv"
     if tw_path.exists():
         tw = pd.read_csv(tw_path)
-        # Get mean metrics per pair across contexts
+        # Get mean metrics per pair across contexts.
+        # DWS component uses the PRIMARY signed max(DD,0) formula (dws_signed);
+        # the |DD| version (therapeutic_index) is retained as mean_ti_abs for
+        # sensitivity reference only and is not scored.
         tw_agg = tw.groupby(["driver", "paralog"]).agg(
-            mean_ti=("therapeutic_index", "mean"),
+            mean_ti=("dws_signed", "mean"),
+            mean_ti_abs=("therapeutic_index", "mean"),
             mean_dd=("dd_abs", "mean"),
             mean_selectivity=("selectivity", "mean"),
         ).reset_index()
@@ -323,7 +327,9 @@ def run_structural_analysis():
             right_on=["driver", "paralog"], how="left"
         )
         
-        # Composite clinical score
+        # Composite clinical score: max-normalized signed DWS (0.40; max taken
+        # over this same scored pair set) + rescaled selectivity (0.30) +
+        # targetability (0.30); weights fixed a priori.
         merged["clinical_targetability"] = (
             merged["targetability"] * 0.3 +
             (merged["mean_ti"] / merged["mean_ti"].max() if merged["mean_ti"].max() > 0 else 0) * 0.4 +
@@ -332,10 +338,10 @@ def run_structural_analysis():
         
         merged = merged.sort_values("clinical_targetability", ascending=False)
         
-        print(f"\n  Clinical targetability ranking (structure + TI + selectivity):")
+        print(f"\n  Clinical targetability ranking (structure + signed DWS + selectivity):")
         for _, r in merged.head(10).iterrows():
             flag = "★" if r["is_known_sl"] else "·"
-            ti_str = f"TI={r['mean_ti']:.2f}" if not np.isnan(r["mean_ti"]) else "N/A"
+            ti_str = f"DWS={r['mean_ti']:.2f}" if not np.isnan(r["mean_ti"]) else "N/A"
             print(f"    {flag} {r['gene_a']:10s}→{r['gene_b']:10s}  "
                   f"clinical={r['clinical_targetability']:.3f}  "
                   f"{ti_str}  struct={r['structural_similarity']:.3f}")

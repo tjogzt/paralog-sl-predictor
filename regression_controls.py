@@ -35,7 +35,7 @@ in output/cache/):
 
 Outputs:
   output/cnv_independence.csv       gene, r2, n_lines
-  output/cnv_scatter_sample.csv     sampled points for R_figS4.R
+  output/cnv_scatter_sample.csv     sampled points for R_figS3_cnv.R
   output/regression_controls.json   full results + manuscript claims check
 """
 
@@ -58,7 +58,7 @@ CNV_CSV_OUT = ROOT / "output" / "cnv_independence.csv"
 CNV_SAMPLE_OUT = ROOT / "output" / "cnv_scatter_sample.csv"
 JSON_OUT = ROOT / "output" / "regression_controls.json"
 
-# Genes for the CNV-independence panel (matches R_figS4.R / manuscript "23 genes")
+# Genes for the CNV-independence panel (matches R_figS3_cnv.R / manuscript "23 genes")
 CNV_GENES = ["ARID1A", "ARID1B", "PIK3CA", "PIK3CB", "PIK3R1", "CRKL",
              "EP300", "CREBBP", "KRAS", "HRAS", "PTEN", "TNS2",
              "SMARCA4", "SMARCA2", "PPP2R1A", "PPP2R1B",
@@ -271,7 +271,9 @@ def stage_analyze():
     # For every evaluable gold-standard pair, report beta (=-DD), HC3-robust
     # SE, 95% CI, p, BH q (within model), n, n_mut, n_wt for nested models:
     # base / +CNV / +Expression / +Lineage (OncotreePrimaryDisease fixed
-    # effects, levels with <20 lines collapsed into "Other").
+    # effects, levels with <20 lines collapsed into "Other"). HC3 does not
+    # address within-lineage correlation, so every model also carries
+    # lineage cluster-robust SE/p (cov_type='cluster', groups = lineage).
     import statsmodels.formula.api as smf
     from statsmodels.stats.multitest import multipletests
 
@@ -290,6 +292,16 @@ def stage_analyze():
         return {"beta_mut": float(fit.params["mut"]), "dd": float(-fit.params["mut"]),
                 "se": float(fit.bse["mut"]), "ci_lo": float(ci[0]), "ci_hi": float(ci[1]),
                 "p": float(fit.pvalues["mut"]), "n": int(fit.nobs)}
+
+    def _fit_mut_cluster(dfj, rhs):
+        """Lineage cluster-robust SE for the same model: cov_type='cluster'
+        with cell lines grouped by Oncotree primary disease, addressing
+        within-lineage correlation that HC3 cannot (reviewer comment)."""
+        groups = lin.loc[dfj.index].values
+        fit = smf.ols(f"dep ~ {rhs}", data=dfj).fit(
+            cov_type="cluster", cov_kwds={"groups": groups})
+        return {"se_lineage_cluster": float(fit.bse["mut"]),
+                "p_lineage_cluster": float(fit.pvalues["mut"])}
 
     reg_rows = []
     for d, p in GOLD_PAIRS:
@@ -319,6 +331,12 @@ def stage_analyze():
             except Exception as e:  # singular design etc.
                 r = {"beta_mut": None, "dd": None, "se": None, "ci_lo": None,
                      "ci_hi": None, "p": None, "n": len(fj), "error": str(e)}
+            try:
+                r.update(_fit_mut_cluster(fj, rhs))
+            except Exception as e:  # e.g. too few clusters
+                r["se_lineage_cluster"] = None
+                r["p_lineage_cluster"] = None
+                r["lineage_cluster_error"] = str(e)
             reg_rows.append({"pair": key, "model": mname,
                              "n_mut": n_mut, "n_wt": n_wt, **r})
 
@@ -336,6 +354,26 @@ def stage_analyze():
                         (regtab["pair"] == "ARID1A->ARID1B")]["p"])
         results["arid1a_arid1b_lineage_adj_p"] = (float(lin_p.iloc[0])
                                                   if len(lin_p) and pd.notna(lin_p.iloc[0]) else None)
+        # Headline pairs under lineage cluster-robust SE (lineage_adj model;
+        # same specification as the 2.2e-13 claim, SE clustered by lineage)
+        def _safe(x):
+            try:
+                return _f(x)
+            except (TypeError, ValueError):
+                return None
+        cl_out = {}
+        for pair in ("ARID1A->ARID1B", "SMARCA4->SMARCA2", "EP300->CREBBP"):
+            sub = regtab[(regtab["pair"] == pair) & (regtab["model"] == "lineage_adj")]
+            if len(sub):
+                cl_out[pair] = {
+                    "model": "lineage_adj",
+                    "se_lineage_cluster": _safe(sub["se_lineage_cluster"].iloc[0]),
+                    "p_lineage_cluster": _safe(sub["p_lineage_cluster"].iloc[0]),
+                }
+        results["lineage_cluster_se_headline"] = cl_out
+        print("  lineage cluster-robust SE (lineage_adj model): " + "; ".join(
+            f"{k} p={v['p_lineage_cluster']:.2e}" if v["p_lineage_cluster"] is not None
+            else f"{k} p=NA" for k, v in cl_out.items()))
         print(f"  full regression table: {len(regtab)} rows, HC3 robust SE "
               f"-> output/regression_table_full.csv; "
               f"ARID1A->ARID1B lineage-adj p={results['arid1a_arid1b_lineage_adj_p']:.2e}"

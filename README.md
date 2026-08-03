@@ -12,7 +12,7 @@ Delta Dependency (DD) is a simple, interpretable, discovery-stage metric for pri
 **Key findings (see manuscript for full context):**
 - **Gold-standard evaluation (evidence-tiered, citation-verified):** signed DD AUROC = 0.629 on the full 12-pair curated set; 0.613 excluding two DepMap-derived pairs; 0.525 on pre-DepMap evidence only; unchanged (0.629) under direction-strict relabelling (direction-agnostic |DD| values are reported as sensitivity analyses). Both lineage-evaluable positives on the Tier A∪B external benchmark rank above all unlabeled controls (AUROC = 1.000; 2 of 5 benchmark pairs lineage-evaluable)
 - **DD vs. published methods (contextual reference, CV3-analogous framework):** signed DD AUROC = 0.629 without training; best published CV3 result 0.790 (SLMGAE) — analogous, not identical, evaluation frameworks
-- **Head-to-head (identical 72-pair test set, 6 positives):** the interpretable composite score (0.831) matches the best of four multi-feature classifiers under leave-one-pair-out CV (SVM-RBF 0.843, RF 0.722, SVM-Linear 0.114, LR 0.136; DD alone 0.672) — small-n results reported with an explicit power caveat
+- **Head-to-head (identical 72-pair test set, 6 positives):** the interpretable composite score (0.831) matches the best of four multi-feature classifiers under leave-one-pair-out CV (SVM-RBF 0.841, RF 0.722, SVM-Linear 0.240, LR 0.136; DD alone 0.672) — small-n results reported with an explicit power caveat
 - DD + ≥30% sequence identity filter → AUROC = 1.000
 
 ## Directory Structure
@@ -43,8 +43,11 @@ paralog_sl_predictor/
 ├── alphafold_analysis.py      # Structural similarity analysis
 │
 ├── R_fig1.R ... R_fig4.R      # Main figure generation (R)
-├── R_figS1.R ... R_figS9.R    # Supplementary figure generation (R)
-├── R_figS8.R                  # Bootstrap + permutation (10,000 iter)
+├── R_figS1.R                  # Fig. S1: evaluation landscape (lines/pairs/AUROC)
+├── R_figS2_robustness.R       # Fig. S2: bootstrap + permutation (10,000 iter) + in4mer
+├── R_figS3_cnv.R ... R_figS8_dws.R
+│                              # Figs. S3-S8 (one content module per script)
+├── R_figS9_descriptors.R      # Fig. S9: sequence/structure descriptors
 │
 ├── data/                      # Input data (large files in .gitignore)
 │   ├── README.md              # Download instructions
@@ -93,7 +96,7 @@ R figure dependencies (install once):
 ```r
 install.packages(c("ggplot2", "dplyr", "readr", "cowplot",
                    "svglite", "ragg", "jsonlite", "tidyr"))
-BiocManager::install(c("Biostrings", "pwalign"))  # FigS9 NW alignment
+BiocManager::install(c("Biostrings", "pwalign"))  # Fig. S9a NW alignment
 ```
 
 ### R Package
@@ -132,9 +135,12 @@ data by three audit scripts, each ending with an automatic claims check that
 exits non-zero on mismatch. A fourth script,
 `audit_manuscript_numbers.py`, closes the loop on the numbers those three do
 not own (lineage-level AUROCs, TSG/ONC contrast, MSI stratification,
-mutation-type analysis, direction audit, therapeutic-window module, Table S2
-spot values): it recomputes 109 manuscript claims from the artifacts under
-`output/` and writes `output/manuscript_number_audit.tsv` (109/109 match).
+mutation-type analysis, direction audit, dependency-window module, Table S2
+spot values, pair-clustered bootstrap and permutation uncertainty, power
+analysis, composite-weight and in4mer seed sensitivities, CPTAC RNA-layer
+and purity-adjusted co-variation, and the TCGA UCEC/OV survival extension):
+it recomputes every remaining manuscript claim from the artifacts under
+`output/` and writes `output/manuscript_number_audit.tsv` (310/310 match).
 One command runs all of them plus the test suite:
 
 ```bash
@@ -144,13 +150,19 @@ VERIFY_FULL=1 ./verify_all.sh  # full: rebuilds all caches from raw CSVs
 
 | Script | Recomputes | Claims check |
 |---|---|---|
-| `compute_headline_metrics.py` | DD values, TI, AUROC, pair counts, q-values | `output/headline_metrics.json` (16/16 match) |
+| `compute_headline_metrics.py` | DD values, DWS, AUROC, pair counts, q-values | `output/headline_metrics.json` (19/19 match) |
 | `ml_benchmark.py` | LOO-CV AUROC of LR/RF/SVM vs DD-only baseline | `output/ml_benchmark.json` |
 | `regression_controls.py` | CNV/expression/TP53-adjusted regressions, CNV R² | `output/regression_controls.json` (10/10 match) |
-| `audit_manuscript_numbers.py` | All remaining manuscript numbers (lineages, MSI, mutation type, direction, therapeutic window) | `output/manuscript_number_audit.tsv` (109/109 match) |
+| `audit_manuscript_numbers.py` | All remaining manuscript numbers (lineages, MSI, mutation type, direction, dependency window, bootstrap/permutation uncertainty, power, sensitivity analyses, CPTAC RNA/purity, UCEC/OV survival) | `output/manuscript_number_audit.tsv` (310/310 match) |
 
 `regression_controls.py` also writes `output/cnv_independence.csv` and
-`output/cnv_scatter_sample.csv`, the exact inputs of `R_figS4.R` (Fig. S4).
+`output/cnv_scatter_sample.csv`, the exact inputs of `R_figS3_cnv.R` (Fig. S3).
+Additional analysis scripts feeding the audit loop: `cluster_bootstrap_primary.py`
+(pair-clustered bootstrap, pair-level permutation, effective sample size),
+`power_analysis.py`, `composite_weight_sensitivity.py`,
+`in4mer_seed_sensitivity.py`, `cptac_rna_purity.py` (mRNA co-variation and
+purity-adjusted partial correlations), `cptac_scatter.py` (122 per-cohort
+scatter plots), and `tcga_survival_ucec_ov.py` (UCEC/OV survival extension).
 The test suite (`pytest tests/`, 31 tests) covers the R-package mirror and
 shared pipeline utilities.
 

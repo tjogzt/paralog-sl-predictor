@@ -28,13 +28,18 @@ pp_comp	Composite AUROC	0.831	0.831	output/headline_metrics.json	match
 pp_comp_auprc	Composite AUPRC	0.356	0.356	output/headline_metrics.json	match
 pp_baseline	Baseline prevalence	0.083	0.083	output/headline_metrics.json	match
 pp_enrich	AUPRC enrichment ×baseline	4.3	4.278	output/headline_metrics.json	match
-ml_svmrbf	SVM-RBF AUROC	0.843	0.843	output/ml_benchmark.json	match
+ml_svmrbf	SVM-RBF AUROC	0.841	0.841	output/ml_benchmark.json	match
 ml_rf	Random forest AUROC	0.722	0.722	output/ml_benchmark.json	match
-ml_svmlin	SVM-Linear AUROC	0.114	0.114	output/ml_benchmark.json	match
+ml_svmlin	SVM-Linear AUROC	0.240	0.240	output/ml_benchmark.json	match
 ml_lr	Logistic regression AUROC	0.136	0.136	output/ml_benchmark.json	match
 ml_dd	DD alone AUROC	0.672	0.672	output/ml_benchmark.json	match
 ml_comp	Composite alone AUROC	0.831	0.831	output/ml_benchmark.json	match
-ml_lr_feat_p	All LR feature p-values > 0.23	>0.23	min p = 0.239	output/ml_benchmark.json	match
+ml_comp_lofo	Composite fold-internal-scaling AUROC	0.831	0.831	output/ml_benchmark.json	match
+ml_comp_lofo_auprc	Composite fold-internal-scaling AUPRC	0.368	0.368	output/ml_benchmark.json	match
+ml_delta_auroc_mean	Paired bootstrap ΔAUROC mean (composite − SVM-RBF)	-0.01	-0.010	output/ml_benchmark.json	match
+ml_delta_auroc_lo	Paired bootstrap ΔAUROC 95% CI lower	-0.21	-0.213	output/ml_benchmark.json	match
+ml_delta_auroc_hi	Paired bootstrap ΔAUROC 95% CI upper	+0.18	0.182	output/ml_benchmark.json	match
+ml_delta_auroc_pneg	Paired bootstrap P(ΔAUROC < 0)	0.54	0.537	output/ml_benchmark.json	match
 lin_neval	Evaluable lineages (primary ≥5 frame)	8	8	output/solid_tumor_summary.csv	match
 lin_n01	Lineages with AUROC ≥ 0.7	1	1	output/solid_tumor_summary.csv	match
 lin_Esopha	Esophagogastric AUROC (primary frame)	0.674	0.674	output/solid_tumor_summary.csv	match
@@ -66,6 +71,26 @@ msi_n45	Colorectal MSS cell lines	45	45	output/msi_key_numbers_min3.json	match
 msi5_endo	Endometrial MSI subgroups not evaluable (primary frame)	not evaluable	not evaluable	output/msi_key_numbers_min5.json	match
 msi5_col_h	Colorectal MSI-H AUROC (primary)	0.574	0.574	output/msi_key_numbers_min5.json	match
 msi5_col_s	Colorectal MSS AUROC (primary)	0.298	0.298	output/msi_key_numbers_min5.json	match
+msi_int_crc_lines	Interaction cohort: colorectal lines	63	63	output/msi_interaction_summary.json	match
+msi_int_end_lines	Interaction cohort: endometrial lines	28	28	output/msi_interaction_summary.json	match
+msi_int_crc_pairs	Interaction evaluable pairs: colorectal	47	47	output/msi_interaction_summary.json	match
+msi_int_end_pairs	Interaction evaluable pairs: endometrial	24	24	output/msi_interaction_summary.json	match
+msi_int_crc_nom	Nominal interactions: colorectal	4	4	output/msi_interaction_summary.json	match
+msi_int_end_nom	Nominal interactions: endometrial	1	1	output/msi_interaction_summary.json	match
+msi_int_crc_minq	Min interaction q: colorectal	0.157	0.157	output/msi_interaction_summary.json	match
+msi_int_end_minq	Min interaction q: endometrial	0.235	0.235	output/msi_interaction_summary.json	match
+msi_int_crc_binom	Binomial p: colorectal	0.207	0.207	output/msi_interaction_summary.json	match
+msi_int_end_binom	Binomial p: endometrial	0.708	0.708	output/msi_interaction_summary.json	match
+msi_int_crc_stouf	Stouffer p: colorectal	0.667	0.667	output/msi_interaction_summary.json	match
+msi_int_end_stouf	Stouffer p: endometrial	0.276	0.276	output/msi_interaction_summary.json	match
+msi_int_crc_medabs	Median |delta DD|: colorectal	0.062	0.062	output/msi_interaction_summary.json	match
+msi_int_end_medabs	Median |delta DD|: endometrial	0.076	0.076	output/msi_interaction_summary.json	match
+msi_int_crc_ci_excl	Interaction CIs excluding zero: colorectal	4	4	output/msi_interaction_summary.json	match
+msi_int_end_ci_excl	Interaction CIs excluding zero: endometrial	1	1	output/msi_interaction_summary.json	match
+msi_int_arid_end_dd	ARID1A->ARID1B deltaDD: endometrial	+0.02	0.018	output/msi_interaction_summary.json	match
+msi_int_arid_end_p	ARID1A->ARID1B interaction p: endometrial	0.96	0.957	output/msi_interaction_summary.json	match
+msi_int_arid_crc_dd	ARID1A->ARID1B deltaDD: colorectal	+0.04	0.044	output/msi_interaction_summary.json	match
+msi_int_arid_crc_p	ARID1A->ARID1B interaction p: colorectal	0.79	0.789	output/msi_interaction_summary.json	match
 mt_arid_t	ARID1A→ARID1B Ovarian truncating DD	0.388	0.388	output/muttype_all_results.csv	match
 mt_arid_m	ARID1A→ARID1B Ovarian missense DD	0.020	0.020	output/muttype_all_results.csv	match
 mt_ep_t	EP300→CREBBP Colorectal truncating DD	0.464	0.464	output/muttype_all_results.csv	match
@@ -76,65 +101,75 @@ mt_br_m	Breast missense-only AUROC	0.437	0.437	output/muttype_all_results.csv	ma
 mt_miss_mean	Pan-pair mean |DD missense|	0.042	0.042	output/muttype_all_results.csv	match
 mt_trunc_mean	Pan-pair mean |DD truncating|	0.026	0.026	output/muttype_all_results.csv	match
 mt_paired_p	Paired t-test p	3e-4	2.95e-04	output/muttype_all_results.csv	match
-mt_panelb_mean	Fig S6b mean(|trunc|−|miss|)	-0.015	-0.015	output/muttype_all_results.csv	match
+mt_panelb_mean	Fig S5b mean(|trunc|−|miss|)	-0.015	-0.015	output/muttype_all_results.csv	match
 dir_abs	Full frame |DD| AUROC (sensitivity analysis)	0.676	0.676	output/direction_audit.json	match
 dir_signed	Full frame signed-DD AUROC	0.629	0.629	output/direction_audit.json	match
 dir_neg	Positive entries with DD<0	3	3	output/direction_audit.json	match
 dir_tier	Tier A∪B frame signed = absolute	1.000	1.000	output/direction_audit.json	match
-dws_arid	ARID1A→ARID1B mean DWS	2.82	2.819	output/therapeutic_window_paralog_classification.csv	match
+dws_arid	ARID1A→ARID1B mean DWS (signed max(DD,0) formula)	2.82	2.819	output/therapeutic_window_paralog_classification.csv	match
 dws_arid_sel	ARID1A→ARID1B mean selectivity	+0.28	0.277	output/therapeutic_window_paralog_classification.csv	match
-dws_arid_dd	ARID1A→ARID1B mean |DD|	0.270	0.270	output/therapeutic_window_paralog_classification.csv	match
-dws_smarca	SMARCA4→SMARCA2 mean DWS	4.87	4.874	output/therapeutic_window_paralog_classification.csv	match
+dws_arid_dd	ARID1A→ARID1B mean max(DD,0) numerator	0.270	0.270	output/therapeutic_window_paralog_classification.csv	match
+dws_smarca	SMARCA4→SMARCA2 mean DWS (signed max(DD,0) formula)	4.87	4.874	output/therapeutic_window_paralog_classification.csv	match
 dws_smarca_sel	SMARCA4→SMARCA2 selectivity	+0.18	0.181	output/therapeutic_window_paralog_classification.csv	match
-dws_nf1	NF1→RASA2 mean DWS	5.42	5.421	output/therapeutic_window_paralog_classification.csv	match
+dws_nf1	NF1→RASA2 mean DWS (signed max(DD,0) formula)	1.82	1.824	output/therapeutic_window_paralog_classification.csv	match
 dws_nf1_sel	NF1→RASA2 selectivity	0.005	0.005	output/therapeutic_window_paralog_classification.csv	match
 dws_nf1_pan	NF1→RASA2 pan-essential denominator (%)	0.1	0.134	output/therapeutic_window_paralog_classification.csv	match
 dws_pan_brca_lo	BRCA1/2 pan-essential fraction lower	0.53	0.532	output/therapeutic_window_paralog_classification.csv	match
 dws_pan_brca_hi	BRCA1/2 pan-essential fraction upper	0.55	0.545	output/therapeutic_window_paralog_classification.csv	match
 dws_pan_crkl	PIK3R1→CRKL pan-essential fraction	0.73	0.726	output/therapeutic_window_paralog_classification.csv	match
 dws_npairs	Evaluated pairs (Table S5)	21	21	output/therapeutic_window_paralog_classification.csv	match
-dws_n_gt1	Pairs with DWS > 1.0 in ≥2 contexts	9	9	output/therapeutic_window_all_results.csv	match
+dws_n_gt1	Pairs with signed DWS > 1.0 in ≥2 contexts	5	5	output/therapeutic_window_all_results.csv	match
 dws_tier_hs	HIGH_SELECTIVITY pairs	2	2	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_mod	MODERATE pairs	5	5	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_low	LOW_SELECTIVITY pairs	11	11	output/therapeutic_window_paralog_classification.csv	match
 dws_tier_pan	PAN_ESSENTIAL pairs	3	3	output/therapeutic_window_paralog_classification.csv	match
-comp_top1	Composite rank 1 score (NF1→RASA2; Table S9)	0.695	0.695	output/alphafold_structural_analysis.csv	match
-comp_top2	Composite rank 2 score (ARID1A→ARID1B; Table S9)	0.631	0.631	output/alphafold_structural_analysis.csv	match
+comp_top1	Composite rank 1 score (ARID1A→ARID1B; Table S9, signed-DWS component)	0.823	0.823	output/alphafold_structural_analysis.csv	match
+comp_top2	Composite rank 2 score (EP300→CREBBP; Table S9, signed-DWS component)	0.644	0.644	output/alphafold_structural_analysis.csv	match
 struct_npairs	Scored structural pairs (text: 13)	13	13	output/alphafold_structural_analysis.csv	match
 struct_domain_perfect	Perfect domain conservation (text: 5 of 13)	5	5	output/alphafold_structural_analysis.csv	match
-struct_domain_nonzero	Non-zero domain overlap (Fig. S13 caption: 10)	10	10	output/alphafold_structural_analysis.csv	match
+struct_domain_nonzero	Non-zero domain overlap (Fig. S9 caption: 10)	10	10	output/alphafold_structural_analysis.csv	match
 struct_domain_pct	Perfect domain conservation share (text: 38%)	0.38	0.385	output/alphafold_structural_analysis.csv	match
-dws_sens_rho_mu	Table S10: rho, denominator |mu| only	0.990	0.990	output/dws_robustness.json	match
-dws_sens_rho_f	Table S10: rho, denominator f only	0.893	0.893	output/dws_robustness.json	match
-dws_sens_rho_mean	Table S10: rho, denominator mean(|mu|, f)	0.988	0.988	output/dws_robustness.json	match
-dws_sens_rho_f0001	Table S10: rho, floor 0.001	1.000	1.000	output/dws_robustness.json	match
-dws_sens_rho_f005	Table S10: rho, floor 0.05	0.974	0.974	output/dws_robustness.json	match
-dws_sens_top5_mu	Table S10: top-5 overlap, |mu| only	4	4	output/dws_robustness.json	match
-dws_sens_top5_f	Table S10: top-5 overlap, f only	4	4	output/dws_robustness.json	match
+dws_sens_rho_mu	Table S10: rho, denominator |mu| only (signed base)	0.992	0.992	output/dws_robustness.json	match
+dws_sens_rho_f	Table S10: rho, denominator f only (signed base)	0.966	0.966	output/dws_robustness.json	match
+dws_sens_rho_mean	Table S10: rho, denominator mean(|mu|, f) (signed base)	0.994	0.994	output/dws_robustness.json	match
+dws_sens_rho_f0001	Table S10: rho, floor 0.001 (signed base)	0.996	0.996	output/dws_robustness.json	match
+dws_sens_rho_f005	Table S10: rho, floor 0.05 (signed base)	0.979	0.979	output/dws_robustness.json	match
+dws_abs_sens_rho	Table S10: rho, |DD| numerator (pre-revision formula, sensitivity)	0.381	0.381	output/dws_robustness.json	match
+dws_sens_top5_mu	Table S10: top-5 overlap, |mu| only	5	5	output/dws_robustness.json	match
+dws_sens_top5_f	Table S10: top-5 overlap, f only	3	3	output/dws_robustness.json	match
 dws_sens_top5_mean	Table S10: top-5 overlap, mean(|mu|, f)	4	4	output/dws_robustness.json	match
 dws_sens_top5_f0001	Table S10: top-5 overlap, floor 0.001	5	5	output/dws_robustness.json	match
-dws_sens_top5_f005	Table S10: top-5 overlap, floor 0.05	5	5	output/dws_robustness.json	match
+dws_sens_top5_f005	Table S10: top-5 overlap, floor 0.05	4	4	output/dws_robustness.json	match
+dws_abs_sens_top5	Table S10: top-5 overlap, |DD| numerator (sensitivity)	4	4	output/dws_robustness.json	match
 dws_hs_n_010	Table S10: HS pairs at threshold 0.10	3	3	output/dws_robustness.json	match
 dws_hs_n_015	Table S10: HS pairs at threshold 0.15	2	2	output/dws_robustness.json	match
 dws_hs_n_020	Table S10: HS pairs at threshold 0.20	1	1	output/dws_robustness.json	match
 dws_hs_flip_010	Table S10: flips at threshold 0.10	1	1	output/dws_robustness.json	match
 dws_hs_flip_020	Table S10: flips at threshold 0.20	1	1	output/dws_robustness.json	match
-dws_boot_dws_lo_ARID1A	Table S5: ARID1A→ARID1B DWS CI lower	1.76	1.755	output/dws_robustness.json	match
-dws_boot_dws_hi_ARID1A	Table S5: ARID1A→ARID1B DWS CI upper	5.89	5.889	output/dws_robustness.json	match
+dws_boot_dws_lo_ARID1A	Table S5: ARID1A→ARID1B DWS CI lower (signed max(DD,0) formula)	1.72	1.723	output/dws_robustness.json	match
+dws_boot_dws_hi_ARID1A	Table S5: ARID1A→ARID1B DWS CI upper (signed max(DD,0) formula)	5.89	5.889	output/dws_robustness.json	match
 dws_boot_sel_lo_ARID1A	Table S5: ARID1A→ARID1B selectivity CI lower	0.19	0.191	output/dws_robustness.json	match
 dws_boot_sel_hi_ARID1A	Table S5: ARID1A→ARID1B selectivity CI upper	0.37	0.366	output/dws_robustness.json	match
-dws_boot_dws_lo_SMARCA4	Table S5: SMARCA4→SMARCA2 DWS CI lower	3.28	3.284	output/dws_robustness.json	match
-dws_boot_dws_hi_SMARCA4	Table S5: SMARCA4→SMARCA2 DWS CI upper	7.78	7.779	output/dws_robustness.json	match
+dws_boot_dws_lo_SMARCA4	Table S5: SMARCA4→SMARCA2 DWS CI lower (signed max(DD,0) formula)	3.09	3.092	output/dws_robustness.json	match
+dws_boot_dws_hi_SMARCA4	Table S5: SMARCA4→SMARCA2 DWS CI upper (signed max(DD,0) formula)	7.59	7.587	output/dws_robustness.json	match
 dws_boot_sel_lo_SMARCA4	Table S5: SMARCA4→SMARCA2 selectivity CI lower	0.07	0.070	output/dws_robustness.json	match
 dws_boot_sel_hi_SMARCA4	Table S5: SMARCA4→SMARCA2 selectivity CI upper	0.32	0.323	output/dws_robustness.json	match
-dws_boot_dws_lo_NF1	Table S5: NF1→RASA2 DWS CI lower	1.22	1.218	output/dws_robustness.json	match
-dws_boot_dws_hi_NF1	Table S5: NF1→RASA2 DWS CI upper	13.83	13.832	output/dws_robustness.json	match
+dws_boot_dws_lo_NF1	Table S5: NF1→RASA2 DWS CI lower (signed max(DD,0) formula)	0.00	0.00e+00	output/dws_robustness.json	match
+dws_boot_dws_hi_NF1	Table S5: NF1→RASA2 DWS CI upper (signed max(DD,0) formula)	4.84	4.837	output/dws_robustness.json	match
 dws_boot_sel_lo_NF1	Table S5: NF1→RASA2 selectivity CI lower	0.00	-0.001	output/dws_robustness.json	match
 dws_boot_sel_hi_NF1	Table S5: NF1→RASA2 selectivity CI upper	0.02	0.016	output/dws_robustness.json	match
-dws_boot_dws_lo_EP300	Table S5: EP300→CREBBP DWS CI lower	1.13	1.125	output/dws_robustness.json	match
-dws_boot_dws_hi_EP300	Table S5: EP300→CREBBP DWS CI upper	4.55	4.548	output/dws_robustness.json	match
+dws_boot_dws_lo_EP300	Table S5: EP300→CREBBP DWS CI lower (signed max(DD,0) formula)	1.00	0.996	output/dws_robustness.json	match
+dws_boot_dws_hi_EP300	Table S5: EP300→CREBBP DWS CI upper (signed max(DD,0) formula)	4.37	4.368	output/dws_robustness.json	match
 dws_boot_sel_lo_EP300	Table S5: EP300→CREBBP selectivity CI lower	0.00	0.004	output/dws_robustness.json	match
 dws_boot_sel_hi_EP300	Table S5: EP300→CREBBP selectivity CI upper	0.21	0.212	output/dws_robustness.json	match
+dwsabs_boot_dws_lo_ARID1A	ARID1A→ARID1B |DD| DWS CI lower (sensitivity)	1.76	1.755	output/dws_robustness.json	match
+dwsabs_boot_dws_hi_ARID1A	ARID1A→ARID1B |DD| DWS CI upper (sensitivity)	5.89	5.889	output/dws_robustness.json	match
+dwsabs_boot_dws_lo_SMARCA4	SMARCA4→SMARCA2 |DD| DWS CI lower (sensitivity)	3.28	3.284	output/dws_robustness.json	match
+dwsabs_boot_dws_hi_SMARCA4	SMARCA4→SMARCA2 |DD| DWS CI upper (sensitivity)	7.78	7.779	output/dws_robustness.json	match
+dwsabs_boot_dws_lo_NF1	NF1→RASA2 |DD| DWS CI lower (sensitivity)	1.22	1.218	output/dws_robustness.json	match
+dwsabs_boot_dws_hi_NF1	NF1→RASA2 |DD| DWS CI upper (sensitivity)	13.83	13.832	output/dws_robustness.json	match
+dwsabs_boot_dws_lo_EP300	EP300→CREBBP |DD| DWS CI lower (sensitivity)	1.13	1.125	output/dws_robustness.json	match
+dwsabs_boot_dws_hi_EP300	EP300→CREBBP |DD| DWS CI upper (sensitivity)	4.55	4.548	output/dws_robustness.json	match
 ts2_rows	Table S2 associations	110	110	output/tables/TableS2_FullResults.tsv	match
 ts2_cols	Table S2 columns	17	17	output/tables/TableS2_FullResults.tsv	match
 ts2_arid_dd	ARID1A→ARID1B Ovarian DD (Table S2)	0.386	0.386	output/tables/TableS2_FullResults.tsv	match
@@ -159,6 +194,15 @@ s11_rows	Table S11 regression model rows (43)	43	43	output/tables/TableS11_Regre
 s11_mirror_rows	Table S11 mirrors regression_table_full.csv rows	43	43	output/tables/TableS11_RegressionModels.tsv	match
 s11_models	Table S11 model variants (base/cnv/expr/lineage)	4	4	output/tables/TableS11_RegressionModels.tsv	match
 s11_arid1b_lineage_p	Table S11 ARID1A->ARID1B lineage-adjusted p (text: 2.2e-13)	2.2e-13	2.24e-13	output/tables/TableS11_RegressionModels.tsv	match
+s11_cols	Table S11 columns (12 + se/p lineage cluster)	14	14	output/tables/TableS11_RegressionModels.tsv	match
+reg_cl_arid1b_p	ARID1A->ARID1B lineage-clustered SE p	1.7e-9	1.71e-09	output/regression_controls.json	match
+reg_cl_smarca2_p	SMARCA4->SMARCA2 lineage-clustered SE p	5.2e-3	0.0052	output/regression_controls.json	match
+reg_cl_crebbp_p	EP300->CREBBP lineage-clustered SE p	3.2e-6	3.24e-06	output/regression_controls.json	match
+s9_evidence_tier	Table S9 evidence_tier == Table S3 mapping (unlabeled otherwise)	['Tier B', 'Tier C', 'unlabeled', 'unlabeled', 'Tier C', 'unlabeled', 'Tier C', 'unlabeled', 'Tier C', 'comparator', 'comparator', 'unlabeled', 'unlabeled']	['Tier B', 'Tier C', 'unlabeled', 'unlabeled', 'Tier C', 'unlabeled', 'Tier C', 'unlabeled', 'Tier C', 'comparator', 'comparator', 'unlabeled', 'unlabeled']	output/tables/TableS9_CompositeScore.tsv	match
+s10_wins_rho	Table S10 winsorized denominator rho	0.999	0.999	output/tables/TableS10_DWS_Sensitivity.tsv (dws_robustness.py)	match
+s10_wins_top5	Table S10 winsorized denominator top-5 overlap	5	5	output/tables/TableS10_DWS_Sensitivity.tsv (dws_robustness.py)	match
+s10_floor_rho	Table S10 floor-dominated-removed rho	1.000	1.000	output/tables/TableS10_DWS_Sensitivity.tsv (dws_robustness.py)	match
+s10_floor_top5	Table S10 floor-dominated-removed top-5 overlap	4	4	output/tables/TableS10_DWS_Sensitivity.tsv (dws_robustness.py)	match
 tcga_ngenes	TCGA paralog genes analysed (text + Table S8)	32	32	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 tcga_n	TCGA patients with OS+expression (n=1,069)	1069	1069	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 tcga_events	TCGA OS events (151 deaths)	151	151	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
@@ -182,14 +226,14 @@ tcga_nfdr_mv	Genes passing FDR<0.05 in multivariable family (text: four — PIK3
 tcga_nfdr_uni	Genes passing FDR<0.05 in univariable family (text: none)	0	0	output/tcga_survival_v2.json (tcga_survival_v2.py)	match
 co_npairs	Co-occurrence pairs analysed pan-cancer	5	5	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
 co_all_gt1	All key pairs co-occur (unadjusted OR > 1; text claim)	OR > 1 for all	min OR = 1.623	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
-co_or_ARID1A	ARID1A/ARID1B unadjusted OR (Fig. S12a)	5.72	5.722	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
-co_or_EP300	EP300/CREBBP unadjusted OR (Fig. S12a)	6.11	6.111	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
-co_or_PIK3CA	PIK3CA/PIK3CB unadjusted OR (Fig. S12a)	6.84	6.836	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
-co_or_BRCA1	BRCA1/BRCA2 unadjusted OR (Fig. S12a)	4.53	4.528	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
-co_or_SMARCA4	SMARCA4/SMARCA2 unadjusted OR (Fig. S12a)	1.62	1.623	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
-co_arid_adj_or	ARID1A/ARID1B TMB-adjusted OR (text + Fig. S12)	2.38	2.379	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_ARID1A	ARID1A/ARID1B unadjusted OR (Fig. S6a)	5.72	5.722	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_EP300	EP300/CREBBP unadjusted OR (Fig. S6a)	6.11	6.111	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_PIK3CA	PIK3CA/PIK3CB unadjusted OR (Fig. S6a)	6.84	6.836	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_BRCA1	BRCA1/BRCA2 unadjusted OR (Fig. S6a)	4.53	4.528	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_or_SMARCA4	SMARCA4/SMARCA2 unadjusted OR (Fig. S6a)	1.62	1.623	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_arid_adj_or	ARID1A/ARID1B TMB-adjusted OR (text + Fig. S6)	2.38	2.379	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
 co_arid_adj_p	ARID1A/ARID1B TMB-adjusted p (text)	0.002	0.002	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
-co_ep300_adj_or	EP300/CREBBP TMB-adjusted OR (text + Fig. S12)	2.14	2.143	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
+co_ep300_adj_or	EP300/CREBBP TMB-adjusted OR (text + Fig. S6)	2.14	2.143	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
 co_ep300_adj_p	EP300/CREBBP TMB-adjusted p (text)	0.011	0.011	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
 co_nsig_adj	Pairs significant after TMB adjustment (text: 2)	2	2	output/cooccurrence_by_lineage.json (cooccurrence_by_lineage.py)	match
 cptac_eval	CPTAC evaluable tests (text: 122 of 182)	122	122	output/cptac_counts_verification.json (verify_cptac_counts.py)	match
@@ -223,13 +267,13 @@ prism_q_ipatasertib	IPATASERTIB BH q (text)	0.0001	1.39e-04	output/prism_delta_a
 prism_d_panobinostat	PANOBINOSTAT Cohen's d (text)	-1.45	-1.453	output/prism_delta_auc.json (prism_delta_auc.py)	match
 prism_dauc_panobinostat	PANOBINOSTAT delta AUC (text)	-0.34	-0.339	output/prism_delta_auc.json (prism_delta_auc.py)	match
 prism_q_panobinostat	PANOBINOSTAT BH q (text)	0.010	0.010	output/prism_delta_auc.json (prism_delta_auc.py)	match
-s9_r_all	k-mer vs NW Pearson r (all pairs)	0.88	0.882	output/kmer_nw_correlation.csv (R_figS9.R)	match
-s9_n_all	Validation pairs total	50	50	output/kmer_nw_correlation.csv (R_figS9.R)	match
-s9_p_all	Overall r p < 1e-16 (Methods claim)	p < 1e-16	p = 2.47e-17	output/kmer_nw_correlation.csv (R_figS9.R)	match
-s9_r_par	r within paralogs	0.91	0.906	output/kmer_nw_correlation.csv (R_figS9.R)	match
-s9_n_par	Paralog pairs	13	13	output/kmer_nw_correlation.csv (R_figS9.R)	match
-s9_r_non	r within non-paralogs	0.41	0.413	output/kmer_nw_correlation.csv (R_figS9.R)	match
-s9_n_non	Non-paralog pairs	37	37	output/kmer_nw_correlation.csv (R_figS9.R)	match
+s9_r_all	k-mer vs NW Pearson r (all pairs)	0.88	0.882	output/kmer_nw_correlation.csv (R_figS9_descriptors.R)	match
+s9_n_all	Validation pairs total	50	50	output/kmer_nw_correlation.csv (R_figS9_descriptors.R)	match
+s9_p_all	Overall r p < 1e-16 (Methods claim)	p < 1e-16	p = 2.47e-17	output/kmer_nw_correlation.csv (R_figS9_descriptors.R)	match
+s9_r_par	r within paralogs	0.91	0.906	output/kmer_nw_correlation.csv (R_figS9_descriptors.R)	match
+s9_n_par	Paralog pairs	13	13	output/kmer_nw_correlation.csv (R_figS9_descriptors.R)	match
+s9_r_non	r within non-paralogs	0.41	0.413	output/kmer_nw_correlation.csv (R_figS9_descriptors.R)	match
+s9_n_non	Non-paralog pairs	37	37	output/kmer_nw_correlation.csv (R_figS9_descriptors.R)	match
 in4_npairs	in4mer gold-standard pairs (Nat Commun 2024)	13	13	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
 in4_controls	Unlabeled control pairs sampled (seed 42)	400	400	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
 in4_min3_npos	in4mer pairs evaluable at >=3 threshold	10	10	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
@@ -237,6 +281,141 @@ in4_min3_auroc	in4mer min3 AUROC (0.50)	0.50	0.498	output/in4mer_benchmark_summa
 in4_min3_p	in4mer min3 permutation p (0.51)	0.51	0.508	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
 in4_min5_npos	in4mer pairs evaluable at >=5 threshold	3	3	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
 in4_min5_auroc	in4mer min5 exploratory AUROC (0.68)	0.68	0.683	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
-in4_min3_nneg	Controls evaluable at >=3 threshold (Fig. S11)	326	326	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
-in4_p90	Control 90th pct of |DD| at >=3 (Fig. S11: 0.217)	0.217	0.217	output/in4mer_benchmark.csv	match
+in4_min3_nneg	Controls evaluable at >=3 threshold (Fig. S2)	326	326	output/in4mer_benchmark_summary.json (in4mer_benchmark.py)	match
+in4_p90	Control 90th pct of |DD| at >=3 (Fig. S2: 0.217)	0.217	0.217	output/in4mer_benchmark.csv	match
 in4_above_p90	in4mer pairs above control 90th pct (3: ARFGEF1/2, HDAC1/2, SLC25A28/37)	3 pairs	3 pairs (p90=0.217)	output/in4mer_benchmark.csv	match
+cb_ci_lo	Pair-clustered bootstrap CI lower (primary frame)	0.253	0.253	output/cluster_bootstrap_primary.json	match
+cb_ci_hi	Pair-clustered bootstrap CI upper (primary frame)	0.933	0.933	output/cluster_bootstrap_primary.json	match
+cb_perm_p	Pair-level permutation p (primary 0.629)	0.122	0.122	output/cluster_bootstrap_primary.json	match
+cb_neff	Effective sample size (of 110 entries)	85	85.114	output/cluster_bootstrap_primary.json	match
+cb_icc	Within-pair ICC of signed DD	0.554	0.554	output/cluster_bootstrap_primary.json	match
+cb_mean_p	Mean-aggregation frame permutation p	0.090	0.090	output/cluster_bootstrap_primary.json	match
+db_ci_lo	Driver-block bootstrap CI lower (primary frame)	0.272	0.272	output/cluster_bootstrap_primary.json	match
+db_ci_hi	Driver-block bootstrap CI upper (primary frame)	0.929	0.929	output/cluster_bootstrap_primary.json	match
+pow_now	Power at observed 0.629 (8 vs 102)	0.34	0.337	output/power_analysis.json	match
+pow_now_pair	Power at observed 0.629 (6 vs 66)	0.28	0.278	output/power_analysis.json	match
+pow_n45	Positives required for 80% power at 0.629	45	45	output/power_analysis.json	match
+ws_p25	Dirichlet weight sensitivity AUROC p25	0.803	0.803	output/composite_weight_sensitivity.json	match
+ws_med	Dirichlet weight sensitivity AUROC median	0.819	0.819	output/composite_weight_sensitivity.json	match
+ws_p75	Dirichlet weight sensitivity AUROC p75	0.838	0.838	output/composite_weight_sensitivity.json	match
+ws_min	Dirichlet weight sensitivity AUROC min	0.664	0.664	output/composite_weight_sensitivity.json	match
+ws_max	Dirichlet weight sensitivity AUROC max	0.884	0.884	output/composite_weight_sensitivity.json	match
+se_min	in4mer 20-seed AUROC min	0.480	0.480	output/in4mer_seed_sensitivity.json	match
+se_med	in4mer 20-seed AUROC median	0.499	0.499	output/in4mer_seed_sensitivity.json	match
+se_max	in4mer 20-seed AUROC max	0.522	0.522	output/in4mer_seed_sensitivity.json	match
+eh_fid_maxdiff	Engine fidelity vs frozen in4mer max|diff|	2.8e-16	2.78e-16	output/external_holdout.json (external_holdout.py)	match
+eh_fid_npairs	Engine fidelity pairs	413	413	output/external_holdout.json (external_holdout.py)	match
+eh_h_pairs	Harle pairs screened	472	472	output/external_holdout.json (external_holdout.py)	match
+eh_h_hitpairs	Harle hit pairs	117	117	output/external_holdout.json (external_holdout.py)	match
+eh_h_lines	Harle cell lines	27	27	output/external_holdout.json (external_holdout.py)	match
+eh_h_genotyped	Harle genotyped lines	26	26	output/external_holdout.json (external_holdout.py)	match
+eh_f_pairs	Flister pairs screened	36648	36648	output/external_holdout.json (external_holdout.py)	match
+eh_f_s6rows	Flister S6 meta pairs	462	462	output/external_holdout.json (external_holdout.py)	match
+eh_f_models	Flister S6 models	49	49	output/external_holdout.json (external_holdout.py)	match
+eh_f_lethal_h1299	Flister lethal NCI-H1299	117	117	output/external_holdout.json (external_holdout.py)	match
+eh_f_lethal_mb231	Flister lethal MDA-MB-231	51	51	output/external_holdout.json (external_holdout.py)	match
+eh_f_lethal_both	Flister lethal shared	22	22	output/external_holdout.json (external_holdout.py)	match
+eh_f_lethal_union	Flister lethal union	146	146	output/external_holdout.json (external_holdout.py)	match
+eh_f_s6concord	Flister S6 hit-call concordance (%)	98.3	98.268	output/external_holdout.json (external_holdout.py)	match
+eh_h1_auroc	Harle layer-1 AUROC	0.619	0.619	output/external_holdout.json (external_holdout.py)	match
+eh_h1_p	Harle layer-1 permutation p	0.0002	2.00e-04	output/external_holdout.json (external_holdout.py)	match
+eh_h1_n	Harle layer-1 scored pairs	411	411	output/external_holdout.json (external_holdout.py)	match
+eh_h1_hits	Harle layer-1 evaluable hits	98	98	output/external_holdout.json (external_holdout.py)	match
+eh_h1_med_hit	Harle median |DD| hits	0.202	0.202	output/external_holdout.json (external_holdout.py)	match
+eh_h1_med_non	Harle median |DD| non-hits	0.135	0.135	output/external_holdout.json (external_holdout.py)	match
+eh_f1_auroc	Flister layer-1 AUROC	0.696	0.696	output/external_holdout.json (external_holdout.py)	match
+eh_f1_p	Flister layer-1 permutation p	0.0001	1.00e-04	output/external_holdout.json (external_holdout.py)	match
+eh_f1_n	Flister layer-1 scored pairs	29457	29457	output/external_holdout.json (external_holdout.py)	match
+eh_f1_hits	Flister layer-1 evaluable hits	114	114	output/external_holdout.json (external_holdout.py)	match
+eh_f1_med_hit	Flister median |DD| hits	0.165	0.165	output/external_holdout.json (external_holdout.py)	match
+eh_f1_med_non	Flister median |DD| non-hits	0.105	0.105	output/external_holdout.json (external_holdout.py)	match
+eh_f1_h1299	Flister per-model AUROC NCI-H1299	0.671	0.671	output/external_holdout.json (external_holdout.py)	match
+eh_f1_mb231	Flister per-model AUROC MDA-MB-231	0.744	0.744	output/external_holdout.json (external_holdout.py)	match
+eh_h_evalpairs	Harle evaluable curated pairs	3	3	output/external_holdout.json (external_holdout.py)	match
+eh_f_evalpairs	Flister evaluable curated pairs	3	3	output/external_holdout.json (external_holdout.py)	match
+eh_h2_nmut	Harle pooled mutant observations	9	9	output/external_holdout.json (external_holdout.py)	match
+eh_h2_muthit	Harle pooled mutant hits	0	0	output/external_holdout.json (external_holdout.py)	match
+eh_h2_nwt	Harle pooled WT observations	121	121	output/external_holdout.json (external_holdout.py)	match
+eh_h2_wthit	Harle pooled WT hits	27	27	output/external_holdout.json (external_holdout.py)	match
+eh_h2_fisher	Harle pooled Fisher p	1.0	1.000	output/external_holdout.json (external_holdout.py)	match
+eh_h2_mw	Harle pooled MW p	0.899	0.899	output/external_holdout.json (external_holdout.py)	match
+eh_f2_nmut	Flister pooled mutant observations	6	6	output/external_holdout.json (external_holdout.py)	match
+eh_f2_muthit	Flister pooled mutant hits	2	2	output/external_holdout.json (external_holdout.py)	match
+eh_f2_nwt	Flister pooled WT observations	235	235	output/external_holdout.json (external_holdout.py)	match
+eh_f2_wthit	Flister pooled WT hits	59	59	output/external_holdout.json (external_holdout.py)	match
+eh_f2_fisher	Flister pooled Fisher p	0.475	0.475	output/external_holdout.json (external_holdout.py)	match
+eh_f2_mw	Flister pooled MW p	0.150	0.150	output/external_holdout.json (external_holdout.py)	match
+eh_h2_smarca4_nmut	harle2025 SMARCA4->SMARCA2 mutant models	5	5	output/external_holdout.json (external_holdout.py)	match
+eh_h2_smarca4_muthit	harle2025 SMARCA4->SMARCA2 mutant hits	0	0	output/external_holdout.json (external_holdout.py)	match
+eh_h2_smarca4_nwt	harle2025 SMARCA4->SMARCA2 WT models	21	21	output/external_holdout.json (external_holdout.py)	match
+eh_h2_smarca4_wthit	harle2025 SMARCA4->SMARCA2 WT hits	3	3	output/external_holdout.json (external_holdout.py)	match
+eh_h2_smarca4_fisher	harle2025 SMARCA4->SMARCA2 Fisher p	1.000	1.000	output/external_holdout.json (external_holdout.py)	match
+eh_h2_smarca4_mw	harle2025 SMARCA4->SMARCA2 MW p	0.575	0.575	output/external_holdout.json (external_holdout.py)	match
+eh_h2_arid1a_nmut	harle2025 ARID1A->ARID1B mutant models	2	2	output/external_holdout.json (external_holdout.py)	match
+eh_h2_arid1a_muthit	harle2025 ARID1A->ARID1B mutant hits	0	0	output/external_holdout.json (external_holdout.py)	match
+eh_h2_arid1a_nwt	harle2025 ARID1A->ARID1B WT models	24	24	output/external_holdout.json (external_holdout.py)	match
+eh_h2_arid1a_wthit	harle2025 ARID1A->ARID1B WT hits	1	1	output/external_holdout.json (external_holdout.py)	match
+eh_h2_arid1a_fisher	harle2025 ARID1A->ARID1B Fisher p	1.000	1.000	output/external_holdout.json (external_holdout.py)	match
+eh_h2_arid1a_mw	harle2025 ARID1A->ARID1B MW p	0.972	0.972	output/external_holdout.json (external_holdout.py)	match
+eh_h2_ep300_nmut	harle2025 EP300->CREBBP mutant models	2	2	output/external_holdout.json (external_holdout.py)	match
+eh_h2_ep300_muthit	harle2025 EP300->CREBBP mutant hits	0	0	output/external_holdout.json (external_holdout.py)	match
+eh_h2_ep300_nwt	harle2025 EP300->CREBBP WT models	24	24	output/external_holdout.json (external_holdout.py)	match
+eh_h2_ep300_wthit	harle2025 EP300->CREBBP WT hits	9	9	output/external_holdout.json (external_holdout.py)	match
+eh_h2_ep300_fisher	harle2025 EP300->CREBBP Fisher p	1.000	1.000	output/external_holdout.json (external_holdout.py)	match
+eh_h2_ep300_mw	harle2025 EP300->CREBBP MW p	0.277	0.277	output/external_holdout.json (external_holdout.py)	match
+eh_f2_map2k1_nmut	flister2025 MAP2K1->MAP2K2 mutant models	1	1	output/external_holdout.json (external_holdout.py)	match
+eh_f2_map2k1_muthit	flister2025 MAP2K1->MAP2K2 mutant hits	0	0	output/external_holdout.json (external_holdout.py)	match
+eh_f2_map2k1_nwt	flister2025 MAP2K1->MAP2K2 WT models	47	47	output/external_holdout.json (external_holdout.py)	match
+eh_f2_map2k1_wthit	flister2025 MAP2K1->MAP2K2 WT hits	8	8	output/external_holdout.json (external_holdout.py)	match
+eh_f2_map2k1_fisher	flister2025 MAP2K1->MAP2K2 Fisher p	1.000	1.000	output/external_holdout.json (external_holdout.py)	match
+eh_f2_map2k1_mw	flister2025 MAP2K1->MAP2K2 MW p	0.282	0.282	output/external_holdout.json (external_holdout.py)	match
+eh_f2_smarca4_nmut	flister2025 SMARCA4->SMARCA2 mutant models	2	2	output/external_holdout.json (external_holdout.py)	match
+eh_f2_smarca4_muthit	flister2025 SMARCA4->SMARCA2 mutant hits	0	0	output/external_holdout.json (external_holdout.py)	match
+eh_f2_smarca4_nwt	flister2025 SMARCA4->SMARCA2 WT models	46	46	output/external_holdout.json (external_holdout.py)	match
+eh_f2_smarca4_wthit	flister2025 SMARCA4->SMARCA2 WT hits	5	5	output/external_holdout.json (external_holdout.py)	match
+eh_f2_smarca4_fisher	flister2025 SMARCA4->SMARCA2 Fisher p	1.000	1.000	output/external_holdout.json (external_holdout.py)	match
+eh_f2_smarca4_mw	flister2025 SMARCA4->SMARCA2 MW p	0.741	0.741	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_nmut	flister2025 EP300->CREBBP mutant models	3	3	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_muthit	flister2025 EP300->CREBBP mutant hits	2	2	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_nwt	flister2025 EP300->CREBBP WT models	46	46	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_wthit	flister2025 EP300->CREBBP WT hits	20	20	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_fisher	flister2025 EP300->CREBBP Fisher p	0.422	0.422	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_mw	flister2025 EP300->CREBBP MW p	0.121	0.121	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_gi_mut	Flister EP300->CREBBP mean GI mutant	-2.84	-2.837	output/external_holdout.json (external_holdout.py)	match
+eh_f2_ep300_gi_wt	Flister EP300->CREBBP mean GI WT	-1.61	-1.607	output/external_holdout.json (external_holdout.py)	match
+rna_ntests	Pair-by-cohort mRNA tests	179	179	output/cptac_rna_covariation.json	match
+rna_nmatched	Pair-by-cohort matched protein+mRNA tests	122	122	output/cptac_rna_covariation.json	match
+rna_med_prot	Median matched protein r	0.140	0.140	output/cptac_rna_covariation.json	match
+rna_med_mrna	Median mRNA r	0.074	0.074	output/cptac_rna_covariation.json	match
+rna_sign_p	Sign test |protein r| vs |mRNA r| p	0.79	0.786	output/cptac_rna_covariation.json	match
+rna_ep_ucec_mrna	EP300-CREBBP UCEC mRNA r	0.765	0.765	output/cptac_rna_covariation.json	match
+rna_ep_ucec_prot	EP300-CREBBP UCEC protein r	0.081	0.081	output/cptac_rna_covariation.json	match
+pu_ntests	Purity-adjusted pair-by-cohort tests	69	69	output/cptac_purity_partial.json	match
+pu_med_dr	Median |delta r| after purity adjustment	0.014	0.014	output/cptac_purity_partial.json	match
+sv_ucec_n	UCEC cohort n	525	525	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_ev	UCEC events	87	87	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_n	OV cohort n	299	299	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_ev	OV events	180	180	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_hr	UCEC ARID1B univariable HR	1.17	1.174	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_hr_lo	UCEC ARID1B HR CI lower	0.941	0.941	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_hr_hi	UCEC ARID1B HR CI upper	1.464	1.464	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_p	UCEC ARID1B univariable p	0.155	0.155	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_q	UCEC ARID1B BH q	0.381	0.381	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_adj_hr	UCEC ARID1B age-adjusted HR	1.17	1.167	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_adj_p	UCEC ARID1B age-adjusted p	0.179	0.179	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_hr	OV ARID1B univariable HR	1.26	1.263	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_hr_lo	OV ARID1B HR CI lower	1.092	1.092	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_hr_hi	OV ARID1B HR CI upper	1.461	1.461	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_p	OV ARID1B univariable p	0.002	0.002	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_q	OV ARID1B BH q	0.054	0.054	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_adj_hr	OV ARID1B age-adjusted HR	1.21	1.212	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_adj_p	OV ARID1B age-adjusted p	0.013	0.013	output/tcga_survival_ucec_ov_summary.json	match
+sv_ov_adj_q	OV ARID1B age-adjusted q	0.406	0.406	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_mut_hr	UCEC ARID1A-mutant stratum ARID1B HR	1.24	1.243	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_mut_p	UCEC mutant stratum p	0.391	0.391	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_wt_hr	UCEC wild-type stratum ARID1B HR	1.15	1.155	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_wt_p	UCEC wild-type stratum p	0.248	0.248	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_mut_n	UCEC mutant stratum n	226	226	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_mut_ev	UCEC mutant stratum events	19	19	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_wt_n	UCEC WT stratum n	299	299	output/tcga_survival_ucec_ov_summary.json	match
+sv_ucec_wt_ev	UCEC WT stratum events	68	68	output/tcga_survival_ucec_ov_summary.json	match

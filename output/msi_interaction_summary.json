@@ -1,0 +1,108 @@
+{
+  "model": "OLS per pair: gene_effect_paralog ~ mut_driver * MSI_H (binary, primary) and ~ mut_driver * log1p(MSIsensor2 score) (continuous sensitivity); driver calls use gene-class rules",
+  "estimability": ">=3 mutant lines with >=2 mutants per MSI class",
+  "per_cancer": {
+    "Colorectal": {
+      "n_lines": 63,
+      "n_pairs": 47,
+      "n_nominal_p05": 4,
+      "binom_p_vs_5pct": 0.20735647785814995,
+      "stouffer_z": 0.4298378296553217,
+      "stouffer_p": 0.6673136124234826,
+      "n_fdr05": 0,
+      "min_q": 0.15695684958132242,
+      "median_abs_delta_dd": 0.062235041162152754,
+      "median_abs_beta": 0.062235041162152754,
+      "ci_span_zero": false,
+      "n_ci_excludes_zero": 4,
+      "known_pairs_evaluable": 4
+    },
+    "Endometrial": {
+      "n_lines": 28,
+      "n_pairs": 24,
+      "n_nominal_p05": 1,
+      "binom_p_vs_5pct": 0.7080109756612273,
+      "stouffer_z": -1.0886561221862967,
+      "stouffer_p": 0.2763055579093262,
+      "n_fdr05": 0,
+      "min_q": 0.23471753172475468,
+      "median_abs_delta_dd": 0.07623515093027833,
+      "median_abs_beta": 0.07623515093027833,
+      "ci_span_zero": false,
+      "n_ci_excludes_zero": 1,
+      "known_pairs_evaluable": 4
+    }
+  },
+  "lead_pairs": {
+    "Endometrial:ARID1A->ARID1B": {
+      "dd_mss": 0.2851,
+      "dd_msi_h": 0.3036,
+      "delta_dd": 0.0185,
+      "interaction_p": 0.9574161669664476,
+      "interaction_q": 0.9983611897933677,
+      "n_mut": 21,
+      "n_mut_msi_h": 16,
+      "n_mut_mss": 5
+    },
+    "Colorectal:ARID1A->ARID1B": {
+      "dd_mss": 0.1643,
+      "dd_msi_h": 0.2083,
+      "delta_dd": 0.044,
+      "interaction_p": 0.7889171833555101,
+      "interaction_q": 0.8828358956597374,
+      "n_mut": 12,
+      "n_mut_msi_h": 10,
+      "n_mut_mss": 2
+    },
+    "Endometrial:PIK3CA->PIK3CB": {
+      "dd_mss": -0.084,
+      "dd_msi_h": -0.14,
+      "delta_dd": -0.056,
+      "interaction_p": 0.7102621129774119,
+      "interaction_q": 0.9711155891951053,
+      "n_mut": 15,
+      "n_mut_msi_h": 11,
+      "n_mut_mss": 4
+    },
+    "Colorectal:PIK3CA->PIK3CB": {
+      "dd_mss": -0.1777,
+      "dd_msi_h": -0.3427,
+      "delta_dd": -0.165,
+      "interaction_p": 0.35004213717564664,
+      "interaction_q": 0.8783700416414699,
+      "n_mut": 17,
+      "n_mut_msi_h": 10,
+      "n_mut_mss": 7
+    },
+    "Endometrial:PTEN->TNS1": {
+      "dd_mss": 0.0489,
+      "dd_msi_h": 0.0492,
+      "delta_dd": 0.0003,
+      "interaction_p": 0.9981272236113037,
+      "interaction_q": 0.9983611897933677,
+      "n_mut": 17,
+      "n_mut_msi_h": 14,
+      "n_mut_mss": 3
+    },
+    "Colorectal:PTEN->TNS1": {
+      "dd_mss": -0.0124,
+      "dd_msi_h": 0.0317,
+      "delta_dd": 0.0441,
+      "interaction_p": 0.7172891858253004,
+      "interaction_q": 0.8817458135667259,
+      "n_mut": 7,
+      "n_mut_msi_h": 4,
+      "n_mut_mss": 3
+    },
+    "Colorectal:KRAS->NRAS": {
+      "dd_mss": -0.0476,
+      "dd_msi_h": 0.075,
+      "delta_dd": 0.1226,
+      "interaction_p": 0.4842964492898075,
+      "interaction_q": 0.8783700416414699,
+      "n_mut": 34,
+      "n_mut_msi_h": 6,
+      "n_mut_mss": 28
+    }
+  }
+}

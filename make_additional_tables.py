@@ -49,10 +49,14 @@ def table_s5_dws() -> None:
     df = df.rename(columns={
         "mean_ti": "dws",
         "mean_dd": "abs_dd",
+        "mean_dd_pos": "mean_max_dd_0",
+        "mean_denominator": "pan_essentiality_denominator",
         "mean_selectivity": "selectivity",
         "mean_pan_essential": "pan_essential_fraction",
     })
-    cols = ["driver", "paralog", "abs_dd", "dws", "dws_ci95_lo", "dws_ci95_hi",
+    cols = ["driver", "paralog", "abs_dd", "mean_max_dd_0",
+            "pan_essentiality_denominator", "floor_0_01_active",
+            "dws", "dws_ci95_lo", "dws_ci95_hi",
             "selectivity", "selectivity_ci95_lo", "selectivity_ci95_hi",
             "pan_essential_fraction", "n_contexts", "classification", "pair_type"]
     df = df[cols].sort_values("dws", ascending=False)
@@ -100,9 +104,21 @@ def table_s9_composite_score() -> None:
     df = pd.read_csv(OUT / "alphafold_structural_analysis.csv")
     df = df.rename(columns={"mean_ti": "dws", "mean_dd": "abs_dd",
                             "mean_selectivity": "selectivity"})
-    cols = ["driver", "paralog", "is_known_sl", "dws", "abs_dd", "selectivity",
-            "structural_similarity", "domain_similarity", "druggability",
-            "protac_score", "targetability", "clinical_targetability"]
+    # Evidence-tier annotation from the curated gold standard (Table S3):
+    # Tier A/B/C or comparator; candidates outside the curated set are
+    # labelled "unlabeled".
+    s3 = pd.read_csv(TAB / "TableS3_GoldStandard.tsv", sep="\t")
+    tier_map = {
+        (r.Driver, r.Paralog): (f"Tier {r.Tier}" if r.Tier in ("A", "B", "C")
+                                else "comparator")
+        for r in s3.itertuples()
+    }
+    df["evidence_tier"] = [tier_map.get((d, p), "unlabeled")
+                           for d, p in zip(df["driver"], df["paralog"])]
+    cols = ["driver", "paralog", "is_known_sl", "evidence_tier", "dws",
+            "abs_dd", "selectivity", "structural_similarity",
+            "domain_similarity", "druggability", "protac_score",
+            "targetability", "clinical_targetability"]
     df = df[cols].sort_values("clinical_targetability", ascending=False)
     df.to_csv(TAB / "TableS9_CompositeScore.tsv", sep="\t", index=False)
     print(f"  TableS9_CompositeScore.tsv: {len(df)} rows")
@@ -123,7 +139,7 @@ def table_s10_dws_sensitivity() -> None:
     df = pd.DataFrame(rows)
     df.to_csv(TAB / "TableS10_DWS_Sensitivity.tsv", sep="\t", index=False)
     print(f"  TableS10_DWS_Sensitivity.tsv: {len(df)} rows")
-    assert len(df) == 9, "expected 9 sensitivity variants"
+    assert len(df) == 12, "expected 12 sensitivity variants (8 denominator/floor + |DD| numerator + 3 threshold)"
 
 
 if __name__ == "__main__":

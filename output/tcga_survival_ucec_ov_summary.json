@@ -1,0 +1,150 @@
+{
+  "generated_by": "tcga_survival_ucec_ov.py",
+  "methodology": "identical to tcga_survival_v2.py (BRCA): continuous z(log2(RSEM+1)) expression, statsmodels PHReg, univariable + age/AJCC-stage-adjusted models, BH-FDR per family per cohort",
+  "ph_test_method": "manual Schoenfeld-type test: Schoenfeld residuals (Breslow ties) vs ranked event times, Pearson correlation p-value; Grambsch-Therneau-style approximation without variance scaling (lifelines unavailable)",
+  "cohorts": {
+    "UCEC": {
+      "study": "ucec_tcga_pan_can_atlas_2018",
+      "n": 525,
+      "events": 87,
+      "stage_missing_pct": 100.0,
+      "age_missing": 2,
+      "genes_missing_from_profile": [],
+      "arid1b": {
+        "univariable": {
+          "hr": 1.173827581725778,
+          "ci": [
+            0.9411290644057125,
+            1.46406188453043
+          ],
+          "p": 0.15509808375080508,
+          "q_fdr": 0.38057826504673403
+        },
+        "multivariable_age_stage": null,
+        "multivariable_age_only": {
+          "hr": 1.1665215881363447,
+          "ci": [
+            0.9317123383355397,
+            1.460507239840889
+          ],
+          "p": 0.17921105709903795,
+          "q_fdr": 0.40783250238640456,
+          "n": 523
+        },
+        "adjusted_model_note": "AJCC stage entirely unpopulated for this study in cBioPortal (verified: attribute defined, zero values at patient and sample level); the age+stage model has zero complete cases, so the v2 age-only fallback model is the adjusted estimate of record",
+        "ph_test_p": 0.5851484099861922
+      },
+      "n_genes_fdr_pass_univariable": 5,
+      "n_genes_fdr_pass_multivariable": 0,
+      "n_genes_fdr_pass_age_only": 2,
+      "arid1a_stratified": {
+        "mutation_definition": "any non-silent ARID1A mutation in profile ucec_tcga_pan_can_atlas_2018_mutations; types counted: ['Frame_Shift_Del', 'Frame_Shift_Ins', 'In_Frame_Del', 'In_Frame_Ins', 'Missense_Mutation', 'Nonsense_Mutation', 'Nonstop_Mutation', 'Splice_Site', 'Translation_Start_Site']; Silent and non-coding-region records excluded",
+        "mutation_type_counts_all_records": {
+          "Nonsense_Mutation": 113,
+          "Frame_Shift_Del": 106,
+          "Missense_Mutation": 73,
+          "Frame_Shift_Ins": 34,
+          "Splice_Site": 5,
+          "In_Frame_Ins": 1,
+          "In_Frame_Del": 2
+        },
+        "n_cohort": 525,
+        "arid1b_model": "PHReg OS ~ z(log2(ARID1B RSEM+1)) within each ARID1A stratum; multivariable adds age + AJCC stage when stratum events allow (age-only fallback when stage is unpopulated, as in this study)",
+        "strata": [
+          {
+            "stratum": "ARID1A_mutant",
+            "n": 226,
+            "n_events": 19,
+            "univariate": {
+              "hr": 1.243328808620488,
+              "ci": [
+                0.7561083898844772,
+                2.044503866147853
+              ],
+              "p": 0.3907419374048041
+            },
+            "ph_test_p": 0.23289428244188204,
+            "multivariable": {
+              "covariates": [
+                "z",
+                "age"
+              ],
+              "n": 225,
+              "n_events": 19,
+              "hr": 1.2164429556379417,
+              "ci": [
+                0.7343055553444686,
+                2.0151467649281463
+              ],
+              "p": 0.44677352620292565,
+              "power_note": "only 19 events for a 2-covariate model (<10 events/variable); interpret with caution"
+            }
+          },
+          {
+            "stratum": "ARID1A_wildtype",
+            "n": 299,
+            "n_events": 68,
+            "univariate": {
+              "hr": 1.1545076875107358,
+              "ci": [
+                0.9049771150409615,
+                1.4728416645774047
+              ],
+              "p": 0.2475260517442298
+            },
+            "ph_test_p": 0.3082815236854265,
+            "multivariable": {
+              "covariates": [
+                "z",
+                "age"
+              ],
+              "n": 298,
+              "n_events": 68,
+              "hr": 1.1613724202225726,
+              "ci": [
+                0.9067610963415276,
+                1.4874765844008169
+              ],
+              "p": 0.23608374188954806
+            }
+          }
+        ]
+      }
+    },
+    "OV": {
+      "study": "ov_tcga_pan_can_atlas_2018",
+      "n": 299,
+      "events": 180,
+      "stage_missing_pct": 100.0,
+      "age_missing": 19,
+      "genes_missing_from_profile": [],
+      "arid1b": {
+        "univariable": {
+          "hr": 1.2630465023012158,
+          "ci": [
+            1.0917977699413839,
+            1.4611556378806143
+          ],
+          "p": 0.0016811402389058615,
+          "q_fdr": 0.05379648764498757
+        },
+        "multivariable_age_stage": null,
+        "multivariable_age_only": {
+          "hr": 1.2115948885861862,
+          "ci": [
+            1.0418536738388589,
+            1.4089907353681028
+          ],
+          "p": 0.012687220508359248,
+          "q_fdr": 0.40599105626749593,
+          "n": 280
+        },
+        "adjusted_model_note": "AJCC stage entirely unpopulated for this study in cBioPortal (verified: attribute defined, zero values at patient and sample level); the age+stage model has zero complete cases, so the v2 age-only fallback model is the adjusted estimate of record",
+        "ph_test_p": 0.5592933753393176
+      },
+      "n_genes_fdr_pass_univariable": 0,
+      "n_genes_fdr_pass_multivariable": 0,
+      "n_genes_fdr_pass_age_only": 0
+    }
+  }
+}

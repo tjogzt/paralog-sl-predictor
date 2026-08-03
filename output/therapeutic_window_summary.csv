@@ -1,6 +1,6 @@
 context,n_lines,n_pairs,n_known,median_ti,n_selective,n_good_window
-Ovarian,55,13,7,0.41050954003156037,3,5
-Endometrial,28,14,5,1.089691559992303,4,8
-Breast,50,5,2,0.6069161899526311,2,3
-Colorectal,59,12,5,1.3281938911108013,4,8
-PanCancer,1116,21,9,0.6871037413103468,8,12
+Ovarian,55,13,7,0.0,3,2
+Endometrial,28,14,5,0.15137696983783255,4,5
+Breast,50,5,2,0.0,2,0
+Colorectal,59,12,5,0.0,4,4
+PanCancer,1116,21,9,0.0,8,5

@@ -1,0 +1,13 @@
+driver,paralog,tier,in_screen,s6_label,driver_mutant_models,hit_models_all,hit_models_driver_mutant,n_mut,n_wt,n_mut_hit,n_wt_hit,evaluable,hit_rate_mut,hit_rate_wt,fisher_p_1sided_greater,fisher_p_2sided,gi_mean_mut,gi_mean_wt,gi_median_mut,gi_median_wt,mw_p_1sided_mut_more_negative,mw_p_2sided,fisher_q_BH,mw_q_BH
+AKT1,AKT2,A,True,AKT1_AKT2,,ASPC1_Vakoc;HPAFII_Vakoc;HT29_AbbVie;NCIH1048_Vakoc;NCIH2087_AbbVie;PATU8988S_Sellers;SW1463_AbbVie;THP1_Vakoc,,0.0,48.0,0.0,8.0,False,,,,,,,,,,,,
+CDK4,CDK6,A,True,CDK4_CDK6,,ASPC1_Vakoc;CORL311_Vakoc;DETROIT562_AbbVie;HEL_Vakoc;HS944T_Sellers;HSC2_AbbVie;HT29_AbbVie;IPC298_Sellers;LS180_AbbVie;NCIH1299_merged;NCIH211_Vakoc;PANC1_AbbVie;PATU8902_Vakoc;PK1_Sellers;RKO_AbbVie;SNU1_AbbVie;T84_AbbVie;YAPC_Vakoc,,0.0,48.0,0.0,18.0,False,,,,,,,,,,,,
+MAP2K1,MAP2K2,A,True,MAP2K1_MAP2K2,HS936T_Sellers,HT29_AbbVie;IPC298_Sellers;MDAMB231_merged;MIAPACA2_AbbVie;PATU8902_Vakoc;PK1_Sellers;RD_Vakoc;THP1_Vakoc,,1.0,47.0,0.0,8.0,True,0.0,0.1702127659574468,1.0,1.0,-1.258611247,-0.9568498261489362,-1.258611247,-0.831785457,0.2817985227843611,0.5635970455687223,1.0,0.4226977841765417
+SMARCA4,SMARCA2,B,True,SMARCA2_SMARCA4,A549_merged;NCIH1299_merged,ASPC1_Vakoc;DETROIT562_AbbVie;HT29_AbbVie;LK2_AbbVie;PK1_Sellers,,2.0,46.0,0.0,5.0,True,0.0,0.10869565217391304,1.0,1.0,-0.54431015275,-0.9678649295760869,-0.54431015275,-0.9109464325000001,0.7405231935722981,0.5529385911793179,1.0,0.7405231935722981
+ARID1A,ARID1B,B,False,,,,,,,,,False,,,,,,,,,,,,
+EP300,CREBBP,C,True,CREBBP_EP300,MKN74_AbbVie;RKO_AbbVie;T3M4_Vakoc,A549_merged;ASPC1_Vakoc;DETROIT562_AbbVie;HEL_Vakoc;HPAFII_Vakoc;HS936T_Sellers;HSC2_AbbVie;HSC5_Sellers;HT29_AbbVie;MDAMB231_merged;MKN74_AbbVie;NCIH1299_merged;NCIH211_Vakoc;PANC1_AbbVie;PATU8902_Vakoc;PATU8988S_Sellers;PK1_Sellers;SNU1_AbbVie;T3M4_Vakoc;T84_AbbVie;THP1_Vakoc;YAPC_Vakoc,MKN74_AbbVie;T3M4_Vakoc,3.0,46.0,2.0,20.0,True,0.6666666666666666,0.43478260869565216,0.42211246200607894,0.5808727746417717,-2.836645198,-1.607011756565217,-3.00873435,-1.345378596,0.12146177844825107,0.24292355689650214,1.0,0.3643853353447532
+PIK3CA,PIK3CB,C,False,,,,,,,,,False,,,,,,,,,,,,
+CCNE1,CCNE2,C,False,,,,,,,,,False,,,,,,,,,,,,
+FBXW7,FBXW2,C,False,,,,,,,,,False,,,,,,,,,,,,
+PPP2R1A,PPP2R1B,C,False,,,,,,,,,False,,,,,,,,,,,,
+BRCA1,BRCA2,comparator,False,,,,,,,,,False,,,,,,,,,,,,
+STK11,SIK1,comparator,False,,,,,,,,,False,,,,,,,,,,,,

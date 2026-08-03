@@ -1,15 +1,90 @@
 {
  "method": {
+  "dws_formula": "PRIMARY signed: max(DD,0) / max(|mean Chronos|, pan-essential fraction, 0.01); DD = WT \u2212 MUT (manuscript Eq. 1, pcs.py, paralogSL::compute_dd). |DD| numerator retained as sensitivity only.",
   "sensitivity": "deterministic recomputation of DWS variants from output/therapeutic_window_all_results.csv; rankings = mean DWS across contexts per pair; comparison by Spearman rho and top-5 overlap",
-  "bootstrap": "1000 stratified resamples (mut/WT/all groups) per pair x context, seed 42; per-iteration means averaged across a pair's evaluable contexts; percentile 95% CI",
+  "bootstrap": "1000 stratified resamples (mut/WT/all groups) per pair x context, seed 42; per-iteration means averaged across a pair's evaluable contexts; percentile 95% CI; signed and |DD| DWS share the same resamples",
+  "rank_bootstrap": "full pair set re-ranked by pair-level mean signed DWS in every bootstrap iteration; per-pair percentile 95% CI of the rank (rank 1 = highest DWS)",
   "essential_threshold": -0.5,
   "floor": 0.01
  },
  "sensitivity": [
   {
-   "variant": "base (max of |mu|, f, 0.01)",
+   "variant": "base signed max(DD,0) (max of |mu|, f, 0.01)",
    "spearman_rho_vs_base": 1.0,
    "top5_overlap_with_base": 5,
+   "top5": [
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "NF1->RASA2",
+    "EP300->CREBBP",
+    "KMT2D->KMT2C"
+   ],
+   "max_abs_diff_vs_production_column": 2.1316282072803006e-14
+  },
+  {
+   "variant": "denominator |mu| only",
+   "spearman_rho_vs_base": 0.9922,
+   "top5_overlap_with_base": 5,
+   "top5": [
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "EP300->CREBBP",
+    "KMT2D->KMT2C",
+    "NF1->RASA2"
+   ]
+  },
+  {
+   "variant": "denominator f only",
+   "spearman_rho_vs_base": 0.9662,
+   "top5_overlap_with_base": 3,
+   "top5": [
+    "PPP2R1A->PPP2R1B",
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "FBXW7->FBXW2",
+    "EP300->CREBBP"
+   ]
+  },
+  {
+   "variant": "denominator mean(|mu|, f)",
+   "spearman_rho_vs_base": 0.9935,
+   "top5_overlap_with_base": 4,
+   "top5": [
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "EP300->CREBBP",
+    "PPP2R1A->PPP2R1B",
+    "NF1->RASA2"
+   ]
+  },
+  {
+   "variant": "floor 0.001",
+   "spearman_rho_vs_base": 0.9961,
+   "top5_overlap_with_base": 5,
+   "top5": [
+    "NF1->RASA2",
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "EP300->CREBBP",
+    "KMT2D->KMT2C"
+   ]
+  },
+  {
+   "variant": "floor 0.05",
+   "spearman_rho_vs_base": 0.9792,
+   "top5_overlap_with_base": 4,
+   "top5": [
+    "SMARCA4->SMARCA2",
+    "ARID1A->ARID1B",
+    "EP300->CREBBP",
+    "PPP2R1A->PPP2R1B",
+    "KMT2D->KMT2C"
+   ]
+  },
+  {
+   "variant": "numerator |DD| (pre-revision formula, sensitivity)",
+   "spearman_rho_vs_base": 0.3805,
+   "top5_overlap_with_base": 4,
    "top5": [
     "NF1->RASA2",
     "SMARCA4->SMARCA2",
@@ -20,63 +95,35 @@
    "max_abs_diff_vs_production_column": 2.1316282072803006e-14
   },
   {
-   "variant": "denominator |mu| only",
-   "spearman_rho_vs_base": 0.9896,
-   "top5_overlap_with_base": 4,
+   "variant": "denominator winsorized 1%/99%",
+   "spearman_rho_vs_base": 0.9987,
+   "top5_overlap_with_base": 5,
    "top5": [
-    "SMARCA4->SMARCA2",
-    "NF1->RASA2",
-    "RB1->RBL1",
-    "ARID1A->ARID1B",
-    "KMT2D->KMT2C"
-   ]
-  },
-  {
-   "variant": "denominator f only",
-   "spearman_rho_vs_base": 0.8935,
-   "top5_overlap_with_base": 4,
-   "top5": [
-    "RB1->RBL1",
-    "NF1->RASA2",
-    "PPP2R1A->PPP2R1B",
-    "SMARCA4->SMARCA2",
-    "ARID1A->ARID1B"
-   ]
-  },
-  {
-   "variant": "denominator mean(|mu|, f)",
-   "spearman_rho_vs_base": 0.9883,
-   "top5_overlap_with_base": 4,
-   "top5": [
-    "NF1->RASA2",
-    "RB1->RBL1",
     "SMARCA4->SMARCA2",
     "ARID1A->ARID1B",
+    "EP300->CREBBP",
+    "NF1->RASA2",
     "KMT2D->KMT2C"
+   ],
+   "winsorize_bounds": [
+    0.011544260989381504,
+    1.0073933275136846
    ]
   },
   {
-   "variant": "floor 0.001",
+   "variant": "floor-dominated pairs removed (denominator at 0.01 floor in >=1 context)",
    "spearman_rho_vs_base": 1.0,
-   "top5_overlap_with_base": 5,
-   "top5": [
-    "NF1->RASA2",
-    "SMARCA4->SMARCA2",
-    "RB1->RBL1",
-    "ARID1A->ARID1B",
-    "EP300->CREBBP"
-   ]
-  },
-  {
-   "variant": "floor 0.05",
-   "spearman_rho_vs_base": 0.974,
-   "top5_overlap_with_base": 5,
+   "top5_overlap_with_base": 4,
    "top5": [
     "SMARCA4->SMARCA2",
-    "RB1->RBL1",
     "ARID1A->ARID1B",
-    "NF1->RASA2",
-    "EP300->CREBBP"
+    "EP300->CREBBP",
+    "KMT2D->KMT2C",
+    "PPP2R1A->PPP2R1B"
+   ],
+   "n_pairs_excluded": 1,
+   "excluded_pairs": [
+    "NF1->RASA2"
    ]
   },
   {
@@ -112,8 +159,13 @@
    "driver": "ARID1A",
    "paralog": "ARID1B",
    "n_contexts": 4,
-   "mean_dws": 3.064729679557241,
+   "mean_dws": 3.060416454457073,
    "dws_ci95": [
+    1.7225555529774415,
+    5.889262631189185
+   ],
+   "mean_dws_abs": 3.064729679557241,
+   "dws_abs_ci95": [
     1.7552220087520443,
     5.889262631189185
    ],
@@ -127,8 +179,13 @@
    "driver": "ATR",
    "paralog": "ATM",
    "n_contexts": 2,
-   "mean_dws": 1.9043053250604176,
+   "mean_dws": 0.09618271416335382,
    "dws_ci95": [
+    0.0,
+    0.9647868785571028
+   ],
+   "mean_dws_abs": 1.9043053250604176,
+   "dws_abs_ci95": [
     0.30583322737893937,
     4.792515660999605
    ],
@@ -142,8 +199,13 @@
    "driver": "BRAF",
    "paralog": "RAF1",
    "n_contexts": 2,
-   "mean_dws": 1.2031042299149444,
+   "mean_dws": 0.0,
    "dws_ci95": [
+    0.0,
+    0.0
+   ],
+   "mean_dws_abs": 1.2031042299149444,
+   "dws_abs_ci95": [
     0.8478564109954599,
     1.6984314362476658
    ],
@@ -157,8 +219,13 @@
    "driver": "BRCA1",
    "paralog": "BRCA2",
    "n_contexts": 3,
-   "mean_dws": 0.1936880777187771,
+   "mean_dws": 0.06662370704801285,
    "dws_ci95": [
+    0.0,
+    0.20254732755388216
+   ],
+   "mean_dws_abs": 0.1936880777187771,
+   "dws_abs_ci95": [
     0.05025905919913418,
     0.39631229609557844
    ],
@@ -172,8 +239,13 @@
    "driver": "BRCA2",
    "paralog": "BRCA1",
    "n_contexts": 4,
-   "mean_dws": 0.26562580029242283,
+   "mean_dws": 0.1533162820587774,
    "dws_ci95": [
+    0.03683135659047543,
+    0.32697144524360955
+   ],
+   "mean_dws_abs": 0.26562580029242283,
+   "dws_abs_ci95": [
     0.1331475584652435,
     0.45092574608661523
    ],
@@ -187,8 +259,13 @@
    "driver": "CDH1",
    "paralog": "CDH2",
    "n_contexts": 1,
-   "mean_dws": 0.6921838226525847,
+   "mean_dws": 0.0,
    "dws_ci95": [
+    0.0,
+    0.0
+   ],
+   "mean_dws_abs": 0.6921838226525847,
+   "dws_abs_ci95": [
     0.43935256024155145,
     0.9748970685179984
    ],
@@ -202,8 +279,13 @@
    "driver": "EP300",
    "paralog": "CREBBP",
    "n_contexts": 4,
-   "mean_dws": 2.0668784069290025,
+   "mean_dws": 1.9292980837229148,
    "dws_ci95": [
+    0.9956833681620217,
+    4.367930626506879
+   ],
+   "mean_dws_abs": 2.0668784069290025,
+   "dws_abs_ci95": [
     1.125493968126666,
     4.5483691864079905
    ],
@@ -217,8 +299,13 @@
    "driver": "FBXW7",
    "paralog": "FBXW2",
    "n_contexts": 4,
-   "mean_dws": 1.2346014878868146,
+   "mean_dws": 0.9906405931078021,
    "dws_ci95": [
+    0.24020342088403077,
+    2.7885006890283592
+   ],
+   "mean_dws_abs": 1.2346014878868146,
+   "dws_abs_ci95": [
     0.41431362706435726,
     2.9792301070743705
    ],
@@ -232,8 +319,13 @@
    "driver": "KMT2D",
    "paralog": "KMT2C",
    "n_contexts": 4,
-   "mean_dws": 2.290280514415464,
+   "mean_dws": 1.5196186563967977,
    "dws_ci95": [
+    0.4981523303055112,
+    3.5576655357749294
+   ],
+   "mean_dws_abs": 2.290280514415464,
+   "dws_abs_ci95": [
     0.9378401609947413,
     5.002422772619903
    ],
@@ -247,8 +339,13 @@
    "driver": "KRAS",
    "paralog": "HRAS",
    "n_contexts": 4,
-   "mean_dws": 0.24813011765003473,
+   "mean_dws": 0.018806953737195837,
    "dws_ci95": [
+    0.0,
+    0.10534667933871916
+   ],
+   "mean_dws_abs": 0.24813011765003473,
+   "dws_abs_ci95": [
     0.1061837416386095,
     0.4332125611817329
    ],
@@ -262,8 +359,13 @@
    "driver": "KRAS",
    "paralog": "NRAS",
    "n_contexts": 4,
-   "mean_dws": 0.48820194306085657,
+   "mean_dws": 0.026493967969424936,
    "dws_ci95": [
+    0.0,
+    0.1725572790488921
+   ],
+   "mean_dws_abs": 0.48820194306085657,
+   "dws_abs_ci95": [
     0.25974543154648516,
     0.8282993758273406
    ],
@@ -277,8 +379,13 @@
    "driver": "MAP2K1",
    "paralog": "MAP2K2",
    "n_contexts": 1,
-   "mean_dws": 0.18713935205138846,
+   "mean_dws": 0.09575638742466056,
    "dws_ci95": [
+    0.0,
+    0.44589962341066125
+   ],
+   "mean_dws_abs": 0.18713935205138846,
+   "dws_abs_ci95": [
     0.006926878054348301,
     0.5141769147656222
    ],
@@ -292,8 +399,13 @@
    "driver": "NF1",
    "paralog": "RASA2",
    "n_contexts": 4,
-   "mean_dws": 5.431026275831953,
+   "mean_dws": 1.3897534750275675,
    "dws_ci95": [
+    0.0,
+    4.837318808396197
+   ],
+   "mean_dws_abs": 5.431026275831953,
+   "dws_abs_ci95": [
     1.217708137328267,
     13.832408048415004
    ],
@@ -307,8 +419,13 @@
    "driver": "PIK3CA",
    "paralog": "PIK3CB",
    "n_contexts": 5,
-   "mean_dws": 1.4826732115629795,
+   "mean_dws": 0.0050827647365248195,
    "dws_ci95": [
+    0.0,
+    0.07111021308773655
+   ],
+   "mean_dws_abs": 1.4826732115629795,
+   "dws_abs_ci95": [
     0.8864428366177033,
     2.628591454789932
    ],
@@ -322,8 +439,13 @@
    "driver": "PIK3R1",
    "paralog": "CRKL",
    "n_contexts": 3,
-   "mean_dws": 0.31859386040163507,
+   "mean_dws": 0.24586238378184505,
    "dws_ci95": [
+    0.0,
+    0.6785633987765867
+   ],
+   "mean_dws_abs": 0.31859386040163507,
+   "dws_abs_ci95": [
     0.07992586586639792,
     0.7094724675042917
    ],
@@ -337,8 +459,13 @@
    "driver": "PPP2R1A",
    "paralog": "PPP2R1B",
    "n_contexts": 1,
-   "mean_dws": 0.9667515652828006,
+   "mean_dws": 0.9568607252493859,
    "dws_ci95": [
+    0.0,
+    2.2227868461375597
+   ],
+   "mean_dws_abs": 0.9667515652828006,
+   "dws_abs_ci95": [
     0.0903509817301543,
     2.2227868461375597
    ],
@@ -352,8 +479,13 @@
    "driver": "PTEN",
    "paralog": "TNS2",
    "n_contexts": 5,
-   "mean_dws": 0.23848770975657294,
+   "mean_dws": 0.04538119383376242,
    "dws_ci95": [
+    0.0,
+    0.13509750038859134
+   ],
+   "mean_dws_abs": 0.23848770975657294,
+   "dws_abs_ci95": [
     0.11171144069566644,
     0.39199147310693205
    ],
@@ -367,8 +499,13 @@
    "driver": "RB1",
    "paralog": "RBL1",
    "n_contexts": 2,
-   "mean_dws": 4.062227663005024,
+   "mean_dws": 0.0014463877536692808,
    "dws_ci95": [
+    0.0,
+    0.0
+   ],
+   "mean_dws_abs": 4.062227663005024,
+   "dws_abs_ci95": [
     1.9536539999105158,
     10.92033436315897
    ],
@@ -382,8 +519,13 @@
    "driver": "SMARCA4",
    "paralog": "SMARCA2",
    "n_contexts": 2,
-   "mean_dws": 5.313407154966537,
+   "mean_dws": 5.0859827781392175,
    "dws_ci95": [
+    3.0923492239171737,
+    7.586808532877472
+   ],
+   "mean_dws_abs": 5.313407154966537,
+   "dws_abs_ci95": [
     3.2843320461561913,
     7.7789311989622005
    ],
@@ -397,8 +539,13 @@
    "driver": "STK11",
    "paralog": "SIK1",
    "n_contexts": 1,
-   "mean_dws": 0.4760279905816394,
+   "mean_dws": 0.04581417681659235,
    "dws_ci95": [
+    0.0,
+    0.5055832442530684
+   ],
+   "mean_dws_abs": 0.4760279905816394,
+   "dws_abs_ci95": [
     0.0276659813236277,
     1.267522587291771
    ],
@@ -412,8 +559,13 @@
    "driver": "TP53",
    "paralog": "TP63",
    "n_contexts": 5,
-   "mean_dws": 1.279827802823716,
+   "mean_dws": 0.823257539862291,
    "dws_ci95": [
+    0.11441861510847803,
+    2.398360428318624
+   ],
+   "mean_dws_abs": 1.279827802823716,
+   "dws_abs_ci95": [
     0.41881976311072555,
     3.0427517038797807
    ],
@@ -421,6 +573,197 @@
    "selectivity_ci95": [
     0.014265324501170264,
     0.06751097843042674
+   ]
+  }
+ ],
+ "bootstrap_rank_ci95": [
+  {
+   "driver": "ARID1A",
+   "paralog": "ARID1B",
+   "rank_median": 2.0,
+   "rank_ci95": [
+    1.0,
+    4.0
+   ]
+  },
+  {
+   "driver": "ATR",
+   "paralog": "ATM",
+   "rank_median": 17.5,
+   "rank_ci95": [
+    6.0,
+    18.5
+   ]
+  },
+  {
+   "driver": "BRAF",
+   "paralog": "RAF1",
+   "rank_median": 17.5,
+   "rank_ci95": [
+    16.5,
+    19.0
+   ]
+  },
+  {
+   "driver": "BRCA1",
+   "paralog": "BRCA2",
+   "rank_median": 12.0,
+   "rank_ci95": [
+    9.0,
+    18.0
+   ]
+  },
+  {
+   "driver": "BRCA2",
+   "paralog": "BRCA1",
+   "rank_median": 10.0,
+   "rank_ci95": [
+    8.0,
+    13.0
+   ]
+  },
+  {
+   "driver": "CDH1",
+   "paralog": "CDH2",
+   "rank_median": 17.5,
+   "rank_ci95": [
+    16.5,
+    19.0
+   ]
+  },
+  {
+   "driver": "EP300",
+   "paralog": "CREBBP",
+   "rank_median": 4.0,
+   "rank_ci95": [
+    2.0,
+    6.0
+   ]
+  },
+  {
+   "driver": "FBXW7",
+   "paralog": "FBXW2",
+   "rank_median": 6.0,
+   "rank_ci95": [
+    3.0,
+    9.0
+   ]
+  },
+  {
+   "driver": "KMT2D",
+   "paralog": "KMT2C",
+   "rank_median": 5.0,
+   "rank_ci95": [
+    2.0,
+    8.0
+   ]
+  },
+  {
+   "driver": "KRAS",
+   "paralog": "HRAS",
+   "rank_median": 16.5,
+   "rank_ci95": [
+    10.0,
+    18.5
+   ]
+  },
+  {
+   "driver": "KRAS",
+   "paralog": "NRAS",
+   "rank_median": 17.0,
+   "rank_ci95": [
+    10.0,
+    18.5
+   ]
+  },
+  {
+   "driver": "MAP2K1",
+   "paralog": "MAP2K2",
+   "rank_median": 15.75,
+   "rank_ci95": [
+    7.0,
+    18.5
+   ]
+  },
+  {
+   "driver": "NF1",
+   "paralog": "RASA2",
+   "rank_median": 6.0,
+   "rank_ci95": [
+    1.0,
+    18.0
+   ]
+  },
+  {
+   "driver": "PIK3CA",
+   "paralog": "PIK3CB",
+   "rank_median": 17.5,
+   "rank_ci95": [
+    12.0,
+    18.5
+   ]
+  },
+  {
+   "driver": "PIK3R1",
+   "paralog": "CRKL",
+   "rank_median": 9.0,
+   "rank_ci95": [
+    7.0,
+    17.0
+   ]
+  },
+  {
+   "driver": "PPP2R1A",
+   "paralog": "PPP2R1B",
+   "rank_median": 6.0,
+   "rank_ci95": [
+    3.0,
+    17.0
+   ]
+  },
+  {
+   "driver": "PTEN",
+   "paralog": "TNS2",
+   "rank_median": 13.0,
+   "rank_ci95": [
+    10.0,
+    18.0
+   ]
+  },
+  {
+   "driver": "RB1",
+   "paralog": "RBL1",
+   "rank_median": 17.5,
+   "rank_ci95": [
+    16.5,
+    19.0
+   ]
+  },
+  {
+   "driver": "SMARCA4",
+   "paralog": "SMARCA2",
+   "rank_median": 1.0,
+   "rank_ci95": [
+    1.0,
+    2.0
+   ]
+  },
+  {
+   "driver": "STK11",
+   "paralog": "SIK1",
+   "rank_median": 17.5,
+   "rank_ci95": [
+    8.0,
+    18.5
+   ]
+  },
+  {
+   "driver": "TP53",
+   "paralog": "TP63",
+   "rank_median": 7.0,
+   "rank_ci95": [
+    3.0,
+    11.0
    ]
   }
  ]
