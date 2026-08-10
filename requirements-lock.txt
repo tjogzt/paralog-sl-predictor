@@ -1,0 +1,16 @@
+# requirements-lock.txt — validated dependency stack for the paralog-sl-predictor pipeline
+# Generated from the Dockerfile pins (the exact versions under which the 420-claim audit passed).
+# For development, use requirements.txt (floor versions). For byte-level reproducibility, use this file.
+#
+# Install: pip install -r requirements-lock.txt
+
+numpy==1.26.4
+pandas==2.1.4
+scipy==1.11.4
+scikit-learn==1.4.2
+statsmodels==0.14.1
+matplotlib>=3.7
+seaborn>=0.12
+requests>=2.28
+tqdm>=4.60
+openpyxl>=3.0

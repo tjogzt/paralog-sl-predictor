@@ -44,6 +44,38 @@ echo "==> [3b/5] Table mirrors (tables.py)"
 echo "==> [4/5] Manuscript number audit (audit_manuscript_numbers.py)"
 "$PY" audit_manuscript_numbers.py
 
+echo "==> [4b/5] Stage 3/4 revision scripts fidelity check"
+REV_SCRIPTS=(
+  rev_b1_ranking_stat_sensitivity.py
+  rev_b2_selective_reporting.py
+  rev_b3_pu_sensitivity.py
+  rev_b4_necessity_increment.py
+  rev_b5_external_baselines.py
+  rev_b1c_b6_external_scores.py
+  rev_b9_tsg_onc_pairlevel.py
+  rev_b14_next_tier_panel.py
+  rev2_b8_fetch_pam50.py
+  rev2_b10_power_icc.py
+  rev2_b11_msi_cluster_null.py
+  rev2_b12_breast_waterfall.py
+  rev2_b15_dws_threshold_stability.py
+  rev2_b16_kmer_length_correction.py
+)
+PASSED=0; FAILED=0
+for s in "${REV_SCRIPTS[@]}"; do
+  if [ -f "$s" ]; then
+    echo "    $s ..."
+    if "$PY" "$s" > /dev/null 2>&1; then
+      echo "        PASSED"; ((PASSED++)) || true
+    else
+      echo "        FAILED (exit code $?)"; ((FAILED++)) || true
+    fi
+  else
+    echo "    $s ... SKIPPED (not found)"
+  fi
+done
+echo "    Revision scripts: $PASSED passed, $FAILED failed, $(( ${#REV_SCRIPTS[@]} - PASSED - FAILED )) skipped"
+
 echo "==> [5/5] Test suite (pytest)"
 "$PY" -m pytest tests/ -q
 

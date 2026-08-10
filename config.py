@@ -31,6 +31,21 @@ ENSEMBL_PARALOG_FILE = DATA_DIR / "ensembl_paralogs.csv"
 # ── SynLethDB known SL pairs ──────────────────────────────────
 SYNLETHDB_FILE = DATA_DIR / "synlethdb_sl_pairs.csv"
 
+# ── Env overrides (set PARALOG_SL_DATA_DIR / PARALOG_SL_OUTPUT_DIR) ──
+import os as _os
+_DATA_OVERRIDE = _os.environ.get("PARALOG_SL_DATA_DIR")
+_OUTPUT_OVERRIDE = _os.environ.get("PARALOG_SL_OUTPUT_DIR")
+if _DATA_OVERRIDE:
+    DATA_DIR = Path(_DATA_OVERRIDE)
+    for k in DEPMAP_FILES:
+        DEPMAP_FILES[k] = DATA_DIR / DEPMAP_FILES[k].name
+    ENSEMBL_PARALOG_FILE = DATA_DIR / ENSEMBL_PARALOG_FILE.name
+    SYNLETHDB_FILE = DATA_DIR / SYNLETHDB_FILE.name
+if _OUTPUT_OVERRIDE:
+    OUTPUT_DIR = Path(_OUTPUT_OVERRIDE)
+    FIG_DIR = OUTPUT_DIR / "figures"
+del _os, _DATA_OVERRIDE, _OUTPUT_OVERRIDE
+
 # ── Gynecological cancer definitions (Oncotree names) ─────────
 GYN_CANCER_TYPES = {
     "Ovarian": [
