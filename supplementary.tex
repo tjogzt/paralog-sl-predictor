@@ -10,7 +10,7 @@
 \usepackage{verbatim}
 
 \title{\textbf{Supplementary Information}\\[0.3em]
-\large Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types}
+\large Delta Dependency Profiles Paralog Compensation Signals Across Solid Tumor Types}
 \author{}
 \date{}
 
@@ -20,7 +20,7 @@
 \begin{center}
 {\LARGE\bfseries Supplementary Information\par}
 \vspace{0.5em}
-{\large Delta Dependency Prioritizes Candidate\\[0.2em] Paralog Dependencies Across Solid Tumor Types\par}
+{\large Delta Dependency Profiles Paralog Compensation\\[0.2em] Signals Across Solid Tumor Types\par}
 \vspace{1.2em}
 
 {\large Qingqing Mo$^{1,2}$, Pingbo Chen$^{1,2}$, Cheng Xu$^{1,2}$, Ya Wang$^{1,2}$, Ting Hu$^{1,2}$, Qian Sun$^{1,2}$, Tao Zhu$^{1,2,\ast}$\par}
@@ -122,7 +122,7 @@ Flister & EP300$\rightarrow$CREBBP & 3 (2) & 46 (20) & 0.422 & 0.121 \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{output/figures/FigS4_CPTAC_PerCohort.pdf}
-\caption{\textbf{CPTAC per-cohort scatter plots (UCEC).} Driver vs.\ paralog protein abundance (log$_2$ normalized intensity) in the UCEC cohort (95 tumors; $n=83$ with both proteins quantified for a given pair): \textbf{a}, EP300 vs.\ CREBBP; \textbf{b}, PIK3CA vs.\ PIK3CB; \textbf{c}, PIK3R1 vs.\ CRKL. Each point represents one tumor sample. Line: linear regression fit with 95\% confidence band. Pearson $r$ is shown in each panel (ns: BH-corrected $q \ge 0.05$). The complete set of per-cohort scatter plots for all 122 evaluable pair$\times$cohort combinations is available in the project repository (\texttt{output/cptac\_scatter/}, with a machine-readable manifest).}
+\caption{\textbf{CPTAC per-cohort scatter plots (UCEC).} Driver vs.\ paralog protein abundance (log$_2$ normalized intensity) in the UCEC cohort (95 tumors; $n=83$ with both proteins quantified for a given pair): \textbf{a}, EP300 vs.\ CREBBP; \textbf{b}, PIK3CA vs.\ PIK3CB; \textbf{c}, PIK3R1 vs.\ CRKL. Each point represents one tumor sample. Line: linear regression fit with 95\% confidence band. Pearson $r$ is shown in each panel; significance stars: ***~$p<0.001$, **~$p<0.01$, *~$p<0.05$ (ns: BH-corrected $q \ge 0.05$). The complete set of per-cohort scatter plots for all 122 evaluable pair$\times$cohort combinations is provided as a supplementary data archive in the public code repository (github.com/tjogzt/paralog-sl-predictor), with a machine-readable manifest.}
 \end{figure}
 
 % S5 (mutation type; renumbered from S6)
@@ -164,7 +164,7 @@ Flister & EP300$\rightarrow$CREBBP & 3 (2) & 46 (20) & 0.422 & 0.121 \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\textwidth,keepaspectratio]{output/figures/FigS10_Survival.pdf}
-\caption{\textbf{Paralog expression and overall survival in TCGA BRCA.} Forest plot of paralog gene expression vs.\ overall survival in TCGA PanCan Atlas BRCA ($n=1{,}069$; Cox proportional-hazards on continuous log$_2$-transformed, z-scored expression, adjusted for age and AJCC stage). Four genes withstand Benjamini--Hochberg correction across the 32-gene family (\textit{PIK3CA}, $q=0.035$; \textit{ARID1B}, \textit{BRCA2}, \textit{RBL1}, each $q=0.040$); these four are shown together with the compensating paralogs of the lead candidate pairs and \textit{ARID1A} for direct contrast. Points, hazard ratio per SD; error bars, 95\% CI. Full 32-gene results in Supplementary Table~S8; UCEC and OV extensions in the Supplementary TCGA survival extension.}
+\caption{\textbf{Paralog expression and overall survival in TCGA BRCA.} Forest plot of paralog gene expression vs.\ overall survival in TCGA PanCan Atlas BRCA ($n=1{,}069$; Cox proportional-hazards on continuous log$_2$-transformed, z-scored expression, adjusted for age and AJCC stage). Four genes withstand Benjamini--Hochberg correction across the 32-gene family (\textit{PIK3CA}, $q=0.035$; \textit{ARID1B}, \textit{BRCA2}, \textit{RBL1}, each $q=0.040$); these four are shown together with the compensating paralogs of the lead candidate pairs and \textit{ARID1A} for direct contrast. Points, hazard ratio per SD; error bars, 95\% CI; $^{*}$marks FDR $q<0.05$ (BH, 32-gene family). Full 32-gene results in Supplementary Table~S8; UCEC and OV extensions in the Supplementary TCGA survival extension.}
 \label{fig:survival_forest}
 \end{figure}
 
@@ -264,7 +264,7 @@ comp. & STK11 & SIK1 & Mouse genetics, LKB1--SIK axis (partial homolog) & Mouse 
 
 \subsection{External combinatorial-CRISPR gold standards (in4mer)}
 
-Esmaeili Anvar et al.\ (2024) meta-analyzed five combinatorial CRISPR paralog screens (Dede 2020, Gonatopoulos-Pournatzis 2020, Parrish 2021, Thompson 2021, Ito 2021; full citations in Supplementary References) and defined 13 candidate cross-study gold-standard paralog synthetic lethals (paralog score $>0.25$, called a hit in more than one study): CNOT7--CNOT8, PITPNA--PITPNB, TIA1--TIAL1, SAR1A--SAR1B, PTP4A1--PTP4A2, GSK3A--GSK3B, CSNK2A1--CSNK2A2, CSNK1D--CSNK1E, MAPK1--MAPK3, ARFGEF1--ARFGEF2, HDAC1--HDAC2, ASF1A--ASF1B, and SLC25A28--SLC25A37. We assessed whether these pairs could serve as an external benchmark for DD. No in4mer pair involves a 40-panel driver gene; as the closest case we additionally audited MAPK1 (of MAPK1--MAPK3), which carries qualifying oncogenic hotspot mutations in zero DepMap 26Q1 cell lines (Table~S6), so no in4mer gold-standard pair is evaluable in our driver-mutation-conditioned framework. This reflects a genuine division of scope rather than missing data: the in4mer gold standards measure background-independent paralog buffering under dual knockout, whereas DD quantifies dependency shifts conditioned on naturally occurring driver mutations. We therefore report the in4mer set as a conceptual cross-reference rather than a benchmark, and we note that only 8 of the 13 pairs replicated as hits in at least three of the four in4mer screens (Chou et al.\ 2025). Repeating the control-pair sampling of the $\ge$3-mutant in4mer frame across 20 seeds (400 control pairs per seed) gave AUROC point estimates of 0.480--0.522 (median 0.499), confirming that the null separation is not an artifact of the control-sampling seed (\texttt{in4mer\_seed\_sensitivity.py}). Adequately powered external tests against two recent digenic screens (Harle et al., Genome Biol 2025; Flister et al., Cell Rep 2025) are reported in Supplementary Methods (External digenic screens): mutation-agnostic $|$DD$|$ separates screen hits from non-hits in both datasets.
+Esmaeili Anvar et al.\ (2024) meta-analyzed five combinatorial CRISPR paralog screens (Dede 2020, Gonatopoulos-Pournatzis 2020, Parrish 2021, Thompson 2021, Ito 2021; full citations in the main text reference list) and defined 13 candidate cross-study gold-standard paralog synthetic lethals (paralog score $>0.25$, called a hit in more than one study): CNOT7--CNOT8, PITPNA--PITPNB, TIA1--TIAL1, SAR1A--SAR1B, PTP4A1--PTP4A2, GSK3A--GSK3B, CSNK2A1--CSNK2A2, CSNK1D--CSNK1E, MAPK1--MAPK3, ARFGEF1--ARFGEF2, HDAC1--HDAC2, ASF1A--ASF1B, and SLC25A28--SLC25A37. We assessed whether these pairs could serve as an external benchmark for DD. No in4mer pair involves a 40-panel driver gene; as the closest case we additionally audited MAPK1 (of MAPK1--MAPK3), which carries qualifying oncogenic hotspot mutations in zero DepMap 26Q1 cell lines (Table~S6), so no in4mer gold-standard pair is evaluable in our driver-mutation-conditioned framework. This reflects a genuine division of scope rather than missing data: the in4mer gold standards measure background-independent paralog buffering under dual knockout, whereas DD quantifies dependency shifts conditioned on naturally occurring driver mutations. We therefore report the in4mer set as a conceptual cross-reference rather than a benchmark, and we note that only 8 of the 13 pairs replicated as hits in at least three of the four in4mer screens (Chou et al.\ 2025). Repeating the control-pair sampling of the $\ge$3-mutant in4mer frame across 20 seeds (400 control pairs per seed) gave AUROC point estimates of 0.480--0.522 (median 0.499), confirming that the null separation is not an artifact of the control-sampling seed (\texttt{in4mer\_seed\_sensitivity.py}). Adequately powered external tests against two recent digenic screens (Harle et al., Genome Biol 2025; Flister et al., Cell Rep 2025) are reported in Supplementary Methods (External digenic screens): mutation-agnostic $|$DD$|$ separates screen hits from non-hits in both datasets.
 
 \subsection{Table S4: 40-gene driver panel}
 \begin{table}[H]
@@ -542,12 +542,5 @@ PTGNN & 0.529 \\
 \end{tabular}
 \end{table}
 
-\section{Supplementary References}
-\begin{enumerate}\setlength\itemsep{1pt}
-\item Gonatopoulos-Pournatzis T, Aregger M, Brown KR, Farhangmehr S, Braunschweig U, Ward HN, et al. Genetic interaction mapping and exon-resolution functional genomics with a hybrid Cas9--Cas12a platform. \textit{Nat Biotechnol}. 2020;38(5):638--648.
-\item Ito T, Young MJ, Li R, Jain S, Wernitznig A, Krill-Burger JM, et al. Paralog knockout profiling identifies DUSP4 and DUSP6 as a digenic dependence in MAPK pathway-driven cancers. \textit{Nat Genet}. 2021;53(12):1664--1672.
-\item Harle V, Offord V, Gökbağ B, Fotopoulos L, Williams T, Alexander D, et al. A compendium of synthetic lethal gene pairs defined by extensive combinatorial pan-cancer CRISPR screening. \textit{Genome Biol}. 2025;26:284.
-\item Flister MJ, Verduzco D, Petiwala S, Carneiro-Lobo TC, Ghekas C, Shi X, et al. Genetic mapping and predictive modeling of paralog synthetic lethality. \textit{Cell Rep}. 2025;44:116512.
-\end{enumerate}
 
 \end{document}

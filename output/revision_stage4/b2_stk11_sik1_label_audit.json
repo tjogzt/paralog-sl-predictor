@@ -1,0 +1,30 @@
+{
+  "pair": "STK11->SIK1",
+  "manuscript_text_identity": {
+    "identity": "mechanistic comparator / specificity reference, NOT a sequence paralog, NOT a benchmark positive",
+    "evidence": [
+      "manuscript.tex Results: 'two serve as mechanistic comparators (BRCA1<->BRCA2, STK11->SIK1)'",
+      "manuscript.tex Methods: 'not sequence paralogs and serve as specificity references only'",
+      "supplementary Table S3: Tier='Comparator', Inclusion='Comparator', Direct_SL='Pathway axis', Key_Ref=Hollstein 2019"
+    ]
+  },
+  "evaluation_code_identity": {
+    "identity": "positive (is_known_paralog_sl = True) in every frame driven by config.KNOWN_PARALOG_SL",
+    "evidence": [
+      "config.py: ('STK11','SIK1') is a member of KNOWN_PARALOG_SL",
+      "TableS2_FullResults.tsv: STK11->SIK1 Cervical entry has is_known_paralog_sl=True (1 of the 8 positive entries; signed DD=0.0363)",
+      "output/analysis_summary.txt: STK11->SIK1 listed with the star 'Known' flag",
+      "supplementary Table S9 (DWS/composite): STK11->SIK1 row carries the star flag",
+      "validation_report.json per-pair frame: 6 positive pairs of 72 include STK11->SIK1 (labels derive from KNOWN_PARALOG_SL)"
+    ]
+  },
+  "numerical_consequences": [
+    "Headline full-frame AUROC 0.629 (110 entries, 8 positives) counts STK11->SIK1 as a positive although the text designates it a comparator.",
+    "comparator-excluded frame removes the ordered tuples (STK11->SIK1 and BRCA1->BRCA2): 108 entries, 6 positives, AUROC 0.560.",
+    "The ordered-tuple exclusion leaves BRCA2->BRCA1 (reverse direction of the other comparator pair) inside the comparator-excluded frame AS A POSITIVE; the Tier A u B frame excludes comparators as UNORDERED pairs and is clean."
+  ],
+  "options_for_repair": [
+    "Option 1: remove STK11->SIK1 (and both BRCA1<->BRCA2 directions) from KNOWN_PARALOG_SL so evaluation labels match the text (frames recompute).",
+    "Option 2: keep labels, state explicitly in text/Table S3 that comparators are scored as positives in the full and per-pair frames."
+  ]
+}

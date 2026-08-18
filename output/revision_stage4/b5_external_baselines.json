@@ -1,0 +1,120 @@
+{
+  "harle": {
+    "n_evaluable": 411,
+    "hit_column": "hit_any_line",
+    "auroc": {
+      "abs_dd": {
+        "auroc": 0.619254091412923,
+        "permutation_p": 0.00019998000199980003,
+        "n": 411,
+        "n_hits": 98
+      },
+      "max_abs_mean_chronos": {
+        "auroc": 0.6130952380952381,
+        "permutation_p": 0.00039996000399960006,
+        "n": 410,
+        "n_hits": 98
+      },
+      "min_abs_mean_chronos": {
+        "auroc": 0.6439200680272109,
+        "permutation_p": 9.999000099990002e-05,
+        "n": 410,
+        "n_hits": 98
+      },
+      "mrna_coexpression": {
+        "auroc": 0.6551802829758101,
+        "permutation_p": 9.999000099990002e-05,
+        "n": 411,
+        "n_hits": 98
+      }
+    },
+    "best_baseline": "mrna_coexpression",
+    "delta_auroc_maxabsDD_minus_best_baseline": -0.03592619156288712,
+    "paired_bootstrap_delta": {
+      "mean_delta": -0.03524285002308655,
+      "ci95": [
+        -0.11524231587455068,
+        0.04616711131246017
+      ],
+      "frac_delta_below_0": 0.8036,
+      "n_valid": 10000,
+      "seed": 42
+    },
+    "coexpression_coverage": 1.0
+  },
+  "flister": {
+    "n_evaluable": 29457,
+    "hit_column": "hit_union",
+    "auroc": {
+      "abs_dd": {
+        "auroc": 0.6963396033962492,
+        "permutation_p": 9.999000099990002e-05,
+        "n": 29457,
+        "n_hits": 114
+      },
+      "max_abs_mean_chronos": {
+        "auroc": 0.7031032721975702,
+        "permutation_p": 9.999000099990002e-05,
+        "n": 29043,
+        "n_hits": 114
+      },
+      "min_abs_mean_chronos": {
+        "auroc": 0.5953856780635954,
+        "permutation_p": 0.00019998000199980003,
+        "n": 29043,
+        "n_hits": 114
+      },
+      "mrna_coexpression": {
+        "auroc": 0.7447862234911742,
+        "permutation_p": 9.999000099990002e-05,
+        "n": 29424,
+        "n_hits": 114
+      }
+    },
+    "best_baseline": "mrna_coexpression",
+    "delta_auroc_maxabsDD_minus_best_baseline": -0.04844662009492495,
+    "paired_bootstrap_delta": {
+      "mean_delta": -0.04816766440470333,
+      "ci95": [
+        -0.11505236981509612,
+        0.01969069213855988
+      ],
+      "frac_delta_below_0": 0.9214,
+      "n_valid": 10000,
+      "seed": 42
+    },
+    "coexpression_coverage": 0.9988797229860474
+  },
+  "not_computable": {
+    "kmer_identity": {
+      "reason": "bundled sequence cache data/uniprot_sequences.rds covers only 26 main-universe genes; data/ensembl_paralogs.csv identity_pct is NA for all 66,595 pairs; computing k-mer identity for the external-frame genes would require downloading new sequence data (out of scope of the artifact-only revision).",
+      "coverage_check": {
+        "harle": {
+          "n_pairs": 472,
+          "n_pairs_both_genes_sequenced": 3,
+          "fraction": 0.006355932203389831
+        },
+        "flister": {
+          "n_pairs": 35108,
+          "n_pairs_both_genes_sequenced": 8,
+          "fraction": 0.0002278682921271505
+        }
+      }
+    },
+    "de_kegel_public_scores": {
+      "reason": "no local copy of De Kegel et al. 2021 paralog-SL prediction scores exists in data/ or output/ (verified 2026-08-09); fetching external data is out of scope of the artifact-only revision."
+    }
+  },
+  "meta": {
+    "generated_at": "2026-08-09T17:01:17+00:00",
+    "seed": 42,
+    "n_perm": 10000,
+    "n_boot": 10000,
+    "frames": "frozen external_holdout Layer-1 evaluable universes; max|DD| from the engine-verified frozen layer1 CSVs",
+    "baseline_definitions": {
+      "max_abs_mean_chronos": "max(|mean Chronos A|, |mean Chronos B|), global mean across all DepMap lines (necessity-type)",
+      "min_abs_mean_chronos": "min(|mean Chronos A|, |mean Chronos B|) -- the pair's weaker single-gene effect; SL-consistent direction is LOW values ranking hits higher",
+      "mrna_coexpression": "Pearson r of log2(TPM+1) across DepMap lines (pairwise complete, >=10 lines)"
+    }
+  }
+}

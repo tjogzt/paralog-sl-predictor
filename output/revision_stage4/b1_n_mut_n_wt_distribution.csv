@@ -1,0 +1,17 @@
+cancer_type,driver_gene,n_mut,n_wt,n_paralogs
+Cervical,STK11,6,10,3
+Endometrial,ARID1A,21,7,1
+Endometrial,FBXW7,8,20,3
+Endometrial,KMT2D,14,14,1
+Endometrial,KRAS,6,22,30
+Endometrial,PIK3CA,15,13,3
+Endometrial,PIK3R1,7,21,24
+Endometrial,PTEN,17,11,2
+Endometrial,TP53,21,7,2
+Ovarian,ARID1A,14,41,1
+Ovarian,BRCA1,5,50,2
+Ovarian,BRCA2,5,50,1
+Ovarian,KRAS,8,47,30
+Ovarian,PIK3CA,12,43,3
+Ovarian,PTEN,6,49,2
+Ovarian,TP53,40,15,2

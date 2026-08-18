@@ -1,0 +1,97 @@
+{
+  "method": {
+    "kmer": "Jaccard over unique 3-mers, R-identical (compute_sequence_identity.R)",
+    "inflation_fit_population": "318 non-benchmark pairs of the 26 cached genes",
+    "correction": "OLS Jaccard ~ log(len_A)+log(len_B) on non-benchmark pairs; corrected = residual + intercept",
+    "filter_consequence": "signed-DD AUROC recomputed on length-corrected identity at rank-equivalent subset sizes (same n entries as the raw id>=0.2 / id>=0.3 filters)",
+    "scope_note": "sequence cache covers 26 genes = 16 of 72 TableS2 pairs; external frames not computable (see B5)"
+  },
+  "fidelity_max_abs_diff_vs_paralog_identity_csv": 3.608224830031759e-16,
+  "inflation": {
+    "min_len": {
+      "pearson_r": 0.833106252516404,
+      "pearson_p": 2.8815758128496554e-83,
+      "spearman_r": 0.9208277359070816,
+      "spearman_p": 2.838208000453154e-131
+    },
+    "geomean_len": {
+      "pearson_r": 0.8088976669033163,
+      "pearson_p": 7.154492901030089e-75,
+      "spearman_r": 0.8677398872716572,
+      "spearman_p": 5.843473089079715e-98
+    }
+  },
+  "length_model": {
+    "intercept": -0.4324303934735753,
+    "coef_log_len_A": 0.028643087206636695,
+    "coef_log_len_B": 0.04763880236639414,
+    "r_squared": 0.5080297022218361,
+    "n_reference_pairs": 318
+  },
+  "n_tableS2_entries_with_identity": 16,
+  "filter_consequence": {
+    "spearman_raw_vs_corrected_on_scored_entries": 0.9584569732937686,
+    "id_ge_0.2": {
+      "raw_threshold": 0.2,
+      "artifact": {
+        "auroc": 0.8333333333333334,
+        "n_entries": 7,
+        "n_unique_pairs": 5,
+        "n_positives": 4
+      },
+      "raw_recomputed": {
+        "auroc": 0.8333333333333334,
+        "n_entries": 7,
+        "n_positives": 4,
+        "pairs": [
+          "ARID1A->ARID1B",
+          "BRCA1->BRCA2",
+          "BRCA2->BRCA1",
+          "KMT2D->KMT2C",
+          "KRAS->HRAS"
+        ]
+      },
+      "corrected_rank_equivalent": {
+        "auroc": 0.8333333333333334,
+        "n_entries": 7,
+        "n_positives": 4,
+        "pairs": [
+          "ARID1A->ARID1B",
+          "BRCA1->BRCA2",
+          "BRCA2->BRCA1",
+          "KMT2D->KMT2C",
+          "KRAS->HRAS"
+        ]
+      }
+    },
+    "id_ge_0.3": {
+      "raw_threshold": 0.3,
+      "artifact": {
+        "auroc": 1.0,
+        "n_entries": 5,
+        "n_unique_pairs": 3,
+        "n_positives": 2
+      },
+      "raw_recomputed": {
+        "auroc": 1.0,
+        "n_entries": 5,
+        "n_positives": 2,
+        "pairs": [
+          "ARID1A->ARID1B",
+          "KMT2D->KMT2C",
+          "KRAS->HRAS"
+        ]
+      },
+      "corrected_rank_equivalent": {
+        "auroc": 1.0,
+        "n_entries": 5,
+        "n_positives": 2,
+        "pairs": [
+          "ARID1A->ARID1B",
+          "KMT2D->KMT2C",
+          "KRAS->HRAS"
+        ]
+      }
+    }
+  }
+}

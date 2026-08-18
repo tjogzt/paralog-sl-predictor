@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-08-09T17:25:50+00:00",
+  "generated_by": "rev2_b10_power_icc.py",
+  "method": "identical Hanley-McNeil binormal power model as power_analysis.py; group sizes replaced by ICC-adjusted effective sizes (DEFF = 1 + (m-1)*ICC, ICC = 0.55399 from output/cluster_bootstrap_primary.json)",
+  "inputs": {
+    "icc_by_pair": 0.5539853314435843,
+    "avg_cluster_size": 1.5277777777777777,
+    "neff_total": 85.11420972250257,
+    "neff_ratio": 0.7737655429318415,
+    "positive_entries_pairs": [
+      8,
+      6
+    ],
+    "control_entries_pairs": [
+      102,
+      66
+    ]
+  },
+  "a_power_at_observed_0.629": {
+    "independent_samples_8v102": {
+      "power": 0.33672355617961336
+    },
+    "icc_scalar_neff_ratio": {
+      "n_pos_eff": 6.190124343454732,
+      "n_neg_eff": 78.92408537904784,
+      "power": 0.28613764403644404
+    },
+    "icc_group_specific_deff": {
+      "m_pos": 1.3333333333333333,
+      "m_neg": 1.5454545454545454,
+      "deff_pos": 1.1846617771478614,
+      "deff_neg": 1.302173817151046,
+      "n_pos_eff": 6.752982289392709,
+      "n_neg_eff": 78.33055668647997,
+      "power": 0.30046642695820724
+    }
+  },
+  "b_required_80pct_at_0.629": {
+    "controls_fixed": "effective control count",
+    "independent": {
+      "n_pos_eff_required": 44.519999999999094,
+      "note": "shipped script used integer scan with n0=102 -> 45 positives (power 0.803); continuous grid here"
+    },
+    "icc_adjusted": {
+      "n_pos_eff_required": 50.53999999999897,
+      "n0_eff": 78.33055668647997,
+      "equivalent_raw_positive_entries": 59.87280621705169,
+      "equivalent_positive_pairs_at_m1.33": 44.90460466278877
+    }
+  },
+  "c_required_80pct_at_0.70": {
+    "independent": {
+      "n_pos_eff_required": 14.769999999999728,
+      "n0": 102
+    },
+    "icc_adjusted": {
+      "n_pos_eff_required": 15.379999999999715,
+      "n0_eff": 78.33055668647997,
+      "equivalent_raw_positive_entries": 18.22009813253377,
+      "equivalent_positive_pairs_at_m1.33": 13.665073599400328
+    }
+  },
+  "d_skip_rule_explanation": {
+    "shipped_frac_skipped": 0.0094,
+    "rule": "pair-clustered bootstrap draw skipped when it contains fewer than 2 of the 6 positive pairs (AUROC undefined/degenerate)",
+    "analytic_expected_rate": {
+      "exact_binomial_P(X<2), X~Bin(72,6/72)": 0.014351887558413084,
+      "poisson_approx_lambda6": 0.01735126523666451
+    },
+    "note": "expected ~1.7% by the binomial cross-check vs 0.94% observed; the observed rate is lower because a draw containing exactly 1 positive pair still yields a defined AUROC when that pair carries multiple entries \u2014 the shipped rule counts positive PAIRS in the draw, and single-positive draws with multi-entry pairs are retained; the binomial figure is an upper bound, same order of magnitude"
+  }
+}

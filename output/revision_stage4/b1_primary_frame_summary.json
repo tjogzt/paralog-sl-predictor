@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-08-09T16:47:41+00:00",
+  "frame": "PRIMARY lineage-level (TableS2): 110 entries, 8 positives, gyn3",
+  "definitions": {
+    "signed_dd": "mean(Chronos|WT) - mean(Chronos|MUT) (manuscript Eq.1)",
+    "welch_t": "signed_dd / sqrt(s2_mut/n_mut + s2_wt/n_wt), sign-aligned with DD",
+    "hedges_g": "Cohen's d * J(N), J = 1-3/(4N-9) (pcs.py definition)",
+    "scoring": "AUROC with NaN->0 fill (mirrors compute_headline_metrics.lineage_metrics)"
+  },
+  "n_entries": 110,
+  "n_positives": 8,
+  "n_entries_below_dep_count_fallback": 1,
+  "auroc": {
+    "signed_dd": 0.6286764705882353,
+    "welch_t": 0.6274509803921569,
+    "hedges_g": 0.6311274509803921
+  },
+  "delta_auroc": {
+    "welch_t_minus_signed_dd": -0.001225490196078427,
+    "hedges_g_minus_signed_dd": 0.002450980392156854
+  },
+  "spearman": {
+    "signed_dd_vs_welch_t": 0.9707954827220883,
+    "signed_dd_vs_hedges_g": 0.9801997159795325,
+    "welch_t_vs_hedges_g": 0.9949777968126592
+  },
+  "paired_bootstrap": {
+    "n_boot": 10000,
+    "seed": 42,
+    "scheme": "entry resampling (same draws for all three statistics)",
+    "welch_t_minus_signed_dd": {
+      "mean": -0.0008723784747672912,
+      "ci95": [
+        -0.05270457697642161,
+        0.047619047619047616
+      ],
+      "frac_below_0": 0.4874
+    },
+    "hedges_g_minus_signed_dd": {
+      "mean": 0.0028001095602617197,
+      "ci95": [
+        -0.04190476190476189,
+        0.04630074786324789
+      ],
+      "frac_below_0": 0.4081
+    },
+    "auroc_ci95": {
+      "signed_dd": [
+        0.32593065187239945,
+        0.8933370064279155
+      ],
+      "welch_t": [
+        0.3520171912222833,
+        0.869625520110957
+      ],
+      "hedges_g": [
+        0.35428445701713024,
+        0.8753894080996885
+      ]
+    }
+  },
+  "n_mut_n_wt_distribution_by_lineage": {
+    "Ovarian": {
+      "n_strata": 7,
+      "n_mut_min": 5,
+      "n_mut_median": 8.0,
+      "n_mut_max": 40,
+      "n_wt_min": 15,
+      "n_wt_median": 47.0,
+      "n_wt_max": 50
+    },
+    "Endometrial": {
+      "n_strata": 8,
+      "n_mut_min": 6,
+      "n_mut_median": 14.5,
+      "n_mut_max": 21,
+      "n_wt_min": 7,
+      "n_wt_median": 13.5,
+      "n_wt_max": 22
+    },
+    "Cervical": {
+      "n_strata": 1,
+      "n_mut_min": 6,
+      "n_mut_median": 6.0,
+      "n_mut_max": 6,
+      "n_wt_min": 10,
+      "n_wt_median": 10.0,
+      "n_wt_max": 10
+    }
+  },
+  "n_mut_n_wt_distribution_table": "b1_n_mut_n_wt_distribution.csv",
+  "lineage_level": {
+    "n_lineages_total": 23,
+    "n_lineages_evaluable_primary_ge5": 8,
+    "evaluable_lineages": [
+      "NSCLC",
+      "SCLC",
+      "Colorectal",
+      "Esophagogastric",
+      "Breast",
+      "Ovarian",
+      "Endometrial",
+      "Bladder Urothelial"
+    ],
+    "mean_delta_t_minus_dd": 0.009982634740278173,
+    "mean_delta_g_minus_dd": 0.003008104272785639,
+    "median_delta_t_minus_dd": 0.0,
+    "median_delta_g_minus_dd": 0.0,
+    "n_lineages_t_beats_dd": 3,
+    "n_lineages_g_beats_dd": 2,
+    "table": "b1_lineage_three_stats.csv"
+  }
+}

@@ -63,7 +63,10 @@ panel_b <- function() {
       classification == "PAN_ESSENTIAL"    ~ "PAN",
       TRUE                                 ~ classification),
     class_label = factor(class_label, c("HIGH","MODERATE","LOW","PAN")),
-    size = 2 + abs(mean_selectivity) * 15)
+    # 2026-08-03: bubble size now encodes |mean DD| (absorbs the deleted
+    # Fig. S8d's unique third dimension); previously |selectivity|, which
+    # duplicated the y axis and contradicted the caption
+    size = abs(mean_dd) * 50)
 
   ggplot(tw, aes(mean_ti, mean_selectivity, color = class_label, size = size)) +
     geom_point(alpha = 0.75) +
@@ -74,6 +77,9 @@ panel_b <- function() {
               box.padding = 0.5, point.padding = 0.8, force = 2,
               min.segment.length = 0.2, segment.size = 0.3, seed = 42) +
     geom_hline(yintercept = 0, linewidth = 0.3, color = GRAY, alpha = 0.4) +
+    # dashed lines mark the two HIGH_SELECTIVITY thresholds, making the
+    # upper-right HIGH quadrant self-evident (absorbed from deleted Fig. S8d)
+    geom_hline(yintercept = 0.15, linewidth = 0.3, color = GRAY, alpha = 0.3, linetype = "dashed") +
     geom_vline(xintercept = 1, linewidth = 0.3, color = GRAY, alpha = 0.3, linetype = "dashed") +
     scale_color_manual(values = c(HIGH = RED, MODERATE = ORANGE, LOW = BLUE, PAN = GRAY),
                       limits = c("HIGH","MODERATE","LOW","PAN"), drop = FALSE) +

@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-08-09T16:50:58+00:00",
+  "frame": "comparator-excluded (compute_headline_metrics.lineage_primary): TableS2 minus ordered tuples (BRCA1->BRCA2, STK11->SIK1); note BRCA2->BRCA1 (reverse-direction comparator entry) REMAINS as a positive",
+  "n_entries": 108,
+  "n_unique_pairs": 70,
+  "n_positive_entries": 6,
+  "n_positive_pairs": 4,
+  "positive_pairs_in_frame": [
+    "ARID1A->ARID1B",
+    "BRCA2->BRCA1",
+    "FBXW7->FBXW2",
+    "PIK3CA->PIK3CB"
+  ],
+  "auroc": 0.5604575163398693,
+  "auprc": 0.38121986658741164,
+  "pair_clustered_bootstrap_auroc": {
+    "boot_mean": 0.5638619718558824,
+    "ci95_percentile": [
+      0.048967551622418885,
+      1.0
+    ],
+    "n_boot": 10000,
+    "n_used": 9475,
+    "n_skipped": 525
+  },
+  "pair_level_permutation": {
+    "observed": 0.5604575163398693,
+    "null_mean": 0.4991293285333525,
+    "null_std": 0.13038870172045616,
+    "empirical_p": 0.32786721327867213,
+    "n_permutations": 10000
+  },
+  "headline_metrics_entry_bootstrap_ci95": [
+    0.1873015873015873,
+    0.9142857142857143
+  ],
+  "seed": 42
+}

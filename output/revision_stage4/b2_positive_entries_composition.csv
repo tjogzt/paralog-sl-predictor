@@ -1,0 +1,9 @@
+driver_gene,paralog_gene,cancer_type,tier,evidence_source,direct_sl_evidence,signed_dd,hedges_g,n_mut,n_wt,composite_score
+ARID1A,ARID1B,Endometrial,B,Helming 2014,Conditional,0.2977,1.285,21,7,0.279
+ARID1A,ARID1B,Ovarian,B,Helming 2014,Conditional,0.3864,1.392,14,41,0.248
+FBXW7,FBXW2,Endometrial,C,DepMap 26Q1 release,No (computational),0.0181,0.161,8,20,0.055
+PIK3CA,PIK3CB,Endometrial,C,Wee 2008,No (other driver),-0.1191,-0.65,15,13,0.226
+PIK3CA,PIK3CB,Ovarian,C,Wee 2008,No (other driver),-0.113,-0.591,12,43,0.1
+BRCA1,BRCA2,Ovarian,Comparator,Bryant 2005,Functional analog,0.0638,0.236,5,50,0.16
+BRCA2,BRCA1,Ovarian,Comparator,Bryant 2005,Functional analog,-0.0022,-0.007,5,50,0.238
+STK11,SIK1,Cervical,Comparator,Hollstein 2019,Pathway axis,0.0363,0.287,6,10,0.136

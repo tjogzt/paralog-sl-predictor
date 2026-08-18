@@ -4,13 +4,13 @@
 
 **To:** The Editors, *Genome Biology*
 
-**Re:** Submission of "Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types" (Research article)
+**Re:** Submission of "Delta Dependency Profiles Paralog Compensation Signals Across Solid Tumor Types" (Research article)
 
 ---
 
 Dear Editors,
 
-We submit for consideration in *Genome Biology* our manuscript **"Delta Dependency Prioritizes Candidate Paralog Dependencies Across Solid Tumor Types."**
+We submit for consideration in *Genome Biology* our manuscript **"Delta Dependency Profiles Paralog Compensation Signals Across Solid Tumor Types."**
 
 Paralog compensation is an attractive route to new cancer dependencies, but most computational synthetic-lethality (SL) predictors are multi-feature models whose nominations are hard to trace to a single measurable effect. We introduce Delta Dependency (DD), the difference in mean Chronos gene-effect scores between driver-mutant and wild-type cell lines: each nomination traces directly to a measured dependency shift and an immediately designable validation experiment.
 

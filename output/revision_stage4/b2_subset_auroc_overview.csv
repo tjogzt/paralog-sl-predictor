@@ -1,0 +1,9 @@
+subset,curated_pairs_in_label_set,n_entries,n_positive_entries,auroc_signed_dd,auprc,auroc_abs_dd_sensitivity,entry_bootstrap_ci95,note,source
+Full 12-pair curated set (secondary),12,110,8,0.6287,0.3461,0.6765,"[0.3295, 0.8899]",,output/headline_metrics.json
+"Sequence paralogs only (comparator-excluded, 10 pairs)",10,108,6,0.5605,0.3812,0.701,"[0.1873, 0.9143]",,output/headline_metrics.json
+PRIMARY Tier A u B (5 pairs),5,104,2,1.0,1.0,1.0,"[1.0, 1.0]",,output/headline_metrics.json
+Leave-out DepMap-era (10 pairs),10,109,7,0.6134,0.3682,0.7255,"[0.2714, 0.9224]",,output/headline_metrics.json
+Pre-DepMap evidence only (8 pairs),8,107,5,0.5255,0.43,0.7745,"[0.0381, 1.0]",,output/headline_metrics.json
+Tier A only (3 pairs),3,102,0,,,,"[None, None]",AUROC not estimable (0 positive entries in frame),output/headline_metrics.json
+Tier B only (2 pairs),2,104,2,1.0,1.0,1.0,"[1.0, 1.0]",,output/headline_metrics.json
+"Full, direction-strict (EP300->CREBBP relabelled)",12,110,8,0.6287,0.3461,0.6765,,,output/headline_metrics.json

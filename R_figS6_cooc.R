@@ -123,7 +123,10 @@ panel_b <- function() {
     geom_tile(color = "white", linewidth = 0.4) +
     geom_text(aes(label = cell), size = 2.2, family = "Arial", color = DARK) +
     scale_fill_gradient2(low = BLUE, mid = "white", high = RED, midpoint = 0,
-                         trans = "log10", na.value = "grey88", guide = "none") +
+                         trans = "log10", na.value = "grey88",
+                         name = "TMB-adj.\nOR",
+                         guide = guide_colorbar(barwidth = 0.4, barheight = 3,
+                                                title.position = "top")) +
     scale_x_discrete(labels = setNames(lin_short, lin_order),
                      expand = expansion(add = 0)) +
     scale_y_discrete(expand = expansion(add = 0)) +

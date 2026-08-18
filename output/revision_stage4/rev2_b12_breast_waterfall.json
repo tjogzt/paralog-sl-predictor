@@ -1,0 +1,308 @@
+{
+  "breast_frame": {
+    "source": "output/solid_Breast_results.csv (Fig. 1a frame), primary >=5/>=5",
+    "n_entries": 12,
+    "n_positives": 2,
+    "auroc": 0.15,
+    "waterfall": [
+      {
+        "rank": 1,
+        "driver_gene": "KMT2C",
+        "paralog_gene": "KMT2D",
+        "signed_dd": 0.3073404029238885,
+        "n_mut": 9,
+        "n_wt": 41,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 2,
+        "driver_gene": "PIK3CA",
+        "paralog_gene": "PIK3CG",
+        "signed_dd": 0.0272706918135606,
+        "n_mut": 17,
+        "n_wt": 33,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 3,
+        "driver_gene": "PTEN",
+        "paralog_gene": "TNS2",
+        "signed_dd": 0.0176292048718881,
+        "n_mut": 7,
+        "n_wt": 43,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 4,
+        "driver_gene": "PIK3CA",
+        "paralog_gene": "PIK3CD",
+        "signed_dd": -0.0158634752035403,
+        "n_mut": 17,
+        "n_wt": 33,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 5,
+        "driver_gene": "TP53",
+        "paralog_gene": "TP63",
+        "signed_dd": -0.0242766475981052,
+        "n_mut": 41,
+        "n_wt": 9,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 6,
+        "driver_gene": "TP53",
+        "paralog_gene": "TP73",
+        "signed_dd": -0.0299147556229471,
+        "n_mut": 41,
+        "n_wt": 9,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 7,
+        "driver_gene": "PTEN",
+        "paralog_gene": "TNS1",
+        "signed_dd": -0.0427969738747657,
+        "n_mut": 7,
+        "n_wt": 43,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 8,
+        "driver_gene": "NF1",
+        "paralog_gene": "RASA1",
+        "signed_dd": -0.0680843007333651,
+        "n_mut": 5,
+        "n_wt": 45,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 9,
+        "driver_gene": "BRCA1",
+        "paralog_gene": "BRCA2",
+        "signed_dd": -0.1359701645306261,
+        "n_mut": 5,
+        "n_wt": 45,
+        "is_known_paralog_sl": true,
+        "auroc_contribution_if_positive": 0.2
+      },
+      {
+        "rank": 10,
+        "driver_gene": "NF1",
+        "paralog_gene": "RASA2",
+        "signed_dd": -0.1522061524000691,
+        "n_mut": 5,
+        "n_wt": 45,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      },
+      {
+        "rank": 11,
+        "driver_gene": "PIK3CA",
+        "paralog_gene": "PIK3CB",
+        "signed_dd": -0.2577730029769537,
+        "n_mut": 17,
+        "n_wt": 33,
+        "is_known_paralog_sl": true,
+        "auroc_contribution_if_positive": 0.1
+      },
+      {
+        "rank": 12,
+        "driver_gene": "BRCA1",
+        "paralog_gene": "BARD1",
+        "signed_dd": -0.4307841523306749,
+        "n_mut": 5,
+        "n_wt": 45,
+        "is_known_paralog_sl": false,
+        "auroc_contribution_if_positive": null
+      }
+    ],
+    "headline": "both curated positives show NEGATIVE signed DD in Breast: PIK3CA->PIK3CB DD=-0.258 (rank 11/12, AUROC contribution 0.10) and BRCA1->BRCA2 DD=-0.136 (rank 9/12, contribution 0.20); the reverse-displaced PIK3CA->PIK3CB pair alone contributes half of the AUROC deficit"
+  },
+  "cross_lineage_context": [
+    {
+      "lineage": "NSCLC",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.0563534698205581,
+      "evaluable": true
+    },
+    {
+      "lineage": "NSCLC",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": null,
+      "evaluable": false
+    },
+    {
+      "lineage": "SCLC",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.0771969709604043,
+      "evaluable": true
+    },
+    {
+      "lineage": "SCLC",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": null,
+      "evaluable": false
+    },
+    {
+      "lineage": "Colorectal",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.1443853314149689,
+      "evaluable": true
+    },
+    {
+      "lineage": "Colorectal",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": null,
+      "evaluable": false
+    },
+    {
+      "lineage": "Esophagogastric",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.1071350167538206,
+      "evaluable": true
+    },
+    {
+      "lineage": "Esophagogastric",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": null,
+      "evaluable": false
+    },
+    {
+      "lineage": "Breast",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.2577730029769537,
+      "evaluable": true
+    },
+    {
+      "lineage": "Breast",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": -0.1359701645306261,
+      "evaluable": true
+    },
+    {
+      "lineage": "Ovarian",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.1129602117024865,
+      "evaluable": true
+    },
+    {
+      "lineage": "Ovarian",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": 0.0638088304954411,
+      "evaluable": true
+    },
+    {
+      "lineage": "Endometrial",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.1491696419453191,
+      "evaluable": true
+    },
+    {
+      "lineage": "Endometrial",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": null,
+      "evaluable": false
+    },
+    {
+      "lineage": "Bladder Urothelial",
+      "pair": "PIK3CA->PIK3CB",
+      "signed_dd": -0.0780928898247496,
+      "evaluable": true
+    },
+    {
+      "lineage": "Bladder Urothelial",
+      "pair": "BRCA1->BRCA2",
+      "signed_dd": null,
+      "evaluable": false
+    }
+  ],
+  "meta_regression": {
+    "model": "AUROC ~ log(n_positives) + mean_mutation_frequency + log(n_lines)",
+    "n_lineages": 8,
+    "descriptive_only": true,
+    "coefficients": {
+      "intercept": -0.035541644010912185,
+      "log_n_positives": 0.22873239473972695,
+      "mean_mutation_frequency": 0.15638492470381068,
+      "log_n_lines": 0.0640754283939416
+    },
+    "r_squared": 0.40151180695371536,
+    "rows": [
+      {
+        "lineage": "NSCLC",
+        "auroc": 0.6637362637362637,
+        "n_positives": 5,
+        "mean_mutation_frequency": 0.2041666666666666,
+        "n_lines": 95,
+        "n_entries": 96
+      },
+      {
+        "lineage": "SCLC",
+        "auroc": 0.6510638297872341,
+        "n_positives": 5,
+        "mean_mutation_frequency": 0.18290341430837298,
+        "n_lines": 121,
+        "n_entries": 99
+      },
+      {
+        "lineage": "Colorectal",
+        "auroc": 0.775438596491228,
+        "n_positives": 5,
+        "mean_mutation_frequency": 0.3813559322033899,
+        "n_lines": 59,
+        "n_entries": 62
+      },
+      {
+        "lineage": "Esophagogastric",
+        "auroc": 0.6737588652482269,
+        "n_positives": 3,
+        "mean_mutation_frequency": 0.16032258064516128,
+        "n_lines": 62,
+        "n_entries": 50
+      },
+      {
+        "lineage": "Breast",
+        "auroc": 0.15,
+        "n_positives": 2,
+        "mean_mutation_frequency": 0.2933333333333334,
+        "n_lines": 50,
+        "n_entries": 12
+      },
+      {
+        "lineage": "Ovarian",
+        "auroc": 0.6112956810631229,
+        "n_positives": 7,
+        "mean_mutation_frequency": 0.1636363636363636,
+        "n_lines": 55,
+        "n_entries": 50
+      },
+      {
+        "lineage": "Endometrial",
+        "auroc": 0.519298245614035,
+        "n_positives": 5,
+        "mean_mutation_frequency": 0.2747138397502602,
+        "n_lines": 31,
+        "n_entries": 62
+      },
+      {
+        "lineage": "Bladder Urothelial",
+        "auroc": 0.53125,
+        "n_positives": 2,
+        "mean_mutation_frequency": 0.2833333333333334,
+        "n_lines": 30,
+        "n_entries": 18
+      }
+    ]
+  },
+  "sign_note": "legacy output/breast_results.csv carries the same pairs with opposite DD sign (superseded artifact); the solid frame is the manuscript frame of record and is sign-fidelity-checked"
+}

@@ -1,0 +1,408 @@
+{
+  "method": "deterministic reclassification of production pair-level means (output/therapeutic_window_all_results.csv) on a joint grid of the selectivity and DWS thresholds; PAN_ESSENTIAL override (pan-essential fraction > 0.5) kept fixed; Jaccard and retention vs the base HIGH_SELECTIVITY set",
+  "base": {
+    "selectivity_threshold": 0.15,
+    "dws_threshold": 1.0,
+    "n_high_selectivity": 2,
+    "members": [
+      "ARID1A->ARID1B",
+      "SMARCA4->SMARCA2"
+    ]
+  },
+  "grid": [
+    {
+      "selectivity_threshold": 0.1,
+      "dws_threshold": 0.8,
+      "n_high_selectivity": 3,
+      "jaccard_vs_base": 0.6666666666666666,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [
+        "EP300->CREBBP"
+      ],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "EP300->CREBBP",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.1,
+      "dws_threshold": 0.9,
+      "n_high_selectivity": 3,
+      "jaccard_vs_base": 0.6666666666666666,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [
+        "EP300->CREBBP"
+      ],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "EP300->CREBBP",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.1,
+      "dws_threshold": 1.0,
+      "n_high_selectivity": 3,
+      "jaccard_vs_base": 0.6666666666666666,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [
+        "EP300->CREBBP"
+      ],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "EP300->CREBBP",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.1,
+      "dws_threshold": 1.1,
+      "n_high_selectivity": 3,
+      "jaccard_vs_base": 0.6666666666666666,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [
+        "EP300->CREBBP"
+      ],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "EP300->CREBBP",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.1,
+      "dws_threshold": 1.2,
+      "n_high_selectivity": 3,
+      "jaccard_vs_base": 0.6666666666666666,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [
+        "EP300->CREBBP"
+      ],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "EP300->CREBBP",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.125,
+      "dws_threshold": 0.8,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.125,
+      "dws_threshold": 0.9,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.125,
+      "dws_threshold": 1.0,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.125,
+      "dws_threshold": 1.1,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.125,
+      "dws_threshold": 1.2,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.15,
+      "dws_threshold": 0.8,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.15,
+      "dws_threshold": 0.9,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.15,
+      "dws_threshold": 1.0,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.15,
+      "dws_threshold": 1.1,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.15,
+      "dws_threshold": 1.2,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.175,
+      "dws_threshold": 0.8,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.175,
+      "dws_threshold": 0.9,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.175,
+      "dws_threshold": 1.0,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.175,
+      "dws_threshold": 1.1,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.175,
+      "dws_threshold": 1.2,
+      "n_high_selectivity": 2,
+      "jaccard_vs_base": 1.0,
+      "retention_of_base": 1.0,
+      "gained_vs_base": [],
+      "lost_vs_base": [],
+      "members": [
+        "ARID1A->ARID1B",
+        "SMARCA4->SMARCA2"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.2,
+      "dws_threshold": 0.8,
+      "n_high_selectivity": 1,
+      "jaccard_vs_base": 0.5,
+      "retention_of_base": 0.5,
+      "gained_vs_base": [],
+      "lost_vs_base": [
+        "SMARCA4->SMARCA2"
+      ],
+      "members": [
+        "ARID1A->ARID1B"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.2,
+      "dws_threshold": 0.9,
+      "n_high_selectivity": 1,
+      "jaccard_vs_base": 0.5,
+      "retention_of_base": 0.5,
+      "gained_vs_base": [],
+      "lost_vs_base": [
+        "SMARCA4->SMARCA2"
+      ],
+      "members": [
+        "ARID1A->ARID1B"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.2,
+      "dws_threshold": 1.0,
+      "n_high_selectivity": 1,
+      "jaccard_vs_base": 0.5,
+      "retention_of_base": 0.5,
+      "gained_vs_base": [],
+      "lost_vs_base": [
+        "SMARCA4->SMARCA2"
+      ],
+      "members": [
+        "ARID1A->ARID1B"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.2,
+      "dws_threshold": 1.1,
+      "n_high_selectivity": 1,
+      "jaccard_vs_base": 0.5,
+      "retention_of_base": 0.5,
+      "gained_vs_base": [],
+      "lost_vs_base": [
+        "SMARCA4->SMARCA2"
+      ],
+      "members": [
+        "ARID1A->ARID1B"
+      ]
+    },
+    {
+      "selectivity_threshold": 0.2,
+      "dws_threshold": 1.2,
+      "n_high_selectivity": 1,
+      "jaccard_vs_base": 0.5,
+      "retention_of_base": 0.5,
+      "gained_vs_base": [],
+      "lost_vs_base": [
+        "SMARCA4->SMARCA2"
+      ],
+      "members": [
+        "ARID1A->ARID1B"
+      ]
+    }
+  ],
+  "member_margins": [
+    {
+      "pair": "ARID1A->ARID1B",
+      "mean_selectivity": 0.2770428477986152,
+      "mean_dws": 2.8194115385176928,
+      "margin_selectivity": 0.12704284779861522,
+      "margin_dws": 1.8194115385176928
+    },
+    {
+      "pair": "SMARCA4->SMARCA2",
+      "mean_selectivity": 0.181195243804206,
+      "mean_dws": 4.873895682316164,
+      "margin_selectivity": 0.03119524380420602,
+      "margin_dws": 3.8738956823161637
+    }
+  ],
+  "nearest_non_members": [
+    {
+      "pair": "EP300->CREBBP",
+      "mean_selectivity": 0.1084084248282225,
+      "mean_dws": 1.7101892257820581,
+      "distance_below_thresholds": 0.0415915751717775
+    },
+    {
+      "pair": "KMT2D->KMT2C",
+      "mean_selectivity": 0.055814610710753124,
+      "mean_dws": 1.2608298488759226,
+      "distance_below_thresholds": 0.09418538928924687
+    },
+    {
+      "pair": "NF1->RASA2",
+      "mean_selectivity": 0.00544686527345485,
+      "mean_dws": 1.8239106692860292,
+      "distance_below_thresholds": 0.14455313472654516
+    },
+    {
+      "pair": "PPP2R1A->PPP2R1B",
+      "mean_selectivity": 0.0,
+      "mean_dws": 0.9253821838412568,
+      "distance_below_thresholds": 0.22461781615874318
+    },
+    {
+      "pair": "FBXW7->FBXW2",
+      "mean_selectivity": -0.000235404896421825,
+      "mean_dws": 0.7201332548696614,
+      "distance_below_thresholds": 0.43010215002676044
+    }
+  ],
+  "fidelity": "recomputed base set == dws_robustness.json 0.15-threshold set"
+}

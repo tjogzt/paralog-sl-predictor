@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-08-09T16:54:18+00:00",
+  "post_hoc_declaration": "This pair-level operationalization of the TSG/oncogene contrast was defined after seeing the data (review R1-M3/R4-M4); it replaces the lineage-level AUROC test.",
+  "unit_and_score": "72 driver->paralog pairs; mean signed DD across evaluable gyn3 lineages (the per-pair mean frame)",
+  "class_source": "output/driver_mutation_rules.csv (TSG=LikelyLoF rule, ONC=Hotspot rule)",
+  "excluded_drivers_no_class": [],
+  "n_pairs_tsg": 39,
+  "n_pairs_onc": 33,
+  "mean_dd_tsg": 0.00037309061570305806,
+  "mean_dd_onc": -0.006449050948294033,
+  "median_dd_tsg": -0.004872714863987,
+  "median_dd_onc": 0.0027239301854784003,
+  "mean_diff_tsg_minus_onc": 0.0068221415639970915,
+  "median_diff_tsg_minus_onc": -0.0075966450494654005,
+  "cohens_d": 0.09175955697172249,
+  "permutation_test": {
+    "n_permutations": 10000,
+    "seed": 42,
+    "scheme": "shuffle pair-level class labels; stat = mean(DD|TSG)-mean(DD|ONC)",
+    "p_two_sided": 0.7231276872312768,
+    "p_one_sided_greater": 0.36166383361663834,
+    "null_mean": -0.00011345531295896989,
+    "null_std": 0.018094034570273095
+  },
+  "lineage_stratified_sensitivity": {
+    "combined_stat_mean_of_lineage_diffs": 0.016054129346573076,
+    "n_permutations": 10000,
+    "seed": 42,
+    "scheme": "class labels shuffled independently within each lineage stratum",
+    "p_two_sided": 0.41775822417758224,
+    "per_lineage_diffs": {
+      "Cervical": NaN,
+      "Endometrial": 0.010426600623928948,
+      "Ovarian": 0.0216816580692172
+    }
+  },
+  "positives_only_variant": {
+    "status": "NOT COMPUTABLE",
+    "reason": "the 6 positive pairs split TSG {ARID1A->ARID1B, FBXW7->FBXW2, BRCA1->BRCA2, BRCA2->BRCA1, STK11->SIK1} vs ONC {PIK3CA->PIK3CB}: n_ONC = 1 positive pair; a two-group permutation test on positive pairs only is undefined."
+  },
+  "reference_lineage_level_values": {
+    "source": "audit_manuscript_numbers.py / solid_tumor_summary_min3.csv",
+    "tsg_mean_auroc_n9": 0.649,
+    "onc_mean_auroc_n3": 0.834,
+    "exact_permutation_p": 0.127,
+    "exact_mannwhitney_p": 0.145,
+    "note": "existing Fig. 1b lineage-level contrast retained as scatter without test annotation per the review"
+  }
+}

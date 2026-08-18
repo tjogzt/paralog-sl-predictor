@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-08-09T16:59:38+00:00",
+  "design": "max|DD| restricted to DepMap lineages matching the screened models; same >=3/>=3 strata and max-across-orientations selection; pairs with no evaluable matched-lineage stratum are dropped (n reported)",
+  "harle": {
+    "matched_lineages": [
+      "Melanoma",
+      "Non-Small Cell Lung Cancer",
+      "Pancreatic Adenocarcinoma"
+    ],
+    "lineage_matched": {
+      "auroc": 0.563796533105996,
+      "permutation_p": 0.08149185081491851,
+      "null_mean": 0.5000042057402672,
+      "null_sd": 0.0448427121588084,
+      "n_perm": 10000,
+      "seed": 42,
+      "n_pairs_scored": 258,
+      "n_hits": 51
+    },
+    "all_lineage_reference": {
+      "auroc": 0.619254091412923,
+      "n_pairs_scored": 411
+    }
+  },
+  "flister": {
+    "matched_lineages": [
+      "Invasive Breast Carcinoma",
+      "Non-Small Cell Lung Cancer"
+    ],
+    "lineage_matched_union": {
+      "auroc": 0.5783973311241968,
+      "permutation_p": 0.0198980101989801,
+      "null_mean": 0.5001005912276382,
+      "null_sd": 0.03788487004195674,
+      "n_perm": 10000,
+      "seed": 42,
+      "n_pairs_scored": 18984,
+      "n_hits": 59
+    },
+    "all_lineage_reference": {
+      "auroc": 0.6963396033962492,
+      "n_pairs_scored": 29457
+    },
+    "per_model_matched": {
+      "h1299_lung_only": {
+        "auroc": 0.5317644525783185,
+        "permutation_p": 0.21827817218278173,
+        "null_mean": 0.5000067499192593,
+        "null_sd": 0.040345135769097686,
+        "n_perm": 10000,
+        "seed": 42,
+        "n_pairs_scored": 18628,
+        "n_hits": 50
+      },
+      "mdamb231_breast_only": {
+        "auroc": 0.7930450922589802,
+        "permutation_p": 0.003999600039996,
+        "null_mean": 0.5013269352549405,
+        "null_sd": 0.11746698473070259,
+        "n_perm": 10000,
+        "seed": 42,
+        "n_pairs_scored": 3059,
+        "n_hits": 6
+      }
+    }
+  }
+}

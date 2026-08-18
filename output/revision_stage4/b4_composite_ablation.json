@@ -1,0 +1,28 @@
+{
+  "ablation": "PCS' = max(delta_expression, 0) (necessity factor removed); composite rebuilt with the same 0.50/0.20/0.15/0.15 weights and entry-level global min-max normalization as pcs.py",
+  "fidelity": "rebuilt shipped composite == TableS2 composite_score (max abs diff < 1e-9); per-pair shipped composite AUROC reproduces 0.831",
+  "per_pair_mean_frame_72_pairs": {
+    "composite_shipped": 0.8308080808080808,
+    "composite_without_necessity": 0.7803030303030303,
+    "signed_dd_alone": 0.6717171717171717,
+    "necessity_alone": 0.6590909090909091,
+    "n_pairs": 72,
+    "n_positives": 6,
+    "ablation_delta": -0.0505050505050505,
+    "ablation_delta_paired_bootstrap": {
+      "mean": -0.05102082104314905,
+      "ci95": [
+        -0.16119402985074627,
+        0.044776119402985017
+      ],
+      "frac_above_0": 0.14427312775330398,
+      "n_boot": 10000,
+      "seed": 42
+    }
+  },
+  "lineage_level_frame_110_entries": {
+    "composite_shipped": 0.8590686274509803,
+    "composite_without_necessity": 0.8112745098039216,
+    "ablation_delta": -0.047794117647058765
+  }
+}

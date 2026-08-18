@@ -1,0 +1,83 @@
+{
+  "generated_at": "2026-08-09T17:27:20+00:00",
+  "generated_by": "rev2_b11_msi_cluster_null.py",
+  "item": "B11 \u2014 replace independence-assuming binomial + Stouffer aggregation of MSI interaction p-values with a joint-label permutation null that preserves cross-pair dependence (shared drivers, paralogs, and cell lines)",
+  "fidelity": {
+    "max_abs_diff_recomputed_vs_shipped_interaction_p": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  "per_cancer": {
+    "Endometrial": {
+      "n_pairs": 24,
+      "n_lines": 28,
+      "n_msi_h": 17,
+      "shipped_binom_p_vs_5pct": {
+        "recomputed": 0.7080109756612273,
+        "artifact": 0.7080109756612273
+      },
+      "shipped_stouffer": {
+        "z_recomputed": -1.0886561221862967,
+        "z_artifact": -1.0886561221862967,
+        "p_recomputed": 0.2763055579093262,
+        "p_artifact": 0.2763055579093262
+      },
+      "n_nominal_p05": 1,
+      "n_degenerate_draws_total": 8239,
+      "permutation_null": {
+        "scheme": "MSI-H/MSS labels of the lineage's cell lines permuted once per draw and applied jointly to all pairs; mutation vectors and gene effects fixed; all per-pair OLS refit; B=10000, seed=42",
+        "count_stat": {
+          "null_mean": 1.4151,
+          "null_max": 7,
+          "empirical_p_count_ge_observed": 0.781021897810219
+        },
+        "stouffer_z": {
+          "null_sd": 0.9454819565829843,
+          "independence_sd": 1.0,
+          "dependence_inflation_var_ratio": 0.8939361302239882,
+          "empirical_p_two_sided": 0.25677432256774324,
+          "dependence_corrected_p": 0.2495554504327413
+        }
+      },
+      "bh_unchanged": {
+        "min_q": 0.23471753172475468,
+        "n_fdr05": 0
+      }
+    },
+    "Colorectal": {
+      "n_pairs": 47,
+      "n_lines": 63,
+      "n_msi_h": 14,
+      "shipped_binom_p_vs_5pct": {
+        "recomputed": 0.20735647785814995,
+        "artifact": 0.20735647785814995
+      },
+      "shipped_stouffer": {
+        "z_recomputed": 0.4298378296553217,
+        "z_artifact": 0.4298378296553217,
+        "p_recomputed": 0.6673136124234826,
+        "p_artifact": 0.6673136124234826
+      },
+      "n_nominal_p05": 4,
+      "n_degenerate_draws_total": 12338,
+      "permutation_null": {
+        "scheme": "MSI-H/MSS labels of the lineage's cell lines permuted once per draw and applied jointly to all pairs; mutation vectors and gene effects fixed; all per-pair OLS refit; B=10000, seed=42",
+        "count_stat": {
+          "null_mean": 2.4304,
+          "null_max": 11,
+          "empirical_p_count_ge_observed": 0.23217678232176783
+        },
+        "stouffer_z": {
+          "null_sd": 1.061329889675774,
+          "independence_sd": 1.0,
+          "dependence_inflation_var_ratio": 1.1264211347191904,
+          "empirical_p_two_sided": 0.6831316868313169,
+          "dependence_corrected_p": 0.6854780481570137
+        }
+      },
+      "bh_unchanged": {
+        "min_q": 0.15695684958132242,
+        "n_fdr05": 0
+      }
+    }
+  }
+}
